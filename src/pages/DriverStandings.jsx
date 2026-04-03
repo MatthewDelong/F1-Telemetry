@@ -42,7 +42,8 @@ export function DriverStandings({ selectedYear }) {
 
   // console.log({start}, {end});
   return (
-    <div className="max-w-[45rem] m-auto  pb-64">
+    <div className="standard-scroll-container">
+      <div className="max-w-[45rem] m-auto  pb-64">
       {isLoading ? (
         <Loading className="mt-[20rem] mb-[20rem]" message={`Loading ${selectedYear} Driver Standings`} />
       ) : (
@@ -78,6 +79,7 @@ export function DriverStandings({ selectedYear }) {
           </ul>
         </>
       )}
+      </div>
     </div>
   );
 }

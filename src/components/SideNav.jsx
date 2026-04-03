@@ -9,7 +9,6 @@ import { F1TelemetryLogo as Logo } from "./F1TelemetryLogo";
 import { ReactSelectComponent } from './Select';
 import { RaceSelector } from './RaceSelector';
 import { fetchRacesAndSessions } from '../utils/api';
-import { trackButtonClick } from '../utils/gaTracking';
 import { getCurrentYear } from '../utils/currentYear';
 
 export const Header = ({ setResultPage, setResultPagePath }) => {
@@ -104,7 +103,7 @@ export const Header = ({ setResultPage, setResultPagePath }) => {
                 className="block px-4 py-2 text-neutral-300 hover:text-white" 
                 onClick={() => {
                     toggleOpen()
-                    trackButtonClick('Driver Comparison')}}
+                }}
             >
                 Driver Comparison
             </NavLink>
@@ -113,7 +112,6 @@ export const Header = ({ setResultPage, setResultPagePath }) => {
                 className="block px-4 py-2 text-neutral-300 hover:text-white" 
                 onClick={() => {
                     toggleOpen()
-                    trackButtonClick('Teammates Comparison')
                 }}
             >
                 Teammates Comparison
@@ -128,7 +126,6 @@ export const Header = ({ setResultPage, setResultPagePath }) => {
                 onClick={() => {
                     handleNavLinkClick('Race Results')
                     toggleOpen()
-                    trackButtonClick('Race Results')
                 }}
                 >Race Results</NavLink>
             <NavLink 
@@ -137,7 +134,6 @@ export const Header = ({ setResultPage, setResultPagePath }) => {
                 onClick={() => {
                     handleNavLinkClick('Constructor Standings')
                     toggleOpen()
-                    trackButtonClick('Constructor Standings')
                 }} 
                 >Constructor Standings</NavLink>
             <NavLink 
@@ -146,7 +142,6 @@ export const Header = ({ setResultPage, setResultPagePath }) => {
                 onClick={() => {
                     handleNavLinkClick('Driver Standing')
                     toggleOpen()
-                    trackButtonClick('Driver Standings')
                 }}
                 >Driver Standings</NavLink>
         </>

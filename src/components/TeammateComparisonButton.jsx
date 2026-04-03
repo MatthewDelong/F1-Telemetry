@@ -113,7 +113,6 @@ export function TeammateComparisonButton({ year = DEFAULT_YEAR, className }) {
 
   const navigateToSelectedTeam = () => {
     navigate(targetPath);
-    trackButtonClick(`Home/Click/F1/View Teammate Comparison - ${targetPath}`);
   };
 
   return (

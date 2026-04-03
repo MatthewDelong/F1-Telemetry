@@ -56,7 +56,8 @@ export function ConstructorStandings({ selectedYear }) {
   // console.log('standings', standings);
 
   return (
-    <div className="max-w-[45rem] m-auto  pb-64">
+    <div className="standard-scroll-container">
+      <div className="max-w-[45rem] m-auto  pb-64">
       {isLoading ? (
         <Loading className="mt-[20rem] mb-[20rem]" message={`Loading ${selectedYear} Constructor Standings`} />
       ) : (
@@ -90,6 +91,7 @@ export function ConstructorStandings({ selectedYear }) {
           </ul>
         </>
       )}
+      </div>
     </div>
   );
 }

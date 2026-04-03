@@ -64,9 +64,6 @@ export function AboutPage2025() {
   const navigateToRaceResult = (race) => {
     if (race?.meetingKey) {
       navigate(`/race/${race.meetingKey}`);
-      trackButtonClick(
-        `About/Click/F1/View Full Results - ${`/race/${race.meetingKey}`}`,
-      );
     } else {
       console.error("Meeting key not found for this race.");
     }
@@ -76,9 +73,6 @@ export function AboutPage2025() {
     if (race?.season && race?.round) {
       navigate(
         `/race-${championshipLevel.toLowerCase()}/${race.season}${race.round}`,
-      );
-      trackButtonClick(
-        `About/Click/${championshipLevel}/View Full Results - ${race.season}${race.round}`,
       );
     } else {
       console.error("Meeting key not found for this race.");
@@ -155,9 +149,6 @@ export function AboutPage2025() {
       <Button
         onClick={() => {
           navigate(`/${championshipLevel.toLowerCase()}/driver-standings`);
-          trackButtonClick(
-            `About/Click/${championshipLevel}/View Driver Standings - /${championshipLevel.toLowerCase()}/driver-standings`,
-          );
         }}
         size="sm"
         buttonStyle="hollow"
@@ -168,9 +159,6 @@ export function AboutPage2025() {
       <Button
         onClick={() => {
           navigate(`/${championshipLevel.toLowerCase()}/constructor-standings`);
-          trackButtonClick(
-            `About/Click/${championshipLevel}/View Constructor Standings - /${championshipLevel.toLowerCase()}/constructor-standings`,
-          );
         }}
         size="sm"
         buttonStyle="hollow"
@@ -193,7 +181,8 @@ export function AboutPage2025() {
   );
 
   return (
-    <div>
+    <div className="standard-scroll-container">
+      <div>
       <HeroSection layoutMobile={layoutMobile} />
       <TelemetrySection
         layoutMobile={layoutMobile}
@@ -249,6 +238,7 @@ export function AboutPage2025() {
           </div>
         </div>
       </section>
+      </div>
     </div>
   );
 }

@@ -127,7 +127,7 @@ export function RacePageF2({championshipLevel}) {
     const fastestRace2DriverCode = getFastestDriverCode(raceResults2);
 
     return (
-        <>
+        <div className="standard-scroll-container">
             <p class="text-sm tracking-sm mt-[4rem] text-center">{year}</p>
             <h1 className="heading-1 text-center">{raceName}</h1>
             <p class="text-sm tracking-sm text-center">{location}</p>
@@ -270,7 +270,7 @@ export function RacePageF2({championshipLevel}) {
                     </div>
                 )} */}
             </div>
-        </>
+        </div>
     );
 }
 

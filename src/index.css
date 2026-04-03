@@ -45,6 +45,14 @@ body {
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
+
+.standard-scroll-container {
+  height: 100vh;
+  width: 100vw;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
 body.bg-gradient-f1a {
   background: #000000;
   background: linear-gradient(90deg, #161234 0%, #4d0f34 50%, #161234 100%);

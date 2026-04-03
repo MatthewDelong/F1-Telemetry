@@ -249,6 +249,7 @@ export function RacePage() {
                 const startingGridData = await fetchOpenF1Data(
                     `${buildOpenF1Url("/position")}?session_key=${sessionKey}`
                 ).catch(() => []);
+                setPos(startingGridData);
 
                 await new Promise(r => setTimeout(r, 100));
                 const driversData = await fetchDriversAndTires(sessionKey).catch(() => []);
@@ -382,6 +383,7 @@ export function RacePage() {
                     (item) => item.date === earliestDateTime
                 );
                 setStartingGrid(filteredStartingGrid);
+                setPos(startingGridData);
 
                 setDrivers(driversData);
 
@@ -841,7 +843,7 @@ export function RacePage() {
                                 />
                             </div>
                         )}
-                        <div className="max-sm:hidden absolute top-[0] left-[0]">
+                        <div className="race-page__leaderboard-desktop-wrapper max-sm:hidden absolute top-[0] left-[0]">
                             {driverButtons(true)}
                         </div>
                     </div>

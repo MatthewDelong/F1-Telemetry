@@ -140,7 +140,6 @@ export function LandingPage({ setResultPagePath }) {
                 </p>
                 <Button
                   to="/teammates-comparison"
-                  onClick={() => trackButtonClick("team-comparison-landing")}
                   buttonStyle="solid"
                   className="w-full"
                 >
@@ -176,7 +175,6 @@ export function LandingPage({ setResultPagePath }) {
                 </p>
                 <Button
                   to="/driver-comparison"
-                  onClick={() => trackButtonClick("driver-comparison-landing")}
                   buttonStyle="solid"
                   className="w-full"
                 >
@@ -219,7 +217,6 @@ export function LandingPage({ setResultPagePath }) {
               <Button
                 to="/ar-viewer"
                 buttonStyle="solid"
-                onClick={() => trackButtonClick("ar-viewer-landing")}
               >
                 Click here to try it out
               </Button>
@@ -274,7 +271,6 @@ export function LandingPage({ setResultPagePath }) {
               className="w-full mb-24"
               onClick={() => {
                 setResultPagePath("/f1a/race-results");
-                trackButtonClick("f1a-results-landing");
               }}
             >
               Explore F1A Results

@@ -58,7 +58,8 @@ export function RaceResultsPage({ selectedYear }) {
   };
 
   return (
-    <div className="race-results max-w-[120rem] m-auto mt-32  pb-64">
+    <div className="standard-scroll-container">
+      <div className="race-results max-w-[120rem] m-auto mt-32  pb-64">
       {isLoading ? (
         <Loading
           className="mt-[20rem] mb-[20rem]"
@@ -76,7 +77,6 @@ export function RaceResultsPage({ selectedYear }) {
               onClick={() => {
                 if (race.results && race.results.length > 0)
                   navigateToRaceResult(race);
-                trackButtonClick(`race-result-item-${race.raceName}`);
               }}
             >
               {race.results && race.results.length > 0 ? (
@@ -126,6 +126,7 @@ export function RaceResultsPage({ selectedYear }) {
           ))}
         </ul>
       )}
+      </div>
     </div>
   );
 }
