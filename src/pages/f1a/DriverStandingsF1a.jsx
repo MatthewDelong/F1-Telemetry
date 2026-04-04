@@ -54,7 +54,8 @@ export function DriverStandingsF1a({ selectedYear, championshipLevel }) {
   // console.log('DriverStandingsF1a', standings);
 
   return (
-    <div className="max-w-[45rem] m-auto mt-64  pb-64">
+    <div className="standard-scroll-container">
+      <div className="max-w-[45rem] m-auto mt-32  pb-64">
       {isLoading ? (
         <Loading className="mt-[20rem] mb-[20rem]" message={`Loading ${selectedYear} Driver Standings`} />
       ) : (
@@ -84,6 +85,7 @@ export function DriverStandingsF1a({ selectedYear, championshipLevel }) {
             ))}
           </ul>
       )}
+      </div>
     </div>
   );
 }

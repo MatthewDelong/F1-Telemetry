@@ -17,14 +17,8 @@ export function normalizeOpenF1Date(date) {
   return d.toISOString().split('.')[0] + '.' + d.toISOString().split('.')[1].slice(0, 3);
 }
 
-export const fetchDriversList = async () => {
-  const response = await fetchWithCache(`https://praneeth7781.github.io/f1nsight-api-2/driversList.json`);
-  // console.log("New one");
-  return response.map(driver => ({
-    id: driver.driverId,
-    name: `${driver.givenName} ${driver.familyName}`
-  }));
-};
+const CACHE_PREFIX = "f1_cache_";
+const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -53,18 +47,60 @@ export const fetchOpenF1Data = async (url, retries = 3, backoff = 500) => {
     }
 };
 
-const fetchData = fetchOpenF1Data;
-
-// Simple in-memory cache
-const cache = {};
-
-const fetchWithCache = async (url) => {
-    if (cache[url]) {
-        return cache[url];
+/**
+ * Fetches data from localStorage if available and not expired,
+ * otherwise fetches from network and updates cache.
+ */
+const fetchWithPersistentCache = async (url) => {
+    // 1. Try to get from localStorage
+    const cacheKey = CACHE_PREFIX + btoa(url); // Use the full base64 of URL as key to avoid collisions
+    try {
+        const cachedItem = localStorage.getItem(cacheKey);
+        if (cachedItem) {
+            const { data, timestamp } = JSON.parse(cachedItem);
+            const isExpired = Date.now() - timestamp > CACHE_TTL;
+            if (!isExpired) {
+                // console.log(`[Cache] Hit for ${url}`);
+                return data;
+            }
+            // console.log(`[Cache] Expired for ${url}`);
+            localStorage.removeItem(cacheKey);
+        }
+    } catch (e) {
+        console.warn("[Cache] Error reading from localStorage", e);
     }
-    const data = await fetchData(url);
-    cache[url] = data;
+
+    // 2. Fetch from network
+    const data = await fetchOpenF1Data(url);
+
+    // 3. Save to localStorage if successful
+    if (data && !data.error) {
+        try {
+            const cacheEntry = JSON.stringify({
+                data,
+                timestamp: Date.now()
+            });
+            localStorage.setItem(cacheKey, cacheEntry);
+        } catch (e) {
+            if (e.name === 'QuotaExceededError') {
+                console.warn("[Cache] localStorage full, clearing oldest entries...");
+                // Simple cleanup: clear all F1 cache if full
+                Object.keys(localStorage).forEach(key => {
+                    if (key.startsWith(CACHE_PREFIX)) localStorage.removeItem(key);
+                });
+            }
+        }
+    }
+
     return data;
+};
+
+export const fetchDriversList = async () => {
+    const response = await fetchWithPersistentCache(`https://praneeth7781.github.io/f1nsight-api-2/driversList.json`);
+    return response.map(driver => ({
+        id: driver.driverId,
+        name: `${driver.givenName} ${driver.familyName}`
+    }));
 };
 
 export const fetchDriverStats = async (driverId1, driverId2) => {
@@ -414,8 +450,8 @@ export const fetchDriversAndTires = async (sessionKey) => {
   };
 
   try {
-    const driversData = await fetchOpenF1Data(urls.driversUrl);
-    const stintsData = await fetchOpenF1Data(urls.stintsUrl);
+    const driversData = await fetchWithPersistentCache(urls.driversUrl);
+    const stintsData = await fetchWithPersistentCache(urls.stintsUrl);
 
     const stintsByDriver = stintsData.reduce((acc, { driver_number, lap_end, compound }) => {
       acc[driver_number] = acc[driver_number] || [];
@@ -476,8 +512,8 @@ export async function fetchLocationData(sessionKey, driverId, startTime, endTime
 
   console.log('[DEBUG] Fetching location/car data with normalized dates:', { normStartTime, normEndTime });
 
-  const locationData = await fetchOpenF1Data(locationUrl);
-  const carData = await fetchOpenF1Data(carDataUrl);
+  const locationData = await fetchWithPersistentCache(locationUrl);
+  const carData = await fetchWithPersistentCache(carDataUrl);
 
   // const fetchEndTime = performance.now();
   // console.log(`Time taken to fetch data: ${(fetchEndTime - fetchStartTime).toFixed(2)} milliseconds`);

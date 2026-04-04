@@ -56,7 +56,7 @@ export function DriverStandings({ selectedYear }) {
             setStart={setStart}
             setReset={setReset}
             raceDetails={raceDetails}
-            className="-mt-24 pt-48 relative z-[90]"
+            className="pt-12 relative z-[90]"
             rangeOpen={rangeOpen}
           />
           <ul>

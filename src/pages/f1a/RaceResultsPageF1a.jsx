@@ -40,7 +40,7 @@ const Top3Drivers = ({ year, circuitId, index, championshipLevel }) => {
       <NavLink
         disabled={!hasResults}
         to={hasResults ? `/race-f1a/${year}${index}` : null}
-        onClick={trackButtonClick(`f1a/race-result-item-${raceName}`)}
+        onClick={() => {}}
         className={classNames(
           "bg-glow-dark rounded-[2.4rem] p-32 block mt-32 w-fit m-auto",
           "bg-gradient-to-br from-neutral-950/50 via-neutral-800/50 to-neutral-900/50",
@@ -171,7 +171,8 @@ export function RaceResultsPageF1a({ selectedYear, championshipLevel }) {
   // console.log('filteredCircuits', filteredCircuits);
 
   return (
-    <div className="race-results max-w-[120rem] m-auto mt-[7rem]">
+    <div className="standard-scroll-container">
+      <div className="race-results max-w-[120rem] m-auto mt-32">
       {isLoading ? (
         <Loading
           className="mt-[20rem] mb-[20rem]"
@@ -188,6 +189,7 @@ export function RaceResultsPageF1a({ selectedYear, championshipLevel }) {
           />
         ))
       )}
+      </div>
     </div>
   );
 }

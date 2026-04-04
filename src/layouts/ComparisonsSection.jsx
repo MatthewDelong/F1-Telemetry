@@ -61,7 +61,7 @@ const ComparisonsSection = ({ layoutMobile }) => {
     return (
         <section
             ref={sectionRef}
-            className="min-h-screen snap-start flex items-center justify-center bg-neutral-950 relative overflow-x-hidden"
+            className="min-h-screen snap-start flex items-center justify-center bg-neutral-950 relative overflow-hidden pt-[64px]"
         >
             {/* Heading Animates in & Scrolls */}
             <motion.div

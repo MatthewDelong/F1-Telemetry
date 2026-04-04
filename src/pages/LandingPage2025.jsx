@@ -202,7 +202,7 @@ export function LandingPage2025() {
                     </div>
                 </div>
             </section>
-            <section className="min-h-screen snap-start relative flex items-center justify-center bg-neutral-950 bg-glow-dark-bottom overflow-x-hidden">
+            <section className="h-screen snap-start relative flex items-center justify-center bg-neutral-950 bg-glow-dark-bottom overflow-hidden pt-[64px]">
                 {latestResultsLayout()}
             </section>
             

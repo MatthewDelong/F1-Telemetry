@@ -31,7 +31,7 @@ export const PositionCharts = ({ laps, pos, startGrid, driversDetails, driversCo
     sortedDriverAcronyms.forEach((acronym, index) => {
         initialVisibility[acronym] = driverCode ? (acronym === driverCode) : (index < 3);
     });
-    setDriverVisibility(prevVisibility => ({ ...prevVisibility, ...initialVisibility }));
+    setDriverVisibility(initialVisibility);
 
     const positionData = {};
     const newDriversColor = {};
@@ -113,18 +113,23 @@ export const PositionCharts = ({ laps, pos, startGrid, driversDetails, driversCo
   const renderLines = () => {
     if (!driversDetails || Object.keys(driversDetails).length === 0) return null;
 
-    return Object.keys(driversDetails).map(driverNumber => (
-      driverVisibility[driversDetails[driverNumber]] && (
+    return Object.keys(driversDetails).map(driverNumber => {
+      const acronym = driversDetails[driverNumber];
+      const isVisible = driverCode ? (acronym === driverCode) : driverVisibility[acronym];
+
+      if (!isVisible) return null;
+
+      return (
         <Line
           key={driverNumber}
           type="linear"
           dataKey={driverNumber}
-          stroke={`${newDriversColor[driversDetails[driverNumber]]}`}
+          stroke={`${newDriversColor[acronym]}`}
           dot={false}
           connectNulls={true}
         />
-      )
-    ));
+      );
+    });
   };
 
   const getYAxisLabels = () => {
@@ -160,12 +165,12 @@ export const PositionCharts = ({ laps, pos, startGrid, driversDetails, driversCo
               reversed
               type="number"
               interval={0}
-              domain={[1, startGrid.length]}
-              ticks={startGrid.map(entry => entry.position)}
-              tickFormatter={tick => yAxisLabels[tick]}
+              domain={[1, 22]}
+              ticks={Array.from({ length: 22 }, (_, i) => i + 1)}
+              tickFormatter={tick => `P${tick}`}
             />
             <Tooltip 
-              formatter={(value, name) => [`P${value}`, driversDetails[name]]}
+              formatter={(value, name) => [`P${value}`, driversDetails[name] || name]}
               labelFormatter={(label) => `Lap ${label}`}
             />
             {renderLines()}

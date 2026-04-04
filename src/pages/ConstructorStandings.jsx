@@ -63,7 +63,7 @@ export function ConstructorStandings({ selectedYear }) {
       ) : (
         <>
           <RangeSelector 
-            className="-mt-24 pt-48 relative z-[90]"
+            className="pt-12 relative z-[90]"
             start={start}
             end={end}
             reset={reset}

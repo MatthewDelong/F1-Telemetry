@@ -21,7 +21,7 @@ const TelemetrySection = ({ layoutMobile, onClick }) => {
     );
 
     return (
-        <section className="telemetry-section min-h-screen snap-start flex items-center justify-center bg-neutral-950 overflow-x-hidden">
+        <section className="telemetry-section min-h-screen snap-start flex items-center justify-center bg-neutral-950 overflow-hidden pt-[64px]">
             <div className="max-w-screen-lg mx-auto">
                 <h2 className="heading-3 text-center mb-8">
                     Interactive Telemetry

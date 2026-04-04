@@ -1,13 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import classNames from 'classnames';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons'
 
 import { Header, Footer2025, ResultsSelector } from './components';
-import F1ALogo from './components/F1Ansight.svg?react';
-import F2Logo from './components/F2nsight.svg?react';
+import { F1ALogo } from './components/F1ALogo';
+import { F2Logo } from './components/F2Logo';
 import { 
   DriverComparison,
   TeammatesComparison, 
@@ -99,10 +100,10 @@ function MainContent({ setSelectedYear, selectedYear, resultPage, resultPagePath
   }, [location]);
 
   return (
-    <div className="h-full grow">
+    <div className={classNames("grow", { "pt-[64px]": location !== "/" && location !== "/about-us" })}>
       {validPaths.includes(location) && (
         <ResultsSelector 
-          className="mt-[12.4rem] relative z-[100]" 
+          className="mt-32 mb-32 relative z-[100]" 
           setSelectedYear={setSelectedYear} 
           selectedYear={selectedYear} 
           resultPage={resultPage} 
@@ -111,7 +112,7 @@ function MainContent({ setSelectedYear, selectedYear, resultPage, resultPagePath
         />
       )}
       {(isF1a || isF2 ) && (
-        <div className="mt-[12.4rem] relative z-[100]">
+        <div className="mt-32 mb-32 relative z-[100]">
           {isF1a && (
             <F1ALogo height={48} className="mx-auto mb-16" />
           )}
@@ -128,29 +129,29 @@ function MainContent({ setSelectedYear, selectedYear, resultPage, resultPagePath
         </div>
       )}
 
-      <Routes>
-        <Route exact path="/" element={<LandingPage2025 setResultPagePath={setResultPagePath} />} />
-        <Route path="/about-us" element={<AboutPage2025 />} />
-        <Route path="/race-results" element={<RaceResultsPage selectedYear={selectedYear} />} />
-        <Route path="/constructor-standings" element={<ConstructorStandings selectedYear={selectedYear} />} />
-        <Route path="/driver-standings" element={<DriverStandings selectedYear={selectedYear} />} />
-        <Route path="/teammates-comparison/:urlYear?/:urlTeam?" element={<TeammatesComparison />}/>
-        <Route path="/driver-comparison/:urlDriver1?/:urlDriver2?" element={<DriverComparison selectedYear={selectedYear} />} />
-        <Route path="/race/:raceId" element={<RacePage />} />
-        <Route path="/ar-viewer" element={<ARViewer />} />
-        {/* F1A Routes */}
-        <Route path="/f1a/race-results" element={<RaceResultsPageF1a selectedYear={selectedYear} championshipLevel="F1A" />} />
-        <Route path="/race-f1a/:raceId" element={<RacePageF1a championshipLevel="F1A" />} />
-        <Route path="/f1a/driver-standings" element={<DriverStandingsF1a selectedYear={selectedYear} championshipLevel="F1A" />} />
-        <Route path="/f1a/constructor-standings" element={<ConstructorStandingsF1a selectedYear={selectedYear} championshipLevel="F1A" />} />
-        {/* F2 Routes */}
-        <Route path="/f2/race-results" element={<RaceResultsPageF2 selectedYear={selectedYear} championshipLevel="F2" />} />
-        <Route path="/race-f2/:raceId" element={<RacePageF2 championshipLevel="F2" />} />
-        <Route path="/f2/driver-standings" element={<DriverStandingsF2 selectedYear={selectedYear} championshipLevel="F2" />} />
-        <Route path="/f2/constructor-standings" element={<ConstructorStandingsF2 selectedYear={selectedYear} championshipLevel="F2" />} />
-        {/* Social Media Routes - not publicly available */}
-        <Route path="/social-media" element={<SocialMedia />} />
-      </Routes>
+        <Routes>
+          <Route exact path="/" element={<LandingPage2025 setResultPagePath={setResultPagePath} />} />
+          <Route path="/about-us" element={<AboutPage2025 />} />
+          <Route path="/race-results" element={<RaceResultsPage selectedYear={selectedYear} />} />
+          <Route path="/constructor-standings" element={<ConstructorStandings selectedYear={selectedYear} />} />
+          <Route path="/driver-standings" element={<DriverStandings selectedYear={selectedYear} />} />
+          <Route path="/teammates-comparison/:urlYear?/:urlTeam?" element={<TeammatesComparison />}/>
+          <Route path="/driver-comparison/:urlDriver1?/:urlDriver2?" element={<DriverComparison selectedYear={selectedYear} />} />
+          <Route path="/race/:raceId" element={<RacePage />} />
+          <Route path="/ar-viewer" element={<ARViewer />} />
+          {/* F1A Routes */}
+          <Route path="/f1a/race-results" element={<RaceResultsPageF1a selectedYear={selectedYear} championshipLevel="F1A" />} />
+          <Route path="/race-f1a/:raceId" element={<RacePageF1a championshipLevel="F1A" />} />
+          <Route path="/f1a/driver-standings" element={<DriverStandingsF1a selectedYear={selectedYear} championshipLevel="F1A" />} />
+          <Route path="/f1a/constructor-standings" element={<ConstructorStandingsF1a selectedYear={selectedYear} championshipLevel="F1A" />} />
+          {/* F2 Routes */}
+          <Route path="/f2/race-results" element={<RaceResultsPageF2 selectedYear={selectedYear} championshipLevel="F2" />} />
+          <Route path="/race-f2/:raceId" element={<RacePageF2 championshipLevel="F2" />} />
+          <Route path="/f2/driver-standings" element={<DriverStandingsF2 selectedYear={selectedYear} championshipLevel="F2" />} />
+          <Route path="/f2/constructor-standings" element={<ConstructorStandingsF2 selectedYear={selectedYear} championshipLevel="F2" />} />
+          {/* Social Media Routes - not publicly available */}
+          <Route path="/social-media" element={<SocialMedia />} />
+        </Routes>
       {location !== '/' && <Footer2025 />}
     </div>
   );

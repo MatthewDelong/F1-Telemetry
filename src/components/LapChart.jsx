@@ -147,9 +147,10 @@ export const LapChart = (props) => {
                             return `${minutes}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(3, '0')}`;
                         }}
                     />
-                    {[...new Set(laps.map(lap => driversDetails[lap.driver_number]))].map((acronym, index) => (
-                        driverVisibility[acronym] && <Line key={index} type="monotone" dataKey={acronym} stroke={`${newDriversColor[acronym]}`} connectNulls={true} />
-                    ))}
+                    {[...new Set(laps.map(lap => driversDetails[lap.driver_number]))].map((acronym, index) => {
+                        const isVisible = driverCode ? (acronym === driverCode) : driverVisibility[acronym];
+                        return isVisible && <Line key={index} type="monotone" dataKey={acronym} stroke={`${newDriversColor[acronym]}`} connectNulls={true} />;
+                    })}
                 </LineChart>
             </ResponsiveContainer>
             {driverCode == null && (

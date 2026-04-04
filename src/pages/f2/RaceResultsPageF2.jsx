@@ -44,9 +44,7 @@ const Top3Drivers = ({ year, circuitId, index, championshipLevel }) => {
             ? `/race-${championshipLevel === "F1A" ? "f1a" : "f2"}/${year}${index}`
             : null
         }
-        onClick={trackButtonClick(
-          `${championshipLevel === "F1A" ? "f1a" : "f2"}/race-result-item-${raceName}`,
-        )}
+        onClick={() => {}}
         className={classNames(
           "bg-glow-dark rounded-[2.4rem] p-32 block mt-32 w-fit m-auto",
           "bg-gradient-to-br from-neutral-950/50 via-neutral-800/50 to-neutral-900/50",
@@ -176,23 +174,25 @@ export function RaceResultsPageF2({ selectedYear, championshipLevel }) {
   // console.log('filteredCircuits', filteredCircuits);
 
   return (
-    <div className="race-results max-w-[120rem] m-auto mt-[7rem]">
-      {isLoading ? (
-        <Loading
-          className="mt-[20rem] mb-[20rem]"
-          message={`Loading ${selectedYear} Race Results`}
-        />
-      ) : (
-        filteredCircuits.map((circuit, index) => (
-          <Top3Drivers
-            key={circuit.circuitId}
-            year={selectedYear}
-            index={index + 1}
-            circuitId={circuit.circuitId}
-            championshipLevel={championshipLevel}
+    <div className="standard-scroll-container">
+      <div className="race-results max-w-[120rem] m-auto mt-32">
+        {isLoading ? (
+          <Loading
+            className="mt-[20rem] mb-[20rem]"
+            message={`Loading ${selectedYear} Race Results`}
           />
-        ))
-      )}
+        ) : (
+          filteredCircuits.map((circuit, index) => (
+            <Top3Drivers
+              key={circuit.circuitId}
+              year={selectedYear}
+              index={index + 1}
+              circuitId={circuit.circuitId}
+              championshipLevel={championshipLevel}
+            />
+          ))
+        )}
+      </div>
     </div>
   );
 }

@@ -68,7 +68,8 @@ export function ConstructorStandingsF1a({ selectedYear, championshipLevel }) {
   }, [selectedYear, championshipLevel]);
 
   return (
-    <div className="max-w-[45rem] m-auto mt-48  pb-64">
+    <div className="standard-scroll-container">
+      <div className="max-w-[45rem] m-auto mt-32  pb-64">
       {isLoading ? (
         <Loading className="mt-[20rem] mb-[20rem]" message={`Loading ${selectedYear} Constructor Standings`} />
       ) : (
@@ -94,6 +95,7 @@ export function ConstructorStandingsF1a({ selectedYear, championshipLevel }) {
           ))}
         </ul>
       )}
+      </div>
     </div>
   );
 }
