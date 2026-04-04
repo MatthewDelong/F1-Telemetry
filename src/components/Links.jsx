@@ -15,7 +15,7 @@ export const F1Links = ({accordion = false}) => {
                 to="/constructor-standings"
                 className="hover:text-gray-300"
             >
-                Contructor Standings
+                Constructor Standings
             </Link>
             <Link
                 to="/driver-standings"
@@ -39,7 +39,7 @@ export const F1Links = ({accordion = false}) => {
                 to="/ar-viewer"
                 className="hover:text-gray-300"
             >
-                Team Hstory
+                Team History
             </Link>
         </>
     )
@@ -73,7 +73,7 @@ export const F1ALinks = ({accordion = false}) => {
                 to="/f1a/constructor-standings"
                 className="hover:text-gray-300"
             >
-                Contructor Standings
+                Constructor Standings
             </Link>
             <Link
                 to="/f1a/driver-standings"
@@ -113,7 +113,7 @@ export const F2Links = ({accordion = false}) => {
                 to="/f2/constructor-standings"
                 className="hover:text-gray-300"
             >
-                Contructor Standings
+                Constructor Standings
             </Link>
             <Link
                 to="/f2/driver-standings"

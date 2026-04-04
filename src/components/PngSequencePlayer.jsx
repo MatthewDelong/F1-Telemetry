@@ -13,65 +13,90 @@ const PngSequencePlayer = ({
   const canvasRef = useRef(null);
   const [images, setImages] = useState([]);
   const [loaded, setLoaded] = useState(false);
-  const [inView, setInView] = useState(false); // Track if the canvas is in view
+  const [inView, setInView] = useState(false);
+  const [loadingStarted, setLoadingStarted] = useState(false);
 
-  // Load the image sequence
+  // Load the first image immediately as a placeholder
   useEffect(() => {
+    const firstImg = new Image();
+    firstImg.src = `${path}${String(0).padStart(5, "0")}.${fileExtension}`;
+    firstImg.onload = () => {
+      if (images.length === 0) {
+        setImages([firstImg]);
+      }
+    };
+  }, [path, fileExtension]);
+
+  // Use IntersectionObserver to start full loading when in view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        setInView(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setLoadingStarted(true);
+        }
+      },
+      { threshold: 0.1 } // Start loading when 10% is visible
+    );
+
+    if (canvasRef.current) {
+      observer.observe(canvasRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Batched loading
+  useEffect(() => {
+    if (!loadingStarted) return;
+
     let isCancelled = false;
-    setLoaded(false);
+    const batchSize = 10;
+    const allLoadedImages = new Array(frameCount);
 
     const loadImage = (index) =>
       new Promise((resolve) => {
         const img = new Image();
         img.src = `${path}${String(index).padStart(5, "0")}.${fileExtension}`;
         img.onload = () => resolve(img);
-        img.onerror = (e) => {
-          console.error(`Error loading image: ${img.src}`, e);
+        img.onerror = () => {
+          console.error(`Error loading image: ${img.src}`);
           resolve(null);
         };
       });
 
-    const loadAllImages = async () => {
-      const loadedImages = await Promise.all(
-        Array.from({ length: frameCount }, (_, index) => loadImage(index))
-      );
+    const loadInBatches = async () => {
+      for (let i = 0; i < frameCount; i += batchSize) {
+        if (isCancelled) break;
+        
+        const batch = [];
+        for (let j = i; j < i + batchSize && j < frameCount; j++) {
+          batch.push(loadImage(j).then(img => ({ index: j, img })));
+        }
+        
+        const results = await Promise.all(batch);
+        results.forEach(({ index, img }) => {
+          if (img) allLoadedImages[index] = img;
+        });
 
-      if (isCancelled) return;
-
-      const validImages = loadedImages.filter(Boolean);
-      setImages(validImages);
-      setLoaded(validImages.length > 0);
+        // Provide partial updates to show progress
+        if (i === 0 || i + batchSize >= frameCount) {
+          const validImages = allLoadedImages.filter(Boolean);
+          if (validImages.length > 0) {
+            setImages([...validImages]);
+            if (i + batchSize >= frameCount) setLoaded(true);
+          }
+        }
+      }
     };
 
-    loadAllImages();
+    loadInBatches();
 
     return () => {
       isCancelled = true;
     };
-  }, [frameCount, path, fileExtension]);
-
-  // Use IntersectionObserver to detect if the element is in view
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        setInView(entry.isIntersecting); // Set inView to true when the canvas is in view
-      },
-      { threshold: 0.5 } // Trigger when 50% of the element is in view
-    );
-
-    const canvasElement = canvasRef.current;
-
-    if (canvasElement) {
-      observer.observe(canvasElement);
-    }
-
-    return () => {
-      if (canvasElement) {
-        observer.unobserve(canvasElement);
-      }
-    };
-  }, []);
+  }, [loadingStarted, frameCount, path, fileExtension]);
 
   // Play animation only if in view and images are loaded
   useEffect(() => {

@@ -57,11 +57,16 @@ export const DriverCard = (props) => {
 
     const driverImage = (
         <img 
-            alt="" 
+            alt={driver.code} 
             src={championshipLevel ? 
                 `${"/images/" + year + "/" + championshipLevel + "/" + driver.code + ".png"}`
                 : `${"/images/" + year + "/drivers/" + driver.code + ".png"}`
             }
+            loading="lazy"
+            onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "/images/wildcardicon.png";
+            }}
             width={championshipLevel === 'F2' ? 54 : 72} 
             height={championshipLevel === 'F2' ? 54 : 72} 
             ref={ref}

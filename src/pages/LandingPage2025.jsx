@@ -174,13 +174,15 @@ export function LandingPage2025() {
                 <img
                     src={heroImageSource}
                     alt=""
+                    loading="eager"
                     className="absolute inset-0 h-full w-full object-cover transition-opacity ease-in-out"
                     style={{
                         opacity: isHeroImageVisible ? 0.5 : 0,
                         transitionDuration: `${HERO_FADE_MS}ms`,
                     }}
                     onError={(event) => {
-                        // Helps quickly diagnose broken public image paths in dev.
+                        event.target.onerror = null;
+                        event.target.src = "/images/HeroImage.png"; // Fallback to a core static hero if rotation fails
                         console.error("Landing hero image failed to load:", event.currentTarget.src);
                     }}
                 />

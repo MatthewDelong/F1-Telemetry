@@ -3,7 +3,7 @@
 Welcome to **F1-Telemetry**! This project is dedicated to providing Formula 1 enthusiasts with detailed analyses of past race data, including leaderboards, lap times, tire strategies, and the fastest laps for each driver. Explore an interactive 3D canvas that lets you visualize the telemetry data of selected F1 drivers, tracing their performance on the track lap by lap with high-fidelity telemetry sync and dynamic camera angles.
 
 ![F1-Telemetry Animation](/Media/animation-grid_1.gif)
-![F1-Telemetry Visualization](/images/F1nsightMeta.jpg)
+![F1-Telemetry Visualization](/images/HeroImage.png)
 
 ## Features
 
@@ -32,9 +32,13 @@ Please note that **F1-Telemetry** is an unofficial project and is not associated
 For more information and to access the interactive features, visit:
 [F1-Telemetry](https://f1-telemetry.matthews-world.co.uk/)
 
-## Custom API
+## Data Sources
 
-Statistics and driver comparisons are powered by the official F1-Telemetry API ecosystem.
+F1-Telemetry leverages a multi-tier data ecosystem to provide high-fidelity race insights:
+
+- **OpenF1 API:** Real-time telemetry, track positioning, and stint data.
+- **F1-Telemetry Historical Engine:** Historical race results, driver rankings, and seasonal standings.
+- **F1 Academy & F2 API:** Dedicated data streams for junior categories.
 
 ## Support and Contribution
 

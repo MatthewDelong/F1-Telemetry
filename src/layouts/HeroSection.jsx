@@ -1,6 +1,5 @@
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useRef } from "react";
-import PngSequencePlayer from "../components/PngSequencePlayer";
 
 const HeroSection = ({ layoutMobile }) => {
   const sectionRef = useRef(null);
@@ -53,14 +52,14 @@ const HeroSection = ({ layoutMobile }) => {
         alt=""
       />
 
-      {/* PNG Sequence */}
-      <PngSequencePlayer 
-        frameCount={301} 
-        path="/Media/pngSequence/car-animation_" 
-        className="absolute bottom-[-32px]"
-        canvasClasses="max-sm:w-[100%] sm:w-[90%] sm:max-w-screen-xl drop-shadow-[0_-64px_64px_rgba(0,0,0,1)] mx-auto"
-        loadingImage={`/images/HeroImage.png`}
-      />
+      {/* Static Hero Image */}
+      <div className="absolute bottom-[-32px] (max-sm:hidden) w-full flex justify-center">
+        <img 
+          src="/images/HeroImage.png" 
+          alt="F1 Car"
+          className="max-sm:w-[100%] sm:w-[90%] sm:max-w-screen-xl drop-shadow-[0_-64px_64px_rgba(0,0,0,1)] mx-auto"
+        />
+      </div>
     </section>
   );
 };

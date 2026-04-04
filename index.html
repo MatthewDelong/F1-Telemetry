@@ -6,7 +6,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="apple-mobile-web-app-title" content="F1-Telemetry" />
     <meta
       name="description"
       content="Welcome to F1-Telemetry! This project is dedicated to providing Formula 1 enthusiasts with detailed analyses of past race data, including leaderboards, lap times, tire strategies, and the fastest laps for each driver"
@@ -17,10 +17,10 @@
     />
 
     <!-- Google Site Verification Meta Tag -->
-    <meta
+    <!--<meta
       name="google-site-verification"
       content="xx5-2JiNTvosons5FyDpaE69YK50jceNHwmlxCTn5qI"
-    />
+    />-->
 
     <meta property="og:type" content="website" />
     <meta
@@ -32,10 +32,7 @@
       property="og:description"
       content="Welcome to F1-Telemetry! This project is dedicated to providing Formula 1 enthusiasts with detailed analyses of past race data, including leaderboards, lap times, tire strategies, and the fastest laps for each driver"
     />
-    <meta
-      property="og:image"
-      content="/images/F1nsightMeta.jpg"
-    />
+    <meta property="og:image" content="/images/F1nsightMeta.jpg" />
 
     <meta property="twitter:card" content="summary_large_image" />
     <meta
@@ -47,10 +44,7 @@
       property="twitter:description"
       content="Welcome to F1-Telemetry! This project is dedicated to providing Formula 1 enthusiasts with detailed analyses of past race data, including leaderboards, lap times, tire strategies, and the fastest laps for each driver"
     />
-    <meta
-      property="twitter:image"
-      content="/images/F1nsightMeta.jpg"
-    />
+    <meta property="twitter:image" content="/images/F1nsightMeta.jpg" />
 
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -65,6 +59,14 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <script>
+      // Global tracking shim to prevent crashes if analytics are missing
+      window.trackButtonClick =
+        window.trackButtonClick ||
+        function (event) {
+          console.log("[Analytics] Track:", event);
+        };
+    </script>
     <script type="module" src="/src/index.jsx"></script>
   </body>
 </html>

@@ -24,12 +24,17 @@ export const RaceResultItem = (props) => {
         >
             <div className={classNames('flex item-center w-full', { "max-md:hidden": mobileSmall})}>
                 <img 
-                    alt="" 
+                    alt={driver.code} 
                     src={
                         championshipLevel === 'F1A' || championshipLevel === 'F2' ?
                         `${"/images/" + year + "/" + championshipLevel +"/" + driver.code + ".png"}` :
                         `${"/images/" + year + "/drivers/" + driver.code + ".png"}`
                     }
+                    loading="lazy"
+                    onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "/images/wildcardicon.png";
+                    }}
                     width={72} 
                     height={72} 
                     ref={ref}

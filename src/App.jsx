@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import { fab } from '@fortawesome/free-brands-svg-icons'
+import { fab } from '@fortawesome/free-brands-svg-icons';
 
 import { Header, Footer2025, ResultsSelector } from './components';
 import { F1ALogo } from './components/F1ALogo';
@@ -122,15 +122,15 @@ function MainContent({ setSelectedYear, selectedYear, resultPage, resultPagePath
           <ResultsSelector 
             setSelectedYear={setSelectedYear} 
             selectedYear={selectedYear} 
-              resultPage={resultPage} 
-              resultPagePath={resultPagePath} 
-              championshipLevel={isF1a ? 'F1A' : 'F2'}
+            resultPage={resultPage} 
+            resultPagePath={resultPagePath} 
+            championshipLevel={isF1a ? 'F1A' : 'F2'}
           />
         </div>
       )}
 
         <Routes>
-          <Route exact path="/" element={<LandingPage2025 setResultPagePath={setResultPagePath} />} />
+          <Route path="/" element={<LandingPage2025 setResultPagePath={setResultPagePath} />} />
           <Route path="/about-us" element={<AboutPage2025 />} />
           <Route path="/race-results" element={<RaceResultsPage selectedYear={selectedYear} />} />
           <Route path="/constructor-standings" element={<ConstructorStandings selectedYear={selectedYear} />} />

@@ -12,8 +12,8 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "apple-touch-icon.png", "mask-icon.svg"],
       manifest: {
-        name: "F1nsight - Formula 1 Telemetry",
-        short_name: "F1nsight",
+        name: "F1-Telemetry - Formula 1 Telemetry",
+        short_name: "F1-Telemetry",
         description: "In-depth Formula 1 Telemetry and Analysis",
         theme_color: "#000000",
         background_color: "#000000",
