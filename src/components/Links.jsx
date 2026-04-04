@@ -5,39 +5,44 @@ import { getCurrentYear } from "../utils/currentYear";
 
 const currentYear = getCurrentYear();
 
-export const F1Links = ({accordion = false}) => {
+export const F1Links = ({accordion = false, onClick}) => {
     const links = (
         <>
-            <Link to="/race-results" className="hover:text-gray-300">
+            <Link to="/race-results" className="hover:text-gray-300" onClick={onClick}>
                 {currentYear} Race Results
             </Link>
             <Link
                 to="/constructor-standings"
                 className="hover:text-gray-300"
+                onClick={onClick}
             >
                 Constructor Standings
             </Link>
             <Link
                 to="/driver-standings"
                 className="hover:text-gray-300"
+                onClick={onClick}
             >
                 Driver Standings
             </Link>
             <Link
                 to="/driver-comparison"
                 className="hover:text-gray-300"
+                onClick={onClick}
             >
                 Driver Comparisons
             </Link>
             <Link
                 to="/teammates-comparison"
                 className="hover:text-gray-300"
+                onClick={onClick}
             >
                 Teammate Comparisons
             </Link>
             <Link
                 to="/ar-viewer"
                 className="hover:text-gray-300"
+                onClick={onClick}
             >
                 Team History
             </Link>
@@ -60,24 +65,27 @@ export const F1Links = ({accordion = false}) => {
     )
 };
 
-export const F1ALinks = ({accordion = false}) => {
+export const F1ALinks = ({accordion = false, onClick}) => {
     const links = (
         <>
             <Link
                 to="/f1a/race-results"
                 className="hover:text-gray-300"
+                onClick={onClick}
             >
                 {currentYear} Race Results
             </Link>
             <Link
                 to="/f1a/constructor-standings"
                 className="hover:text-gray-300"
+                onClick={onClick}
             >
                 Constructor Standings
             </Link>
             <Link
                 to="/f1a/driver-standings"
                 className="hover:text-gray-300"
+                onClick={onClick}
             >
                 Driver Standings
             </Link>
@@ -100,24 +108,27 @@ export const F1ALinks = ({accordion = false}) => {
     )
 };
 
-export const F2Links = ({accordion = false}) => {
+export const F2Links = ({accordion = false, onClick}) => {
     const links = (
         <>
             <Link
                 to="/f2/race-results"
                 className="hover:text-gray-300"
+                onClick={onClick}
             >
                 {currentYear} Race Results
             </Link>
             <Link
                 to="/f2/constructor-standings"
                 className="hover:text-gray-300"
+                onClick={onClick}
             >
                 Constructor Standings
             </Link>
             <Link
                 to="/f2/driver-standings"
                 className="hover:text-gray-300"
+                onClick={onClick}
             >
                 Driver Standings
             </Link>

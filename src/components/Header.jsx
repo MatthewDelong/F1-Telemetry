@@ -118,9 +118,9 @@ export const Header = () => {
                     "shadow-lg": location !== "/",
                 })}>
                     <div className="global-header__main-nav__left flex items-center gap-32">
-                        <a href="/">
+                        <Link to="/">
                             <Logo height={48} />
-                        </a>
+                        </Link>
                     </div>
 
                     {/* Mobile */}
@@ -255,21 +255,23 @@ export const Header = () => {
             <Modal isOpen={isOpen} onClose={toggleOpen}>
                 <div className="fixed top-[0] left-[0] w-full h-full bg-glow bg-neutral-900/95 backdrop-blur-sm md:hidden z-[1001]">
                     <div className="pt-32 px-32 mb-16 flex justify-center">
-                        <Logo height={40} />
+                        <Link to="/" onClick={toggleOpen}>
+                            <Logo height={40} />
+                        </Link>
                     </div>
                     <div className="pt-16 px-32">
-                        <Link to="/about-us" className="w-full flex justify-between items-center py-16 px-8 tracking-sm uppercase">
+                        <Link to="/about-us" className="w-full flex justify-between items-center py-16 px-8 tracking-sm uppercase" onClick={toggleOpen}>
                             About
                         </Link>
                         <div className="divider-glow-dark mt-8 border-t border-neutral-700" />
                         <div className="flex flex-col">
-                            <F1Links accordion />
+                            <F1Links accordion onClick={toggleOpen} />
                         </div>
                         <div className="flex flex-col">
-                            <F1ALinks accordion />
+                            <F1ALinks accordion onClick={toggleOpen} />
                         </div>
                         <div className="flex flex-col">
-                            <F2Links accordion />
+                            <F2Links accordion onClick={toggleOpen} />
                         </div>
                         
                         {/* <p className="font-display mt-16 border-b border-neutral-700">

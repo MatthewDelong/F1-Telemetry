@@ -32,7 +32,7 @@ const TelemetrySection = ({ layoutMobile, onClick }) => {
                 >
                     <motion.div
                         className={classNames(
-                            "p-32 md:py-32 md:pr-32 md:pl-64 md:ml-[-100px] md:rounded-xlarge max-md:text-small max-md:text-center",
+                            "p-32 md:py-32 md:pr-32 md:pl-64 md:ml-[-60px] md:rounded-xlarge max-md:text-small max-md:text-center",
                             "w-full md:w-1/3 flex flex-col max-md:items-center gap-8 relative z-10",
                             "md:bg-gradient-to-b md:from-neutral-900 md:to-neutral-900/10"
                         )}
@@ -69,7 +69,7 @@ const TelemetrySection = ({ layoutMobile, onClick }) => {
                         </Button>
                     </motion.div>
                     <motion.div
-                        className="w-full sm:w-2/3 ar-experience-section__phone z-10"
+                        className="w-full sm:w-2/3 ar-experience-section__phone z-10 md:ml-[-40px]"
                         initial={{ opacity: 0, scale: 1.2 }}
                         animate={isInView ? { opacity: 1, scale: 1 } : {}}
                         transition={{ duration: 0.8, ease: "easeOut" }}
