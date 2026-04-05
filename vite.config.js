@@ -15,10 +15,9 @@ export default defineConfig({
       includeAssets: ["favicon.ico", "apple-touch-icon.png"],
       manifestFilename: "manifest.json",
       manifest: {
-        id: "/",
-        name: "Formula One Telemetry",
+        name: "F1-Telemetry - In-depth Formula One Telemetry and Analysis",
         short_name: "F1-Telemetry",
-        description: "In-depth Formula 1 Telemetry and Analysis",
+        description: "In-depth Formula One Telemetry and Analysis",
         theme_color: "#000000",
         background_color: "#000000",
         display: "standalone",
