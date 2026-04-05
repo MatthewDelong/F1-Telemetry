@@ -72,7 +72,7 @@ export const ResultsSelector = ({ className, setSelectedYear, selectedYear, resu
         onChange={handleResultChange}
         isSearchable={false}
         value={internal ? resultsOptions.find(option => option.value === selectValue) : resultsOptions.find(option => option.value === resultPagePath)}
-        className="w-[29rem]"
+        className="w-[24rem]"
       />
     </div>
   );

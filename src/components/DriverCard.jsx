@@ -108,7 +108,53 @@ export const DriverCard = (props) => {
                     <p className={classNames("w-48 bg-neutral-600 py-2 text-center rounded-l-md")}>P{isRace ? endPosition : index + 1}</p>
                     <span className="pl-16 mr-4">{driver.code}</span>
                 </div>
-                <p className=" text-xs pr-8">{time}</p>
+                <div className="flex items-center gap-12 pr-16 justify-end grow">
+                    <p className="text-xs text-right grow">{time}</p>
+                    <div className="flex flex-col items-center gap-2 w-32 flex-shrink-0">
+                        {isFastestLapDriver && (
+                            <Popover
+                                aria-labelledby="default-popover"
+                                className="bg-glow border-plum-500 border-[.1rem] rounded-md p-4 bg-neutral-950 z-[10]"
+                                trigger="hover"
+                                placement="top"
+                                arrow={false}
+                                content={
+                                    <div className="p-4">
+                                        <div className="bg-plum-500 text-center font-display rounded">
+                                            {fastestLapTime}
+                                        </div>
+                                        <div className="flex align-start justify-around">
+                                            <div className="flex flex-col items-center">
+                                                <span className="text-sm">Lap</span>
+                                                <span className="font-display">{fastestLap?.lap || "-"}</span>
+                                            </div>
+                                            <div className="flex flex-col items-center">
+                                                <span className="text-sm">Tyre</span>
+                                                <span className="font-display">{getTireCompound(driver.code, fastestLap?.lap).charAt(0)}</span>
+                                            </div>
+                                        </div>
+                                        {fastestLapAverageSpeed && (
+                                            <div className="flex flex-col items-center">
+                                                <span className="text-sm">Avg Speed</span>
+                                                <div>
+                                                    <span className="font-display">{fastestLapAverageSpeed?.speed}</span>
+                                                    <span className="text-sm">{fastestLapAverageSpeed?.units}</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                }
+                            >
+                                <span className="fa-layers fa-fw fa-xs">
+                                    <FontAwesomeIcon icon="circle" className="text-white" transform="grow-2" />
+                                    <FontAwesomeIcon icon="circle" className="text-plum-500" />
+                                    <FontAwesomeIcon icon="clock" className="text-white" transform="shrink-4" />
+                                </span>
+                            </Popover>
+                        )}
+                        {isRace && positionMovement()}
+                    </div>
+                </div>
             </div>
             <div className={classNames('flex item-center w-full', { "max-md:hidden": mobileSmall, "hidden": layoutSmall})}>
                 <p className={classNames("driver-card-position text-[24px] font-display px-8 py-4 bg-neutral-700 rounded-l-md flex items-center")}>
@@ -118,7 +164,53 @@ export const DriverCard = (props) => {
                 <div className="grow py-4 px-12 text-right">
                     <span className="heading-4 mb-12 pl-60">{driver.code}</span>
                     <div className="divider-glow w-full" /> 
-                    <p className={classNames("text-sm -mt-8")}>{time}</p>
+                    <div className="flex items-center justify-end gap-12 -mt-8">
+                        <p className={classNames("text-sm text-right grow")}>{time}</p>
+                        <div className="flex flex-col items-center gap-2 w-32 flex-shrink-0">
+                            {isFastestLapDriver && (
+                                <Popover
+                                    aria-labelledby="default-popover"
+                                    className="bg-glow border-plum-500 border-[.1rem] rounded-md p-4 bg-neutral-950 z-[10]"
+                                    trigger="hover"
+                                    placement="top"
+                                    arrow={false}
+                                    content={
+                                        <div className="p-4">
+                                            <div className="bg-plum-500 text-center font-display rounded">
+                                                {fastestLapTime}
+                                            </div>
+                                            <div className="flex align-start justify-around">
+                                                <div className="flex flex-col items-center">
+                                                    <span className="text-sm">Lap</span>
+                                                    <span className="font-display">{fastestLap?.lap || "-"}</span>
+                                                </div>
+                                                <div className="flex flex-col items-center">
+                                                    <span className="text-sm">Tyre</span>
+                                                    <span className="font-display">{getTireCompound(driver.code, fastestLap?.lap).charAt(0)}</span>
+                                                </div>
+                                            </div>
+                                            {fastestLapAverageSpeed && (
+                                                <div className="flex flex-col items-center">
+                                                    <span className="text-sm">Avg Speed</span>
+                                                    <div>
+                                                        <span className="font-display">{fastestLapAverageSpeed?.speed}</span>
+                                                        <span className="text-sm">{fastestLapAverageSpeed?.units}</span>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    }
+                                >
+                                    <span className="fa-layers fa-fw fa-xs">
+                                        <FontAwesomeIcon icon="circle" className="text-white" transform="grow-2" />
+                                        <FontAwesomeIcon icon="circle" className="text-plum-500" />
+                                        <FontAwesomeIcon icon="clock" className="text-white" transform="shrink-4" />
+                                    </span>
+                                </Popover>
+                            )}
+                            {isRace && positionMovement()}
+                        </div>
+                    </div>
                 </div>
             </div>
             {mobileSmall && (
@@ -132,54 +224,7 @@ export const DriverCard = (props) => {
                     </div>
                 </div>
             )}
-            
-            <div className="fastest-lap-popover popover-wrapper flex flex-col items-center absolute -right-8">
-                {isFastestLapDriver && (
-                    <Popover
-                        aria-labelledby="default-popover"
-                        className="bg-glow border-plum-500 border-[.1rem] rounded-md p-4 bg-neutral-950 z-[10]"
-                        trigger="hover"
-                        placement="top"
-                        // open={true}
-                        arrow={false}
-                        content={
-                            <div className="p-4">
-                                <div className="bg-plum-500 text-center font-display rounded">
-                                    {fastestLapTime}
-                                </div>
-
-                                <div className="flex align-start justify-around">
-                                    <div className="flex flex-col items-center">
-                                        <span className="text-sm">Lap</span>
-                                        <span className="font-display">{fastestLap?.lap || "-"}</span>
-                                    </div>
-                                    <div className="flex flex-col items-center">
-                                        <span className="text-sm">Tyre</span>
-                                        <span className="font-display">{getTireCompound(driver.code, fastestLap?.lap).charAt(0)}</span>
-                                    </div>
-                                </div>
-
-                                {fastestLapAverageSpeed && (
-                                    <div className="flex flex-col items-center">
-                                        <span className="text-sm">Avg Speed</span>
-                                        <div>
-                                            <span className="font-display">{fastestLapAverageSpeed?.speed}</span>
-                                            <span className="text-sm">{fastestLapAverageSpeed?.units}</span>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        }
-                    >
-                        <span className="fa-layers fa-fw fa-xs">
-                            <FontAwesomeIcon icon="circle"  />
-                            <FontAwesomeIcon icon="clock" className="text-plum-500" inverse transform="shrink-2" />
-                        </span>
-                    </Popover>
-                )}
-                {isRace && positionMovement()}
-            </div>
-        </div>
+                    </div>
     );
 };
 

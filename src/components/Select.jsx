@@ -43,11 +43,16 @@ const CustomSelectContainer = ({ children, ...props }) => {
         },
             
         }),
+        container: (baseStyles) => ({
+            ...baseStyles,
+            width: '100%',
+        }),
         control: (baseStyles, state) => ({
             ...baseStyles,
             borderColor: state.isFocused ? '#e5e5e5' : props.isDisabled ? '#1f1f1f' : '#737373',
             background: '#1f1f1f',
             height: '4.8rem',
+            width: '100%',
             boxShadow: props.isDisabled ? 'inset 0 0 2.4rem 0 rgba(255, 255, 255, .1)' : 'inset 0 0 2.4rem 0 rgba(255, 255, 255, .25), 0 0 2.4rem 0 rgba(0, 0, 0, .55)',
             color: props.isDisabled ? '#666666' : '#f1f1f1',
             borderRadius: '1rem',
@@ -85,9 +90,11 @@ export const ReactSelectComponent = (props) => {
     const { className, ...rest } = props;
     
     return (
-        <CustomSelect
-            {...rest}
-            className={classNames(className, `custom-select`)}
-        />
+        <div className={classNames(className, "relative custom-select-wrapper")}>
+            <CustomSelect
+                {...rest}
+                className="custom-select"
+            />
+        </div>
     );
 }

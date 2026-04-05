@@ -43,6 +43,15 @@ function App() {
   const [resultPage, setResultPage] = useState('');
   const [resultPagePath, setResultPagePath] = useState('');
 
+  useEffect(() => {
+    // Update title for PWA standalone window to show full tagline
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      document.title = "F1-Telemetry - In-depth Formula One Telemetry and Analysis";
+    } else {
+      document.title = "F1-Telemetry";
+    }
+  }, []);
+
   return (
     <div className="app-container flex flex-col min-h-screen">
       <Router>
