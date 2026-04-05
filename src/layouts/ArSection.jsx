@@ -3,7 +3,6 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "../components";
-import PngSequencePlayer from "../components/PngSequencePlayer";
 
 const ArSection = ({ layoutMobile }) => {
   const navigate = useNavigate();
@@ -18,21 +17,21 @@ const ArSection = ({ layoutMobile }) => {
   const yTextContent = useTransform(
     scrollYProgress,
     [0, 1],
-    layoutMobile ? [0, 0] : [50, -50],
+    layoutMobile ? [0, 0] : [100, -100],
   );
 
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen snap-start flex items-center justify-center px-16 bg-neutral-950 relative overflow-hidden pt-[64px]"
+      className="min-h-screen snap-start flex items-center justify-center px-16 bg-neutral-950 relative overflow-hidden pt-[32px]"
     >
-      <div className="max-w-screen-lg mx-auto">
-        <h2 className="heading-3 text-center mb-8">
+      <div className="max-w-[1200px] w-full mx-auto px-16">
+        <h2 className="heading-3 text-center mb-4">
           bring the excitement of F1 right into your own space
         </h2>
         <div className="flex max-sm:flex-col-reverse sm:flex-row items-center mx-auto relative">
           <motion.div
-            className="w-full sm:w-3/4 flex flex-col max-sm:items-center gap-16 relative z-10 sm:bg-gradient-to-b sm:from-neutral-900 sm:to-neutral-900/10 p-32 sm:py-32 sm:pl-32 sm:pr-64 sm:mr-[-40px] sm:rounded-xlarge max-sm:text-center"
+            className="w-full sm:w-3/4 flex flex-col max-sm:items-center gap-8 relative z-10 sm:bg-gradient-to-b sm:from-neutral-900 sm:to-neutral-900/10 p-32 sm:py-24 sm:pl-32 sm:pr-64 sm:mr-[-40px] sm:rounded-xlarge max-sm:text-center"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
@@ -60,14 +59,14 @@ const ArSection = ({ layoutMobile }) => {
                 ? "Full AR Experience"
                 : "360 Team Livery Viewer and History"}
             </Button>
-            <p className="mb-24">
+            <p className="mb-12">
               <span className="font-bold">Capture stunning moments. </span>With
               our AR feature, snap breathtaking photos and videos of your F1 car
               in various settings. Share these moments with friends and fellow
               enthusiasts, and don’t forget to tag @f1telemetry! #f1telemetry
             </p>
             <img
-              className="w-[15rem] mt-5"
+              className="w-[12rem] mt-4"
               src={`${"/images/arQr.png"}`}
               alt="QR Code"
             />
@@ -83,12 +82,13 @@ const ArSection = ({ layoutMobile }) => {
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <PngSequencePlayer
-              frameCount={301}
-              path={`${"/Media/PngSequencePhone/PhoneAnimation_"}`}
-              className=""
-              canvasClasses="w-full"
-              loadingImage={`/images/ArPhoneImage.png`}
+            <motion.img
+              src="/images/ArPhoneImage.png"
+              alt="AR Experience Preview"
+              className="w-full h-auto max-h-[60vh] object-contain"
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ delay: 0.2, duration: 1 }}
             />
           </motion.div>
         </div>

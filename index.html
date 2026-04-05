@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-10L7RPCBYS"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-10L7RPCBYS');
+    </script>
+
     <meta charset="utf-8" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -21,6 +31,10 @@
       name="google-site-verification"
       content="xx5-2JiNTvosons5FyDpaE69YK50jceNHwmlxCTn5qI"
     />-->
+
+    <meta name="theme-color" content="#000000" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
     <meta property="og:type" content="website" />
     <meta
@@ -53,19 +67,22 @@
       href="https://fonts.googleapis.com/css2?family=Bungee&family=Lato:wght@300;400;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="manifest" href="/manifest.json" />
     <title>F1-Telemetry</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script>
-      // Global tracking shim to prevent crashes if analytics are missing
-      window.trackButtonClick =
-        window.trackButtonClick ||
-        function (event) {
-          console.log("[Analytics] Track:", event);
-        };
+      // Global tracking shim to send events to Google Analytics
+      window.trackButtonClick = function (event) {
+        console.log("[Analytics] Track:", event);
+        if (typeof gtag === "function") {
+          gtag("event", "click", {
+            event_category: "Interaction",
+            event_label: event,
+          });
+        }
+      };
     </script>
     <script type="module" src="/src/index.jsx"></script>
   </body>

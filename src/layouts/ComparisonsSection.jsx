@@ -24,7 +24,7 @@ const ComparisonsSection = ({ layoutMobile }) => {
     const computerImages = useTransform(
         scrollYProgress,
         [0, 1],
-        layoutMobile ? [-50, 50] : [-75, 50]
+        layoutMobile ? [-50, 50] : [-150, 100]
     ); // Images move more
     const yDecorationBG = useTransform(scrollYProgress, [0, 1], [0, 0]); // Decorations move the most
     const yDecoration1 = useTransform(scrollYProgress, [0, 1], [-150, -75]); // Mobile
@@ -65,11 +65,10 @@ const ComparisonsSection = ({ layoutMobile }) => {
         >
             {/* Heading Animates in & Scrolls */}
             <motion.div
-                className="max-w-screen-md mx-auto text-center"
+                className="max-w-[1200px] w-full mx-auto text-center px-16"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
                 transition={{ duration: 0.8, ease: "easeOut" }}
-                // style={{ y: yHeading }}
             >
                 <h2 className="heading-3 mb-16">
                     Driver and Teammate Comparisons
@@ -87,7 +86,7 @@ const ComparisonsSection = ({ layoutMobile }) => {
                 className="comparison-container relative"
                 ref={sectionRef}
             >
-                <div className="comparison-containers--computer z-10 relative py-32 max-w-screen-lg mx-auto">
+                <div className="comparison-containers--computer z-10 relative py-32 max-w-[1200px] w-full mx-auto px-24">
                     <motion.div
                         className="flex flex-row items-center justify-center relative"
                         initial={{ opacity: 0, scale: 0.8 }}

@@ -177,7 +177,8 @@ export function LandingPage2025() {
                     loading="eager"
                     className="absolute inset-0 h-full w-full object-cover transition-opacity ease-in-out"
                     style={{
-                        opacity: isHeroImageVisible ? 0.5 : 0,
+                        opacity: isHeroImageVisible ? 1 : 0,
+                        filter: "brightness(1.3) contrast(1.1)",
                         transitionDuration: `${HERO_FADE_MS}ms`,
                     }}
                     onError={(event) => {
@@ -186,7 +187,7 @@ export function LandingPage2025() {
                         console.error("Landing hero image failed to load:", event.currentTarget.src);
                     }}
                 />
-                <div className="absolute inset-0 bg-neutral-950/35" />
+                <div className="absolute inset-0 bg-neutral-950/10" />
                 <div className="mx-auto text-center px-16 relative z-10">
                     <h1 className="heading-1 mb-16 leading-none">
                         Go Beyond the Race Results

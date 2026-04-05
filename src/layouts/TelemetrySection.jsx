@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 
 import { Button } from "../components";
-import PngSequencePlayer from "../components/PngSequencePlayer";
 import classNames from "classnames";
 
 const TelemetrySection = ({ layoutMobile, onClick }) => {
@@ -17,18 +16,18 @@ const TelemetrySection = ({ layoutMobile, onClick }) => {
     const yTextContent = useTransform(
         scrollYProgress,
         [0, 1],
-        layoutMobile ? [0, 0] : [50, -50]
+        layoutMobile ? [0, 0] : [100, -100]
     );
 
     return (
         <section className="telemetry-section min-h-screen snap-start flex items-center justify-center bg-neutral-950 overflow-hidden pt-[64px]">
-            <div className="max-w-screen-lg mx-auto">
+            <div className="max-w-[1200px] w-full mx-auto px-16">
                 <h2 className="heading-3 text-center mb-8">
                     Interactive Telemetry
                 </h2>
                 <div
                     ref={sectionRef}
-                    className="flex flex-col-reverse md:flex-row-reverse items-center mx-auto relative md:ml-[-80px]"
+                    className="flex flex-col-reverse md:flex-row-reverse items-center mx-auto relative"
                 >
                     <motion.div
                         className={classNames(
@@ -74,14 +73,13 @@ const TelemetrySection = ({ layoutMobile, onClick }) => {
                         animate={isInView ? { opacity: 1, scale: 1 } : {}}
                         transition={{ duration: 0.8, ease: "easeOut" }}
                     >
-                        <PngSequencePlayer
-                            frameCount={301}
-                            path={`${
-                                "/Media/PngSequenceCanvas/canvasAnimation_"
-                            }`}
-                            className=""
-                            canvasClasses="w-full"
-                            loadingImage={`/images/telemetryImage.png`}
+                        <motion.img
+                            src="/images/telemetryImage.png"
+                            alt="Interactive Telemetry Preview"
+                            className="w-full h-auto"
+                            initial={{ opacity: 0 }}
+                            animate={isInView ? { opacity: 1 } : {}}
+                            transition={{ delay: 0.2, duration: 1 }}
                         />
                         <div className="divider-glow-dark -mt-8" />
                     </motion.div>

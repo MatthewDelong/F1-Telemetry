@@ -17,7 +17,7 @@ export const Footer2025 = ({ className }) => {
     return (
         <footer
             className={classNames(
-                "bg-neutral-900 text-white pb-10 px-6",
+                "bg-neutral-900 text-white pb-10 w-full",
                 className,
                 {
                     hidden: hideFooter,
@@ -25,7 +25,7 @@ export const Footer2025 = ({ className }) => {
             )}
         >
             <div className="divider-glow-dark" />
-            <div className="container mx-auto flex flex-col md:flex-row justify-between items-center py-64 text-sm max-md:text-center">
+            <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center py-64 text-sm max-md:text-center px-24 font-lato">
                 {/* Left side: Logo, tagline, and social links */}
                 <div className="flex flex-col items-center md:items-start gap-16 mb-24 md:mb-0">
                     <a href="/">

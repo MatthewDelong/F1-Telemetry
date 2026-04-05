@@ -100,34 +100,35 @@ function MainContent({ setSelectedYear, selectedYear, resultPage, resultPagePath
   }, [location]);
 
   return (
-    <div className={classNames("grow", { "pt-[64px]": location !== "/" && location !== "/about-us" })}>
-      {validPaths.includes(location) && (
-        <ResultsSelector 
-          className="mt-32 mb-32 relative z-[100]" 
-          setSelectedYear={setSelectedYear} 
-          selectedYear={selectedYear} 
-          resultPage={resultPage} 
-          resultPagePath={resultPagePath}
-          championshipLevel={isF1a ? 'F1A' : isF2 ? 'F2' : undefined}
-        />
-      )}
-      {(isF1a || isF2 ) && (
-        <div className="mt-32 mb-32 relative z-[100]">
-          {isF1a && (
-            <F1ALogo height={48} className="mx-auto mb-16" />
-          )}
-          {isF2 && (
-            <F2Logo height={48} className="mx-auto mb-16" />
-          )}
+    <>
+      <div className={classNames("grow", { "pt-[64px]": location !== "/" && location !== "/about-us" })}>
+        {validPaths.includes(location) && (
           <ResultsSelector 
+            className="mt-32 mb-32 relative z-[100]" 
             setSelectedYear={setSelectedYear} 
             selectedYear={selectedYear} 
             resultPage={resultPage} 
-            resultPagePath={resultPagePath} 
-            championshipLevel={isF1a ? 'F1A' : 'F2'}
+            resultPagePath={resultPagePath}
+            championshipLevel={isF1a ? 'F1A' : isF2 ? 'F2' : undefined}
           />
-        </div>
-      )}
+        )}
+        {(isF1a || isF2 ) && (
+          <div className="mt-32 mb-32 relative z-[100]">
+            {isF1a && (
+              <F1ALogo height={48} className="mx-auto mb-16" />
+            )}
+            {isF2 && (
+              <F2Logo height={48} className="mx-auto mb-16" />
+            )}
+            <ResultsSelector 
+              setSelectedYear={setSelectedYear} 
+              selectedYear={selectedYear} 
+              resultPage={resultPage} 
+              resultPagePath={resultPagePath} 
+              championshipLevel={isF1a ? 'F1A' : 'F2'}
+            />
+          </div>
+        )}
 
         <Routes>
           <Route path="/" element={<LandingPage2025 setResultPagePath={setResultPagePath} />} />
@@ -152,10 +153,10 @@ function MainContent({ setSelectedYear, selectedYear, resultPage, resultPagePath
           {/* Social Media Routes - not publicly available */}
           <Route path="/social-media" element={<SocialMedia />} />
         </Routes>
+      </div>
       {location !== '/' && <Footer2025 />}
-    </div>
+    </>
   );
 }
- 
-export default App;
 
+export default App;

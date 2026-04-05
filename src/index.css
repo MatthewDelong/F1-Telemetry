@@ -1,6 +1,85 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@source "../node_modules/flowbite-react/dist/esm/**/*.js";
+
+@theme {
+  /* Colors */
+  --color-plum-300: #835897;
+  --color-plum-500: #5F0B84;
+  --color-deep-purple-500: #271D5A;
+
+  /* Typography */
+  --font-display: "Bungee", ui-serif;
+  
+  --font-size-xs: 1rem;
+  --font-size-sm: 1.2rem;
+  --font-size-base: 1.6rem;
+  --font-size-xl: 2rem;
+  --font-size-12: 1.2rem;
+  --font-size-14: 1.4rem;
+  --font-size-18: 1.8rem;
+  --font-size-20: 2rem;
+  --font-size-24: 2.4rem;
+  --font-size-28: 2.8rem;
+  --font-size-32: 3.2rem;
+
+  --letter-spacing-xs: 0.2rem;
+  --letter-spacing-sm: 0.4rem;
+  --letter-spacing-wide: 0.8rem;
+
+  /* Spacing */
+  --spacing-0\.5: 0.05rem;
+  --spacing-1: 0.1rem;
+  --spacing-1\.5: 0.15rem;
+  --spacing-2: 0.2rem;
+  --spacing-2\.5: 0.25rem;
+  --spacing-3: 0.3rem;
+  --spacing-3\.5: 0.35rem;
+  --spacing-4: 0.4rem;
+  --spacing-5: 0.5rem;
+  --spacing-6: 0.6rem;
+  --spacing-7: 0.7rem;
+  --spacing-8: 0.8rem;
+  --spacing-9: 0.9rem;
+  --spacing-10: 1rem;
+  --spacing-11: 1.1rem;
+  --spacing-12: 1.2rem;
+  --spacing-14: 1.4rem;
+  --spacing-16: 1.6rem;
+  --spacing-18: 1.8rem;
+  --spacing-20: 2rem;
+  --spacing-24: 2.4rem;
+  --spacing-28: 2.8rem;
+  --spacing-32: 3.2rem;
+  --spacing-36: 3.6rem;
+  --spacing-40: 4rem;
+  --spacing-44: 4.4rem;
+  --spacing-48: 4.8rem;
+  --spacing-52: 5.2rem;
+  --spacing-56: 5.6rem;
+  --spacing-60: 6rem;
+  --spacing-64: 6.4rem;
+  --spacing-72: 7.2rem;
+  --spacing-80: 8rem;
+  --spacing-96: 9.6rem;
+
+  /* Border Radii */
+  --radius: 0.8rem;
+  --radius-default: 0.8rem;
+  --radius-sm: 0.4rem;
+  --radius-md: 1.2rem;
+  --radius-lg: 1.6rem;
+  --radius-large: 2rem;
+  --radius-xlarge: 3.2rem;
+
+  /* Shadows */
+  --shadow-12-light: 0 4px 12px 0 rgba(0, 0, 0, 0.25);
+  --shadow-12-dark: 0 4px 12px 0 rgba(0, 0, 0, 0.5);
+
+  --breakpoint-xs: 480px;
+
+  /* Gradients */
+  --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
+}
 
 /* npx tailwindcss -i ./src/index.css -o ./src/output.css --watch */
 
@@ -74,15 +153,16 @@ button:hover {
 
 .global-container {
   padding-top: 6.4rem;
+  width: 100%;
   @media (min-width: 640px) {
-    max-width: 1024px;
+    max-width: 1200px;
     margin: 0 auto;
   }
 }
 
 .page-container-centered {
   margin: 0 auto;
-  max-width: 120rem;
+  max-width: 140rem;
   padding: 0 2.4rem;
 }
 

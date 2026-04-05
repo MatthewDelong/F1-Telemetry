@@ -45,6 +45,7 @@ const SocialMedia = () => {
     return (
         <div className="flex flex-col gap-32 items-center py-96">
             <h1>Social Media Dashboard</h1>
+            <div className="social-media-container w-full aspect-[9/16] max-w-screen-xs rounded-lg">
             {isWeekendLoading && (
                 <div className="flex flex-col md:flex-row gap-32">
                     <StartingGrid
@@ -68,6 +69,7 @@ const SocialMedia = () => {
             <div className="flex flex-col md:flex-row gap-32">
                 <ConstructorStandings raceName={recentRaceWeekend?.raceName} location={recentRaceWeekend?.Circuit.Location.locality} round={recentRaceWeekend?.round} />
                 <DriverStandings raceName={recentRaceWeekend?.raceName} location={recentRaceWeekend?.Circuit.Location.locality} round={recentRaceWeekend?.round} />
+            </div>
             </div>
         </div>
     );

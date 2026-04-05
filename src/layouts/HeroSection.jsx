@@ -15,7 +15,7 @@ const HeroSection = ({ layoutMobile }) => {
   return (
     <section ref={sectionRef} className="bg-black relative h-screen  min-h-[300px] flex items-center justify-center">
       {/* Background Video */}
-      <video className="absolute inset-0 w-full h-full object-cover" autoPlay loop muted playsInline style={{ opacity: 0.15 }}>
+      <video className="absolute inset-0 w-full h-full object-cover" autoPlay loop muted playsInline style={{ opacity: 0.3, filter: "brightness(1.2)" }}>
         <source src="/Media/Hero.mp4" type="video/mp4" />
       </video>
 
@@ -58,6 +58,7 @@ const HeroSection = ({ layoutMobile }) => {
           src="/images/HeroImage.png" 
           alt="F1 Car"
           className="max-sm:w-[100%] sm:w-[90%] sm:max-w-screen-xl drop-shadow-[0_-64px_64px_rgba(0,0,0,1)] mx-auto"
+          style={{ filter: "brightness(1.1) contrast(1.1)" }}
         />
       </div>
     </section>
