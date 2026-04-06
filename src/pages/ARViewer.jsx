@@ -77,7 +77,9 @@ export const ARViewer = () => {
     setGlbLink(
       `${"/ArFiles/glbs/" + targetYear + "/" + modelTeamName + ".glb"}`,
     );
-    trackButtonClick(`team-viewer-${teamNameValue}-${targetYear}`);
+    if (typeof trackButtonClick === "function") {
+      trackButtonClick(`team-viewer-${teamNameValue}-${targetYear}`);
+    }
   };
 
   const specialEditionModels = [
@@ -90,15 +92,6 @@ export const ARViewer = () => {
       team: { name: "apx", color: "#AE7D0E" },
       trackingId: "team-viewer-apx",
     },
-    // {
-    //     id: "f1nsight2022",
-    //     label: "F1NSIGHT 2022",
-    //     color: "#7500AD",
-    //     glbPath: "/ArFiles/glbs/2024/f1nsight2022.glb",
-    //     imagePath: "/images/2024/cars/f1nsight-sideview.png",
-    //     team: { name: "F1Nsight", color: "#7500AD" },
-    //     trackingId: "team-viewer-f1nsight2022",
-    // },
     {
       id: "f1nsight2024",
       label: "F1NSIGHT 2024",
@@ -132,7 +125,9 @@ export const ARViewer = () => {
     setSelectedModelYear(null);
     setGlbLink(`${specialModel.glbPath}`);
     setTeam(specialModel.team);
-    trackButtonClick(specialModel.trackingId);
+    if (typeof trackButtonClick === "function") {
+      trackButtonClick(specialModel.trackingId);
+    }
   };
 
   const handleTeamSelection = (teamNameValue) => {
@@ -175,26 +170,30 @@ export const ARViewer = () => {
     const onProgress = (event) => {
       const progressBar = event.target.querySelector(".progress-bar");
       const updatingBar = event.target.querySelector(".update-bar");
-
-      updatingBar.style.width = `${event.detail.totalProgress * 100}%`;
-      if (event.detail.totalProgress === 1) {
+      if (updatingBar)
+        updatingBar.style.width = `${event.detail.totalProgress * 100}%`;
+      if (event.detail.totalProgress === 1 && progressBar) {
         progressBar.classList.add("hide");
-        event.target.removeEventListener("progress", onProgress);
-      } else {
-        progressBar.classList.remove("hide");
       }
+    };
+
+    const onLoad = (event) => {
+      const progressBar = event.target.querySelector(".progress-bar");
+      if (progressBar) progressBar.classList.add("hide");
     };
 
     if (modelViewer) {
       modelViewer.addEventListener("progress", onProgress);
+      modelViewer.addEventListener("load", onLoad);
     }
 
     return () => {
       if (modelViewer) {
         modelViewer.removeEventListener("progress", onProgress);
+        modelViewer.removeEventListener("load", onLoad);
       }
     };
-  }, [team]); // Depend on glbLink to re-run the effect when it changes
+  }, [team, glbLink]); // Depend on team and glbLink to re-run the effect when it changes
 
   return (
     <>
@@ -204,6 +203,7 @@ export const ARViewer = () => {
             {teamName}
           </div>
           <model-viewer
+            key={glbLink}
             ref={modelViewerRef}
             poster={ARViewer.defaultProps.img}
             src={glbLink}
@@ -216,9 +216,10 @@ export const ARViewer = () => {
             shadow-intensity={ARViewer.defaultProps.shadowIntensity}
             shadow-softness={ARViewer.defaultProps.shadowSoftness}
             alt={ARViewer.defaultProps.alt}
+            style={{ width: "100%", height: "100%", display: "block" }}
           >
-            <div class="progress-bar" slot="progress-bar">
-              <div class="update-bar" />
+            <div className="progress-bar" slot="progress-bar">
+              <div className="update-bar" />
             </div>
             <button
               slot="ar-button"
@@ -226,6 +227,7 @@ export const ARViewer = () => {
               style={{
                 borderBottom: `1px solid ${activeThemeColor}`,
                 backgroundColor: activeThemeColor,
+                zIndex: 100,
               }}
             >
               <img src={ARViewer.defaultProps.buttonIcon} alt="AR icon" />
@@ -244,42 +246,46 @@ export const ARViewer = () => {
               className={classNames(
                 "ar-history shadow-md pt-8 px-8 sm:px-32 rounded-t-lg w-[90%]",
                 "transition-all ease-in-out duration-500",
-                "absolute left-1/2 translate-x-[-50%]",
+                "absolute bottom-0",
               )}
               style={{
                 borderTop: `1px solid ${activeThemeColor}`,
+                left: "50%",
                 transform: `translate(-50%, ${
                   teamSelectionOpen ? "0%" : "calc(100% - 42px)"
                 })`,
+                zIndex: 50,
               }}
             >
               <button
-                className="mb-8"
+                className="w-full flex justify-center items-center py-8 mb-8 group"
                 onClick={() => {
                   setTeamSelectionOpen(!teamSelectionOpen);
-                  trackButtonClick(`team-selection-${team.name}`);
+                  if (typeof trackButtonClick === "function") {
+                    trackButtonClick(`team-selection-${team.name}`);
+                  }
                 }}
               >
                 <FontAwesomeIcon
                   icon="chevron-down"
                   className={classNames(
-                    "mr-16 fa-1x transition-all ease-in-out delay-75 duration-500",
-                    { "fa-rotate-180": !teamSelectionOpen },
+                    "mr-16 transition-transform duration-500",
+                    { "rotate-180": !teamSelectionOpen },
                   )}
                 />
                 <span className="font-display">Select Team</span>
                 <FontAwesomeIcon
                   icon="chevron-down"
                   className={classNames(
-                    "ml-16 fa-1x transition-all ease-in-out delay-75 duration-500",
-                    { "fa-rotate-180": !teamSelectionOpen },
+                    "ml-16 transition-transform duration-500",
+                    { "rotate-180": !teamSelectionOpen },
                   )}
                 />
               </button>
 
-              <div className="team-stats flex flex-col gap-8 text-left">
-                <div className="divider-glow-dark w-full" />
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 pb-8">
+              <div className="team-stats flex flex-col gap-8 text-left pb-16">
+                <div className="divider-glow-dark w-full mb-8" />
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 pb-8 overflow-y-auto max-h-[40vh] custom-scrollbar">
                   {teamList.map((teamItem) => {
                     const availableYears = getAvailableYearsForTeam(
                       teamItem.name,
@@ -304,8 +310,10 @@ export const ARViewer = () => {
                         type="button"
                         onClick={() => handleTeamSelection(teamItem.name)}
                         className={classNames(
-                          "text-white text-xs uppercase tracking-xs rounded-sm px-8 py-6 transition-all",
-                          isSelected ? "bg-glow--active" : "bg-glow-dark",
+                          "text-white text-xs uppercase tracking-widest rounded px-8 py-10 transition-all",
+                          isSelected
+                            ? "ring-1 ring-white/50"
+                            : "opacity-80 hover:opacity-100",
                         )}
                         style={{ backgroundColor: teamButtonColor }}
                       >
@@ -319,7 +327,6 @@ export const ARViewer = () => {
           )}
         </div>
 
-        {/* todo: redo this if possible */}
         <style jsx="true">{`
           .model-viewer-wrapper {
             background-color: ${activeThemeColor};
@@ -329,13 +336,26 @@ export const ARViewer = () => {
               ${darkenColor(activeThemeColor, 40)} 80%
             );
           }
+          .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+          }
+          .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+          }
+          .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: ${activeThemeColor};
+            border-radius: 2px;
+          }
         `}</style>
       </div>
 
       {!isGarageCollectionCar && (
-        <div className="flex flex-col justify-center pt-64">
+        <div className="flex flex-col justify-center pt-0">
           {/* Team Buttons */}
-          <div className="flex flex-row justify-center gap-16 px-60 pb-32">
+          <h2 className="tracking-sm uppercase gradient-text-light text-center mb-32">
+            Team Garage
+          </h2>
+          <div className="flex flex-row justify-center gap-24 px-12 pb-32 flex-wrap">
             {availableTeamYears.map((modelYear, index) => {
               const modelTeamName = getModelTeamNameForYear(
                 selectedTeamName,
@@ -352,7 +372,11 @@ export const ARViewer = () => {
                     setTeamModelByYear(selectedTeamName, modelYear);
                   }}
                   imageSrc={`${
-                    "/images/" + modelYear + "/cars/" + modelTeamName + ".png"
+                    "/images/" +
+                    modelYear +
+                    "/cars/" +
+                    selectedTeamName +
+                    ".png"
                   }`}
                   imageAlt={`${selectedTeamName}-${modelYear}`}
                   label={modelYear}
@@ -364,26 +388,30 @@ export const ARViewer = () => {
           <h2 className="tracking-sm uppercase gradient-text-light text-center mb-32">
             History
           </h2>
-          <HistoryBar history={teamHistoryData} color={activeThemeColor} />
+          <div className="px-32">
+            <HistoryBar history={teamHistoryData} color={activeThemeColor} />
+          </div>
 
-          <h2 className="tracking-sm uppercase gradient-text-light text-center mb-32">
+          <h2 className="tracking-sm uppercase gradient-text-light text-center mt-64 mb-32">
             Titles & Championships
           </h2>
           <div
             className="model-viewer-text-medium-wrapper flex flex-row justify-center gap-32 mx-32 mb-64 font-display leading-none"
-            style={{ color: darkenColor(activeThemeColor, 5) }}
+            style={{ color: activeThemeColor }}
           >
-            <div className="model-viewer-text-medium flex flex-col items-end justify-start">
-              <div>constructor</div>
-              <div>titles</div>
-              <div className="model-viewer-text-medium text-[3.2rem]">
+            <div className="model-viewer-text-medium flex flex-col items-end">
+              <div className="text-[0.7rem] uppercase tracking-widest opacity-70">
+                Constructor Titles
+              </div>
+              <div className="text-[3.5rem] font-bold">
                 {constructorTitlesCount}
               </div>
             </div>
-            <div className="model-viewer-text-medium flex flex-col items-start justify-end">
-              <div>drivers</div>
-              <div>championships</div>
-              <div className="model-viewer-text-medium text-[3.2rem]">
+            <div className="model-viewer-text-medium flex flex-col items-start border-l border-white/10 pl-32">
+              <div className="text-[0.7rem] uppercase tracking-widest opacity-70">
+                Drivers Champs
+              </div>
+              <div className="text-[3.5rem] font-bold">
                 {driversChampionshipsCount}
               </div>
             </div>
@@ -391,14 +419,14 @@ export const ARViewer = () => {
         </div>
       )}
 
-      <div className="flex flex-col justify-center pb-40 bg-gradient-to-b from-plum-500/50 to-transparent">
-        <div className="divider-glow-dark mb-40" />
+      <div className="flex flex-col justify-center pb-80 bg-gradient-to-b from-black/20 to-transparent">
+        <div className="divider-glow-dark mb-48 mx-auto w-[80%]" />
 
-        <h2 className="tracking-sm uppercase gradient-text-light mx-auto">
-          F1-Telemetry Collection
+        <h2 className="tracking-widest uppercase text-center text-sm opacity-60 mb-32">
+          F1NSIGHT Collection
         </h2>
 
-        <div className="flex flex-row justify-center flex-wrap gap-16 p-32">
+        <div className="flex flex-row justify-center flex-wrap gap-12 p-32">
           {specialEditionModels.map((specialModel) => (
             <CarSelectionButton
               key={specialModel.id}
@@ -410,7 +438,7 @@ export const ARViewer = () => {
             />
           ))}
         </div>
-        <p className="tracking-sm text-neutral-400 text-sm mx-auto mt-16 mb-16">
+        <p className="tracking-widest text-neutral-500 text-[10px] text-center mt-32">
           ©2024 F1-Telemetry
         </p>
       </div>
@@ -421,10 +449,10 @@ export const ARViewer = () => {
 export default ARViewer;
 
 ARViewer.defaultProps = {
-  glbLink: "/ArFiles/glbs/2024/mclaren.glb",
+  glbLink: `/ArFiles/glbs/2024/mclaren.glb`,
   team: teamHistory.mclaren,
-  img: "/ArFiles/poster-mclaren.webp",
-  buttonIcon: "/APX/3diconWhite.png",
+  img: `/ArFiles/poster-mclaren.webp`,
+  buttonIcon: `/APX/3diconWhite.png`,
   loading: "auto",
   reveal: "auto",
   autoRotate: true,
