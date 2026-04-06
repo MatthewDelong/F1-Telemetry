@@ -34,7 +34,8 @@
     "preview": "vite preview",
     "lint": "eslint src",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "compress-models": "powershell -ExecutionPolicy Bypass -File robust_compress_glbs.ps1"
   },
   "eslintConfig": {
     "extends": [
@@ -55,6 +56,8 @@
     ]
   },
   "devDependencies": {
+    "@gltf-transform/cli": "^4.1.0",
+    "gltf-pipeline": "^4.1.0",
     "@tailwindcss/postcss": "^4.2.2",
     "@tailwindcss/vite": "^4.2.2",
     "@testing-library/jest-dom": "^5.17.0",

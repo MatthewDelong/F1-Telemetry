@@ -13,9 +13,30 @@ Welcome to **F1-Telemetry**! This project is dedicated to providing Formula 1 en
 - **Lap Times Analysis:** Dive into lap-by-lap performance metrics to study consistency and strategy.
 - **Tire Strategies:** Understand how different tire choices play out during a race.
 - **Fastest Laps:** Discover which drivers achieved the fastest laps during each event.
+- **Interactive AR Viewer:** Experience high-fidelity 3D car models with **Draco/Meshopt** compression for ultra-fast loading (shrunk from 90MB to 23MB).
 - **Interactive Telemetry Viewer:** Follow your favorite drivers' telemetry data with synchronized 3D visualization and professional broadcast-style framing.
 
+## Developer Workflow
+
+### AR Model Optimization
+This project uses a custom pipeline to optimize massive 3D models for the web. If you add new `.glb` files to `public/ArFiles/glbs/`, you can optimize them using:
+
+```powershell
+npm run compress-models
+```
+*Requires PowerShell and Node.js.*
+
+### Local Decoders
+To bypass browser **Tracking Prevention** and ensure 100% reliability, Draco and Meshopt decoders are hosted locally in `/public/decoders/`.
+
+## Deployment (IONOS / Static Hosting)
+
+For optimal performance on IONOS or similar hosts:
+1. Ensure the `.htaccess` file in `public/` is deployed to the root to enable **Gzip compression** for `.glb` files.
+2. Verify the `public/decoders/` folder is included in your build to avoid cross-domain script blocking.
+
 ## Interactive Canvas
+... (rest of the file as before)
 
 Our interactive canvas is a standout feature, offering users a real-time simulation of telemetry data. This tool allows fans to:
 

@@ -18,6 +18,11 @@ export const ARViewer = () => {
     ARViewer.defaultProps.team.name,
   );
   const [teamSelectionOpen, setTeamSelectionOpen] = useState(false);
+  const [posterUrl, setPosterUrl] = useState(
+    `/images/${ARViewer.defaultProps.team.year || "2024"}/cars/${
+      ARViewer.defaultProps.team.name
+    }.png`,
+  );
   const modelViewerRef = useRef(null);
   const showTeamSelectionDrawer = true;
 
@@ -75,7 +80,10 @@ export const ARViewer = () => {
     setTeam(nextTeam);
     setSelectedModelYear(targetYear);
     setGlbLink(
-      `${"/ArFiles/glbs/" + targetYear + "/" + modelTeamName + ".glb"}`,
+      `${"/ArFiles/glbs/" + targetYear + "/" + modelTeamName + ".glb?v=optimized"}`,
+    );
+    setPosterUrl(
+      `${"/images/" + targetYear + "/cars/" + teamNameValue + ".png?v=optimized"}`,
     );
     if (typeof trackButtonClick === "function") {
       trackButtonClick(`team-viewer-${teamNameValue}-${targetYear}`);
@@ -124,6 +132,7 @@ export const ARViewer = () => {
   const handleSpecialEditionSelect = (specialModel) => {
     setSelectedModelYear(null);
     setGlbLink(`${specialModel.glbPath}`);
+    setPosterUrl(`${specialModel.imagePath}`);
     setTeam(specialModel.team);
     if (typeof trackButtonClick === "function") {
       trackButtonClick(specialModel.trackingId);
@@ -137,6 +146,21 @@ export const ARViewer = () => {
     setSelectedTeamName(teamNameValue);
     setTeamModelByYear(teamNameValue, latestYear);
     setTeamSelectionOpen(false);
+  };
+
+  const preloadTeamModel = (teamNameValue) => {
+    if (!teamNameValue) return;
+    const availableYears = getAvailableYearsForTeam(teamNameValue);
+    const latestYear = availableYears[availableYears.length - 1] || "2026";
+    const modelTeamName = getModelTeamNameForYear(teamNameValue, latestYear);
+    const glbUrl = `/ArFiles/glbs/${latestYear}/${modelTeamName}.glb`;
+    
+    // Create a hidden link to prefetch the GLB
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = glbUrl;
+    link.as = 'fetch';
+    document.head.appendChild(link);
   };
 
   const CarSelectionButton = ({
@@ -183,6 +207,10 @@ export const ARViewer = () => {
     };
 
     if (modelViewer) {
+      // Programmatically set decoder paths to ensure they are available before loading starts
+      modelViewer.dracoDecoderPath = "/decoders/draco/";
+      modelViewer.meshoptDecoderPath = "/decoders/meshopt/meshopt_decoder.js";
+      
       modelViewer.addEventListener("progress", onProgress);
       modelViewer.addEventListener("load", onLoad);
     }
@@ -203,16 +231,18 @@ export const ARViewer = () => {
             {teamName}
           </div>
           <model-viewer
-            key={glbLink}
+            key={`${selectedTeamName}`}
             ref={modelViewerRef}
-            poster={ARViewer.defaultProps.img}
+            draco-decoder-path="/decoders/draco/"
+            meshopt-decoder-path="/decoders/meshopt/meshopt_decoder.js"
+            loading="lazy"
+            poster={posterUrl}
             src={glbLink}
             ar-modes={ARViewer.defaultProps.arModes}
             ar={ARViewer.defaultProps.ar}
             ar-scale={ARViewer.defaultProps.arScale}
             camera-controls={ARViewer.defaultProps.cameraControls}
             exposure={ARViewer.defaultProps.exposure}
-            loading={ARViewer.defaultProps.loading}
             shadow-intensity={ARViewer.defaultProps.shadowIntensity}
             shadow-softness={ARViewer.defaultProps.shadowSoftness}
             alt={ARViewer.defaultProps.alt}
@@ -230,7 +260,7 @@ export const ARViewer = () => {
                 zIndex: 100,
               }}
             >
-              <img src={ARViewer.defaultProps.buttonIcon} alt="AR icon" />
+              <img src={"/APX/3diconWhite.png"} alt="AR icon" />
               Launch AR
             </button>
           </model-viewer>
@@ -308,6 +338,7 @@ export const ARViewer = () => {
                       <button
                         key={teamItem.name}
                         type="button"
+                        onMouseEnter={() => preloadTeamModel(teamItem.name)}
                         onClick={() => handleTeamSelection(teamItem.name)}
                         className={classNames(
                           "text-white text-xs uppercase tracking-widest rounded px-8 py-10 transition-all",
@@ -368,6 +399,15 @@ export const ARViewer = () => {
                 <CarSelectionButton
                   key={index}
                   backgroundColor={yearButtonColor}
+                  onMouseEnter={() => {
+                    const mName = getModelTeamNameForYear(selectedTeamName, modelYear);
+                    const gUrl = `/ArFiles/glbs/${modelYear}/${mName}.glb`;
+                    const l = document.createElement('link');
+                    l.rel = 'prefetch';
+                    l.href = gUrl;
+                    l.as = 'fetch';
+                    document.head.appendChild(l);
+                  }}
                   onClick={() => {
                     setTeamModelByYear(selectedTeamName, modelYear);
                   }}
@@ -450,8 +490,7 @@ export default ARViewer;
 
 ARViewer.defaultProps = {
   glbLink: `/ArFiles/glbs/2024/mclaren.glb`,
-  team: teamHistory.mclaren,
-  img: `/ArFiles/poster-mclaren.webp`,
+  team: { ...teamHistory.mclaren, year: "2024" },
   buttonIcon: `/APX/3diconWhite.png`,
   loading: "auto",
   reveal: "auto",
