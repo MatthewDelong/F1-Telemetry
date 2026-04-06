@@ -77,13 +77,17 @@ export const ARViewer = () => {
       teamList.find((teamItem) => teamItem.name === teamNameValue) ||
       ARViewer.defaultProps.team;
 
+    const imageTeamName = (teamNameValue === "audi" && (targetYear === "2024" || targetYear === "2025")) 
+      ? "sauber" 
+      : teamNameValue;
+
     setTeam(nextTeam);
     setSelectedModelYear(targetYear);
     setGlbLink(
       `${"/ArFiles/glbs/" + targetYear + "/" + modelTeamName + ".glb?v=optimized"}`,
     );
     setPosterUrl(
-      `${"/images/" + targetYear + "/cars/" + teamNameValue + ".png?v=optimized"}`,
+      `${"/images/" + targetYear + "/cars/" + imageTeamName + ".png?v=optimized"}`,
     );
     if (typeof trackButtonClick === "function") {
       trackButtonClick(`team-viewer-${teamNameValue}-${targetYear}`);
@@ -415,7 +419,7 @@ export const ARViewer = () => {
                     "/images/" +
                     modelYear +
                     "/cars/" +
-                    selectedTeamName +
+                    ((selectedTeamName === "audi" && (modelYear === "2024" || modelYear === "2025")) ? "sauber" : selectedTeamName) +
                     ".png"
                   }`}
                   imageAlt={`${selectedTeamName}-${modelYear}`}
