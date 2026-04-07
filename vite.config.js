@@ -85,7 +85,7 @@ export default defineConfig({
         ]
       },
       devOptions: {
-        enabled: true,
+        enabled: false,
         suppressWarnings: true,
         type: 'module',
         navigateFallback: "index.html"
@@ -135,9 +135,6 @@ export default defineConfig({
     port: 3006,
     strictPort: true,
     open: true,
-    watch: {
-      ignored: ["**/dev-dist/**"],
-    },
     proxy: {
       "/openf1": {
         target: "https://api.openf1.org",
