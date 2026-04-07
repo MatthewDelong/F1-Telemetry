@@ -157,7 +157,7 @@ export const ARViewer = () => {
     const availableYears = getAvailableYearsForTeam(teamNameValue);
     const latestYear = availableYears[availableYears.length - 1] || "2026";
     const modelTeamName = getModelTeamNameForYear(teamNameValue, latestYear);
-    const glbUrl = `/ArFiles/glbs/${latestYear}/${modelTeamName}.glb`;
+    const glbUrl = `/ArFiles/glbs/${latestYear}/${modelTeamName}.glb?v=optimized`;
     
     // Create a hidden link to prefetch the GLB
     const link = document.createElement('link');
@@ -405,7 +405,7 @@ export const ARViewer = () => {
                   backgroundColor={yearButtonColor}
                   onMouseEnter={() => {
                     const mName = getModelTeamNameForYear(selectedTeamName, modelYear);
-                    const gUrl = `/ArFiles/glbs/${modelYear}/${mName}.glb`;
+                    const gUrl = `/ArFiles/glbs/${modelYear}/${mName}.glb?v=optimized`;
                     const l = document.createElement('link');
                     l.rel = 'prefetch';
                     l.href = gUrl;
@@ -436,7 +436,7 @@ export const ARViewer = () => {
             <HistoryBar history={teamHistoryData} color={activeThemeColor} />
           </div>
 
-          <h2 className="tracking-sm uppercase gradient-text-light text-center mt-64 mb-32">
+          <h2 className="tracking-sm uppercase gradient-text-light text-center mt-24 mb-16">
             Titles & Championships
           </h2>
           <div
@@ -444,7 +444,7 @@ export const ARViewer = () => {
             style={{ color: activeThemeColor }}
           >
             <div className="model-viewer-text-medium flex flex-col items-end">
-              <div className="text-[0.7rem] uppercase tracking-widest opacity-70">
+              <div className="text-[1.4rem] uppercase font-display">
                 Constructor Titles
               </div>
               <div className="text-[3.5rem] font-bold">
@@ -452,8 +452,8 @@ export const ARViewer = () => {
               </div>
             </div>
             <div className="model-viewer-text-medium flex flex-col items-start border-l border-white/10 pl-32">
-              <div className="text-[0.7rem] uppercase tracking-widest opacity-70">
-                Drivers Champs
+              <div className="text-[1.4rem] uppercase font-display">
+                Drivers Championships
               </div>
               <div className="text-[3.5rem] font-bold">
                 {driversChampionshipsCount}
@@ -466,7 +466,7 @@ export const ARViewer = () => {
       <div className="flex flex-col justify-center pb-80 bg-gradient-to-b from-black/20 to-transparent">
         <div className="divider-glow-dark mb-48 mx-auto w-[80%]" />
 
-        <h2 className="tracking-widest uppercase text-center text-sm opacity-60 mb-32">
+        <h2 className="tracking-widest uppercase gradient-text-light text-center text-sm mb-32">
           F1NSIGHT Collection
         </h2>
 
