@@ -6,7 +6,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 
-import { Header, Footer2025, ResultsSelector } from './components';
+import { Header, Footer2025, ResultsSelector, ReloadPrompt } from './components';
 import { F1ALogo } from './components/F1ALogo';
 import { F2Logo } from './components/F2Logo';
 import { 
@@ -67,6 +67,7 @@ function App() {
           resultPagePath={resultPagePath}
           setResultPagePath={setResultPagePath} 
         />
+        <ReloadPrompt />
       </Router>
     </div>
   );

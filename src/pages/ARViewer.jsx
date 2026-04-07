@@ -31,6 +31,9 @@ export const ARViewer = () => {
     if (teamNameValue === "audi") {
       return Number(yearValue) < 2026 ? "sauber" : "audi";
     }
+    if (teamNameValue === "red_bull_racing") {
+      return "rb";
+    }
     return teamNameValue;
   };
 
@@ -77,17 +80,15 @@ export const ARViewer = () => {
       teamList.find((teamItem) => teamItem.name === teamNameValue) ||
       ARViewer.defaultProps.team;
 
-    const imageTeamName = (teamNameValue === "audi" && (targetYear === "2024" || targetYear === "2025")) 
-      ? "sauber" 
-      : teamNameValue;
+    const imageTeamName = getModelTeamNameForYear(teamNameValue, targetYear);
 
     setTeam(nextTeam);
     setSelectedModelYear(targetYear);
     setGlbLink(
-      `${"/ArFiles/glbs/" + targetYear + "/" + modelTeamName + ".glb?v=optimized"}`,
+      `${"/ArFiles/glbs/" + targetYear + "/" + modelTeamName + ".glb?v=v2_ultra"}`,
     );
     setPosterUrl(
-      `${"/images/" + targetYear + "/cars/" + imageTeamName + ".png?v=optimized"}`,
+      `${"/images/" + targetYear + "/cars/" + imageTeamName + ".png?v=v2_ultra"}`,
     );
     if (typeof trackButtonClick === "function") {
       trackButtonClick(`team-viewer-${teamNameValue}-${targetYear}`);
@@ -99,7 +100,7 @@ export const ARViewer = () => {
       id: "apx",
       label: "APX",
       color: "#AE7D0E",
-      glbPath: "/ArFiles/glbs/2024/apx.glb",
+      glbPath: "/ArFiles/glbs/2024/apx.glb?v=v2_ultra",
       imagePath: "/images/2024/cars/apx.png",
       team: { name: "apx", color: "#AE7D0E" },
       trackingId: "team-viewer-apx",
@@ -108,7 +109,7 @@ export const ARViewer = () => {
       id: "f1nsight2024",
       label: "F1NSIGHT 2024",
       color: "#7500AD",
-      glbPath: "/ArFiles/glbs/2024/f1nsight2024.glb",
+      glbPath: "/ArFiles/glbs/2024/f1nsight2024.glb?v=v2_ultra",
       imagePath: "/images/2024/cars/F1Nsight.png",
       team: { name: "F1Nsight", color: "#7500AD" },
       trackingId: "team-viewer-f1nsight2024",
@@ -117,7 +118,7 @@ export const ARViewer = () => {
       id: "f1nsight2025",
       label: "F1NSIGHT 2025",
       color: "#7500AD",
-      glbPath: "/ArFiles/glbs/2025/f1nsight2025.glb",
+      glbPath: "/ArFiles/glbs/2025/f1nsight2025.glb?v=v2_ultra",
       imagePath: "/images/2025/cars/F1Nsight.png",
       team: { name: "F1Nsight", color: "#7500AD" },
       trackingId: "team-viewer-f1nsight2025",
@@ -126,7 +127,7 @@ export const ARViewer = () => {
       id: "f1nsight2026",
       label: "F1NSIGHT 2026",
       color: "#7500AD",
-      glbPath: "/ArFiles/glbs/2026/f1nsight2026.glb",
+      glbPath: "/ArFiles/glbs/2026/f1nsight2026.glb?v=v2_ultra",
       imagePath: "/images/2026/cars/F1Nsight.png",
       team: { name: "F1Nsight", color: "#7500AD" },
       trackingId: "team-viewer-f1nsight2026",
@@ -157,7 +158,7 @@ export const ARViewer = () => {
     const availableYears = getAvailableYearsForTeam(teamNameValue);
     const latestYear = availableYears[availableYears.length - 1] || "2026";
     const modelTeamName = getModelTeamNameForYear(teamNameValue, latestYear);
-    const glbUrl = `/ArFiles/glbs/${latestYear}/${modelTeamName}.glb?v=optimized`;
+    const glbUrl = `/ArFiles/glbs/${latestYear}/${modelTeamName}.glb?v=v2_ultra`;
     
     // Create a hidden link to prefetch the GLB
     const link = document.createElement('link');
@@ -342,7 +343,6 @@ export const ARViewer = () => {
                       <button
                         key={teamItem.name}
                         type="button"
-                        onMouseEnter={() => preloadTeamModel(teamItem.name)}
                         onClick={() => handleTeamSelection(teamItem.name)}
                         className={classNames(
                           "text-white text-xs uppercase tracking-widest rounded px-8 py-10 transition-all",
@@ -403,15 +403,6 @@ export const ARViewer = () => {
                 <CarSelectionButton
                   key={index}
                   backgroundColor={yearButtonColor}
-                  onMouseEnter={() => {
-                    const mName = getModelTeamNameForYear(selectedTeamName, modelYear);
-                    const gUrl = `/ArFiles/glbs/${modelYear}/${mName}.glb?v=optimized`;
-                    const l = document.createElement('link');
-                    l.rel = 'prefetch';
-                    l.href = gUrl;
-                    l.as = 'fetch';
-                    document.head.appendChild(l);
-                  }}
                   onClick={() => {
                     setTeamModelByYear(selectedTeamName, modelYear);
                   }}
@@ -419,7 +410,7 @@ export const ARViewer = () => {
                     "/images/" +
                     modelYear +
                     "/cars/" +
-                    ((selectedTeamName === "audi" && (modelYear === "2024" || modelYear === "2025")) ? "sauber" : selectedTeamName) +
+                    getModelTeamNameForYear(selectedTeamName, modelYear) +
                     ".png"
                   }`}
                   imageAlt={`${selectedTeamName}-${modelYear}`}
@@ -493,7 +484,7 @@ export const ARViewer = () => {
 export default ARViewer;
 
 ARViewer.defaultProps = {
-  glbLink: `/ArFiles/glbs/2024/mclaren.glb`,
+  glbLink: `/ArFiles/glbs/2024/mclaren.glb?v=v2_ultra`,
   team: { ...teamHistory.mclaren, year: "2024" },
   buttonIcon: `/APX/3diconWhite.png`,
   loading: "auto",

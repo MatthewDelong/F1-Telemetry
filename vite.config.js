@@ -11,8 +11,13 @@ export default defineConfig({
     tailwindcss(),
     svgr(),
     VitePWA({
-      registerType: "autoUpdate",
-      includeAssets: ["favicon.ico", "apple-touch-icon.png"],
+      registerType: "prompt",
+      includeAssets: [
+        "favicon.ico", 
+        "apple-touch-icon.png", 
+        "android-chrome-192x192.png", 
+        "android-chrome-512x512.png"
+      ],
       manifestFilename: "manifest.json",
       manifest: {
         name: "F1-Telemetry",
@@ -45,6 +50,45 @@ export default defineConfig({
       },
       workbox: {
         maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
+        cleanupOutdatedCaches: true,
+        skipWaiting: false,
+        clientsClaim: true,
+        inlineWorkboxRuntime: true,
+        navigateFallbackDenylist: [
+          /^\/openf1/, 
+          /^https:\/\/(www|region1)\.google-analytics\.com/,
+          /^https:\/\/www\.googletagmanager\.com/
+        ],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/(www|region1)\.google-analytics\.com\/.*/i,
+            handler: 'NetworkOnly',
+          },
+          {
+            urlPattern: /^https:\/\/www\.googletagmanager\.com\/.*/i,
+            handler: 'NetworkOnly',
+          },
+          {
+            urlPattern: /\.(?:png|jpg|jpeg|svg|webp|ico|glb|bin)$/,
+            handler: 'StaleWhileRevalidate',
+            options: {
+              cacheName: 'assets-cache',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60 * 24 * 30,
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            },
+          }
+        ]
+      },
+      devOptions: {
+        enabled: true,
+        suppressWarnings: true,
+        type: 'module',
+        navigateFallback: "index.html"
       },
     }),
   ],
@@ -91,8 +135,8 @@ export default defineConfig({
     port: 3006,
     strictPort: true,
     open: true,
-    hmr: {
-      port: 3006,
+    watch: {
+      ignored: ["**/dev-dist/**"],
     },
     proxy: {
       "/openf1": {

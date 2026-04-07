@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @source "../node_modules/flowbite-react/dist/esm/**/*.js";
 
+:root {
+  --color-accent: #3b82f6;
+  --color-accent-hover: #2563eb;
+  --color-border: rgba(255, 255, 255, 0.1);
+}
+
 @theme {
   /* Colors */
   --color-plum-300: #835897;

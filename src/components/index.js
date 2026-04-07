@@ -32,4 +32,5 @@ export * from './Footer'
 export * from './Footer2025'
 export * from './TeammateComparisonButton'
 export * from './ViewLatestRaceButton'
+export { default as ReloadPrompt } from './ReloadPrompt'
 

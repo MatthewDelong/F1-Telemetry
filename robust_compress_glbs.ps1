@@ -1,27 +1,31 @@
-# Use the more robust gltf-transform to optimize the remaining large files
+# Ultra-High-Performance AR Compression Script (V3 - Mesh Reduction)
+# This script shrinks high-fidelity cars to < 10MB by simplifying geometry.
+
+# 1. Target ALL GLB files in the AR collection
 $glbFiles = Get-ChildItem -Path "public/ArFiles/glbs" -Filter *.glb -Recurse
 
-# Specifically target the ones still over 20MB
-$toOptimize = $glbFiles | Where-Object { $_.Length -gt 20MB }
+Write-Host "Starting 'ULTRA V3' mesh optimization for $($glbFiles.Count) models..." -ForegroundColor Cyan
 
-Write-Host "Found $($toOptimize.Count) high-fidelity models that need robust optimization..." -ForegroundColor Cyan
-
-foreach ($file in $toOptimize) {
-    $sizeMB = [math]::Round($file.Length / 1MB, 2)
-    Write-Host "Optimizing ($sizeMB MB): $($file.FullName)..." -ForegroundColor Yellow
+foreach ($file in $glbFiles) {
+    if ($file.Length -lt 8MB) { continue } # Already optimized enough
     
-    # Use gltf-transform optimize (more resilient than gltf-pipeline)
-    # We create a temp file and then overwrite to avoid access issues
-    $tempFile = "$($file.FullName)_tmp.glb"
-    npx -y @gltf-transform/cli optimize "$($file.FullName)" "$tempFile" --verbose
+    $sizeMB = [math]::Round($file.Length / 1MB, 2)
+    Write-Host "Simplifying ($sizeMB MB): $($file.FullName)..." -ForegroundColor Yellow
+    
+    $tempFile = "$($file.FullName)_ultra_v3.glb"
+    
+    # [ULTRA V3 FLAGS]
+    # --simplify: Aggressive triangle reduction (50%) to drop mesh weight.
+    # --texture-compress webp: High-efficiency texture format.
+    # --resize 1024: Downscale textures.
+    npx -y @gltf-transform/cli optimize "$($file.FullName)" "$tempFile" --simplify 0.5 --texture-compress webp --resize 1024 --verbose
     
     if ($LASTEXITCODE -eq 0 -and (Test-Path "$tempFile")) {
         Move-Item -Path "$tempFile" -Destination "$($file.FullName)" -Force
-        Write-Host "Success: $($file.Name) is now optimized!" -ForegroundColor Green
+        $newSizeMB = [math]::Round((Get-Item "$($file.FullName)").Length / 1MB, 2)
+        Write-Host "Success! $($file.Name) shrunk from $sizeMB MB to $newSizeMB MB." -ForegroundColor Green
     } else {
-        Write-Host "Error: Failed to optimize $($file.Name)" -ForegroundColor Red
+        Write-Host "Error: Failed to simplify $($file.Name)." -ForegroundColor Red
         if (Test-Path "$tempFile") { Remove-Item "$tempFile" }
     }
 }
-
-Write-Host "Final collection optimized. Your AR Viewer will now be lightning fast on IONOS!" -ForegroundColor Green
