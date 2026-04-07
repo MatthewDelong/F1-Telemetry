@@ -50,8 +50,12 @@ export default defineConfig({
   ],
   build: {
     outDir: "build",
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 2500,
     rolldownOptions: {
+      checks: {
+        eval: false,
+        pluginTimings: false,
+      },
       output: {
         manualChunks(id) {
           if (id.includes("node_modules")) {

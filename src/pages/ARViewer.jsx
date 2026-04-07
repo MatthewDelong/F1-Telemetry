@@ -483,7 +483,7 @@ export const ARViewer = () => {
           ))}
         </div>
         <p className="tracking-widest text-neutral-500 text-[10px] text-center mt-32">
-          ©2024 F1-Telemetry
+          ©2026 F1-Telemetry
         </p>
       </div>
     </>
