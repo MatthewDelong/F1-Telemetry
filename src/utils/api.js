@@ -603,3 +603,15 @@ export const fetchMostRecentRace = async (selectedYear) => {
   return null;  // Return null if there's an error
 };
 
+export const fetchRaceControl = async (sessionKey) => {
+  if (!sessionKey) return [];
+  const url = `${buildOpenF1Url("/race_control")}?session_key=${sessionKey}`;
+  try {
+    const data = await fetchWithPersistentCache(url);
+    return data || [];
+  } catch (error) {
+    console.error("Error fetching race control data:", error);
+    return [];
+  }
+};
+

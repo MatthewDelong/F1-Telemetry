@@ -11,6 +11,7 @@ import {
     fetchLocationData,
     fetchRaceDetails,
     fetchRaceMeetingKeys,
+    fetchRaceControl,
 } from "../utils/api.js";
 import { buildOpenF1Url } from "../config/openf1";
 
@@ -27,6 +28,7 @@ import {
     Tabs,
     ConstructorCar,
     RangeSelector,
+    RaceControl,
 } from "../components";
 import Drawer from "../components/Drawer";
 import Accordion from "../components/Accordion";
@@ -67,11 +69,14 @@ export function RacePage() {
     const [selectedSessionKey, setSelectedSessionKey] = useState('');
     const [hasRaceSession, sethasRaceSession] = useState(false);
     const [hasQualifyingSession, sethasQualifyingSession] = useState(false);
+    const [hasSprintSession, sethasSprintSession] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [driverDrawerOpen, setDriverDrawerOpen] = useState(false);
     const [showStartingGrid, setShowStartingGrid] = useState(false);
     const [showCarDetails, setShowCarDetails] = useState(true);
     const [showCameraControls, setShowCameraControls] = useState(false);
+    const [raceControlMessages, setRaceControlMessages] = useState([]);
+    const [isSessionLive, setIsSessionLive] = useState(false);
 
     useEffect(() => {
         const setBaseData = async () => {
@@ -209,6 +214,10 @@ export function RacePage() {
                 (session) => session.session_name === "Qualifying"
             );
             sethasQualifyingSession(hasQualifyingSession);
+            const hasSprintSession = sessionsData.some(
+                (session) => ["Sprint", "Sprint Qualifying", "Sprint Shootout"].includes(session.session_name)
+            );
+            sethasSprintSession(hasSprintSession);
 
             if (selectedSession === "Race") {
                 setIsLoading(true);
@@ -244,6 +253,9 @@ export function RacePage() {
                 const driverDetailsData = await fetchOpenF1Data(
                     `${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`
                 ).catch(() => []);
+
+                const raceControlData = await fetchRaceControl(sessionKey).catch(() => []);
+                setRaceControlMessages(raceControlData);
                 
                 await new Promise(r => setTimeout(r, 100));
                 const startingGridData = await fetchOpenF1Data(
@@ -302,7 +314,9 @@ export function RacePage() {
                     }))
                 );
 
-                setIsLoading(false);
+                // Determine if session is live
+                const isLive = !raceSession.date_end || new Date() < new Date(raceSession.date_end);
+                setIsSessionLive(isLive);
             } else if (selectedSession === "Qualifying") {
                 setIsLoading(true);
 
@@ -331,6 +345,7 @@ export function RacePage() {
                 );
                 if (!raceSession) throw new Error("Race session not found");
                 const sessionKey = raceSession.session_key;
+                setSelectedSessionKey(sessionKey);
 
                 const [
                     driverDetailsData,
@@ -393,17 +408,96 @@ export function RacePage() {
                         driver_acronym: driverDetailsMap[lap.driver_number],
                     }))
                 );
+            } else if (selectedSession === "Sprint") {
+                setIsLoading(true);
 
-                setIsLoading(false);
+                setMapPath(`${"/map/" + circuitId + ".gltf"}`);
+                setAnimatedMap(`${"/mapsAnimated/" + circuitId + "Animated.mp4"}`);
+
+                const sprintSession = sessionsData.find(
+                    (session) => ["Sprint", "Sprint Qualifying", "Sprint Shootout"].includes(session.session_name)
+                );
+                
+                if (!sprintSession) {
+                    console.warn("Sprint session not found in session data");
+                    setIsLoading(false);
+                    return;
+                }
+
+                const sessionKey = sprintSession.session_key;
+                setSelectedSessionKey(sessionKey);
+
+                const [driverDetailsData, driversData, lapsData, positionData] = await Promise.all([
+                    fetchOpenF1Data(`${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`).catch(() => []),
+                    fetchDriversAndTires(sessionKey).catch(() => []),
+                    fetchOpenF1Data(`${buildOpenF1Url("/laps")}?session_key=${sessionKey}`).catch(() => []),
+                    fetchOpenF1Data(`${buildOpenF1Url("/position")}?session_key=${sessionKey}`).catch(() => []),
+                ]);
+
+                const raceControlData = await fetchRaceControl(sessionKey).catch(() => []);
+                setRaceControlMessages(raceControlData);
+
+                const driverDetailsMap = (driverDetailsData || []).reduce(
+                    (acc, driver) => ({
+                        ...acc,
+                        [driver.driver_number]: driver.name_acronym,
+                    }),
+                    {}
+                );
+                setDriversDetails(driverDetailsMap);
+
+                const driverColorMap = (driverDetailsData || []).reduce(
+                    (acc, driver) => ({
+                        ...acc,
+                        [driver.name_acronym]: driver.team_colour,
+                    }),
+                    {}
+                );
+                setDriversColor(driverColorMap);
+
+                setPos(positionData);
+                setDrivers(driversData);
+                setLaps(
+                    lapsData.map((lap) => ({
+                        ...lap,
+                        driver_acronym: driverDetailsMap[lap.driver_number],
+                    }))
+                );
+
+                // Determine if session is live
+                const isLive = !sprintSession.date_end || new Date() < new Date(sprintSession.date_end);
+                setIsSessionLive(isLive);
             }
         } catch (error) {
             console.error("Error fetching data:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
     useEffect(() => {
         fetchData();
     }, [year, location, selectedSession, raceName]);
+
+    // Live Polling for Race Control
+    useEffect(() => {
+        let intervalId;
+        if (isSessionLive && selectedSessionKey) {
+            intervalId = setInterval(async () => {
+                try {
+                    const data = await fetchRaceControl(selectedSessionKey);
+                    if (data && data.length > 0) {
+                        setRaceControlMessages(data);
+                    }
+                } catch (error) {
+                    console.error("Error polling race control:", error);
+                }
+            }, 60000); // Poll every 60 seconds
+        }
+        return () => {
+            if (intervalId) clearInterval(intervalId);
+        };
+    }, [isSessionLive, selectedSessionKey]);
 
     const handleDriverSelectionClick = (index) => {
         // console.log(raceResults[index].Driver.code); // Log the driver code
@@ -540,7 +634,8 @@ export function RacePage() {
     const selectedDriverAcronym = driverSelected
         ? driversDetails[driverNumber]
         : null;
-    const statsTabs = [
+        
+    const statsTabs = React.useMemo(() => [
         selectedSession === "Race" && {
             id: "position",
             label: "Position",
@@ -591,7 +686,7 @@ export function RacePage() {
                     <FastestLaps raceResults={raceResults} drivers={drivers} />
                 ),
             },
-    ].filter(Boolean);
+    ].filter(Boolean), [selectedSession, laps, pos, startingGrid, driversDetails, driversColor, raceResults, selectedDriverAcronym, driverSelected, driverCode]);
 
     //   console.log('selectedSessionKey:', selectedSessionKey);
     return isLoading ? (
@@ -805,6 +900,22 @@ export function RacePage() {
                                 Qualifying
                             </button>
                         )}
+                        {hasSprintSession && (
+                            <button
+                                className={classNames(
+                                    "tracking-sm uppercase block",
+                                    {
+                                        "text-plum-300": selectedSession === 'Sprint',
+                                    }
+                                )}
+                                onClick={() => {
+                                    setSelectedSession("Sprint")
+                                    setIsDrawerOpen(false)
+                                }}
+                            >
+                                Sprint
+                            </button>
+                        )}
                     </Accordion>
                 </Drawer>
 
@@ -987,6 +1098,9 @@ export function RacePage() {
 
                     <div className="sm:grow">
                         <Tabs tabs={statsTabs} />
+                        {(selectedSession === "Race" || selectedSession === "Sprint") && (
+                            <RaceControl messages={raceControlMessages} isLive={isSessionLive} />
+                        )}
                     </div>
                 </div>
             </div>

@@ -33,4 +33,5 @@ export * from './Footer2025'
 export * from './TeammateComparisonButton'
 export * from './ViewLatestRaceButton'
 export { default as ReloadPrompt } from './ReloadPrompt'
+export { default as RaceControl } from './RaceControl'
 

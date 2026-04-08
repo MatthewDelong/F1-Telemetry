@@ -2,6 +2,8 @@
 
 Welcome to **F1-Telemetry**! This project is dedicated to providing Formula 1 enthusiasts with detailed analyses of past race data, including leaderboards, lap times, tire strategies, and the fastest laps for each driver. Explore an interactive 3D canvas that lets you visualize the telemetry data of selected F1 drivers, tracing their performance on the track lap by lap with high-fidelity telemetry sync and dynamic camera angles.
 
+**Data Credit:** Driver comparisons in this application are powered by the [f1nsight-api-2](https://github.com/praneeth7781/f1nsight-api-2) repository. I am grateful to the original developer for this data source, which I continue to use following my refactor to React 19 and Vite 8.
+
 ![F1-Telemetry Animation](/Media/animation-grid_1.gif)
 ![F1-Telemetry Visualization](/images/HeroImage.png)
 
@@ -19,23 +21,28 @@ Welcome to **F1-Telemetry**! This project is dedicated to providing Formula 1 en
 ## Developer Workflow
 
 ### AR Model Optimization
+
 This project uses a custom pipeline to optimize massive 3D models for the web. If you add new `.glb` files to `public/ArFiles/glbs/`, you can optimize them using:
 
 ```powershell
 npm run compress-models
 ```
-*Requires PowerShell and Node.js.*
+
+_Requires PowerShell and Node.js._
 
 ### Local Decoders
+
 To bypass browser **Tracking Prevention** and ensure 100% reliability, Draco and Meshopt decoders are hosted locally in `/public/decoders/`.
 
 ## Deployment (IONOS / Static Hosting)
 
 For optimal performance on IONOS or similar hosts:
+
 1. Ensure the `.htaccess` file in `public/` is deployed to the root to enable **Gzip compression** for `.glb` files.
 2. Verify the `public/decoders/` folder is included in your build to avoid cross-domain script blocking.
 
 ## Interactive Canvas
+
 ... (rest of the file as before)
 
 Our interactive canvas is a standout feature, offering users a real-time simulation of telemetry data. This tool allows fans to:
@@ -58,6 +65,7 @@ For more information and to access the interactive features, visit:
 F1-Telemetry leverages a multi-tier data ecosystem to provide high-fidelity race insights:
 
 - **OpenF1 API:** Real-time telemetry, track positioning, and stint data.
+- **f1nsight-api-2:** Primary source for driver comparison data.
 - **F1-Telemetry Historical Engine:** Historical race results, driver rankings, and seasonal standings.
 - **F1 Academy & F2 API:** Dedicated data streams for junior categories.
 
