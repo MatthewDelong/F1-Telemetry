@@ -157,7 +157,7 @@ export const DriverCard = (props) => {
                 </div>
             </div>
             <div className={classNames('flex item-center w-full', { "max-md:hidden": mobileSmall, "hidden": layoutSmall})}>
-                <p className={classNames("driver-card-position text-[24px] font-display px-8 py-4 bg-neutral-700 rounded-l-md flex items-center")}>
+                <p className={classNames("driver-card-position text-2xl font-display px-8 py-4 bg-neutral-700 rounded-l-md flex items-center")}>
                     P{isRace ? endPosition : index + 1}
                 </p>
                 {driverImage}

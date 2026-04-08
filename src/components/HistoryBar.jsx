@@ -85,10 +85,10 @@ export const HistoryBar = ({ history, color }) => {
             style={{ backgroundColor: scaledDarkenColor(i) }}
             key={i}
           >
-            <span className="font-display uppercase text-[20px] mb-4">
+            <span className="font-display uppercase text-xl mb-4">
               {d.team}
             </span>
-            <span className="opacity-80 text-[14px] font-sans">
+            <span className="opacity-80 text-14 font-sans">
               ({d.startYear} - {d.endYear})
             </span>
           </div>

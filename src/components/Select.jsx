@@ -36,6 +36,7 @@ const CustomSelectContainer = ({ children, ...props }) => {
     const customStyles = {
         option: (provided, state) => ({
             ...provided,
+            fontSize: '1.6rem',
             color: '#1f1f1f',
             backgroundColor: state.isFocused ? '#f1f1f1' : state.isSelected ? '#dddddd' : '#ffffff',
         ':active': {
@@ -49,6 +50,7 @@ const CustomSelectContainer = ({ children, ...props }) => {
         }),
         control: (baseStyles, state) => ({
             ...baseStyles,
+            fontSize: '1.6rem',
             borderColor: state.isFocused ? '#e5e5e5' : props.isDisabled ? '#1f1f1f' : '#737373',
             background: '#1f1f1f',
             height: '4.8rem',

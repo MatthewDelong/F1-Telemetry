@@ -52,7 +52,7 @@ export const PointsByRaceDropdown = ({
                   key={`${race.raceName}-${idx}`}
                   className="rounded-md px-12 py-8 bg-glow-dark"
                 >
-                  <div className="text-[8px] font-semibold mb-3 text-neutral-200 whitespace-nowrap">
+                  <div className="text-xs font-semibold mb-3 text-neutral-200 whitespace-nowrap">
                     {race.raceName || racesMeta[idx]?.raceName || `Race ${idx + 1}`}
                   </div>
                   <div className="flex flex-row gap-16">
@@ -63,7 +63,7 @@ export const PointsByRaceDropdown = ({
                           key={raceKey}
                           className="flex flex-col items-center justify-center text-neutral-300"
                         >
-                          <span className="text-[8px] text-neutral-400">
+                          <span className="text-xs text-neutral-400">
                             {raceKeyLabels[raceKey] || raceKey}
                           </span>
                           <span className="font-semibold font-display">

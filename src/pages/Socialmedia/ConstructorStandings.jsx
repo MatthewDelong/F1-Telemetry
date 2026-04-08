@@ -146,9 +146,9 @@ const ConstructorStandings = ({ location, round }) => {
         >
             <div className="leading-none absolute top-24 left-40 z-20">
                 <div className="font-display mx-auto w-fit">
-                    <p className=" text-neutral-400 text-[20px] ">{currentYear}</p>
-                    <p className="text-gradient text-[20px]">Constructor</p>
-                    <p className="text-gradient text-[25px]">Standings</p>
+                    <p className="text-neutral-400 text-xl">{currentYear}</p>
+                    <p className="text-gradient text-xl">Constructor</p>
+                    <p className="text-gradient text-28">Standings</p>
                 </div>
                 <hr className="w-full border-2 border-[#303030] my-16" />
                 <div className="text-center uppercase text-xs text-neutral-400 tracking-sm">

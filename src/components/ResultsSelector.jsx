@@ -57,7 +57,7 @@ export const ResultsSelector = ({ className, setSelectedYear, selectedYear, resu
   const yearOptions = generateYearOptions(championshipLevel === "F1A" ? 2024 : championshipLevel === "F2" ? 2025 : 2023);
 
   return (
-    <div className={classNames(className, 'flex items-center justify-center gap-16')}>
+    <div className={classNames(className, 'flex items-center justify-center gap-16 text-base')}>
       <ReactSelectComponent
         placeholder="Select Year"
         options={yearOptions}

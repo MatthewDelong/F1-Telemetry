@@ -121,7 +121,7 @@ const RaceResults = ({ raceResults, raceName, isLoading = false }) => {
                     style={colorgradientStyletoLeft}
                     className={classNames("grow flex flex-row items-center")}
                 >
-                    <p className="font-display text-white leading-none ml-8 -mr-12">
+                    <p className="font-display text-white text-sm leading-none ml-8 -mr-12">
                         {driver.position
                             ? `P${driver.position}`
                             : driver.dnf
@@ -149,7 +149,7 @@ const RaceResults = ({ raceResults, raceName, isLoading = false }) => {
                         <p className="text-xs tracking-sm leading-none gradient-text uppercase">
                             {driver.driver?.first_name || "Unknown"}
                         </p>
-                        <p className="font-display leading-none gradient-text -mt-1">
+                        <p className="font-display text-sm leading-none gradient-text -mt-1">
                             {driver.driver?.last_name || "Unknown"}
                         </p>
                         <motion.img
@@ -207,7 +207,7 @@ const RaceResults = ({ raceResults, raceName, isLoading = false }) => {
                         style={headerFooterBG}
                         className="starting-grid--header flex flex-col items-center justify-center leading-none py-32"
                     >
-                        <p className=" text-lg font-display z-10">
+                        <p className=" text-xl font-display z-10">
                             Race Result
                         </p>
                         <p className=" text-xs uppercase tracking-sm z-10">

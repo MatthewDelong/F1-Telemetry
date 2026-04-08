@@ -187,7 +187,7 @@ export const ARViewer = () => {
         alt={imageAlt}
         className="w-[16rem] -mt-32 transition-transform duration-300 group-hover:scale-110"
       />
-      <p className="font-display text-24 transition-transform duration-300 group-hover:scale-95">
+      <p className="font-display text-2xl transition-transform duration-300 group-hover:scale-95">
         {label}
       </p>
     </button>
@@ -435,18 +435,18 @@ export const ARViewer = () => {
             style={{ color: activeThemeColor }}
           >
             <div className="model-viewer-text-medium flex flex-col items-end">
-              <div className="text-[1.4rem] uppercase font-display">
+              <div className="text-14 uppercase font-display">
                 Constructor Titles
               </div>
-              <div className="text-[3.5rem] font-bold">
+              <div className="text-32 font-bold">
                 {constructorTitlesCount}
               </div>
             </div>
             <div className="model-viewer-text-medium flex flex-col items-start border-l border-white/10 pl-32">
-              <div className="text-[1.4rem] uppercase font-display">
+              <div className="text-14 uppercase font-display">
                 Drivers Championships
               </div>
-              <div className="text-[3.5rem] font-bold">
+              <div className="text-32 font-bold">
                 {driversChampionshipsCount}
               </div>
             </div>
@@ -473,7 +473,7 @@ export const ARViewer = () => {
             />
           ))}
         </div>
-        <p className="tracking-widest text-neutral-500 text-[10px] text-center mt-32">
+        <p className="tracking-widest text-neutral-500 text-xs text-center mt-32">
           ©2026 F1-Telemetry
         </p>
       </div>

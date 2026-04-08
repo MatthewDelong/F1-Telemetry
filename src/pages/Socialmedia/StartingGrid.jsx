@@ -183,7 +183,7 @@ const StartingGrid = ({ startingGrids, raceName, isLoading = false }) => {
                         style={headerFooterBG}
                         className="starting-grid--header flex flex-col items-center justify-center leading-none py-32"
                     >
-                        <p className="text-lg font-display z-10">Starting Grid</p>
+                        <p className="text-xl font-display z-10">Starting Grid</p>
                         <p className="text-xs uppercase tracking-sm z-10">
                             {raceName} {formatSessionLabel(startingGrid.session_name)}
                         </p>

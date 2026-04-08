@@ -55,7 +55,7 @@ const DriverStandings = ({ location, round }) => {
                     </div>
                     <div>
                         <p className="text-sm tracking-[2px] gradient-text-light leading-none uppercase">{driverData.driver.givenName}</p>
-                        <p className="text-[15px] font-display gradient-text-white leading-none">{driverData.driver.familyName}</p>
+                        <p className="text-base font-display gradient-text-white leading-none">{driverData.driver.familyName}</p>
                     </div>
                     <hr className="w-full border-neutral-700 my-6" />
                     <p className="font-display gradient-text-white text-xl text-right">{driverData.points}</p>
@@ -83,8 +83,8 @@ const DriverStandings = ({ location, round }) => {
                         <img className="shrink-0 max-w-[60px]" src={`/images/${currentYear}/drivers/${driverData.driver.code}.png`} alt={driverData.driver.givenName} />
                     </div>
                     <div >
-                        <p className="text-[8px] tracking-[2px] gradient-text-light leading-none">{driverData.driver.givenName}</p>
-                        <p className="font-display gradient-text-white text-[12px] leading-none">{driverData.driver.familyName}</p>
+                        <p className="text-xs tracking-[2px] gradient-text-light leading-none">{driverData.driver.givenName}</p>
+                        <p className="font-display gradient-text-white text-sm leading-none">{driverData.driver.familyName}</p>
                     </div>
                 </div>
                 <div className="font-display text-xs bg-neutral-950 flex items-center justify-center h-full w-32">{driverData.points}</div>
@@ -101,9 +101,9 @@ const DriverStandings = ({ location, round }) => {
                 {/* Left column: Top 3 */}
                 <div className="w-1/2 leading-none">
                     <div className="font-display mx-auto w-fit mt-24">
-                        <p className=" text-neutral-400 text-[20px] ">{currentYear}</p>
-                        <p className="text-gradient text-[37px]">Driver</p>
-                        <p className="text-gradient text-[25px]">Standings</p>
+                        <p className="text-neutral-400 text-xl">{currentYear}</p>
+                        <p className="text-gradient text-4xl">Driver</p>
+                        <p className="text-gradient text-28">Standings</p>
                     </div>
                     <hr className="w-full border-2 border-[#303030]  my-16" />
                     <div className="text-center uppercase text-xs text-neutral-400 tracking-sm">

@@ -61,7 +61,7 @@ const ComparisonsSection = ({ layoutMobile }) => {
     return (
         <section
             ref={sectionRef}
-            className="min-h-screen snap-start flex flex-col lg:flex-row items-center justify-center bg-neutral-950 relative overflow-hidden pt-[80px] lg:pt-[64px] px-16 lg:px-0 gap-32 lg:gap-0"
+            className="min-h-screen snap-start flex flex-col lg:flex-row items-center justify-center bg-neutral-950 relative overflow-hidden pt-96 px-16 lg:px-0 gap-16 lg:gap-0"
         >
             {/* Heading Animates in & Scrolls */}
             <motion.div
@@ -70,10 +70,10 @@ const ComparisonsSection = ({ layoutMobile }) => {
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.8, ease: "easeOut" }}
             >
-                <h2 className="heading-3 mb-16">
+                <h2 className="heading-2 mb-16 uppercase">
                     Driver and Teammate Comparisons
                 </h2>
-                <p className="text-sm lg:text-base">
+                <p className="text-base">
                     Compare teammates directly, evaluating their performances in
                     the same car during specific seasons or extend your analysis
                     beyond teammates to include any driver from any team

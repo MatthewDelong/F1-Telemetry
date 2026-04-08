@@ -25,7 +25,7 @@ const HeroSection = ({ layoutMobile }) => {
         animate={isInView ? { opacity: 1, scale: 1 } : {}}
         style={{ y: yTitle }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="text-center font-display text-32 sm:text-[40px] leading-none tracking-xs absolute mx-auto w-3/4"
+        className="text-center heading-1 absolute mx-auto w-3/4"
       >
         Your Ultimate Destination for F1 Data and Analysis
       </motion.h1>

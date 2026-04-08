@@ -23,21 +23,21 @@ const ArSection = ({ layoutMobile }) => {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen snap-start flex items-center justify-center px-16 bg-neutral-950 relative overflow-hidden pt-[32px]"
+      className="min-h-screen snap-start flex items-center justify-center px-16 bg-neutral-950 relative overflow-hidden pt-96"
     >
       <div className="max-w-[1200px] w-full mx-auto px-16">
-        <h2 className="heading-3 text-center mb-4">
+        <h2 className="heading-2 text-center mb-16 uppercase">
           bring the excitement of F1 right into your own space
         </h2>
         <div className="flex max-sm:flex-col-reverse sm:flex-row items-center mx-auto relative">
           <motion.div
-            className="w-full sm:w-3/4 flex flex-col max-sm:items-center gap-8 relative z-10 sm:bg-gradient-to-b sm:from-neutral-900 sm:to-neutral-900/10 p-32 sm:py-24 sm:pl-32 sm:pr-64 sm:mr-[-40px] sm:rounded-xlarge max-sm:text-center"
+            className="w-full sm:w-3/4 flex flex-col max-sm:items-center gap-16 relative z-10 sm:bg-gradient-to-b sm:from-neutral-900 sm:to-neutral-900/10 p-32 sm:py-24 sm:pl-32 sm:pr-64 sm:mr-[-40px] sm:rounded-xlarge max-sm:text-center"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
             style={{ y: yTextContent }}
           >
-            <p>
+            <p className="text-base">
               Place and scale your favorite F1 car model right in your
               environment. Walk around and inspect every intricate detail as if
               you were in the paddock!
@@ -59,7 +59,7 @@ const ArSection = ({ layoutMobile }) => {
                 ? "Full AR Experience"
                 : "360 Team Livery Viewer and History"}
             </Button>
-            <p className="mb-12">
+            <p className="mb-12 text-sm">
               <span className="font-bold">Capture stunning moments. </span>With
               our AR feature, snap breathtaking photos and videos of your F1 car
               in various settings. Share these moments with friends and fellow

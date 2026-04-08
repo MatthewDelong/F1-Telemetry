@@ -51,14 +51,14 @@ const RaceControl = ({ messages, isLive = false }) => {
           {isLive && (
             <div className="flex items-center gap-8 px-8 py-2 rounded-full bg-red-500/10 border border-red-500/20">
               <span className="w-8 h-8 rounded-full bg-red-500 animate-pulse" />
-              <span className="text-[10px] font-bold text-red-500 uppercase tracking-tighter">Live</span>
+              <span className="text-xs font-bold text-red-500 uppercase tracking-tighter">Live</span>
             </div>
           )}
           
           {hasMore && (
             <button 
               onClick={() => setIsExpanded(!isExpanded)}
-              className="text-[10px] uppercase tracking-wider text-plum-400 hover:text-plum-300 font-bold transition-colors"
+              className="text-xs uppercase tracking-wider text-plum-400 hover:text-plum-300 font-bold transition-colors"
             >
               {isExpanded ? 'Show Less' : 'View All'}
             </button>
@@ -96,7 +96,7 @@ const RaceControl = ({ messages, isLive = false }) => {
 
               <div className="flex-grow min-w-0">
                 <div className="flex flex-col gap-2">
-                  <span className="text-[10px] uppercase tracking-wider text-neutral-500 font-bold">
+                  <span className="text-xs uppercase tracking-wider text-neutral-500 font-bold">
                     {msg.category}
                   </span>
                   <p className="text-sm leading-relaxed text-neutral-200 break-words">

@@ -20,9 +20,9 @@ const TelemetrySection = ({ layoutMobile, onClick }) => {
     );
 
     return (
-        <section className="telemetry-section min-h-screen snap-start flex items-center justify-center bg-neutral-950 overflow-hidden pt-[64px]">
+        <section className="telemetry-section min-h-screen snap-start flex items-center justify-center bg-neutral-950 overflow-hidden pt-96">
             <div className="max-w-[1200px] w-full mx-auto px-16">
-                <h2 className="heading-3 text-center mb-8">
+                <h2 className="heading-2 text-center mb-16 uppercase">
                     Interactive Telemetry
                 </h2>
                 <div
@@ -31,8 +31,8 @@ const TelemetrySection = ({ layoutMobile, onClick }) => {
                 >
                     <motion.div
                         className={classNames(
-                            "p-32 md:py-32 md:pr-32 md:pl-64 md:ml-[-60px] md:rounded-xlarge max-md:text-small max-md:text-center",
-                            "w-full md:w-1/3 flex flex-col max-md:items-center gap-8 relative z-10",
+                            "p-32 md:py-32 md:pr-32 md:pl-64 md:ml-[-60px] md:rounded-xlarge max-md:text-sm max-md:text-center",
+                            "w-full md:w-1/3 flex flex-col max-md:items-center gap-16 relative z-10",
                             "md:bg-gradient-to-b md:from-neutral-900 md:to-neutral-900/10"
                         )}
                         initial={{ opacity: 0, scale: 0.8 }}
@@ -40,22 +40,22 @@ const TelemetrySection = ({ layoutMobile, onClick }) => {
                         transition={{ duration: 0.8, ease: "easeOut" }}
                         style={{ y: yTextContent }}
                     >
-                        <p className="uppercase font-semibold tracking-xs gradient-text-light">
+                        <p className="uppercase font-semibold tracking-xs gradient-text-light text-14">
                             Select a Driver
                         </p>
-                        <p className="mb-12">
+                        <p className="mb-12 text-base">
                             Monitor their race progress lap by lap.
                         </p>
-                        <p className="uppercase tracking-xs gradient-text-light">
+                        <p className="uppercase tracking-xs gradient-text-light text-14">
                             Multiple Camera Views
                         </p>
-                        <p className="mb-12">
+                        <p className="mb-12 text-base">
                             Get closer to the action with various perspectives.
                         </p>
-                        <p className="uppercase tracking-xs gradient-text-light">
+                        <p className="uppercase tracking-xs gradient-text-light text-14">
                             Detailed Telemetry Data
                         </p>
-                        <p className="mb-12">
+                        <p className="mb-12 text-base">
                             Analyze every aspect of driver performance.
                         </p>
                         <Button

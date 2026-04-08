@@ -253,7 +253,7 @@ const LapSpeedComparison = ({ driver1LapData, driver2LapData }) => {
               }
 
             return (
-                <div className="custom-tooltip bg-white p-2 rounded shadow text-[8px]">
+                <div className="custom-tooltip bg-white p-2 rounded shadow text-xs">
                     <p>{`Time: ${timeInSeconds} s`}</p>
 
                     <div>

@@ -144,12 +144,12 @@ export const Header = () => {
 
                     {/* Desktop */}
                     <div className="flex items-center gap-16 max-md:hidden">
-                        <div className="relative w-max uppercase text-sm ">
+                        <div className="relative w-max uppercase text-base ">
                             <Link to="/about-us" className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs">
                                 About
                             </Link>
                         </div>
-                        <div className="relative group w-max uppercase text-sm ">
+                        <div className="relative group w-max uppercase text-base ">
                             <button className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs">
                                 Results
                                 <FontAwesomeIcon
@@ -171,7 +171,7 @@ export const Header = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="relative group w-max text-sm ">
+                        <div className="relative group w-max text-base ">
                             <button className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs">
                                 Comparisons
                                 <FontAwesomeIcon
@@ -188,11 +188,11 @@ export const Header = () => {
                                             isOpen && setIsOpen(false);
                                         }}
                                     >
-                                        <p className="uppercase tracking-xs gradient-text-light">
+                                        <p className="uppercase tracking-xs gradient-text-light text-14">
                                             Teammate Comparisons
                                         </p>
                                         <div className="divider-glow-dark mt-8 border-t border-neutral-700" />
-                                        <p>
+                                        <p className="text-base">
                                             Compare teammates directly, evaluating their performances in the same car during specific seasons.
                                         </p>
                                     </NavLink>
@@ -203,11 +203,11 @@ export const Header = () => {
                                             isOpen && setIsOpen(false);
                                         }}
                                     >
-                                        <p className="uppercase tracking-xs gradient-text-light">
+                                        <p className="uppercase tracking-xs gradient-text-light text-14">
                                             Driver Comparisons
                                         </p>
                                         <div className="divider-glow-dark mt-8 border-t border-neutral-700" />
-                                        <p>
+                                        <p className="text-base">
                                             Any driver from any team throughout F1's illustrious history. This feature empowers you to examine a vast array of performance metrics, such as the number of race wins, pole positions, and qualifying statistics.
                                         </p>
                                     </NavLink>
@@ -216,7 +216,7 @@ export const Header = () => {
                         </div>
                         <div className="relative w-max" ref={raceViewerRef}>
                             <button
-                                className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs text-sm "
+                                className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs text-base "
                                 onClick={() =>
                                     setRaceViewerDropdownOpen(
                                         !raceViewerDropdownOpen
