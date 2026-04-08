@@ -4,8 +4,8 @@ Welcome to **F1-Telemetry**! This project is dedicated to providing Formula 1 en
 
 **Data Credit:** Driver comparisons in this application are powered by the [f1nsight-api-2](https://github.com/praneeth7781/f1nsight-api-2) repository. I am grateful to the original developer for this data source, which I continue to use following my refactor to React 19 and Vite 8.
 
-![F1-Telemetry Animation](/Media/animation-grid_1.gif)
-![F1-Telemetry Visualization](/images/HeroImage.png)
+![F1-Telemetry Animation](public/Media/animation-grid_1.gif)
+![F1-Telemetry Visualization](public/images/HeroImage.png)
 
 ## Features
 
