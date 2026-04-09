@@ -5,6 +5,7 @@ import { useLocation, useParams } from "react-router-dom";
 
 import {
   fetchOpenF1Data,
+  fetchWithPersistentCache,
   fetchDriversAndTires,
   fetchRaceResultsByCircuit,
   fetchQualifyingResultsByCircuit,
@@ -53,8 +54,8 @@ export function RacePage() {
   const [driverNumber, setDriverNumber] = useState("");
   const [driversColor, setDriversColor] = useState({});
   const [startingGrid, setStartingGrid] = useState([]);
-  const [animatedMap, setAnimatedMap] = useState("");
-  const [MapPath, setMapPath] = useState("");
+  const [animatedMap, setAnimatedMap] = useState(null);
+  const [MapPath, setMapPath] = useState(null);
   const [raceResults, setRaceResults] = useState([]);
   const [locData, setLocData] = useState([]);
   const [activeButtonIndex, setActiveButtonIndex] = useState(null);
@@ -196,10 +197,9 @@ export function RacePage() {
       setActiveButtonIndex(null);
       setIsLoading(true);
 
-      const sessionsResponse = await fetch(
+      const sessionsData = await fetchWithPersistentCache(
         `${buildOpenF1Url("/sessions")}?meeting_key=${meetingKey}`,
       );
-      const sessionsData = await sessionsResponse.json();
 
       // Safety check: sessionsData might be an error object if rate limited (429)
       if (!Array.isArray(sessionsData)) {
@@ -230,8 +230,10 @@ export function RacePage() {
       if (selectedSession === "Race") {
         setIsLoading(true);
 
-        setMapPath(`${"/map/" + circuitId + ".gltf"}`);
-        setAnimatedMap(`${"/mapsAnimated/" + circuitId + "Animated.mp4"}`);
+        if (circuitId) {
+          setMapPath(`${"/map/" + circuitId + ".gltf"}`);
+          setAnimatedMap(`${"/mapsAnimated/" + circuitId + "Animated.mp4"}`);
+        }
 
         if (circuitId) {
           const results = await fetchRaceResultsByCircuit(year, circuitId);
@@ -247,7 +249,7 @@ export function RacePage() {
         setSelectedSessionKey(sessionKey);
 
         // Fetch data sequentially with small stagger to avoid 429 rate limiting
-        const driverDetailsData = await fetchOpenF1Data(
+        const driverDetailsData = await fetchWithPersistentCache(
           `${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`,
         ).catch(() => []);
 
@@ -257,7 +259,7 @@ export function RacePage() {
         setRaceControlMessages(raceControlData);
 
         await new Promise((r) => setTimeout(r, 100));
-        const startingGridData = await fetchOpenF1Data(
+        const startingGridData = await fetchWithPersistentCache(
           `${buildOpenF1Url("/position")}?session_key=${sessionKey}`,
         ).catch(() => []);
         setPos(startingGridData);
@@ -322,8 +324,10 @@ export function RacePage() {
       } else if (selectedSession === "Qualifying") {
         setIsLoading(true);
 
-        setMapPath(`${"/map/" + circuitId + ".gltf"}`);
-        setAnimatedMap(`${"/mapsAnimated/" + circuitId + "Animated.mp4"}`);
+        if (circuitId) {
+          setMapPath(`${"/map/" + circuitId + ".gltf"}`);
+          setAnimatedMap(`${"/mapsAnimated/" + circuitId + "Animated.mp4"}`);
+        }
 
         if (circuitId) {
           const results = await fetchQualifyingResultsByCircuit(
@@ -343,16 +347,16 @@ export function RacePage() {
 
         const [driverDetailsData, startingGridData, driversData, lapsData] =
           await Promise.all([
-            fetch(
+            fetchWithPersistentCache(
               `${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`,
-            ).then((res) => res.json()),
-            fetch(
-              `${buildOpenF1Url("/position")}?session_key=${sessionKey}`,
-            ).then((res) => res.json()),
-            fetchDriversAndTires(sessionKey),
-            fetch(`${buildOpenF1Url("/laps")}?session_key=${sessionKey}`).then(
-              (res) => res.json(),
             ),
+            fetchWithPersistentCache(
+              `${buildOpenF1Url("/position")}?session_key=${sessionKey}`,
+            ),
+            fetchDriversAndTires(sessionKey),
+            fetchOpenF1Data(
+              `${buildOpenF1Url("/laps")}?session_key=${sessionKey}`,
+            ).catch(() => []),
           ]);
 
         const driverDetailsMap = driverDetailsData.reduce(
@@ -401,8 +405,10 @@ export function RacePage() {
       } else if (selectedSession === "Sprint") {
         setIsLoading(true);
 
-        setMapPath(`${"/map/" + circuitId + ".gltf"}`);
-        setAnimatedMap(`${"/mapsAnimated/" + circuitId + "Animated.mp4"}`);
+        if (circuitId) {
+          setMapPath(`${"/map/" + circuitId + ".gltf"}`);
+          setAnimatedMap(`${"/mapsAnimated/" + circuitId + "Animated.mp4"}`);
+        }
 
         const sprintSession = sessionsData.find((session) =>
           ["Sprint", "Sprint Qualifying", "Sprint Shootout"].includes(
@@ -421,14 +427,14 @@ export function RacePage() {
 
         const [driverDetailsData, driversData, lapsData, positionData] =
           await Promise.all([
-            fetchOpenF1Data(
+            fetchWithPersistentCache(
               `${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`,
             ).catch(() => []),
             fetchDriversAndTires(sessionKey).catch(() => []),
             fetchOpenF1Data(
               `${buildOpenF1Url("/laps")}?session_key=${sessionKey}`,
             ).catch(() => []),
-            fetchOpenF1Data(
+            fetchWithPersistentCache(
               `${buildOpenF1Url("/position")}?session_key=${sessionKey}`,
             ).catch(() => []),
           ]);
@@ -586,8 +592,8 @@ export function RacePage() {
   // console.log({raceResults});
   // console.log({startingGrid});
 
-  const { q1Results, q2Results, q3Results } =
-    organizeQualifyingResults(raceResults);
+  const { q1Results, q2Results, q3Results } = React.useMemo(() => 
+    organizeQualifyingResults(raceResults), [raceResults]);
 
   // console.log('Q1 Results:', q1Results);
   // console.log('Q2 Results:', q2Results);
@@ -685,7 +691,7 @@ export function RacePage() {
           ),
         },
         !driverSelected &&
-          selectedSession === "Race" && {
+          (selectedSession === "Race" || selectedSession === "Sprint") && {
             id: "fastest",
             label: "Fastest Laps",
             content: (
@@ -913,7 +919,7 @@ export function RacePage() {
           </Accordion>
         </Drawer>
 
-        {selectedSession === "Race" && (
+        {(selectedSession === "Race" || selectedSession === "Sprint") && (
           <>
             {!driverSelected && (
               <div className="bg-glow-dark text-center py-8 max-sm:hidden">
@@ -922,7 +928,7 @@ export function RacePage() {
               </div>
             )}
             <div className="race-page__track-view__display relative">
-              {driverSelectedShowTrack ? (
+              {driverSelectedShowTrack && MapPath ? (
                 <ThreeCanvas
                   className="race-page__track-view__display__canvas"
                   MapFile={MapPath}
@@ -945,14 +951,16 @@ export function RacePage() {
                 />
               ) : (
                 <div className="race-page__track-view__display__preview">
-                  <video
-                    src={animatedMap}
-                    loop
-                    autoPlay
-                    muted
-                    playsInline
-                    className="w-full h-full object-cover"
-                  />
+                  {animatedMap && (
+                    <video
+                      src={animatedMap}
+                      loop
+                      autoPlay
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover"
+                    />
+                  )}
                 </div>
               )}
               <div className="race-page__leaderboard-desktop-wrapper max-sm:hidden absolute top-[0] left-[0]">
@@ -978,14 +986,14 @@ export function RacePage() {
         <div className="mb-40 flex flex-col gap-4 items-center uppercase">
           <p className="text-sm tracking-sm">{year}</p>
           <h1 className="heading-3">{raceName}</h1>
-          {selectedSession === "Qualifying" && (
+          {(selectedSession === "Qualifying" || selectedSession === "Sprint") && (
             <p className="text-sm tracking-sm">{selectedSession}</p>
           )}
           <div className="divider-glow-dark mt-32" />
         </div>
 
         {/* Qualifying View */}
-        {selectedSession !== "Race" && (
+        {selectedSession === "Qualifying" && (
           <div className="flex items-start justify-center gap-8 sm:gap-32 mx-8 mb-32">
             <div className="p-16 bg-glow-dark rounded-md sm:rounded-xlarge max-md:w-full">
               <h3 className="heading-3 mb-32 gradient-text-light">Q1</h3>
@@ -1028,7 +1036,7 @@ export function RacePage() {
 
         {/* Raace View */}
         <div className="page-container-centered flex flex-col justify-center sm:flex-row gap-16 mt-32">
-          {selectedSession === "Race" && (
+          {(selectedSession === "Race" || selectedSession === "Sprint") && (
             <div className="sm:w-[26rem]">
               {driverSelected && (
                 <SelectedDriverStats

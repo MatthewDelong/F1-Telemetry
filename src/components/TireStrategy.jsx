@@ -7,11 +7,11 @@ import {
 export const TireStrategy = (props) => {
   const { drivers, raceResults, driverCode, driverColor } = props; // Adding driverCode to props
 
-  const sortedDriverAcronyms = raceResults
+  const sortedDriverAcronyms = React.useMemo(() => raceResults
     .sort((a, b) => parseInt(a.position, 10) - parseInt(b.position, 10))
-    .map(result => result.Driver.code);
+    .map(result => result.Driver.code), [raceResults]);
 
-    const transformedData = drivers.map(driver => {
+    const transformedData = React.useMemo(() => drivers.map(driver => {
       const driverData = { acronym: driver.acronym };
       let previousLapEnd = 0;
     
@@ -24,7 +24,7 @@ export const TireStrategy = (props) => {
       });
     
       return driverData;
-    });
+    }), [drivers]);
 
   // Filter the transformed data based on the driverCode if it's not null
   const filteredTransformedData = driverCode

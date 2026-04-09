@@ -1,21 +1,40 @@
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useRef } from "react";
+import { LumaKeyVideo } from "../components";
+
 
 const HeroSection = ({ layoutMobile }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-20% 0px" });
 
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
 
   // Apply parallax effect when scrolling
-  const yTitle = useTransform(scrollYProgress, [0, 1], layoutMobile ? [-100, 50] : [-300, 0]);
+  const yTitle = useTransform(
+    scrollYProgress,
+    [0, 1],
+    layoutMobile ? [-100, 50] : [-300, 0],
+  );
   const yDecorLeft = useTransform(scrollYProgress, [0, 1], [-400, 0]);
   const yDecorRight = useTransform(scrollYProgress, [0, 1], [-500, 0]);
 
   return (
-    <section ref={sectionRef} className="bg-black relative h-screen  min-h-[300px] flex items-center justify-center">
+    <section
+      ref={sectionRef}
+      className="bg-black relative h-screen  min-h-[300px] flex items-center justify-center"
+    >
       {/* Background Video */}
-      <video className="absolute inset-0 w-full h-full object-cover" autoPlay loop muted playsInline style={{ opacity: 0.3, filter: "brightness(1.2)" }}>
+      <video
+        className="absolute inset-0 w-full h-full object-cover"
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{ opacity: 0.3, filter: "brightness(1.2)" }}
+      >
         <source src="/Media/Hero.mp4" type="video/mp4" />
       </video>
 
@@ -53,17 +72,14 @@ const HeroSection = ({ layoutMobile }) => {
       />
 
       <div className="absolute bottom-[-32px] w-full flex justify-center">
-        <video 
+        <LumaKeyVideo
           src="/Media/pngSequence.mp4"
-          poster="/images/HeroImage.png" 
-          autoPlay 
-          loop 
-          muted 
-          playsInline
+          poster="/images/HeroImage.png"
           className="max-sm:w-[100%] sm:w-[90%] sm:max-w-screen-xl drop-shadow-[0_-64px_64px_rgba(0,0,0,1)] mx-auto"
           style={{ filter: "brightness(1.1) contrast(1.1)" }}
         />
       </div>
+
     </section>
   );
 };

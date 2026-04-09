@@ -22,9 +22,9 @@ export const PositionCharts = ({ laps, pos, startGrid, driversDetails, driversCo
   const [newDriversColor, setnewDriversColor] = useState({});
   const [driverVisibility, setDriverVisibility] = useState({});
 
-  const sortedDriverAcronyms = raceResults
+  const sortedDriverAcronyms = React.useMemo(() => raceResults
     .sort((a, b) => parseInt(a.position, 10) - parseInt(b.position, 10))
-    .map(result => result.Driver.code);
+    .map(result => result.Driver.code), [raceResults]);
 
   useEffect(() => {
     const initialVisibility = {};

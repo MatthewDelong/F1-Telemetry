@@ -24,9 +24,9 @@ export const LapChart = (props) => {
     const [driverVisibility, setDriverVisibility] = useState({});
     const [newDriversColor, setnewDriversColor] = useState({});
 
-    const sortedDriverAcronyms = raceResults
+    const sortedDriverAcronyms = React.useMemo(() => raceResults
         .sort((a, b) => parseInt(a.position, 10) - parseInt(b.position, 10))
-        .map(result => result.Driver.code);
+        .map(result => result.Driver.code), [raceResults]);
 
     useEffect(() => {
         const initialVisibility = {};

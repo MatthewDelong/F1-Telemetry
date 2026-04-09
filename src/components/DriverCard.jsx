@@ -128,7 +128,7 @@ export const DriverCard = (props) => {
           "driver-card--canvas": mobileSmall,
           hidden: status === "cancelled",
           "bg-neutral-800": darkBG,
-          "max-sm:overflow-visible max-sm:h-48" : true, // Mobile only: allow overflow and fixed height
+          "max-sm:overflow-visible max-sm:h-48": true, // Mobile only: allow overflow and fixed height
         },
         isActive ? "bg-glow--active" : hasHover ? "bg-glow--hover" : "",
         mobileSmall ? "rounded-sm mb-4" : "rounded-md",
@@ -137,9 +137,12 @@ export const DriverCard = (props) => {
     >
       {/* Desktop original layoutSmall */}
       <div
-        className={classNames("flex items-center justify-between w-full max-sm:hidden", {
-          hidden: !layoutSmall,
-        })}
+        className={classNames(
+          "flex items-center justify-between w-full max-sm:hidden",
+          {
+            hidden: !layoutSmall,
+          },
+        )}
       >
         <div className="flex items-center font-display leading-none text-sm">
           <p
@@ -217,7 +220,7 @@ export const DriverCard = (props) => {
           </div>
         </div>
       </div>
-      
+
       {/* Desktop original default layout */}
       <div
         className={classNames("flex item-center w-full max-sm:hidden", {
@@ -307,40 +310,55 @@ export const DriverCard = (props) => {
       </div>
 
       {/* Mobile NEW Premium Layout */}
-      <div className={classNames('flex items-center w-full h-full sm:hidden')}>
-          <p className={classNames("driver-card-position w-48 text-2xl font-display px-8 h-full bg-neutral-700 rounded-l-md flex items-center justify-center")}>
-              P{isRace ? endPosition : index + 1}
-          </p>
-          
-          <img 
-              alt={driver.code} 
-              src={championshipLevel ? 
-                  `${"/images/" + year + "/" + championshipLevel + "/" + driver.code + ".png"}`
-                  : `${"/images/" + year + "/drivers/" + driver.code + ".png"}`
-              }
-              ref={ref}
-              className="absolute block bottom-0 h-[120%] w-auto left-40 z-10"
-              style={{
-                  opacity: isInView ? 1 : 0,
-                  transition: `all 1s cubic-bezier(0.17, 0.55, 0.55, 1) .${index}s`
-              }}
-          />
-          
-          <div className="grow py-4 px-12 max-sm:px-6 text-right flex flex-col justify-center h-full relative z-20">
-              <span className="heading-4 max-sm:text-xl font-display">{driver.code}</span>
-              <p className={classNames("text-sm text-right opacity-80")}>{time}</p>
-          </div>
+      <div className={classNames("flex items-center w-full h-full sm:hidden")}>
+        <p
+          className={classNames(
+            "driver-card-position w-48 text-2xl font-display px-8 h-full bg-neutral-700 rounded-l-md flex items-center justify-center",
+          )}
+        >
+          P{isRace ? endPosition : index + 1}
+        </p>
 
-          <div className="absolute left-[102%] flex flex-col items-center gap-4 z-30">
-              {isFastestLapDriver && (
-                      <div className="fa-layers fa-fw fa-sm shadow-12-dark rounded-full">
-                      <FontAwesomeIcon icon="circle" className="text-white" transform="grow-2" />
-                      <FontAwesomeIcon icon="circle" className="text-plum-500" />
-                      <FontAwesomeIcon icon="clock" className="text-white" transform="shrink-4" />
-                  </div>
-              )}
-              {isRace && positionMovement()}
-          </div>
+        <img
+          alt={driver.code}
+          src={
+            championshipLevel
+              ? `${"/images/" + year + "/" + championshipLevel + "/" + driver.code + ".png"}`
+              : `${"/images/" + year + "/drivers/" + driver.code + ".png"}`
+          }
+          ref={ref}
+          className="absolute block bottom-0 h-[120%] w-auto left-40 z-10"
+          style={{
+            opacity: isInView ? 1 : 0,
+            transition: `all 1s cubic-bezier(0.17, 0.55, 0.55, 1) .${index}s`,
+          }}
+        />
+
+        <div className="grow py-4 px-12 max-sm:px-6 text-right flex flex-col justify-center h-full relative z-20">
+          <span className="heading-4 max-sm:text-xl font-display">
+            {driver.code}
+          </span>
+          <p className={classNames("text-sm text-right opacity-80")}>{time}</p>
+        </div>
+
+        <div className="absolute left-[102%] flex flex-col items-center gap-4 z-30">
+          {isFastestLapDriver && (
+            <div className="fa-layers fa-fw fa-sm shadow-12-dark rounded-full">
+              <FontAwesomeIcon
+                icon="circle"
+                className="text-white"
+                transform="grow-2"
+              />
+              <FontAwesomeIcon icon="circle" className="text-plum-500" />
+              <FontAwesomeIcon
+                icon="clock"
+                className="text-white"
+                transform="shrink-4"
+              />
+            </div>
+          )}
+          {isRace && positionMovement()}
+        </div>
       </div>
 
       {mobileSmall && (

@@ -50,49 +50,57 @@ export const fetchOpenF1Data = async (url, retries = 3, backoff = 500) => {
 /**
  * Fetches data from localStorage if available and not expired,
  * otherwise fetches from network and updates cache.
+ * Robustified to return stale data if network fetch fails (e.g. 429).
  */
-const fetchWithPersistentCache = async (url) => {
-    // 1. Try to get from localStorage
-    const cacheKey = CACHE_PREFIX + btoa(url); // Use the full base64 of URL as key to avoid collisions
+export const fetchWithPersistentCache = async (url) => {
+    const cacheKey = CACHE_PREFIX + btoa(url);
+    let cachedData = null;
+
+    // 1. Try to get from localStorage first
     try {
         const cachedItem = localStorage.getItem(cacheKey);
         if (cachedItem) {
             const { data, timestamp } = JSON.parse(cachedItem);
             const isExpired = Date.now() - timestamp > CACHE_TTL;
             if (!isExpired) {
-                // console.log(`[Cache] Hit for ${url}`);
                 return data;
             }
-            // console.log(`[Cache] Expired for ${url}`);
-            localStorage.removeItem(cacheKey);
+            cachedData = data; // Keep for fallback if network fails
         }
     } catch (e) {
         console.warn("[Cache] Error reading from localStorage", e);
     }
 
     // 2. Fetch from network
-    const data = await fetchOpenF1Data(url);
-
-    // 3. Save to localStorage if successful
-    if (data && !data.error) {
-        try {
-            const cacheEntry = JSON.stringify({
-                data,
-                timestamp: Date.now()
-            });
-            localStorage.setItem(cacheKey, cacheEntry);
-        } catch (e) {
-            if (e.name === 'QuotaExceededError') {
-                console.warn("[Cache] localStorage full, clearing oldest entries...");
-                // Simple cleanup: clear all F1 cache if full
-                Object.keys(localStorage).forEach(key => {
-                    if (key.startsWith(CACHE_PREFIX)) localStorage.removeItem(key);
+    try {
+        const data = await fetchOpenF1Data(url);
+        
+        // 3. Save to localStorage if successful
+        if (data && !data.error) {
+            try {
+                const cacheEntry = JSON.stringify({
+                    data,
+                    timestamp: Date.now()
                 });
+                localStorage.setItem(cacheKey, cacheEntry);
+            } catch (e) {
+                if (e.name === 'QuotaExceededError') {
+                    console.warn("[Cache] localStorage full, clearing oldest entries...");
+                    Object.keys(localStorage).forEach(key => {
+                        if (key.startsWith(CACHE_PREFIX)) localStorage.removeItem(key);
+                    });
+                }
             }
         }
+        return data;
+    } catch (error) {
+        // 4. FALLBACK: If network fails but we had expired data, return it
+        if (cachedData) {
+            console.warn(`[Cache] Network failed for ${url}, returning stale data.`, error);
+            return cachedData;
+        }
+        throw error;
     }
-
-    return data;
 };
 
 export const fetchDriversList = async () => {
@@ -143,22 +151,14 @@ export const fetchRaceMeetingKeys = async (selectedYear) => {
 export const fetchRacesAndSessions = async (selectedYear) => {
   try {
       // Fetch races
-      const racesResponse = await fetch(`${buildOpenF1Url("/meetings")}?year=${selectedYear}`);
-      if (!racesResponse.ok) {
-          throw new Error('Failed to fetch races');
-      }
-      const racesData = await racesResponse.json();
+      const racesData = await fetchWithPersistentCache(`${buildOpenF1Url("/meetings")}?year=${selectedYear}`);
 
-      // Fetch sessions
-      const sessionsResponse = await fetch(`${buildOpenF1Url("/sessions")}?year=${selectedYear}&session_name=Race`);
-      if (!sessionsResponse.ok) {
-          throw new Error('Failed to fetch sessions');
-      }
-      const sessionsData = await sessionsResponse.json();
+      // Fetch sessions (using cached sessionsData if possible, but specifically for 'Race' filter)
+      const f1apiMeetingSessionsList = await fetchWithPersistentCache(`${buildOpenF1Url("/sessions")}?year=${selectedYear}&session_name=Race`);
 
       // Filter races based on meeting_key presence in sessions
-      const filteredRaces = racesData.filter(race => 
-          sessionsData.some(session => session.meeting_key === race.meeting_key)
+      const filteredRaces = (racesData || []).filter(race => 
+          Array.isArray(f1apiMeetingSessionsList) && f1apiMeetingSessionsList.some(session => session.meeting_key === race.meeting_key)
       );
       // console.log('12', filteredRaces);
       return filteredRaces;

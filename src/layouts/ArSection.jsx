@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { Button, LumaKeyVideo } from "../components";
 
-import { Button } from "../components";
 
 const ArSection = ({ layoutMobile }) => {
   const navigate = useNavigate();
@@ -82,15 +82,12 @@ const ArSection = ({ layoutMobile }) => {
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <video
+            <LumaKeyVideo
               src="/Media/PngSequencePhone.mp4"
               poster="/images/ArPhoneImage.png"
-              autoPlay
-              loop
-              muted
-              playsInline
               className="w-full h-auto max-h-[60vh] object-contain"
             />
+
           </motion.div>
         </div>
       </div>

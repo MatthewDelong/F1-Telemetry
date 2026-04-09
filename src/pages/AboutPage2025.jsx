@@ -183,61 +183,61 @@ export function AboutPage2025() {
   return (
     <div className="standard-scroll-container">
       <div>
-      <HeroSection layoutMobile={layoutMobile} />
-      <TelemetrySection
-        layoutMobile={layoutMobile}
-        onClick={() => navigateToRaceResult(raceData)}
-      />
-      <ComparisonsSection layoutMobile={layoutMobile} />
-      <ArSection layoutMobile={layoutMobile} />
-      <section ref={ref} className="my-72 ">
-        <motion.div
-          className="max-w-screen-md mx-auto text-center mb-64"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          <h2 className="heading-3 mb-16">
-            Stay Updated with the Latest Formula 2 and F1 Academy Results
-          </h2>
-        </motion.div>
-        <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-center max-md:gap-32">
-          <div className="w-full md:w-1/2 flex flex-col items-center mb-24">
-            <F1ALogo height={48} className="mx-auto mb-20" />
-            {leagueHeader("F1A", f1aRaceData?.raceName)}
-            <div className="bg-gradient-to-br from-fuchsia-600 via-blue-600 to-blue-400 rounded-lg w-fit relative mb-32">
-              <motion.img
-                className="w-[300px] absolute -left-32 z-0 max-sm:hidden"
-                src="/images/plusPatternsPurple.png"
-                alt=""
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
-                style={{ y: yDecoration2 }}
-              />
-              {latestF1aResultsLayout("F1A", f1aRaceData)}
+        <HeroSection layoutMobile={layoutMobile} />
+        <TelemetrySection
+          layoutMobile={layoutMobile}
+          onClick={() => navigateToRaceResult(raceData)}
+        />
+        <ComparisonsSection layoutMobile={layoutMobile} />
+        <ArSection layoutMobile={layoutMobile} />
+        <section ref={ref} className="my-72 ">
+          <motion.div
+            className="max-w-screen-md mx-auto text-center mb-64"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <h2 className="heading-3 mb-16">
+              Stay Updated with the Latest Formula 2 and F1 Academy Results
+            </h2>
+          </motion.div>
+          <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-center max-md:gap-32">
+            <div className="w-full md:w-1/2 flex flex-col items-center mb-24">
+              <F1ALogo height={48} className="mx-auto mb-20" />
+              {leagueHeader("F1A", f1aRaceData?.raceName)}
+              <div className="bg-gradient-to-br from-fuchsia-600 via-blue-600 to-blue-400 rounded-lg w-fit relative mb-32">
+                <motion.img
+                  className="w-[300px] absolute -left-32 z-0 max-sm:hidden"
+                  src="/images/plusPatternsPurple.png"
+                  alt=""
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                  transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
+                  style={{ y: yDecoration2 }}
+                />
+                {latestF1aResultsLayout("F1A", f1aRaceData)}
+              </div>
+              {leagueButtons("F1A")}
             </div>
-            {leagueButtons("F1A")}
-          </div>
-          <div className="w-full md:w-1/2 flex flex-col items-center mb-24">
-            <F2Logo height={48} className="mx-auto mb-20" />
-            {leagueHeader("F2", f2RaceData?.raceName)}
-            <div className="bg-gradient-to-br from-blue-700 to-blue-900 rounded-lg w-fit relative mb-32">
-              <motion.img
-                className="w-[300px] absolute -left-32 z-0 max-sm:hidden"
-                src="/images/plusPatterns.png"
-                alt=""
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
-                style={{ y: yDecoration2 }}
-              />
-              {latestF1aResultsLayout("F2", f2RaceData)}
+            <div className="w-full md:w-1/2 flex flex-col items-center mb-24">
+              <F2Logo height={48} className="mx-auto mb-20" />
+              {leagueHeader("F2", f2RaceData?.raceName)}
+              <div className="bg-gradient-to-br from-blue-700 to-blue-900 rounded-lg w-fit relative mb-32">
+                <motion.img
+                  className="w-[300px] absolute -left-32 z-0 max-sm:hidden"
+                  src="/images/plusPatterns.png"
+                  alt=""
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                  transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
+                  style={{ y: yDecoration2 }}
+                />
+                {latestF1aResultsLayout("F2", f2RaceData)}
+              </div>
+              {leagueButtons("F2")}
             </div>
-            {leagueButtons("F2")}
           </div>
-        </div>
-      </section>
+        </section>
       </div>
     </div>
   );

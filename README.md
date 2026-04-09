@@ -30,6 +30,27 @@ npm run compress-models
 
 _Requires PowerShell and Node.js._
 
+### Transparent Video System (Luma Key)
+
+This project uses a custom **Luma Key** system to achieve high-performance video transparency across all modern browsers. This replaces standard video transparency (which is often inconsistent) with a reliable `<canvas>` based approach.
+
+**How it works:**
+- Videos are encoded in a "matted side-by-side" format.
+- The **left half** of every frame contains the **RGB color data**.
+- The **right half** contains the **Alpha mask** (grayscale).
+- The `LumaKeyVideo` component extracts both halves and combines them into transparent pixels on a canvas.
+
+**FFmpeg Asset Generation:**
+To generate these matted files from a PNG sequence:
+
+```powershell
+# Requires ffmpeg-static (included in devDependencies)
+& "node_modules/ffmpeg-static/ffmpeg.exe" -y -i "input_%05d.png" -filter_complex "[0:v]pad=w=iw:h=ceil(ih/2)*2,split[v1][v2]; [v2]alphaextract[alpha]; [v1][alpha]hstack" -c:v libx264 -crf 18 -pix_fmt yuv420p "output.mp4"
+```
+
+_Note: The `pad` filter ensures the height is divisible by 2, which is required for H.264 compatibility._
+
+
 ### Local Decoders
 
 To bypass browser **Tracking Prevention** and ensure 100% reliability, Draco and Meshopt decoders are hosted locally in `/public/decoders/`.

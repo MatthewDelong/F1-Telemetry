@@ -24,4 +24,6 @@ export const locationMaps = {
     barcelona: "catalunya",
     lusail: "losail",
     "yas island": "yas_marina",
+    australia: "albert_park",
+    austria: "red_bull_ring",
 };
