@@ -216,7 +216,10 @@ export function LandingPage2025() {
         {latestResultsLayout()}
       </section>
 
-      <TelemetrySection layoutMobile={isBelowLargeBreakpoint} />
+      <TelemetrySection
+        layoutMobile={isBelowLargeBreakpoint}
+        onClick={() => navigateToRaceResult(raceData)}
+      />
       <ArSection layoutMobile={isBelowLargeBreakpoint} />
       <ComparisonsSection layoutMobile={isBelowLargeBreakpoint} />
 

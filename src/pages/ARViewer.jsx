@@ -159,12 +159,12 @@ export const ARViewer = () => {
     const latestYear = availableYears[availableYears.length - 1] || "2026";
     const modelTeamName = getModelTeamNameForYear(teamNameValue, latestYear);
     const glbUrl = `/ArFiles/glbs/${latestYear}/${modelTeamName}.glb?v=v2_ultra`;
-    
+
     // Create a hidden link to prefetch the GLB
-    const link = document.createElement('link');
-    link.rel = 'prefetch';
+    const link = document.createElement("link");
+    link.rel = "prefetch";
     link.href = glbUrl;
-    link.as = 'fetch';
+    link.as = "fetch";
     document.head.appendChild(link);
   };
 
@@ -215,7 +215,7 @@ export const ARViewer = () => {
       // Programmatically set decoder paths to ensure they are available before loading starts
       modelViewer.dracoDecoderPath = "/decoders/draco/";
       modelViewer.meshoptDecoderPath = "/decoders/meshopt/meshopt_decoder.js";
-      
+
       modelViewer.addEventListener("progress", onProgress);
       modelViewer.addEventListener("load", onLoad);
     }
@@ -427,26 +427,34 @@ export const ARViewer = () => {
             <HistoryBar history={teamHistoryData} color={activeThemeColor} />
           </div>
 
-          <h2 className="tracking-sm uppercase gradient-text-light text-center mt-24 mb-16">
+          <h2 className="tracking-wide uppercase gradient-text-light text-center text-12 mb-32 opacity-80">
             Titles & Championships
           </h2>
           <div
-            className="model-viewer-text-medium-wrapper flex flex-row justify-center gap-32 mx-32 mb-64 font-display leading-none"
+            className="model-viewer-text-medium-wrapper flex flex-row justify-center gap-48 sm:gap-64 mx-32 mb-64 font-display leading-tight"
             style={{ color: activeThemeColor }}
           >
-            <div className="model-viewer-text-medium flex flex-col items-end">
-              <div className="text-14 uppercase font-display">
-                Constructor Titles
+            <div className="model-viewer-text-medium flex flex-col items-end text-right">
+              <div className="text-18 sm:text-20 uppercase font-display flex flex-col">
+                <span>Constructor</span>
+                <span>Titles</span>
               </div>
-              <div className="text-32 font-bold">
+              <div
+                className="font-display leading-[0.8]"
+                style={{ fontSize: "3rem" }}
+              >
                 {constructorTitlesCount}
               </div>
             </div>
-            <div className="model-viewer-text-medium flex flex-col items-start border-l border-white/10 pl-32">
-              <div className="text-14 uppercase font-display">
-                Drivers Championships
+            <div className="model-viewer-text-medium flex flex-col items-start text-left">
+              <div className="text-18 sm:text-20 uppercase font-display flex flex-col">
+                <span>Drivers</span>
+                <span>Championships</span>
               </div>
-              <div className="text-32 font-bold">
+              <div
+                className="font-display leading-[0.8]"
+                style={{ fontSize: "3rem" }}
+              >
                 {driversChampionshipsCount}
               </div>
             </div>
@@ -457,7 +465,7 @@ export const ARViewer = () => {
       <div className="flex flex-col justify-center pb-80 bg-gradient-to-b from-black/20 to-transparent">
         <div className="divider-glow-dark mb-48 mx-auto w-[80%]" />
 
-        <h2 className="tracking-widest uppercase gradient-text-light text-center text-sm mb-32">
+        <h2 className="tracking-wide uppercase  gradient-text-light text-center text-12 mb-32 opacity-80">
           F1NSIGHT Collection
         </h2>
 
