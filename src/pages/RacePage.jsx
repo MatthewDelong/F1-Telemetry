@@ -1,3 +1,4 @@
+
 import classNames from "classnames";
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -1045,30 +1046,35 @@ export function RacePage() {
                                     year={year}
                                 />
                             )}
-                            <div 
-                                className={classNames(
-                                    "flex flex-row justify-between gap-4 max-sm:mb-16",
-                                )}
-                            >
-                                <button 
-                                    className={classNames(
-                                        "text-neutral-400 font-display sm:ml-24 sm:text-xl sm:mb-16 leading-none", 
-                                        showStartingGrid && "max-sm:text-white"
-                                    )} 
-                                    onClick={() => setShowStartingGrid(true)}
-                                >
+                            {/* Mobile headings aligned with columns */}
+                            <div className="flex flex-row gap-4 sm:hidden max-sm:mb-16">
+                                <div className={classNames("text-center transition-all", showStartingGrid ? "w-2/3" : "w-1/3")}>
+                                    <button 
+                                        className={classNames("text-neutral-400 font-display text-12 leading-none", showStartingGrid && "text-white")}
+                                        onClick={() => setShowStartingGrid(true)}
+                                    >
+                                        Starting Grid
+                                    </button>
+                                </div>
+                                <div className={classNames("text-center transition-all", showStartingGrid ? "w-1/3" : "w-2/3")}>
+                                    <button 
+                                        className={classNames("text-neutral-400 font-display text-12 leading-none", !showStartingGrid && "text-white")}
+                                        onClick={() => setShowStartingGrid(false)}
+                                    >
+                                        Race Results
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Desktop only heading */}
+                            <div className="max-sm:hidden flex justify-center">
+                                <button className="text-neutral-400 font-display sm:text-xl sm:mb-16 leading-none">
                                     Starting Grid
-                                </button>
-                                <button 
-                                    className={classNames("text-neutral-400 font-display sm:hidden", !showStartingGrid && "text-white")}
-                                    onClick={() => setShowStartingGrid(false)}
-                                >
-                                    Race Results
                                 </button>
                             </div>
                             <div className={classNames("flex flex-row items-start gap-4 sm:hidden mb-24")}>
                                 <StartingGrid
-                                    className={classNames("transition-all overflow-hidden", showStartingGrid ? "w-2/3" : "w-1/3 opacity-15")}
+                                    className={classNames("transition-all overflow-hidden", showStartingGrid ? "w-2/3" : "w-1/3 opacity-100")}
                                     raceResults={raceResults}
                                     startingGrid={startingGrid}
                                     year={year}
@@ -1079,7 +1085,7 @@ export function RacePage() {
                                 <div 
                                     className={classNames(
                                         "bg-glow-large h-fit rounded-md sm:rounded-xlarge transition-all overflow-hidden",
-                                        showStartingGrid ? "w-1/3 opacity-15" : "w-2/3"
+                                        showStartingGrid ? "w-1/3 opacity-100" : "w-2/3"
                                     )}>
                                     {driverButtons(false)}
                                 </div>
@@ -1107,4 +1113,3 @@ export function RacePage() {
         </div>
     );
 }
-

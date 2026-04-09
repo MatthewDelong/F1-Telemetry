@@ -103,7 +103,7 @@ export const DriverCard = (props) => {
             )}
             style={{borderColor: isActive && `#${driverColor}`}}
         >
-            <div className={classNames("flex items-center justify-between w-full", { "max-md:hidden": mobileSmall, "hidden": !layoutSmall})}>
+            <div className={classNames("flex items-center justify-between w-full", { "hidden": !layoutSmall})}>
                 <div className="flex items-center font-display leading-none text-sm">
                     <p className={classNames("w-48 bg-neutral-600 py-2 text-center rounded-l-md")}>P{isRace ? endPosition : index + 1}</p>
                     <span className="pl-16 mr-4">{driver.code}</span>
@@ -156,13 +156,13 @@ export const DriverCard = (props) => {
                     </div>
                 </div>
             </div>
-            <div className={classNames('flex item-center w-full', { "max-md:hidden": mobileSmall, "hidden": layoutSmall})}>
+            <div className={classNames('flex item-center w-full', { "hidden": layoutSmall})}>
                 <p className={classNames("driver-card-position text-2xl font-display px-8 py-4 bg-neutral-700 rounded-l-md flex items-center")}>
                     P{isRace ? endPosition : index + 1}
                 </p>
                 {driverImage}
-                <div className="grow py-4 px-12 text-right">
-                    <span className="heading-4 mb-12 pl-60">{driver.code}</span>
+                <div className="grow py-4 px-12 max-sm:px-6 text-right">
+                    <span className="heading-4 mb-12 pl-60 max-sm:pl-34">{driver.code}</span>
                     <div className="divider-glow w-full" /> 
                     <div className="flex items-center justify-end gap-12 -mt-8">
                         <p className={classNames("text-sm text-right grow")}>{time}</p>
