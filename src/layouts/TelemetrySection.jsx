@@ -73,13 +73,14 @@ const TelemetrySection = ({ layoutMobile, onClick }) => {
                         animate={isInView ? { opacity: 1, scale: 1 } : {}}
                         transition={{ duration: 0.8, ease: "easeOut" }}
                     >
-                        <motion.img
-                            src="/images/telemetryImage.png"
-                            alt="Interactive Telemetry Preview"
+                        <video
+                            src="/Media/PngSequenceCanvas.mp4"
+                            poster="/images/telemetryImage.png"
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
                             className="w-full h-auto"
-                            initial={{ opacity: 0 }}
-                            animate={isInView ? { opacity: 1 } : {}}
-                            transition={{ delay: 0.2, duration: 1 }}
                         />
                         <div className="divider-glow-dark -mt-8" />
                     </motion.div>

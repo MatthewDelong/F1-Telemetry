@@ -150,7 +150,7 @@ export function LandingPage2025() {
                     raceData.Circuit.circuitId +
                     "Animated.mp4"
                   }`
-                : ""
+                : null
             }
             loop
             autoPlay

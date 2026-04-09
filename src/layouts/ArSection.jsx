@@ -82,13 +82,14 @@ const ArSection = ({ layoutMobile }) => {
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <motion.img
-              src="/images/ArPhoneImage.png"
-              alt="AR Experience Preview"
+            <video
+              src="/Media/PngSequencePhone.mp4"
+              poster="/images/ArPhoneImage.png"
+              autoPlay
+              loop
+              muted
+              playsInline
               className="w-full h-auto max-h-[60vh] object-contain"
-              initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 1 } : {}}
-              transition={{ delay: 0.2, duration: 1 }}
             />
           </motion.div>
         </div>

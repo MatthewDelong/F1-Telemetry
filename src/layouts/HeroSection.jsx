@@ -52,11 +52,14 @@ const HeroSection = ({ layoutMobile }) => {
         alt=""
       />
 
-      {/* Static Hero Image */}
-      <div className="absolute bottom-[-32px] (max-sm:hidden) w-full flex justify-center">
-        <img 
-          src="/images/HeroImage.png" 
-          alt="F1 Car"
+      <div className="absolute bottom-[-32px] w-full flex justify-center">
+        <video 
+          src="/Media/pngSequence.mp4"
+          poster="/images/HeroImage.png" 
+          autoPlay 
+          loop 
+          muted 
+          playsInline
           className="max-sm:w-[100%] sm:w-[90%] sm:max-w-screen-xl drop-shadow-[0_-64px_64px_rgba(0,0,0,1)] mx-auto"
           style={{ filter: "brightness(1.1) contrast(1.1)" }}
         />
