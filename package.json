@@ -35,7 +35,8 @@
     "lint": "eslint src",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "compress-models": "powershell -ExecutionPolicy Bypass -File robust_compress_glbs.ps1"
+    "compress-models": "powershell -ExecutionPolicy Bypass -File robust_compress_glbs.ps1",
+    "remove-f2-bg": "node scripts/remove-backgrounds.mjs"
   },
   "eslintConfig": {
     "extends": [
@@ -57,6 +58,7 @@
   },
   "devDependencies": {
     "@gltf-transform/cli": "^4.1.0",
+    "@imgly/background-removal-node": "^1.4.5",
     "@tailwindcss/postcss": "^4.2.2",
     "@tailwindcss/vite": "^4.2.2",
     "@testing-library/jest-dom": "^5.17.0",

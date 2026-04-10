@@ -88,11 +88,11 @@ export const DriverCard = (props) => {
           ? `${"/images/" + year + "/" + championshipLevel + "/" + driver.code + ".png"}`
           : `${"/images/" + year + "/drivers/" + driver.code + ".png"}`
       }
-      width={championshipLevel === "F2" ? 54 : 72}
-      height={championshipLevel === "F2" ? 54 : 72}
+      width={72}
+      height={72}
       className={classNames(
         "absolute block bottom-[0px]",
-        championshipLevel === "F2" ? "left-[46px] rounded-r-md" : "left-[28px]",
+        "left-[28px]",
       )}
       style={{
         opacity: isInView ? 1 : 0,

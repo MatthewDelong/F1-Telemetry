@@ -171,10 +171,10 @@ export function AboutPage2025() {
 
   const leagueHeader = (championshipLevel, raceName) => (
     <div className="text-center drop-shadow-[0_2px_6px_rgba(0,0,0,0.75)]">
-      <p className="text-sm tracking-xs uppercase gradient-text-light">
-        Latest {championshipLevel} Academy Race Results
+      <p className="text-lg tracking-xs uppercase gradient-text-light">
+        Latest {championshipLevel} {championshipLevel === "F1A" ? "Academy " : ""}Race Results
       </p>
-      <p className="font-display text-xl leading-none mb-24">
+      <p className="font-display text-3xl leading-none mb-24 mt-4">
         {selectedYear} {raceName}
       </p>
     </div>
@@ -192,13 +192,14 @@ export function AboutPage2025() {
         <ArSection layoutMobile={layoutMobile} />
         <section ref={ref} className="my-72 overflow-hidden">
           <motion.div
-            className="max-w-screen-md mx-auto text-center mb-64"
+            className="max-w-none mx-auto text-center mb-64"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <h2 className="heading-3 mb-16">
-              Stay Updated with the Latest Formula 2 and F1 Academy Results
+              Stay Updated with the Latest <br /> F1 Academy and Formula 2
+              Results
             </h2>
           </motion.div>
           <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-center max-md:gap-32">
@@ -209,7 +210,7 @@ export function AboutPage2025() {
                 <div className="absolute inset-y-0 left-8 right-8 bg-gradient-to-br from-fuchsia-600 via-blue-600 to-blue-400 rounded-lg z-0" />
                 <div className="relative z-10">
                   <motion.img
-                    className="w-[300px] absolute -left-32 z-0 max-sm:hidden"
+                    className="w-[300px] absolute -left-32 z-0 max-sm:hidden pointer-events-none"
                     src="/images/plusPatternsPurple.png"
                     alt=""
                     initial={{ opacity: 0, scale: 0.8 }}
@@ -229,7 +230,7 @@ export function AboutPage2025() {
                 <div className="absolute inset-y-0 left-8 right-8 bg-gradient-to-br from-blue-700 to-blue-900 rounded-lg z-0" />
                 <div className="relative z-10">
                   <motion.img
-                    className="w-[300px] absolute -left-32 z-0 max-sm:hidden"
+                    className="w-[300px] absolute -left-32 z-0 max-sm:hidden pointer-events-none"
                     src="/images/plusPatterns.png"
                     alt=""
                     initial={{ opacity: 0, scale: 0.8 }}
