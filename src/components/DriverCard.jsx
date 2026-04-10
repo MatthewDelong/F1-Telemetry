@@ -226,11 +226,10 @@ export const DriverCard = (props) => {
             }
           >
             <span className="fa-layers fa-fw fa-xs">
-              <FontAwesomeIcon icon="circle" />
+              <FontAwesomeIcon icon="circle" className="text-white" />
               <FontAwesomeIcon
                 icon="clock"
                 className="text-plum-500"
-                inverse
                 transform="shrink-2"
               />
             </span>
