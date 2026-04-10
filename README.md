@@ -28,7 +28,7 @@ This project uses a custom pipeline to optimize massive 3D models for the web. I
 npm run compress-models
 ```
 
-_Requires PowerShell and Node.js._
+_Script Location:_ `scripts/robust-compress-glbs.ps1` (Requires PowerShell and Node.js).
 
 ### Transparent Video System (Luma Key)
 
@@ -41,14 +41,16 @@ This project uses a custom **Luma Key** system to achieve high-performance video
 - The `LumaKeyVideo` component extracts both halves and combines them into transparent pixels on a canvas.
 
 **FFmpeg Asset Generation:**
-To generate these matted files from a PNG sequence:
+This command converts a transparent PNG sequence (`input_00001.png`, etc.) into the side-by-side format. The left half will contain the RGB color, and the right half will contain the Alpha mask extracted from the original frames.
 
 ```powershell
 # Requires ffmpeg-static (included in devDependencies)
-& "node_modules/ffmpeg-static/ffmpeg.exe" -y -i "input_%05d.png" -filter_complex "[0:v]pad=w=iw:h=ceil(ih/2)*2,split[v1][v2]; [v2]alphaextract[alpha]; [v1][alpha]hstack" -c:v libx264 -crf 18 -pix_fmt yuv420p "output.mp4"
+& "node_modules/ffmpeg-static/ffmpeg.exe" -y -i "input_%05d.png" `
+  -filter_complex "[0:v]pad=w=iw:h=ceil(ih/2)*2,split[v1][v2]; [v2]alphaextract[alpha]; [v1][alpha]hstack" `
+  -c:v libx264 -crf 18 -pix_fmt yuv420p "output.mp4"
 ```
 
-_Note: The `pad` filter ensures the height is divisible by 2, which is required for H.264 compatibility._
+_Note: The `pad` filter ensures the height is divisible by 2 for H.264 compatibility._
 
 
 ### Driver Image Background Removal

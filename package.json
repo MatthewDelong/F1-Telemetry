@@ -35,7 +35,7 @@
     "lint": "eslint src",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "compress-models": "powershell -ExecutionPolicy Bypass -File robust_compress_glbs.ps1",
+    "compress-models": "powershell -ExecutionPolicy Bypass -File scripts/robust-compress-glbs.ps1",
     "remove-f2-bg": "node scripts/remove-backgrounds.mjs"
   },
   "eslintConfig": {
