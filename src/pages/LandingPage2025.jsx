@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -28,6 +28,7 @@ const HERO_FADE_MS = 1200;
 
 export function LandingPage2025() {
   const [raceData, setRaceData] = useState(null);
+  const snapContainerRef = useRef(null);
   const [heroBgIndex, setHeroBgIndex] = useState(0);
   const [isHeroImageVisible, setIsHeroImageVisible] = useState(true);
   const [isBelowLargeBreakpoint, setIsBelowLargeBreakpoint] = useState(
@@ -172,7 +173,7 @@ export function LandingPage2025() {
     .slice(0, 3);
 
   return (
-    <div className="snap-container">
+    <div className="snap-container" ref={snapContainerRef}>
       <section className="relative h-screen snap-start overflow-hidden flex items-center justify-center">
         <img
           src={heroImageSource}
@@ -219,11 +220,18 @@ export function LandingPage2025() {
       <TelemetrySection
         layoutMobile={isBelowLargeBreakpoint}
         onClick={() => navigateToRaceResult(raceData)}
+        container={snapContainerRef}
       />
-      <ArSection layoutMobile={isBelowLargeBreakpoint} />
-      <ComparisonsSection layoutMobile={isBelowLargeBreakpoint} />
+      <ArSection
+        layoutMobile={isBelowLargeBreakpoint}
+        container={snapContainerRef}
+      />
+      <ComparisonsSection
+        layoutMobile={isBelowLargeBreakpoint}
+        container={snapContainerRef}
+      />
 
-      <section className="snap-start min-h-screen flex items-center justify-center bg-black">
+      <section className="snap-start bg-black">
         <Footer2025 />
       </section>
     </div>

@@ -53,7 +53,7 @@ export function AboutPage2025() {
 
     const handleLayout = () => {
       setLayoutSmall(window.innerWidth > 767 && window.innerWidth < 1024);
-      setLayoutMobile(window.innerWidth < 768);
+      setLayoutMobile(window.innerWidth < 1024);
     };
     handleLayout();
 

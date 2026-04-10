@@ -5,35 +5,36 @@ import { Button, LumaKeyVideo } from "../components";
 
 import classNames from "classnames";
 
-const TelemetrySection = ({ layoutMobile, onClick }) => {
+const TelemetrySection = ({ layoutMobile, onClick, container }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
+    container: container,
   });
 
   const yTextContent = useTransform(
     scrollYProgress,
     [0, 1],
-    layoutMobile ? [0, 0] : [100, -100],
+    layoutMobile ? [0, 0] : [126, -74],
   );
 
   return (
-    <section className="telemetry-section min-h-screen snap-start flex items-center justify-center bg-neutral-950 overflow-hidden pt-96">
+    <section className="telemetry-section min-h-screen snap-start flex items-center justify-center bg-neutral-950 overflow-hidden pt-32">
       <div className="max-w-[1200px] w-full mx-auto px-16">
         <h2 className="heading-2 text-center mb-16 uppercase">
           Interactive Telemetry
         </h2>
         <div
           ref={sectionRef}
-          className="flex flex-col-reverse md:flex-row-reverse items-center mx-auto relative"
+          className="flex flex-col-reverse md:flex-row-reverse md:items-start items-center mx-auto relative"
         >
           <motion.div
             className={classNames(
-              "p-32 md:py-32 md:pr-32 md:pl-64 md:ml-[-60px] md:rounded-xlarge max-md:text-sm max-md:text-center",
-              "w-full md:w-1/3 flex flex-col max-md:items-center gap-16 relative z-10",
+              "p-32 md:py-32 md:pr-32 md:pl-64 md:ml-[-100px] md:rounded-xlarge max-md:text-small max-md:text-center",
+              "w-full md:w-1/3 flex flex-col max-md:items-center gap-8 relative z-10",
               "md:bg-gradient-to-b md:from-neutral-900 md:to-neutral-900/10",
             )}
             initial={{ opacity: 0, scale: 0.8 }}
@@ -41,24 +42,20 @@ const TelemetrySection = ({ layoutMobile, onClick }) => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             style={{ y: yTextContent }}
           >
-            <p className="uppercase font-semibold tracking-xs gradient-text-light text-14">
+            <p className="uppercase font-semibold tracking-xs gradient-text-light">
               Select a Driver
             </p>
-            <p className="mb-12 text-base">
-              Monitor their race progress lap by lap.
-            </p>
-            <p className="uppercase tracking-xs gradient-text-light text-14">
+            <p className="mb-12">Monitor their race progress lap by lap.</p>
+            <p className="uppercase tracking-xs gradient-text-light">
               Multiple Camera Views
             </p>
-            <p className="mb-12 text-base">
+            <p className="mb-12">
               Get closer to the action with various perspectives.
             </p>
-            <p className="uppercase tracking-xs gradient-text-light text-14">
+            <p className="uppercase tracking-xs gradient-text-light">
               Detailed Telemetry Data
             </p>
-            <p className="mb-12 text-base">
-              Analyze every aspect of driver performance.
-            </p>
+            <p className="mb-12">Analyze every aspect of driver performance.</p>
             <Button
               as="button"
               onClick={onClick}

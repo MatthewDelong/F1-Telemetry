@@ -3,8 +3,7 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button, LumaKeyVideo } from "../components";
 
-
-const ArSection = ({ layoutMobile }) => {
+const ArSection = ({ layoutMobile, container }) => {
   const navigate = useNavigate();
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
@@ -12,6 +11,7 @@ const ArSection = ({ layoutMobile }) => {
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
+    container: container,
   });
 
   const yTextContent = useTransform(
@@ -23,7 +23,7 @@ const ArSection = ({ layoutMobile }) => {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen snap-start flex items-center justify-center px-16 bg-neutral-950 relative overflow-hidden pt-96"
+      className="min-h-screen snap-start flex items-center justify-center px-16 bg-neutral-950 relative overflow-hidden pt-32"
     >
       <div className="max-w-[1200px] w-full mx-auto px-16">
         <h2 className="heading-2 text-center mb-16 uppercase">
@@ -37,7 +37,7 @@ const ArSection = ({ layoutMobile }) => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             style={{ y: yTextContent }}
           >
-            <p className="text-base">
+            <p>
               Place and scale your favorite F1 car model right in your
               environment. Walk around and inspect every intricate detail as if
               you were in the paddock!
@@ -51,6 +51,11 @@ const ArSection = ({ layoutMobile }) => {
               as="button"
               onClick={() => {
                 navigate("/ar-viewer");
+                if (typeof window.trackButtonClick === "function") {
+                  window.trackButtonClick(
+                    `Home/Click/Section/AR Viewer - /ar-viewer`,
+                  );
+                }
               }}
               size="sm"
               className="shadow-xl w-fit"
@@ -59,11 +64,10 @@ const ArSection = ({ layoutMobile }) => {
                 ? "Full AR Experience"
                 : "360 Team Livery Viewer and History"}
             </Button>
-            <p className="mb-12 text-sm">
-              <span className="font-bold">Capture stunning moments. </span>With
-              our AR feature, snap breathtaking photos and videos of your F1 car
-              in various settings. Share these moments with friends and fellow
-              enthusiasts, and don’t forget to tag @f1telemetry! #f1telemetry
+            <p>
+              Scan QR code to go to the full AR Experience on your mbile device
+              <br />
+              Don't forget to tag @f1nsight1! #f1nsight
             </p>
             <img
               className="w-[12rem] mt-4"
@@ -85,9 +89,8 @@ const ArSection = ({ layoutMobile }) => {
             <LumaKeyVideo
               src="/Media/PngSequencePhone.mp4"
               poster="/images/ArPhoneImage.png"
-              className="w-full h-auto max-h-[60vh] object-contain"
+              className="w-full h-auto max-h-[70vh] object-contain"
             />
-
           </motion.div>
         </div>
       </div>
