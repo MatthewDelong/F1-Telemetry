@@ -85,7 +85,7 @@ export function AboutPage2025() {
 
   const latestF1aResultsLayout = (championshipLevel, data) => {
     return (
-      <div className="relative w-full max-w-[350px]">
+      <div className="relative w-full max-w-[700px]">
         <div className="flex flex-col sm:flex-row gap-8 items-center py-[26px]">
           {data?.race1?.length > 0 && (
             <div className={f1aWrapperClasses}>
@@ -136,7 +136,7 @@ export function AboutPage2025() {
           as="button"
           onClick={() => navigateToF1aRaceResult(championshipLevel, data)}
           size="md"
-          className="-mb-24 mx-16 sm:mx-auto"
+          className="mx-16 sm:mx-auto mb-32"
         >
           View Full Results
         </Button>
@@ -145,7 +145,7 @@ export function AboutPage2025() {
   };
 
   const leagueButtons = (championshipLevel) => (
-    <div className="flex flex-col items-center gap-8 w-fit">
+    <div className="flex flex-col items-center gap-8 w-fit mt-12">
       <Button
         onClick={() => {
           navigate(`/${championshipLevel.toLowerCase()}/driver-standings`);
@@ -205,34 +205,40 @@ export function AboutPage2025() {
             <div className="w-full md:w-1/2 flex flex-col items-center mb-24">
               <F1ALogo height={48} className="mx-auto mb-20" />
               {leagueHeader("F1A", f1aRaceData?.raceName)}
-              <div className="bg-gradient-to-br from-fuchsia-600 via-blue-600 to-blue-400 rounded-lg w-fit relative mb-32">
-                <motion.img
-                  className="w-[300px] absolute -left-32 z-0 max-sm:hidden"
-                  src="/images/plusPatternsPurple.png"
-                  alt=""
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                  transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
-                  style={{ y: yDecoration2 }}
-                />
-                {latestF1aResultsLayout("F1A", f1aRaceData)}
+              <div className="relative w-fit flex flex-col items-center mb-32">
+                <div className="absolute inset-y-0 left-8 right-8 bg-gradient-to-br from-fuchsia-600 via-blue-600 to-blue-400 rounded-lg z-0" />
+                <div className="relative z-10">
+                  <motion.img
+                    className="w-[300px] absolute -left-32 z-0 max-sm:hidden"
+                    src="/images/plusPatternsPurple.png"
+                    alt=""
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
+                    style={{ y: yDecoration2 }}
+                  />
+                  {latestF1aResultsLayout("F1A", f1aRaceData)}
+                </div>
               </div>
               {leagueButtons("F1A")}
             </div>
             <div className="w-full md:w-1/2 flex flex-col items-center mb-24">
               <F2Logo height={48} className="mx-auto mb-20" />
               {leagueHeader("F2", f2RaceData?.raceName)}
-              <div className="bg-gradient-to-br from-blue-700 to-blue-900 rounded-lg w-fit relative mb-32">
-                <motion.img
-                  className="w-[300px] absolute -left-32 z-0 max-sm:hidden"
-                  src="/images/plusPatterns.png"
-                  alt=""
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                  transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
-                  style={{ y: yDecoration2 }}
-                />
-                {latestF1aResultsLayout("F2", f2RaceData)}
+              <div className="relative w-fit flex flex-col items-center mb-32">
+                <div className="absolute inset-y-0 left-8 right-8 bg-gradient-to-br from-blue-700 to-blue-900 rounded-lg z-0" />
+                <div className="relative z-10">
+                  <motion.img
+                    className="w-[300px] absolute -left-32 z-0 max-sm:hidden"
+                    src="/images/plusPatterns.png"
+                    alt=""
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
+                    style={{ y: yDecoration2 }}
+                  />
+                  {latestF1aResultsLayout("F2", f2RaceData)}
+                </div>
               </div>
               {leagueButtons("F2")}
             </div>

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-export const Button = ({ className, to, href, onClick, children, buttonStyle, size='md', active }) => {
+export const Button = ({ as: Component = 'button', className, to, href, onClick, children, buttonStyle, size='md', active, ...rest }) => {
     const sizeStyle = classNames({
         'px-16 py-4': size === 'sm',
         'px-24 py-8': size === 'md',
@@ -17,21 +17,22 @@ export const Button = ({ className, to, href, onClick, children, buttonStyle, si
 
     if (to) {
         return (
-            <NavLink to={to} className={finalStyle}>
+            <NavLink to={to} className={finalStyle} {...rest}>
                 {children}
             </NavLink>
         );
     } else if (href) {
         return (
-            <a href={href} className={finalStyle}>
+            <a href={href} className={finalStyle} {...rest}>
                 {children}
             </a>
         );
     } else {
         return (
-            <button onClick={onClick} className={finalStyle}>
+            <Component onClick={onClick} className={finalStyle} {...rest}>
                 {children}
-            </button>
+            </Component>
         );
     }
 };
+
