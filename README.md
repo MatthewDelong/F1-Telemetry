@@ -51,6 +51,36 @@ To generate these matted files from a PNG sequence:
 _Note: The `pad` filter ensures the height is divisible by 2, which is required for H.264 compatibility._
 
 
+### Driver Image Background Removal
+
+To maintain a consistent and premium look, driver headshots (specifically for F2) have their backgrounds removed. This ensures they blend seamlessly into the grid and detail views.
+
+**Script Location:** `scripts/remove-backgrounds.mjs`
+
+**Usage:**
+If you add new driver headshots to the F2 image directories (`public/images/2025/F2` or `public/images/2026/F2`), run the following command to process them:
+
+```bash
+npm run remove-f2-bg
+```
+
+**Processing Different Directories:**
+If you need to process images in a different directory, edit the `dirs` array in `scripts/remove-backgrounds.mjs`:
+
+```javascript
+async function run() {
+  const dirs = [
+    'public/images/2025/F2',
+    'public/images/2026/F2',
+    'public/images/NEW_DIRECTORY' // Add your new path here
+  ];
+  // ...
+}
+```
+
+_This utility uses `@imgly/background-removal-node` to automatically detect and remove backgrounds from all PNG files in the targeted directories in-place._
+
+
 ### Local Decoders
 
 To bypass browser **Tracking Prevention** and ensure 100% reliability, Draco and Meshopt decoders are hosted locally in `/public/decoders/`.
