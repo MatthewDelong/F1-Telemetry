@@ -60,7 +60,7 @@ export function ViewLatestRaceButton({
         onClick={navigateToLatestRace}
         disabled={!meetingKey}
         className={classNames(
-          "rounded px-24 py-16 text-white transition-all duration-200 font-display",
+          "rounded px-24 py-8 text-white transition-all duration-200 font-display",
           meetingKey
             ? "max-sm:bg-plum-500 bg-glow-dark"
             : "bg-glow-dark/60 cursor-not-allowed",

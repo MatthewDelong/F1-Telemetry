@@ -4,11 +4,11 @@ import { NavLink } from 'react-router-dom';
 
 export const Button = ({ className, to, href, onClick, children, buttonStyle, size='md', active }) => {
     const sizeStyle = classNames({
-        'px-16 py-8': size === 'sm',
-        'px-24 py-16': size === 'md',
-        'px-24 py-24': size === 'lg',
+        'px-16 py-4': size === 'sm',
+        'px-24 py-8': size === 'md',
+        'px-24 py-12': size === 'lg',
     });
-    const buttonBaseStyle = classNames(className, sizeStyle, "relative flex items-center justify-center px-24 py-16 overflow-hidden font-bold rounded-[.8rem] shadow-2xl")
+    const buttonBaseStyle = classNames(className, sizeStyle, "relative flex items-center justify-center overflow-hidden font-bold rounded-[.8rem] shadow-2xl")
     const solidButtonStyle = classNames(buttonBaseStyle, "bg-plum-500 hover:bg-gradient-to-br hover:from-plum-500 hover:to-plum-300 ");
     const hollowButtonStyle = classNames(buttonBaseStyle, "bg-glow hover:bg-gradient-to-br hover:from-neutral-800 hover:from-neutral-700 ");
     const activeButtonStyle = classNames(buttonBaseStyle, active ? buttonStyle === 'hollow' ? hollowButtonStyle : solidButtonStyle : 'bg-neutral-800 shadow-md');

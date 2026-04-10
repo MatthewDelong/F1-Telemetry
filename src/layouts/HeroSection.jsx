@@ -24,7 +24,7 @@ const HeroSection = ({ layoutMobile }) => {
   return (
     <section
       ref={sectionRef}
-      className="bg-black relative h-screen  min-h-[300px] flex items-center justify-center"
+      className="bg-black relative h-screen  min-h-[300px] flex items-center justify-center overflow-hidden"
     >
       {/* Background Video */}
       <video

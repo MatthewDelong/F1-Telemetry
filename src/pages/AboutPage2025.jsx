@@ -86,7 +86,7 @@ export function AboutPage2025() {
   const latestF1aResultsLayout = (championshipLevel, data) => {
     return (
       <div className="relative w-full max-w-[350px]">
-        <div className="flex flex-col sm:flex-row gap-8 items-center py-[26px] -mx-16">
+        <div className="flex flex-col sm:flex-row gap-8 items-center py-[26px]">
           {data?.race1?.length > 0 && (
             <div className={f1aWrapperClasses}>
               <h3 className={f1aH3Classes}>Race 1</h3>
@@ -190,7 +190,7 @@ export function AboutPage2025() {
         />
         <ComparisonsSection layoutMobile={layoutMobile} />
         <ArSection layoutMobile={layoutMobile} />
-        <section ref={ref} className="my-72 ">
+        <section ref={ref} className="my-72 overflow-hidden">
           <motion.div
             className="max-w-screen-md mx-auto text-center mb-64"
             initial={{ opacity: 0, scale: 0.8 }}

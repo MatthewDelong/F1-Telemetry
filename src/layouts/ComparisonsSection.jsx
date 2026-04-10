@@ -34,7 +34,7 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
 
   const links = (customClassName) => {
     return (
-      <div className={classNames(customClassName, "z-[11] w-full px-16")}>
+      <div className={classNames(customClassName, "z-[11] px-0")}>
         <Button
           as="button"
           onClick={() => {
@@ -72,7 +72,7 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
   return (
     <section
       ref={sectionRef}
-      className="h-screen px-16 bg-gradient-to-b from-neutral-950/30 to-neutral-950/5 relative snap-start pt-32"
+      className="h-screen px-16 bg-gradient-to-b from-neutral-950/30 to-neutral-950/5 relative snap-start pt-32 overflow-hidden"
     >
       <div className="divider-glow-dark mb-32" />
       {/* Heading Animates in & Scrolls */}
@@ -86,11 +86,10 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
         <h2 className="heading-3 mb-16 px-16">
           Driver and Teammate Comparisons
         </h2>
-        <p className="text-lg md:text-xl lg:px-32">
+        <p>
           Compare teammates directly, evaluating their performances in the same
-          car during specific seasons or <br className="hidden md:block" />
-          extend your analysis beyond teammates to include any driver from any
-          team throughout F1 history.
+          car during specific seasons or extend your analysis beyond teammates
+          to include any driver from any team throughout F1 history.
         </p>
       </motion.div>
 
@@ -101,13 +100,13 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
             className="flex flex-row items-center justify-center relative"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={
-              isInView ? { opacity: 1, scale: layoutMobile ? 1.3 : 1 } : {}
+              isInView ? { opacity: 1, scale: layoutMobile ? 1.0 : 1 } : {}
             }
             transition={{ duration: 1, ease: "easeOut" }}
             style={{ y: computerImages }}
           >
             {/* Left - Driver Comparison */}
-            <div className="w-[55%] shrink-0">
+            <div className="w-[60%] shrink-0">
               <img
                 className="w-full h-auto"
                 src="/images/comparisonDrivers.png"
@@ -116,7 +115,7 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
             </div>
 
             {/* Right - Teammate Comparison */}
-            <div className="w-[65%] shrink-0 relative ml-[-40px] sm:ml-[-100px] lg:ml-[-150px]">
+            <div className="w-[70%] shrink-0 relative ml-[-40px] sm:ml-[-100px] lg:ml-[-150px]">
               <img
                 className="w-full"
                 src="/images/comparisonTeammates.png"
@@ -124,10 +123,12 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
               />
             </div>
             {links(
-              "absolute top-1/2 -translate-y-1/2 flex flex-row justify-between items-center gap-8 max-sm:hidden",
+              "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] max-w-[100vw] flex flex-row justify-between items-center gap-8 max-sm:hidden",
             )}
           </motion.div>
-          {links("flex flex-col absolute top-full gap-8 sm:hidden mt-32")}
+          {links(
+            "flex flex-col absolute top-full left-1/2 -translate-x-1/2 w-[calc(100%-80px)] gap-4 sm:hidden mt-12",
+          )}
         </div>
 
         {/* Background Decorations - Move on Scroll */}

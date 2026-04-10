@@ -147,7 +147,7 @@ export function TeammateComparisonButton({ year = DEFAULT_YEAR, className }) {
         type="button"
         onClick={navigateToSelectedTeam}
         className={classNames(
-          "rounded px-24 py-16 text-white transition-all duration-200 font-display max-sm:bg-plum-500 bg-glow-dark",
+          "rounded px-24 py-8 text-white transition-all duration-200 font-display max-sm:bg-plum-500 bg-glow-dark",
         )}
         style={
           isHovered
