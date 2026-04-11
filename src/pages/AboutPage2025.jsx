@@ -64,15 +64,26 @@ export function AboutPage2025() {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === "Home") {
+      // Don't intercept if user is typing in an input or textarea
+      if (
+        e.target.tagName === "INPUT" ||
+        e.target.tagName === "TEXTAREA" ||
+        e.target.isContentEditable
+      ) {
+        return;
+      }
+
+      if (e.key === "Home" || e.code === "Home") {
         e.preventDefault();
         snapContainerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
-      } else if (e.key === "End") {
+      } else if (e.key === "End" || e.code === "End") {
         e.preventDefault();
-        snapContainerRef.current?.scrollTo({
-          top: snapContainerRef.current.scrollHeight,
-          behavior: "smooth",
-        });
+        if (snapContainerRef.current) {
+          snapContainerRef.current.scrollTo({
+            top: snapContainerRef.current.scrollHeight,
+            behavior: "smooth",
+          });
+        }
       }
     };
 
