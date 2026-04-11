@@ -102,7 +102,7 @@ export function LandingPage2025() {
     return (
       <>
         <div className="flex flex-col items-center z-10">
-          <p className="text-base tracking-xl uppercase gradient-text-light mb-16">
+          <p className="text-xl tracking-xl uppercase gradient-text-light mb-16">
             Latest F1 Race Results
           </p>
           <p className="heading-2 text-center uppercase">
@@ -199,7 +199,7 @@ export function LandingPage2025() {
           <h1 className="heading-1 mb-16 leading-none">
             Go Beyond the Race Results
           </h1>
-          <p className="text-neutral-300 text-xl mb-24 mx-auto leading-none">
+          <p className="text-neutral-300 text-3xl mb-24 mx-auto leading-none">
             Explore telemetry, compare drivers, and understand every race in
             depth.
           </p>

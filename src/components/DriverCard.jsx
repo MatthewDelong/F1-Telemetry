@@ -143,7 +143,7 @@ export const DriverCard = (props) => {
           </p>
           <span className="pl-16 mr-4">{driver.code}</span>
         </div>
-        <p className=" text-xs pr-8">{time}</p>
+        <p className=" text-sm pr-8">{time}</p>
       </div>
       <div
         className={classNames("flex items-center w-full", {
@@ -162,7 +162,7 @@ export const DriverCard = (props) => {
         <div className="grow py-4 pl-[10px] pr-12 text-right">
           <span className="heading-4 mb-12 pl-60">{driver.code}</span>
           <div className="divider-glow w-full" />
-          <p className={classNames("text-sm -mt-8")}>{time}</p>
+          <p className={classNames("text-base -mt-4")}>{time}</p>
         </div>
       </div>
       {mobileSmall && (
@@ -174,7 +174,7 @@ export const DriverCard = (props) => {
             <p className="pl-8 pr-8">{driver.code}</p>
           </div>
           <div>
-            <p className="text-xs pl-8">{time}</p>
+            <p className="text-sm pl-8">{time}</p>
           </div>
         </div>
       )}

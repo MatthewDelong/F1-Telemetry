@@ -25,17 +25,17 @@ export const Footer2025 = ({ className }) => {
       )}
     >
       <div className="divider-glow-dark" />
-      <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center py-64 text-sm max-md:text-center px-24 font-lato">
+      <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center py-64 text-base max-md:text-center px-24 font-lato">
         {/* Left side: Logo, tagline, and social links */}
         <div className="flex flex-col items-center md:items-start gap-16 mb-24 md:mb-0">
           <a href="/">
             <Logo height={48} />
           </a>
           <div>
-            <p className="uppercase tracking-xs leading-none gradient-text-light">
+            <p className="text-xl uppercase tracking-1xs leading-none gradient-text-light">
               Your Ultimate Destination
             </p>
-            <p className="uppercase tracking-xs leading-none gradient-text-light">
+            <p className="text-xl uppercase tracking-1xs leading-none gradient-text-light">
               for F1 Data and Analysis
             </p>
           </div>

@@ -84,12 +84,15 @@ export function AboutPage2025() {
   const f1aH3Classes = " text-sm tracking-xs uppercase text-center mb-8";
 
   const latestF1aResultsLayout = (championshipLevel, data) => {
+    const race1Label = championshipLevel === "F2" ? "Sprint Race" : "Race 1";
+    const race2Label = championshipLevel === "F2" ? "Race" : "Race 2";
+
     return (
       <div className="relative w-full max-w-[700px]">
         <div className="flex flex-col sm:flex-row gap-8 items-center py-[26px]">
           {data?.race1?.length > 0 && (
             <div className={f1aWrapperClasses}>
-              <h3 className={f1aH3Classes}>Race 1</h3>
+              <h3 className={f1aH3Classes}>{race1Label}</h3>
               <ul className={f1aListClasses}>
                 {data.race1.map((result, resultIndex) => (
                   <DriverCard
@@ -111,7 +114,7 @@ export function AboutPage2025() {
           )}
           {data?.race2?.length > 0 && (
             <div className={f1aWrapperClasses}>
-              <h3 className={f1aH3Classes}>Race 2</h3>
+              <h3 className={f1aH3Classes}>{race2Label}</h3>
               <ul className={f1aListClasses}>
                 {data.race2.map((result, resultIndex) => (
                   <DriverCard
