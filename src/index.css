@@ -126,6 +126,13 @@ body {
   font-size: 1.6rem;
   font-weight: 400;
   letter-spacing: 0.4px;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 .snap-container {

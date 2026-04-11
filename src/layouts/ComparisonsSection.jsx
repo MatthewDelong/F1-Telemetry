@@ -72,7 +72,7 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
   return (
     <section
       ref={sectionRef}
-      className="h-screen px-16 bg-gradient-to-b from-neutral-950/30 to-neutral-950/5 relative snap-start pt-32 overflow-hidden"
+      className="h-screen px-16 bg-gradient-to-b from-neutral-950/30 to-neutral-950/5 relative snap-start pt-32 z-0 overflow-x-hidden"
     >
       <div className="divider-glow-dark mb-32" />
       {/* Heading Animates in & Scrolls */}

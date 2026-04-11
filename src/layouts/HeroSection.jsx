@@ -15,7 +15,7 @@ const HeroSection = ({ layoutMobile }) => {
   const yTitle = useTransform(
     scrollYProgress,
     [0, 1],
-    layoutMobile ? [-100, 50] : [-300, 0],
+    layoutMobile ? [0, 0] : [0, -50],
   );
   const yDecorLeft = useTransform(scrollYProgress, [0, 1], [-400, 0]);
   const yDecorRight = useTransform(scrollYProgress, [0, 1], [-500, 0]);
@@ -23,7 +23,7 @@ const HeroSection = ({ layoutMobile }) => {
   return (
     <section
       ref={sectionRef}
-      className="bg-black relative h-screen  min-h-[300px] flex items-center justify-center overflow-hidden"
+      className="bg-black relative h-[85svh] sm:h-[calc(100vh-48px)] min-h-[480px] sm:min-h-[600px] flex items-center justify-center z-10"
     >
       {/* Background Video */}
       <video
@@ -32,18 +32,18 @@ const HeroSection = ({ layoutMobile }) => {
         loop
         muted
         playsInline
-        style={{ opacity: 0.3, filter: "brightness(1.2)" }}
+        style={{ opacity: 0.4, filter: "brightness(1.0)" }}
       >
         <source src="/Media/Hero.mp4" type="video/mp4" />
       </video>
 
       {/* Animated Title (Triggers when in view, moves on scroll) */}
       <motion.h1
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={isInView ? { opacity: 1, scale: 1 } : {}}
+        initial={{ opacity: 0, y: 50 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
         style={{ y: yTitle }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="text-center heading-1 absolute mx-auto w-3/4"
+        className="text-center heading-1 absolute top-[10%] sm:top-[12%] mx-auto w-3/4 z-10"
       >
         Your Ultimate Destination for F1 Data and Analysis
       </motion.h1>
@@ -70,11 +70,11 @@ const HeroSection = ({ layoutMobile }) => {
         alt=""
       />
 
-      <div className="absolute bottom-[-32px] w-full flex justify-center">
+      <div className="absolute bottom-[-16px] sm:bottom-[-24px] w-full flex justify-center z-20 pointer-events-none">
         <LumaKeyVideo
           src="/Media/pngSequence.mp4"
           poster="/images/HeroImage.png"
-          className="max-sm:w-[100%] sm:w-[90%] sm:max-w-screen-xl drop-shadow-[0_-64px_64px_rgba(0,0,0,1)] mx-auto"
+          className="w-[110%] sm:w-[90%] lg:w-[85%] max-w-none drop-shadow-[0_-64px_64px_rgba(0,0,0,1)] mx-auto mb-[-8px]"
           style={{ filter: "brightness(1.1) contrast(1.1)" }}
         />
       </div>

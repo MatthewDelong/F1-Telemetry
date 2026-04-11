@@ -23,7 +23,7 @@ const ArSection = ({ layoutMobile, container }) => {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen snap-start flex items-center justify-center px-16 bg-neutral-950 relative overflow-hidden pt-32"
+      className="min-h-screen snap-start flex items-center justify-center px-16 bg-neutral-950 relative pt-32 z-0 overflow-x-hidden"
     >
       <div className="max-w-[1200px] w-full mx-auto px-16">
         <h2 className="heading-2 text-center mb-16 uppercase">

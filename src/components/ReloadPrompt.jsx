@@ -9,7 +9,13 @@ function ReloadPrompt() {
         updateServiceWorker,
     } = useRegisterSW({
         onRegistered(r) {
-            console.log('SW Registered:', r);
+            if (r) {
+                console.log('SW Registered:', r);
+                // Check for updates every hour
+                setInterval(() => {
+                    r.update();
+                }, 60 * 60 * 1000);
+            }
         },
         onRegisterError(error) {
             console.error('SW Registration Error:', error);
@@ -19,6 +25,19 @@ function ReloadPrompt() {
     React.useEffect(() => {
         console.log('PWA Status - offlineReady:', offlineReady, 'needRefresh:', needRefresh);
     }, [offlineReady, needRefresh]);
+
+    const handleReload = async () => {
+        // Manual cache clearing to ensure a fresh fetch and resolve "previous version" issues
+        if ('caches' in window) {
+            try {
+                const names = await caches.keys();
+                await Promise.all(names.map(name => caches.delete(name)));
+            } catch (err) {
+                console.error('Error clearing caches:', err);
+            }
+        }
+        updateServiceWorker(true);
+    };
 
     const close = () => {
         setOfflineReady(false);
@@ -37,7 +56,7 @@ function ReloadPrompt() {
                         )}
                     </div>
                     {needRefresh && (
-                        <button className="ReloadPrompt-toast-button" onClick={() => updateServiceWorker(true)}>
+                        <button className="ReloadPrompt-toast-button" onClick={handleReload}>
                             Reload
                         </button>
                     )}
