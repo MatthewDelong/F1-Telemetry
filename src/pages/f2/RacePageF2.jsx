@@ -173,7 +173,7 @@ export function RacePageF2({ championshipLevel }) {
         {/* Race 2 */}
         {raceResults2.length > 1 && (
           <div className="flex flex-col items-center md:w-1/2 bg-gradient-to-br from-[#012845] to-[#023358] p-64">
-            <p className="heading-2 mb-32">Feature Race</p>
+            <p className="heading-2 mb-32">Race</p>
             <div className="bg-glow-large p-24 rounded-lg w-[25rem] mb-32">
               {raceResults2.map((result, index) => (
                 <DriverCard

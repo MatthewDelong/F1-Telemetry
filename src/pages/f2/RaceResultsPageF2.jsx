@@ -57,7 +57,7 @@ const Top3Drivers = ({ year, circuitId, index, championshipLevel }) => {
         <div className="flex flex-col md:flex-row items-center md:justify-center gap-16">
           <div>
             <p className="uppercase text-sm text-center text-neutral-400 tracking-sm leading-none mb-24">
-              Race 1 Results
+              {championshipLevel === "F2" ? "Sprint Race" : "Race 1"} Results
             </p>
             {hasResults ? (
               <ul className="bg-glow-dark rounded-[2.4rem] race-results__list">
@@ -88,7 +88,7 @@ const Top3Drivers = ({ year, circuitId, index, championshipLevel }) => {
           {hasResults && top3RaceResults2.length > 1 && (
             <div>
               <p className="uppercase text-sm text-center text-neutral-400 tracking-sm leading-none mb-24">
-                Race 2 Results
+                {championshipLevel === "F2" ? "Race" : "Race 2"} Results
               </p>
               <ul className="bg-glow-dark rounded-[2.4rem] race-results__list">
                 {top3RaceResults2.map((result, index) => (
