@@ -174,15 +174,15 @@ export function LandingPage2025() {
 
   return (
     <div className="snap-container" ref={snapContainerRef}>
-      <section className="relative h-screen snap-start overflow-hidden flex items-center justify-center">
+      <section className="bg-black relative h-screen snap-start overflow-hidden flex items-center justify-center">
         <img
           src={heroImageSource}
           alt=""
           loading="eager"
           className="absolute inset-0 h-full w-full object-cover transition-opacity ease-in-out"
           style={{
-            opacity: isHeroImageVisible ? 1 : 0,
-            filter: "brightness(1.3) contrast(1.1)",
+            opacity: isHeroImageVisible ? 0.4 : 0,
+            filter: "brightness(1.2) contrast(1.0)",
             transitionDuration: `${HERO_FADE_MS}ms`,
           }}
           onError={(event) => {
@@ -194,7 +194,7 @@ export function LandingPage2025() {
             );
           }}
         />
-        <div className="absolute inset-0 bg-neutral-950/35" />
+
         <div className="mx-auto text-center px-16 relative z-10">
           <h1 className="heading-1 mb-16 leading-none">
             Go Beyond the Race Results

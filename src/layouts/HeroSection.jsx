@@ -2,7 +2,6 @@ import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useRef } from "react";
 import { LumaKeyVideo } from "../components";
 
-
 const HeroSection = ({ layoutMobile }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-20% 0px" });
@@ -79,7 +78,6 @@ const HeroSection = ({ layoutMobile }) => {
           style={{ filter: "brightness(1.1) contrast(1.1)" }}
         />
       </div>
-
     </section>
   );
 };
