@@ -39,10 +39,29 @@ export const LumaKeyVideo = ({
     const buffer = document.createElement("canvas");
     const bctx = buffer.getContext("2d", { alpha: false, willReadFrequently: true });
 
+    // Pre-load poster image for fallback
+    let posterImg = null;
+    if (poster) {
+      posterImg = new Image();
+      posterImg.src = poster;
+    }
+
     const render = () => {
       if (!video) return;
       
+      // If video is not ready or paused, draw the poster as a fallback
       if (video.paused || video.ended || video.readyState < 2) {
+        if (posterImg && posterImg.complete) {
+          const h = posterImg.height;
+          const w = posterImg.width;
+          if (w > 0 && h > 0) {
+            if (canvas.width !== w || canvas.height !== h) {
+              canvas.width = w;
+              canvas.height = h;
+            }
+            ctx.drawImage(posterImg, 0, 0);
+          }
+        }
         requestRef.current = requestAnimationFrame(render);
         return;
       }

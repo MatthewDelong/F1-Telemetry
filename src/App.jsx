@@ -164,7 +164,7 @@ function MainContent({ setSelectedYear, selectedYear, resultPage, resultPagePath
           <Route path="/social-media" element={<SocialMedia />} />
         </Routes>
       </div>
-      {location !== '/' && <Footer2025 />}
+      {location !== "/" && location !== "/about-us" && <Footer2025 />}
     </>
   );
 }

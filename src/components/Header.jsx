@@ -107,7 +107,7 @@ export const Header = () => {
       <header
         className={classNames("global-header max-md:transition-all", {
           "!top-[-58px]": !headerOpen && collapsible,
-          "!absolute": location === "/",
+          "!absolute": location === "/" || location === "/about-us",
         })}
         ref={headerRef}
       >

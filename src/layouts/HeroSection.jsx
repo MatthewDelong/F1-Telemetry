@@ -2,13 +2,14 @@ import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useRef } from "react";
 import { LumaKeyVideo } from "../components";
 
-const HeroSection = ({ layoutMobile }) => {
+const HeroSection = ({ layoutMobile, container }) => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-20% 0px" });
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
+    container: container,
   });
 
   // Apply parallax effect when scrolling
@@ -23,7 +24,7 @@ const HeroSection = ({ layoutMobile }) => {
   return (
     <section
       ref={sectionRef}
-      className="bg-black relative h-[85svh] sm:h-[calc(100vh-48px)] min-h-[480px] sm:min-h-[600px] flex items-center justify-center z-10"
+      className="bg-black relative h-[100dvh] snap-start mb-[-1px] flex items-center justify-center z-10"
     >
       {/* Background Video */}
       <video
@@ -43,7 +44,7 @@ const HeroSection = ({ layoutMobile }) => {
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         style={{ y: yTitle }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="text-center heading-1 absolute top-[10%] sm:top-[12%] mx-auto w-3/4 z-10"
+        className="text-center heading-1 absolute top-[14%] sm:top-[18%] mx-auto w-3/4 z-10"
       >
         Your Ultimate Destination for F1 Data and Analysis
       </motion.h1>
@@ -70,11 +71,11 @@ const HeroSection = ({ layoutMobile }) => {
         alt=""
       />
 
-      <div className="absolute bottom-[-16px] sm:bottom-[-24px] w-full flex justify-center z-20 pointer-events-none">
+      <div className="absolute bottom-[-2px] lg:bottom-[-20px] w-full flex justify-center z-20 pointer-events-none">
         <LumaKeyVideo
           src="/Media/pngSequence.mp4"
           poster="/images/HeroImage.png"
-          className="w-[110%] sm:w-[90%] lg:w-[85%] max-w-none drop-shadow-[0_-64px_64px_rgba(0,0,0,1)] mx-auto mb-[-8px]"
+          className="w-[90%] sm:w-[100%] lg:w-[105%] max-w-none drop-shadow-[0_-64px_64px_rgba(0,0,0,1)] mx-auto mb-0 lg:mb-[-4px]"
           style={{ filter: "brightness(1.1) contrast(1.1)" }}
         />
       </div>

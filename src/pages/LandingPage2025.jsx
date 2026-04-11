@@ -57,6 +57,24 @@ export function LandingPage2025() {
   }, []);
 
   useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Home") {
+        e.preventDefault();
+        snapContainerRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (e.key === "End") {
+        e.preventDefault();
+        snapContainerRef.current?.scrollTo({
+          top: snapContainerRef.current.scrollHeight,
+          behavior: "smooth",
+        });
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  useEffect(() => {
     if (isBelowLargeBreakpoint) {
       setHeroBgIndex(HERO_STATIC_SMALL_SCREEN_INDEX);
       setIsHeroImageVisible(true);
@@ -174,7 +192,7 @@ export function LandingPage2025() {
 
   return (
     <div className="snap-container" ref={snapContainerRef}>
-      <section className="bg-black relative h-screen snap-start overflow-hidden flex items-center justify-center">
+      <section className="bg-black relative h-[100dvh] snap-start overflow-hidden flex items-center justify-center">
         <img
           src={heroImageSource}
           alt=""
@@ -213,7 +231,7 @@ export function LandingPage2025() {
           </div>
         </div>
       </section>
-      <section className="h-screen snap-start relative flex items-center justify-center bg-neutral-950 bg-glow-dark-bottom overflow-hidden pt-[64px]">
+      <section className="h-[100dvh] snap-start relative flex items-center justify-center bg-neutral-950 bg-glow-dark-bottom overflow-hidden pt-[64px]">
         {latestResultsLayout()}
       </section>
 
