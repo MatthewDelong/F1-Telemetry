@@ -12,11 +12,8 @@ function ReloadPrompt() {
     } = useRegisterSW({
         onRegistered(r) {
             if (r) {
-                console.log('SW Registered:', r);
+                console.log('SW Registered');
                 registrationRef.current = r;
-                
-                // Immediate check for updates
-                r.update().catch(err => console.error('Initial SW update error:', err));
             }
         },
         onRegisterError(error) {
@@ -33,8 +30,8 @@ function ReloadPrompt() {
             }
         };
 
-        // Check for updates every 20 seconds
-        const intervalId = setInterval(checkUpdate, 20 * 1000);
+        // Check for updates every 60 seconds (less aggressive)
+        const intervalId = setInterval(checkUpdate, 60 * 1000);
 
         // Check for updates when the user switches back to the tab
         const handleVisibilityChange = () => {
@@ -58,19 +55,10 @@ function ReloadPrompt() {
     }, [offlineReady, needRefresh]);
 
     const handleReload = async () => {
-        console.log('Reloading PWA - clearing all caches...');
-        if ('caches' in window) {
-            try {
-                const names = await caches.keys();
-                await Promise.all(names.map(name => caches.delete(name)));
-                console.log('All caches cleared.');
-            } catch (err) {
-                console.error('Error clearing caches:', err);
-            }
-        }
-        
+        console.log('Requesting SW update...');
+        // updateServiceWorker(true) sends skipWaiting and then reloads the page 
+        // automatically when the new service worker takes control.
         await updateServiceWorker(true);
-        window.location.reload();
     };
 
     const close = () => {

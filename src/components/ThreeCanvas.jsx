@@ -398,7 +398,7 @@ export const ThreeCanvas = ({
 
     textureLoader.load(`/car25/${textureFile}`, (texture) => {
       texture.flipY = false;
-      texture.encoding = THREE.sRGBEncoding;
+      texture.colorSpace = THREE.SRGBColorSpace;
 
       new GLTFLoader().load("/car25/scene.gltf", (gltf) => {
         if (requestId !== currentLoadRequestRef.current) return;
