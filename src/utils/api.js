@@ -649,3 +649,14 @@ export const fetchRaceControl = async (sessionKey) => {
   }
 };
 
+export const fetchPitStops = async (sessionKey) => {
+  if (!sessionKey) return [];
+  const url = `${buildOpenF1Url("/pit")}?session_key=${sessionKey}`;
+  try {
+    const data = await fetchWithPersistentCache(url);
+    return data || [];
+  } catch (error) {
+    console.error("Error fetching pit stop data:", error);
+    return [];
+  }
+};

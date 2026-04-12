@@ -30,6 +30,7 @@ import {
   ConstructorCar,
   RangeSelector,
   RaceControl,
+  PitStopTimes,
 } from "../components";
 import Drawer from "../components/Drawer";
 import Accordion from "../components/Accordion";
@@ -698,6 +699,20 @@ export function RacePage() {
               <FastestLaps raceResults={raceResults} drivers={drivers} />
             ),
           },
+        (selectedSession === "Race" || selectedSession === "Sprint") && {
+          id: "pitstops",
+          label: "Pit Stops",
+          content: (
+            <PitStopTimes
+              sessionKey={selectedSessionKey}
+              raceResults={raceResults}
+              driversDetails={driversDetails}
+              driversColor={driversColor}
+              driverCode={selectedDriverAcronym}
+              showTitle={false}
+            />
+          ),
+        },
       ].filter(Boolean),
     [
       selectedSession,
