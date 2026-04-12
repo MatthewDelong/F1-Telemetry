@@ -50,7 +50,6 @@ export const DriverCard = (props) => {
           className="bg-glow border-neutral-400 border-[.1rem] p-4 bg-neutral-950 rounded-md z-[10]"
           trigger="hover"
           placement="top"
-          // open={true}
           arrow={false}
           content={
             <div className="p-4">
@@ -69,15 +68,13 @@ export const DriverCard = (props) => {
             icon={startPosition > endPosition ? "circle-up" : "circle-down"}
             className={classNames(
               "fa-xs",
-              startPosition > endPosition
-                ? "text-emerald-500"
-                : "text-rose-500",
+              startPosition > endPosition ? "text-emerald-500" : "text-rose-500",
             )}
           />
         </Popover>
       );
     }
-    return;
+    return null;
   };
 
   const driverImage = (
@@ -90,10 +87,7 @@ export const DriverCard = (props) => {
       }
       width={72}
       height={72}
-      className={classNames(
-        "absolute block bottom-[0px]",
-        "left-[28px]",
-      )}
+      className={classNames("absolute block bottom-[0px]", "left-[28px]")}
       style={{
         opacity: isInView ? 1 : 0,
         transition: `all 1s cubic-bezier(0.17, 0.55, 0.55, 1) .${index}s`,
@@ -122,121 +116,173 @@ export const DriverCard = (props) => {
           hidden: status === "cancelled",
           "bg-neutral-800": darkBG,
         },
-        isActive ? "bg-glow--active" : hasHover ? "bg-glow--hover" : "",
-        mobileSmall ? "rounded-sm mb-4" : "rounded-md",
+        mobileSmall ? "rounded-sm mb-1" : "rounded-md mb-[2px]",
       )}
       style={{ borderColor: isActive && `#${driverColor}` }}
     >
+      {/* Layout for List Items (P4+) */}
       <div
-        className={classNames("flex items-center justify-between w-full", {
-          "max-md:hidden": mobileSmall,
-          hidden: !layoutSmall,
-        })}
+        className={classNames(
+          "flex items-center justify-between w-full font-display",
+          {
+            "max-md:hidden": mobileSmall,
+            hidden: !layoutSmall,
+          },
+        )}
       >
-        <div className="flex items-center font-display leading-none text-sm">
+        <div className="flex items-center leading-none text-sm font-bold">
           <p
             className={classNames(
-              "w-48 bg-neutral-600 py-2 text-center rounded-l-md",
+              "w-48 bg-neutral-700/80 py-[1px] text-center rounded-l-sm text-[10px] shadow-inner",
             )}
           >
             P{isRace ? endPosition : index + 1}
           </p>
-          <span className="pl-16 mr-4">{driver.code}</span>
+          <span className="pl-12 mr-6 text-[13px] text-white brightness-125 uppercase tracking-wider">
+            {driver.code}
+          </span>
         </div>
-        <p className=" text-sm pr-8">{time}</p>
+        <div className="flex items-center pr-12 gap-8 h-full">
+          <p className="text-[13px] text-white font-medium opacity-90">
+            {time}
+          </p>
+          <div className="status-icons-wrapper flex flex-col items-center justify-center gap-[1px] min-w-[20px]">
+            {isFastestLapDriver && (
+              <Popover
+                aria-labelledby="default-popover"
+                className="bg-glow border-plum-500 border-[.1rem] rounded-md p-4 bg-neutral-950 z-[10]"
+                trigger="hover"
+                placement="top"
+                arrow={false}
+                content={
+                  <div className="p-4">
+                    <div className="bg-plum-500 text-center font-display rounded px-8 text-white">
+                      {fastestLapTime}
+                    </div>
+                    <div className="flex align-start justify-around mt-4">
+                      <div className="flex flex-col items-center px-4 text-center">
+                        <span className="text-[10px] uppercase opacity-70">
+                          Lap
+                        </span>
+                        <span className="font-display text-sm leading-tight text-white">
+                          {fastestLap?.lap || "-"}
+                        </span>
+                      </div>
+                      <div className="flex flex-col items-center px-4 text-center border-l border-white/10">
+                        <span className="text-[10px] uppercase opacity-70">
+                          Tyre
+                        </span>
+                        <span className="font-display text-sm leading-tight uppercase text-white">
+                          {getTireCompound(driver.code, fastestLap?.lap).charAt(
+                            0,
+                          )}
+                        </span>
+                      </div>
+                    </div>
+
+                    {fastestLapAverageSpeed && (
+                      <div className="flex flex-col items-center mt-8 pt-6 border-t border-white/5">
+                        <span className="text-[10px] uppercase opacity-70 underline underline-offset-2">
+                          Avg Speed
+                        </span>
+                        <div className="flex items-baseline gap-1 mt-1">
+                          <span className="font-display text-sm text-white">
+                            {fastestLapAverageSpeed?.speed}
+                          </span>
+                          <span className="text-[10px] opacity-60 uppercase">
+                            {fastestLapAverageSpeed?.units}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                }
+              >
+                <span className="fa-layers fa-fw fa-xs scale-90 cursor-help">
+                  <FontAwesomeIcon icon="circle" className="text-white" />
+                  <FontAwesomeIcon
+                    icon="clock"
+                    className="text-plum-500"
+                    transform="shrink-2"
+                  />
+                </span>
+              </Popover>
+            )}
+            {isRace && positionMovement()}
+          </div>
+        </div>
       </div>
+
+      {/* Layout for Hero Cards (P1-P3) */}
       <div
         className={classNames("flex items-center w-full", {
           "max-md:hidden": mobileSmall,
           hidden: layoutSmall,
         })}
       >
-        <p
+        <div
           className={classNames(
-            "driver-card-position text-[24px] font-display px-8 py-4 bg-neutral-700 rounded-l-md flex items-center",
+            "driver-card-position text-[18px] font-display px-6 py-1 bg-neutral-700/80 rounded-l-md flex items-center h-full min-h-[44px]",
           )}
         >
           P{isRace ? endPosition : index + 1}
-        </p>
+        </div>
         {driverImage}
-        <div className="grow py-4 pl-[10px] pr-12 text-right">
-          <span className="heading-4 mb-12 pl-60">{driver.code}</span>
-          <div className="divider-glow w-full" />
-          <p className={classNames("text-base -mt-4")}>{time}</p>
+        <div className="grow py-1 pl-[10px] pr-12 text-right flex flex-col justify-center relative">
+          <div className="flex items-center justify-end gap-12">
+            <span className="heading-4 pl-60 uppercase font-black italic tracking-tighter text-[18px]">
+              {driver.code}
+            </span>
+            <div className="status-icons-wrapper flex flex-col items-center justify-center gap-[1px] min-w-[20px]">
+              {isFastestLapDriver && (
+                <Popover
+                  aria-labelledby="hero-popover"
+                  className="bg-glow border-plum-500 border-[.1rem] rounded-md p-4 bg-neutral-950 z-[10]"
+                  trigger="hover"
+                  placement="top"
+                  arrow={false}
+                  content={
+                    <div className="p-4 text-center">
+                      <div className="bg-plum-500 text-[12px] font-display rounded px-8 inline-block text-white">
+                        {fastestLapTime}
+                      </div>
+                    </div>
+                  }
+                >
+                  <span className="fa-layers fa-fw fa-xs scale-110 cursor-help">
+                    <FontAwesomeIcon icon="circle" className="text-white" />
+                    <FontAwesomeIcon
+                      icon="clock"
+                      className="text-plum-500"
+                      transform="shrink-2"
+                    />
+                  </span>
+                </Popover>
+              )}
+              {isRace && positionMovement()}
+            </div>
+          </div>
+          <div className="divider-glow w-full my-4" />
+          <p className={classNames("text-base font-bold text-white/90")}>
+            {time}
+          </p>
         </div>
       </div>
+
+      {/* Mobile Small Layout */}
       {mobileSmall && (
         <div className="md:hidden">
           <div className="flex items-center text-xs font-display">
             <p className="w-24 bg-neutral-600 py-1 text-center rounded-tl-[.4rem]">
               P{isRace ? endPosition : index + 1}
             </p>
-            <p className="pl-8 pr-8">{driver.code}</p>
+            <p className="pl-8 pr-8 font-bold text-white">{driver.code}</p>
           </div>
           <div>
-            <p className="text-sm pl-8">{time}</p>
+            <p className="text-sm pl-8 font-medium text-white">{time}</p>
           </div>
         </div>
       )}
-
-      <div className="fastest-lap-popover popover-wrapper flex flex-col items-center absolute -right-8">
-        {isFastestLapDriver && (
-          <Popover
-            aria-labelledby="default-popover"
-            className="bg-glow border-plum-500 border-[.1rem] rounded-md p-4 bg-neutral-950 z-[10]"
-            trigger="hover"
-            placement="top"
-            // open={true}
-            arrow={false}
-            content={
-              <div className="p-4">
-                <div className="bg-plum-500 text-center font-display rounded">
-                  {fastestLapTime}
-                </div>
-
-                <div className="flex align-start justify-around">
-                  <div className="flex flex-col items-center">
-                    <span className="text-sm">Lap</span>
-                    <span className="font-display">
-                      {fastestLap?.lap || "-"}
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <span className="text-sm">Tyre</span>
-                    <span className="font-display">
-                      {getTireCompound(driver.code, fastestLap?.lap).charAt(0)}
-                    </span>
-                  </div>
-                </div>
-
-                {fastestLapAverageSpeed && (
-                  <div className="flex flex-col items-center">
-                    <span className="text-sm">Avg Speed</span>
-                    <div>
-                      <span className="font-display">
-                        {fastestLapAverageSpeed?.speed}
-                      </span>
-                      <span className="text-sm">
-                        {fastestLapAverageSpeed?.units}
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </div>
-            }
-          >
-            <span className="fa-layers fa-fw fa-xs">
-              <FontAwesomeIcon icon="circle" className="text-white" />
-              <FontAwesomeIcon
-                icon="clock"
-                className="text-plum-500"
-                transform="shrink-2"
-              />
-            </span>
-          </Popover>
-        )}
-        {isRace && positionMovement()}
-      </div>
     </div>
   );
 };

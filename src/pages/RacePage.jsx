@@ -581,7 +581,7 @@ export function RacePage() {
             fastestLap={result.FastestLap}
             layoutSmall={index > 2}
             mobileSmall
-            isRace={false}
+            isRace={true}
           />
         ))}
       </ul>
@@ -837,7 +837,7 @@ export function RacePage() {
               >
                 <button
                   className={classNames("tracking-sm uppercase block", {
-                    "text-plum-300": !haloView || !topFollowView,
+                    "text-plum-300": !haloView && !topFollowView,
                   })}
                   onClick={() => {
                     setHaloView(false);
