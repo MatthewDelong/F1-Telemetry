@@ -1,6 +1,8 @@
 import teamColors from "./teamColors.json";
 import { buildOpenF1Url, OPENF1_API_BASE_URL } from "../config/openf1";
 
+const CANCELLED_RACES_2026 = ["Bahrain Grand Prix", "Saudi Arabian Grand Prix"];
+
 /**
  * Normalizes a date string to the format expected by the OpenF1 API (YYYY-MM-DDTHH:MM:SS.mmm)
  * @param {string|Date} date - The date to normalize
@@ -141,7 +143,19 @@ export const fetchRaceMeetingKeys = async (selectedYear) => {
       throw new Error('Failed to fetch races');
     }
     const races = await raceResponse.json();
-    return races[selectedYear]
+    const yearRaces = races[selectedYear];
+
+    if (Number(selectedYear) === 2026 && yearRaces) {
+      const filteredRaces = {};
+      for (const [key, value] of Object.entries(yearRaces)) {
+        if (!CANCELLED_RACES_2026.includes(key)) {
+          filteredRaces[key] = value;
+        }
+      }
+      return filteredRaces;
+    }
+
+    return yearRaces;
   } catch(error) {
     console.error('Error fetching data:', error);
   }
@@ -153,11 +167,19 @@ export const fetchRacesAndSessions = async (selectedYear) => {
       // Fetch races
       const racesData = await fetchWithPersistentCache(`${buildOpenF1Url("/meetings")}?year=${selectedYear}`);
 
+      // Filter out cancelled races for 2026
+      let filteredRacesData = racesData || [];
+      if (Number(selectedYear) === 2026) {
+        filteredRacesData = filteredRacesData.filter(race => 
+          !CANCELLED_RACES_2026.includes(race.meeting_name)
+        );
+      }
+
       // Fetch sessions (using cached sessionsData if possible, but specifically for 'Race' filter)
       const f1apiMeetingSessionsList = await fetchWithPersistentCache(`${buildOpenF1Url("/sessions")}?year=${selectedYear}&session_name=Race`);
 
       // Filter races based on meeting_key presence in sessions
-      const filteredRaces = (racesData || []).filter(race => 
+      const filteredRaces = filteredRacesData.filter(race => 
           Array.isArray(f1apiMeetingSessionsList) && f1apiMeetingSessionsList.some(session => session.meeting_key === race.meeting_key)
       );
       // console.log('12', filteredRaces);
@@ -173,10 +195,14 @@ export const fetchRaceDetails = async (selectedYear) => {
   try {
     const response = await fetch(url);
     if (response.ok) {
-      // const data = await response.json();
-      // const races = data.MRData.RaceTable.Races;
-      const races = await response.json();
-      const raceResultsPromises = races.map(race => {
+      let races = await response.json();
+
+      // Filter out cancelled races for 2026
+      if (Number(selectedYear) === 2026) {
+        races = races.filter(race => !CANCELLED_RACES_2026.includes(race.raceName));
+      }
+
+      const raceResultsPromises = races.map((race, index) => {
         if (new Date(race.date) < new Date()) {
           return fetchRaceResults(selectedYear, race.round)
             .then(results => ({
@@ -184,11 +210,13 @@ export const fetchRaceDetails = async (selectedYear) => {
               results,
             }));
         } else {
-          return Promise.resolve({ raceName: race.raceName, 
+          return Promise.resolve({ 
+            raceName: race.raceName, 
             date: race.date,
             season: race.season,
             round: race.round,
-            time: race.time, });
+            time: race.time, 
+          });
         }
       });
 
@@ -567,7 +595,13 @@ export const fetchMostRecentRace = async (selectedYear) => {
     if (!raceDetailsResponse.ok) {
       throw new Error('Failed to fetch race details');
     }
-    const raceDetails = await raceDetailsResponse.json();    
+    let raceDetails = await raceDetailsResponse.json();    
+
+    // Filter out cancelled races for 2026
+    if (Number(selectedYear) === 2026) {
+      raceDetails = raceDetails.filter(race => !CANCELLED_RACES_2026.includes(race.raceName));
+    }
+
     // Fetch the meeting keys
     const meetingKeys = await fetchRaceMeetingKeys(selectedYear);    
     // Filter out races that haven't happened yet

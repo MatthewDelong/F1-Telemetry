@@ -60,18 +60,12 @@ export function RaceResultsPage({ selectedYear }) {
   const processedRaces = useMemo(() => {
     let effectiveRound = 1;
     return raceDetails.map(race => {
-      const isCancelled = Number(selectedYear) === 2026 && 
-        (race.raceName === "Bahrain Grand Prix" || race.raceName === "Saudi Arabian Grand Prix");
-      
-      const displayRound = isCancelled ? null : effectiveRound++;
-
       return {
         ...race,
-        isCancelled,
-        displayRound
+        displayRound: effectiveRound++
       };
     });
-  }, [raceDetails, selectedYear]);
+  }, [raceDetails]);
 
   return (
     <div className="standard-scroll-container">
@@ -89,19 +83,15 @@ export function RaceResultsPage({ selectedYear }) {
               className={classNames(
                 "bg-glow-dark rounded-[2.4rem] mt-[7.2rem] lg:mt-56 px-32 group duration-150 transition-transform ease-in-out relative",
                 {
-                  "hover:scale-[.98] hover:cursor-pointer": !race.isCancelled,
-                  "is-cancelled": race.isCancelled
+                  "hover:scale-[.98] hover:cursor-pointer": true,
                 },
                 `${race.raceName}`,
               )}
               onClick={() => {
-                if (!race.isCancelled && race.results && race.results.length > 0)
+                if (race.results && race.results.length > 0)
                   navigateToRaceResult(race);
               }}
             >
-              {race.isCancelled && (
-                <div className="cancelled-banner">CANCELLED</div>
-              )}
               {race.results && race.results.length > 0 ? (
                 <ul className="race-results__list -mt-48 group-hover:scale-[1.10] duration-150 transition-transform ease-in-out">
                   {race.results.map((result, resultIndex) => (
@@ -128,7 +118,7 @@ export function RaceResultsPage({ selectedYear }) {
               )}
               <div className="text-center mb-8 mt-12">
                 <div className="uppercase text-xs text-neutral-400 tracking-sm leading-none mb-4 mt-24">
-                  {race.isCancelled ? "Venue Cancelled" : `Round ${race.displayRound}`}
+                  {`Round ${race.displayRound}`}
                 </div>
                 <p className="font-display tracking-xs leading-none mb-4 font-bold">
                   {race.raceName}
@@ -142,7 +132,7 @@ export function RaceResultsPage({ selectedYear }) {
                 disabled
                 className="opacity-0 group-hover:opacity-100 absolute bottom-[-.8rem] left-1/2 -translate-x-1/2"
               >
-                {race.isCancelled ? "No Data" : "View Race Data"}
+                View Race Data
               </Button>
             </li>
           ))}
