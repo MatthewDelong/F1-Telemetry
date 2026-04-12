@@ -54,7 +54,7 @@ export const Footer2025 = ({ className }) => {
         </div>
 
         {/* Right side: Page path links */}
-        <div className="flex flex-col md:flex-row md:items-start gap-16 uppercase">
+        <div className="flex flex-col md:flex-row md:items-start gap-24 uppercase">
           <div className="flex flex-col gap-4">
             <F1Links />
           </div>
@@ -68,7 +68,7 @@ export const Footer2025 = ({ className }) => {
       </div>
 
       {/* Footer Bottom: Year and Copyright */}
-      <div className="text-center text-neutral-400 mt-6 bg-gradient-to-b from-neutral-950/30 to-neutral-950/10 px-16 pb-16 text-xs">
+      <div className="text-center text-neutral-400 mt-6 bg-gradient-to-b from-neutral-950/30 to-neutral-950/10 px-16 pb-16 text-base">
         <div className="divider-glow-dark mb-6" />
         <p className="mb-8">
           This website is not associated in any way with the Formula 1

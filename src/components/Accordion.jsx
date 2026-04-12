@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { FaChevronDown } from "react-icons/fa";
 import classNames from "classnames";
 
-const Accordion = ({ title, children, className, contentClasses, defaultOpen = false }) => {
+const Accordion = ({ title, children, className, contentClasses, titleClassName, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
@@ -11,7 +11,7 @@ const Accordion = ({ title, children, className, contentClasses, defaultOpen = f
     <div className={classNames(className, "border-b border-neutral-700")}>
       {/* Header */}
       <button
-        className="w-full flex justify-between items-center py-16 px-8 tracking-sm uppercase"
+        className={classNames("w-full flex justify-between items-center py-16 px-8 tracking-sm uppercase", titleClassName)}
         onClick={() => setIsOpen(!isOpen)}
       >
         {title}

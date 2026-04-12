@@ -146,7 +146,7 @@ export const Header = () => {
 
           {/* Desktop */}
           <div className="flex items-center gap-16 max-md:hidden">
-            <div className="relative w-max uppercase text-base ">
+            <div className="relative w-max uppercase text-lg ">
               <Link
                 to="/about-us"
                 className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs"
@@ -154,7 +154,7 @@ export const Header = () => {
                 About
               </Link>
             </div>
-            <div className="relative group w-max uppercase text-base ">
+            <div className="relative group w-max uppercase text-lg ">
               <button className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs">
                 Results
                 <FontAwesomeIcon
@@ -176,7 +176,7 @@ export const Header = () => {
                 </div>
               </div>
             </div>
-            <div className="relative group w-max text-base ">
+            <div className="relative group w-max text-lg ">
               <button className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs">
                 Comparisons
                 <FontAwesomeIcon
@@ -225,7 +225,7 @@ export const Header = () => {
             </div>
             <div className="relative w-max" ref={raceViewerRef}>
               <button
-                className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs text-base "
+                className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs text-lg "
                 onClick={() =>
                   setRaceViewerDropdownOpen(!raceViewerDropdownOpen)
                 }
@@ -268,7 +268,7 @@ export const Header = () => {
           <div className="pt-16 px-32">
             <Link
               to="/about-us"
-              className="w-full flex justify-between items-center py-16 px-8 tracking-sm uppercase"
+              className="w-full flex justify-between items-center py-16 px-8 tracking-sm uppercase text-lg"
               onClick={toggleOpen}
             >
               About
