@@ -110,7 +110,7 @@ export const ThreeCanvas = ({
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(
       currentMount.clientWidth,
-      currentMount.clientHeight || 544,
+      currentMount.clientHeight || 700,
     );
     renderer.setClearColor(0x000000, 0);
     currentMount.appendChild(renderer.domElement);
@@ -125,7 +125,7 @@ export const ThreeCanvas = ({
     // Standard Camera
     cameraRef.current = new THREE.PerspectiveCamera(
       40,
-      currentMount.clientWidth / (currentMount.clientHeight || 544),
+      currentMount.clientWidth / (currentMount.clientHeight || 700),
       0.5,
       30000,
     );
@@ -133,10 +133,10 @@ export const ThreeCanvas = ({
 
     // Car Cameras
     const aspect =
-      currentMount.clientWidth / (currentMount.clientHeight || 544);
+      currentMount.clientWidth / (currentMount.clientHeight || 700);
 
     haloCameraRef.current = new THREE.PerspectiveCamera(75, aspect, 0.01, 5000);
-    haloCameraRef.current.position.set(0, 0.65, 0.4); // Y is Height, Z is Depth
+    haloCameraRef.current.position.set(0, 0.59, 0.33); // Y is Height, Z is Depth
     haloCameraRef.current.rotation.set(Math.PI / 10, Math.PI, 0);
 
     topFollowCameraRef.current = new THREE.PerspectiveCamera(

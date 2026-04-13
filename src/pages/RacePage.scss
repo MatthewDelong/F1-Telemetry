@@ -1,11 +1,8 @@
 @mixin viewHeight {
   height: 300px;
   @media (min-width: 640px) {
-    height: 544px;
+    height: 600px;
   }
-  // @media (min-width: 1280px) {
-  //   height: 638px;
-  // }
 }
 
 .race-page {
