@@ -27,6 +27,7 @@ export const LumaKeyVideo = ({
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const requestRef = useRef(null);
+  const hasRenderedRef = useRef(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -49,9 +50,12 @@ export const LumaKeyVideo = ({
     const render = () => {
       if (!video) return;
       
-      // If video is not ready or paused, draw the poster as a fallback
-      if (video.paused || video.ended || video.readyState < 2) {
-        if (posterImg && posterImg.complete) {
+      // If video is not ready, paused, or ended, determine if we should draw the poster
+      const isNotPlaying = video.paused || video.ended || video.readyState < 2;
+      
+      if (isNotPlaying) {
+        // Only draw poster if we haven't rendered a frame yet
+        if (!hasRenderedRef.current && posterImg && posterImg.complete) {
           const h = posterImg.height;
           const w = posterImg.width;
           if (w > 0 && h > 0) {
@@ -62,6 +66,7 @@ export const LumaKeyVideo = ({
             ctx.drawImage(posterImg, 0, 0);
           }
         }
+        // Keep the render loop going to catch when the video starts again
         requestRef.current = requestAnimationFrame(render);
         return;
       }
@@ -82,7 +87,8 @@ export const LumaKeyVideo = ({
         bctx.drawImage(video, 0, 0);
 
         // 2. Get pixel data from buffer
-        const fullData = bctx.getImageData(0, 0, fullWidth, h).data;
+        const imageData = bctx.getImageData(0, 0, fullWidth, h);
+        const fullData = imageData.data;
         
         // 3. Create output image data (left half size)
         const output = ctx.createImageData(w, h);
@@ -108,6 +114,7 @@ export const LumaKeyVideo = ({
         }
 
         ctx.putImageData(output, 0, 0);
+        hasRenderedRef.current = true;
       }
 
       requestRef.current = requestAnimationFrame(render);
