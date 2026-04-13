@@ -880,6 +880,7 @@ export function RacePage() {
                   })}
                   onClick={() => {
                     setTopFollowView(true);
+                    setHaloView(false);
                     setIsDrawerOpen(false);
                   }}
                 >

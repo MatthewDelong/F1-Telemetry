@@ -136,8 +136,8 @@ export const ThreeCanvas = ({
       currentMount.clientWidth / (currentMount.clientHeight || 544);
 
     haloCameraRef.current = new THREE.PerspectiveCamera(75, aspect, 0.01, 5000);
-    haloCameraRef.current.position.set(0, 0.8, 0.1); // Move back into cockpit to ensure visibility
-    haloCameraRef.current.rotation.set(Math.PI / 12, Math.PI, 0);
+    haloCameraRef.current.position.set(0, 0.65, 0.4); // Y is Height, Z is Depth
+    haloCameraRef.current.rotation.set(Math.PI / 10, Math.PI, 0);
 
     topFollowCameraRef.current = new THREE.PerspectiveCamera(
       72,
@@ -145,8 +145,8 @@ export const ThreeCanvas = ({
       0.1,
       5000,
     );
-    topFollowCameraRef.current.position.set(0, 5, -12); // Steady follow perspective
-    topFollowCameraRef.current.rotation.set(Math.PI / 6, Math.PI, 0);
+    topFollowCameraRef.current.position.set(0, 5, -15); // Y is Height, Z is Depth
+    topFollowCameraRef.current.rotation.set(Math.PI / 8, Math.PI, 0);
 
     // Progressive Trail
     const MAX_TRAIL = 800;
@@ -194,7 +194,7 @@ export const ThreeCanvas = ({
               (next.y - sync.telemetryCenter.y) * sync.telemetryScale;
 
             new TWEEN.Tween(carModelRef.current.position)
-              .to({ x: targetX, y: targetY, z: 0 }, 12)
+              .to({ x: targetX, y: targetY, z: 0.06 }, 12)
               .onUpdate(() => {
                 if (!carModelRef.current) return;
                 const dx = targetX - oldPos.x;
