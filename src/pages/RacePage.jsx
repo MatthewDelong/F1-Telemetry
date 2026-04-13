@@ -538,7 +538,7 @@ export function RacePage() {
           if (!raceSession) throw new Error("Race session not found");
           const sessionKey = raceSession.session_key;
 
-          const scaleFactor = 1;
+          const scaleFactor = 1500;
 
           // Fetch location data using sessionKey, driverId (from state), startTime, and endTime
           const locationData = await fetchLocationData(

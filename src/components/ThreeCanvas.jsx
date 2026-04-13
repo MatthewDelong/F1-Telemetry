@@ -56,22 +56,22 @@ export const ThreeCanvas = ({
     topFollowView,
     driverColor,
     driverSelected,
-    calibrated: false,
+    calibrated: true, // Always calibrated in simplified model
     telemetryCenter: new THREE.Vector2(0, 0),
     telemetryScale: 1.0,
     mapDimension: 0,
-    theta: -Math.PI / 2,
-    cameraHeight: 14,
-    radius: 25,
+    theta: (-131 * Math.PI) / 180,
+    cameraHeight: 10,
+    radius: 9,
   });
 
   // 3. UI State
   const [isCircuitLoaded, setIsCircuitLoaded] = useState(false);
-  const [isCalibrated, setIsCalibrated] = useState(false);
+  const [isCalibrated, setIsCalibrated] = useState(true);
   const [driverDetails, setDriverDetails] = useState(null);
-  const [theta, setTheta] = useState(-Math.PI / 2);
-  const [cameraHeight, setCameraHeight] = useState(14);
-  const [radius, setRadius] = useState(25);
+  const [theta, setTheta] = useState((-131 * Math.PI) / 180);
+  const [cameraHeight, setCameraHeight] = useState(10);
+  const [radius, setRadius] = useState(9);
 
   // Dynamic Prop Sync
   useEffect(() => {
@@ -194,7 +194,7 @@ export const ThreeCanvas = ({
               (next.y - sync.telemetryCenter.y) * sync.telemetryScale;
 
             new TWEEN.Tween(carModelRef.current.position)
-              .to({ x: targetX, y: targetY, z: 0.15 }, 12)
+              .to({ x: targetX, y: targetY, z: 0 }, 12)
               .onUpdate(() => {
                 if (!carModelRef.current) return;
                 const dx = targetX - oldPos.x;
@@ -234,7 +234,7 @@ export const ThreeCanvas = ({
             const p = pts[i];
             posArr[i * 3] = p.x;
             posArr[i * 3 + 1] = p.y;
-            posArr[i * 3 + 2] = p.z;
+            posArr[i * 3 + 2] = p.z + 0.05; // Elevation offset for trail visibility
             const fade = (i + 1) / pts.length;
             colArr[i * 3] = baseCol.r * fade;
             colArr[i * 3 + 1] = baseCol.g * fade;
@@ -292,31 +292,15 @@ export const ThreeCanvas = ({
       if (mapRef.current) currentScene.remove(mapRef.current);
 
       const map = gltf.scene;
+      map.scale.set(0.1, 0.1, 0.1);
       map.rotation.x = Math.PI / 2;
-
-      // Calculate Precision Bounds
-      const box = new THREE.Box3().setFromObject(map);
-      const center = new THREE.Vector3();
-      box.getCenter(center);
-      map.position.sub(center); // Align geometric center to scene origin (0,0,0)
-
-      const centeredBox = new THREE.Box3().setFromObject(map);
-      const size = new THREE.Vector3();
-      centeredBox.getSize(size);
-      const dim = Math.max(size.x, size.y);
-
-      setRadius(dim * 1.5);
-      setCameraHeight(dim * 0.82);
+      map.position.set(0, 0, 0);
 
       currentScene.add(map);
       mapRef.current = map;
 
-      syncRef.current.mapDimension = dim;
-      syncRef.current.calibrated = false;
-
       setIsCircuitLoaded(true);
-      setIsCalibrated(false);
-      console.log("[THREE] Circuit Framed Successfully. MaxDim:", dim);
+      console.log("[THREE] Original Map Loaded and Scaled (0.1)");
     });
   }, [MapFile]);
 
@@ -330,39 +314,6 @@ export const ThreeCanvas = ({
     )
       return;
     locDataRef.current = [...locData];
-
-    const sync = syncRef.current;
-    if (!sync.calibrated && sync.mapDimension > 0) {
-      try {
-        let minX = Infinity,
-          maxX = -Infinity,
-          minY = Infinity,
-          maxY = -Infinity;
-        locData.forEach((p) => {
-          if (p.x < minX) minX = p.x;
-          if (p.x > maxX) maxX = p.x;
-          if (p.y < minY) minY = p.y;
-          if (p.y > maxY) maxY = p.y;
-        });
-
-        const diff = Math.max(maxX - minX, maxY - minY);
-        if (diff > 0) {
-          sync.telemetryCenter = new THREE.Vector2(
-            (minX + maxX) / 2,
-            (minY + maxY) / 2,
-          );
-          sync.telemetryScale = sync.mapDimension / diff;
-          sync.calibrated = true;
-          setIsCalibrated(true);
-          console.log(
-            "[THREE] Coordinate Mapping Complete. Scale:",
-            sync.telemetryScale.toFixed(4),
-          );
-        }
-      } catch (err) {
-        console.error("[THREE] Calibration Failed:", err);
-      }
-    }
   }, [locData, isCircuitLoaded]);
 
   // 7. Driver Car Population
@@ -404,22 +355,12 @@ export const ThreeCanvas = ({
         if (requestId !== currentLoadRequestRef.current) return;
 
         const car = gltf.scene;
-        const size = syncRef.current.mapDimension * 0.0135;
-        car.scale.set(size, size, size);
+        car.scale.set(0.1, 0.1, 0.1);
         car.rotation.x = Math.PI / 2;
         car.rotation.y = -Math.PI;
 
-        const startPos = locDataRef.current[0] || {
-          x: syncRef.current.telemetryCenter.x,
-          y: syncRef.current.telemetryCenter.y,
-        };
-        car.position.set(
-          (startPos.x - syncRef.current.telemetryCenter.x) *
-            syncRef.current.telemetryScale,
-          (startPos.y - syncRef.current.telemetryCenter.y) *
-            syncRef.current.telemetryScale,
-          0.15,
-        );
+        const startPos = locDataRef.current[0] || { x: 0, y: 0 };
+        car.position.set(startPos.x, startPos.y, 0);
 
         car.traverse((o) => {
           if (o.isMesh && o.material && o.material.name === "Body") {
