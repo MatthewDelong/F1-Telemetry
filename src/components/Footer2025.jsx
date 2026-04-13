@@ -5,7 +5,7 @@ import { FaLinkedin, FaGlobe, FaInstagram } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { F1TelemetryLogo as Logo } from "./F1TelemetryLogo";
 import { Button } from "./Button";
-import { F1ALinks, F1Links, F2Links } from "./Links";
+import { F1ALinks, F1Links, F2Links, LegalLinks } from "./Links";
 import { getCurrentYear } from "../utils/currentYear";
 
 const currentYear = getCurrentYear();
@@ -63,6 +63,9 @@ export const Footer2025 = ({ className }) => {
           </div>
           <div className="flex flex-col gap-4">
             <F1ALinks />
+          </div>
+          <div className="flex flex-col gap-4">
+            <LegalLinks />
           </div>
         </div>
       </div>

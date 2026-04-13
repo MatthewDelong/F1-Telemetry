@@ -36,5 +36,6 @@ export { default as ReloadPrompt } from './ReloadPrompt'
 export { default as RaceControl } from './RaceControl'
 export * from './LumaKeyVideo'
 export * from './PitStopTimes'
+export { default as CookieBanner } from './CookieBanner'
 
 

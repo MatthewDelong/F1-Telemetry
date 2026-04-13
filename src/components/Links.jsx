@@ -167,3 +167,35 @@ export const F2Links = ({ accordion = false, onClick }) => {
     </>
   );
 };
+export const LegalLinks = ({ accordion = false, onClick }) => {
+  const links = (
+    <>
+      <Link
+        to="/privacy-policy"
+        className="hover:text-gray-300 text-xl"
+        onClick={onClick}
+      >
+        Privacy Policy
+      </Link>
+    </>
+  );
+  return accordion ? (
+    <Accordion
+      title="Legal"
+      contentClasses="flex flex-col gap-8 items-start"
+      titleClassName="text-lg font-bold"
+    >
+      {links}
+    </Accordion>
+  ) : (
+    <>
+      <div>
+        <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
+          Legal
+        </p>
+        <div className="divider-glow-dark mt-8 border-t border-neutral-700" />
+      </div>
+      {links}
+    </>
+  );
+};

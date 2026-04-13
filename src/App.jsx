@@ -6,7 +6,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 
-import { Header, Footer2025, ResultsSelector, ReloadPrompt } from './components';
+import { Header, Footer2025, ResultsSelector, ReloadPrompt, CookieBanner } from './components';
 import { F1ALogo } from './components/F1ALogo';
 import { F2Logo } from './components/F2Logo';
 import { 
@@ -26,7 +26,8 @@ import {
   RaceResultsPageF2, 
   RacePageF2, 
   DriverStandingsF2, 
-  ConstructorStandingsF2
+  ConstructorStandingsF2,
+  PrivacyPolicy
 } from './pages'; 
 import { ScrollToTop } from './utils/ScrollToTop';
 import { getCurrentYear } from './utils/currentYear';
@@ -68,6 +69,7 @@ function App() {
           setResultPagePath={setResultPagePath} 
         />
         <ReloadPrompt />
+        <CookieBanner />
       </Router>
     </div>
   );
@@ -162,6 +164,7 @@ function MainContent({ setSelectedYear, selectedYear, resultPage, resultPagePath
           <Route path="/f2/constructor-standings" element={<ConstructorStandingsF2 selectedYear={selectedYear} championshipLevel="F2" />} />
           {/* Social Media Routes - not publicly available */}
           <Route path="/social-media" element={<SocialMedia />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         </Routes>
       </div>
       {location !== "/" && location !== "/about-us" && <Footer2025 />}
