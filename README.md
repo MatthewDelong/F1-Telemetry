@@ -20,7 +20,7 @@
 
 ## About
 
-F1-Telemetry is a fork of the original [f1nsight](https://github.com/praneeth7781/f1nsight-api-2) project, refactored to **React 19** and **Vite 8** with additional features and enhancements. It's an interactive web application built for motorsport fans who want to go deeper than the broadcast — providing detailed race analytics, real-time telemetry visualisation, driver comparisons, and a 3D race viewer across **Formula 1**, **Formula 2**, and **F1 Academy**.
+F1-Telemetry is a fork of the original [f1nsight](https://github.com/adityakotha03/F1nsight) project, refactored to **React 19** and **Vite 8** with additional features and enhancements. It's an interactive web application built for motorsport fans who want to go deeper than the broadcast — providing detailed race analytics, real-time telemetry visualisation, driver comparisons, and a 3D race viewer across **Formula 1**, **Formula 2**, and **F1 Academy**.
 
 > **Attribution** — This project builds upon the work of the original f1nsight developers. Driver comparison data continues to be powered by the [f1nsight-api-2](https://github.com/praneeth7781/f1nsight-api-2) repository.
 
@@ -76,7 +76,7 @@ npm install
 npm run dev
 ```
 
-The app will be available at **http://localhost:5173** (or the port shown in your terminal).
+The app will be available at **http://localhost:3006** (or the port shown in your terminal).
 
 ### Production Build
 
