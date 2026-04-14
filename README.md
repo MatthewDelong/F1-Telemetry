@@ -156,12 +156,12 @@ F1nsight is deployed as a static site on IONOS. Key deployment notes:
 
 ## Data Sources
 
-F1nsight draws from a multi-tier data ecosystem:
+This project pulls data from four sources:
 
-- **[OpenF1 API](https://openf1.org)** — Real-time telemetry, track positioning, and stint data.
-- **[f1nsight-api-2](https://github.com/praneeth7781/f1nsight-api-2)** — Primary source for driver comparison analytics.
-- **F1nsight Historical Engine** — Historical race results, driver rankings, and seasonal standings.
-- **F1 Academy & F2 API** — Dedicated data streams for junior categories.
+- **[OpenF1 API](https://openf1.org)** — Real-time and historical telemetry, track positioning, and stint data.
+- **[f1nsight-api-2](https://github.com/praneeth7781/f1nsight-api-2)** — Race results, driver standings, qualifying data, constructor stats, and head-to-head comparison analytics.
+- **[f1aapi](https://ant-dot-comm.github.io/f1aapi/)** — Custom API for F1 Academy race results, driver info, and standings.
+- **[f2api](https://ant-dot-comm.github.io/f2api/)** — Custom API for Formula 2 race results, driver info, and standings.
 
 ---
 
