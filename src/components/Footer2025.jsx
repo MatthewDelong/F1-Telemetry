@@ -75,9 +75,9 @@ export const Footer2025 = ({ className }) => {
         <div className="divider-glow-dark mb-6" />
         <p className="mb-8">
           This website is not associated in any way with the Formula 1
-          companies. F1, FORMULA ONE, FORMULA 1, F1 ACADEMY, FIA FORMULA ONE
-          WORLD CHAMPIONSHIP, GRAND PRIX and related marks are trade marks of
-          Formula One Licensing B.V.
+          companies. F1, FORMULA ONE, FORMULA 1, F2, FORMULA 2, FIA FORMULA 2
+          CHAMPIONSHIP, F1 ACADEMY, FIA FORMULA ONE WORLD CHAMPIONSHIP, GRAND
+          PRIX and related marks are trade marks of Formula One Licensing B.V.
         </p>
         <p>&copy; {currentYear} F1-Telemetry</p>
       </div>
