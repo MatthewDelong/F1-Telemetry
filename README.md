@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="public/images/HeroImage.png" alt="F1nsight Hero" width="720" />
+  <img src="public/images/HeroImage.png" alt="F1-Telemetry Hero" width="720" />
 </p>
 
-<h1 align="center">F1nsight</h1>
+<h1 align="center">F1-Telemetry</h1>
 
 <p align="center">
   <strong>Interactive Formula 1, F2 &amp; F1 Academy race analytics — powered by real telemetry data.</strong>
@@ -179,4 +179,4 @@ This project is available under a [custom open-source license](LICENSE.md) — f
 
 ## Disclaimer
 
-F1nsight is an **unofficial** fan project and is not associated with Formula One companies. _F1, FORMULA ONE, FORMULA 1, FIA FORMULA ONE WORLD CHAMPIONSHIP, GRAND PRIX_, and related marks are trademarks of Formula One Licensing B.V.
+F1-Telemetry is an **unofficial** fan project and is not associated with Formula One companies. _F1, FORMULA ONE, FORMULA 1, FIA FORMULA ONE WORLD CHAMPIONSHIP, GRAND PRIX_, and related marks are trademarks of Formula One Licensing B.V.
