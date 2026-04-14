@@ -1,11 +1,14 @@
+const BASE_F1A_URL = import.meta.env.PROD ? '/api.php?source=f1a&path=' : 'http://localhost:3000/api/proxy/f1a/';
+const BASE_F2_URL = import.meta.env.PROD ? '/api.php?source=f2&path=' : 'http://localhost:3000/api/proxy/f2/';
+
 export const fetchRaceMeetingKeysF1a = async (selectedYear, championshipLevel) => {
   try {
     let raceResponse = '';
     if (championshipLevel === 'F1A') {
-      raceResponse = await fetch(`https://ant-dot-comm.github.io/f1aapi/races/races.json`);
+      raceResponse = await fetch(`${BASE_F1A_URL}races/races.json`);
     }
     if (championshipLevel === 'F2') {
-      raceResponse = await fetch(`https://ant-dot-comm.github.io/f2api/races/races.json`);
+      raceResponse = await fetch(`${BASE_F2_URL}races/races.json`);
     }
     if(!raceResponse.ok) {
       throw new Error('Failed to fetch races');
@@ -21,10 +24,10 @@ export const fetchCircuitData = async (championshipLevel) => {
     try {
         let url = '';
         if (championshipLevel === 'F1A') {
-            url = `https://ant-dot-comm.github.io/f1aapi/races/racesbyMK.json`;
+            url = `${BASE_F1A_URL}races/racesbyMK.json`;
         }
         if (championshipLevel === 'F2') {
-            url = `https://ant-dot-comm.github.io/f2api/races/racesbyMK.json`;
+            url = `${BASE_F2_URL}races/racesbyMK.json`;
         }
         const response = await fetch(url);
         const data = await response.json();
@@ -39,10 +42,10 @@ export const fetchDriverInfo = async (year, championshipLevel) => {
   try {
     let url = '';
     if (championshipLevel === 'F1A') {
-      url = `https://ant-dot-comm.github.io/f1aapi/constructors/${year}/drivers.json`;
+      url = `${BASE_F1A_URL}constructors/${year}/drivers.json`;
     }
     if (championshipLevel === 'F2') {
-      url = `https://ant-dot-comm.github.io/f2api/drivers/${year}/drivers.json`;
+      url = `${BASE_F2_URL}drivers/${year}/drivers.json`;
     }
     const response = await fetch(url);
     const data = await response.json();
@@ -88,10 +91,10 @@ export const fetchRaceResultsByCircuit = async (year, circuitId, top3 = false, c
   try {
     let url = '';
     if (championshipLevel === 'F1A') {
-      url = `https://ant-dot-comm.github.io/f1aapi/races/${year}/resullts.json`;
+      url = `${BASE_F1A_URL}races/${year}/resullts.json`;
     }
     if (championshipLevel === 'F2') {
-      url = `https://ant-dot-comm.github.io/f2api/races/${year}/resullts.json`;
+      url = `${BASE_F2_URL}races/${year}/resullts.json`;
     }
     const response = await fetch(url);
     const data = await response.json();
@@ -130,10 +133,10 @@ export const fetchAllRaceResults = async (year, championshipLevel) => {
   try {
     let url = '';
     if (championshipLevel === 'F1A') {
-      url = `https://ant-dot-comm.github.io/f1aapi/races/${year}/resullts.json`;
+      url = `${BASE_F1A_URL}races/${year}/resullts.json`;
     }
     if (championshipLevel === 'F2') {
-      url = `https://ant-dot-comm.github.io/f2api/races/${year}/resullts.json`;
+      url = `${BASE_F2_URL}races/${year}/resullts.json`;
     }
     const response = await fetch(url);
     const data = await response.json();
@@ -173,10 +176,10 @@ export const fetchMostRecentRaceWeekend = async (selectedYear, championshipLevel
     let raceUrl = '';
     // console.log('fetchMostRecentRaceWeekend', selectedYear, championshipLevel);
     if (championshipLevel === 'F1A') {
-      raceUrl = `https://ant-dot-comm.github.io/f1aapi/races/${selectedYear}/resullts.json`;
+      raceUrl = `${BASE_F1A_URL}races/${selectedYear}/resullts.json`;
     }
     if (championshipLevel === 'F2') {
-      raceUrl = `https://ant-dot-comm.github.io/f2api/races/${selectedYear}/resullts.json`;
+      raceUrl = `${BASE_F2_URL}races/${selectedYear}/resullts.json`;
     }
     const response = await fetch(raceUrl);
     if (!response.ok) {

@@ -51,6 +51,7 @@ F1-Telemetry is a fork of the original [f1nsight](https://github.com/adityakotha
 | **3D / Graphics** | Three.js · `@google/model-viewer` · Tween.js      |
 | **Data Viz**      | Recharts · D3.js                                  |
 | **Animation**     | Framer Motion · Lottie                            |
+| **Backend / API** | Local PHP Gateway (`api.php`) · Node.js Proxy     |
 | **Tooling**       | PWA (vite-plugin-pwa) · Sitemap generation · SVGR |
 
 ---
@@ -141,6 +142,13 @@ Uses `@imgly/background-removal-node` for automatic detection.
 
 Draco and Meshopt decoders are bundled locally in `public/decoders/` to bypass browser Tracking Prevention and ensure 100 % reliability.
 
+<details>
+<summary><strong>Hybrid API Proxy Environment</strong></summary>
+
+F1-Telemetry features a fully decoupled, hybrid API backend to ensure permanent stability even if external bespoke APIs are taken offline:
+- **Local Development**: Running `npm run dev` starts both the Vite frontend and a local Node.js Express server (`backend/server.js`) connected to a SQLite caching database.
+- **Production Server**: When built for production, the Vite code automatically switches routing to a native `api.php` file, which seamlessly caches and routes data directly on IONOS Shared Web Hosting via file-based storage (`api_cache/`).
+
 </details>
 
 ---
@@ -151,6 +159,7 @@ F1nsight is deployed as a static site on IONOS. Key deployment notes:
 
 1. The `.htaccess` in `public/` must be deployed at the web root to enable **Gzip compression** for `.glb` files.
 2. The `public/decoders/` folder must be included in the build output to avoid cross-domain script blocking.
+3. Ensures that the `public/api.php` endpoint transfers cleanly to your root build directory structure. This PHP file functions as the dedicated caching layer and API proxy when hosted on IONOS Web Hosting Plus.
 
 ---
 
@@ -159,9 +168,8 @@ F1nsight is deployed as a static site on IONOS. Key deployment notes:
 This project pulls data from four sources:
 
 - **[OpenF1 API](https://openf1.org)** — Real-time and historical telemetry, track positioning, and stint data.
-- **[f1nsight-api-2](https://github.com/praneeth7781/f1nsight-api-2)** — Race results, driver standings, qualifying data, constructor stats, and head-to-head comparison analytics.
-- **[f1aapi](https://ant-dot-comm.github.io/f1aapi/)** — Custom API for F1 Academy race results, driver info, and standings.
-- **[f2api](https://ant-dot-comm.github.io/f2api/)** — Custom API for Formula 2 race results, driver info, and standings.
+- **[Jolpica API](https://jolpi.ca/)** — Custom local backend parser fetches F1 historical Race results, Driver Standings, and Constructor Standings directly from the reliable Jolpica API framework. 
+- **Internal Gateway (`api.php`)** — A custom auto-caching proxy ensures that Formula 2 and F1 Academy data remains completely decoupled and safe from disappearing online, using internal fallbacks over volatile GitHub Pages databases.
 
 ---
 

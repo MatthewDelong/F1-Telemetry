@@ -3,6 +3,10 @@ import { buildOpenF1Url, OPENF1_API_BASE_URL } from "../config/openf1";
 
 const CANCELLED_RACES_2026 = ["Bahrain Grand Prix", "Saudi Arabian Grand Prix"];
 
+const BASE_F1_URL = import.meta.env.PROD 
+  ? '/api.php?source=f1&path=' 
+  : 'http://localhost:3000/api/proxy/f1/';
+
 /**
  * Normalizes a date string to the format expected by the OpenF1 API (YYYY-MM-DDTHH:MM:SS.mmm)
  * @param {string|Date} date - The date to normalize
@@ -106,7 +110,7 @@ export const fetchWithPersistentCache = async (url) => {
 };
 
 export const fetchDriversList = async () => {
-    const response = await fetchWithPersistentCache(`https://praneeth7781.github.io/f1nsight-api-2/driversList.json`);
+    const response = await fetchWithPersistentCache(`${BASE_F1_URL}driversList.json`);
     return response.map(driver => ({
         id: driver.driverId,
         name: `${driver.givenName} ${driver.familyName}`
@@ -116,7 +120,7 @@ export const fetchDriversList = async () => {
 export const fetchDriverStats = async (driverId1, driverId2) => {
   const fetchDriverData = async (driverId) => {
     try{
-      const dataResponse1 = await fetch(`https://praneeth7781.github.io/f1nsight-api-2/drivers/${driverId}.json`);
+      const dataResponse1 = await fetch(`${BASE_F1_URL}drivers/${driverId}.json`);
       if(dataResponse1.ok){
         const data1 = await dataResponse1.json();
         // console.log("here", data1);
@@ -138,7 +142,7 @@ export const fetchDriverStats = async (driverId1, driverId2) => {
 
 export const fetchRaceMeetingKeys = async (selectedYear) => {
   try {
-    const raceResponse = await fetch(`https://praneeth7781.github.io/f1nsight-api-2/races/races.json`);
+    const raceResponse = await fetch(`${BASE_F1_URL}races/races.json`);
     if(!raceResponse.ok) {
       throw new Error('Failed to fetch races');
     }
@@ -191,7 +195,7 @@ export const fetchRacesAndSessions = async (selectedYear) => {
   
 // race results page
 export const fetchRaceDetails = async (selectedYear) => {
-  const url = `https://praneeth7781.github.io/f1nsight-api-2/races/${selectedYear}/raceDetails.json`; 
+  const url = `${BASE_F1_URL}races/${selectedYear}/raceDetails.json`; 
   try {
     const response = await fetch(url);
     if (response.ok) {
@@ -231,7 +235,7 @@ export const fetchRaceDetails = async (selectedYear) => {
 };
   
 const fetchRaceResults = async (selectedYear, raceId) => {
-  const resultsUrl = `https://praneeth7781.github.io/f1nsight-api-2/races/${selectedYear}/results.json`;
+  const resultsUrl = `${BASE_F1_URL}races/${selectedYear}/results.json`;
   try {
     const response = await fetch(resultsUrl);
     if (response.ok) {
@@ -270,7 +274,7 @@ export const fetchUpcomingRace = async (selectedYear) => {
 
 
 export const getPartialConstructorStandings = async (selectedYear, start, end) => {
-  const baseURL = `https://praneeth7781.github.io/f1nsight-api-2/races/${selectedYear}`;
+  const baseURL = `${BASE_F1_URL}races/${selectedYear}`;
   const urls = {
     constructorUrl: `${baseURL}/constructorStandings.json`,
     driverUrl: `${baseURL}/driverStandings.json`
@@ -367,7 +371,7 @@ export const getPartialConstructorStandings = async (selectedYear, start, end) =
 }
 
 export const getConstructorStandings = async (selectedYear) => {
-  const baseURL = `https://praneeth7781.github.io/f1nsight-api-2/races/${selectedYear}`;
+  const baseURL = `${BASE_F1_URL}races/${selectedYear}`;
   const constructorUrl = `${baseURL}/constructorStandings.json`;
 
   try {
@@ -394,7 +398,7 @@ export const getConstructorStandings = async (selectedYear) => {
     // For each constructor, fetch the associated drivers from the new endpoint
     const driverFetchPromises = constructorStandings.map(async (constructorStanding) => {
       const constructorId = constructorStanding.constructorId;
-      const driverUrl = `https://praneeth7781.github.io/f1nsight-api-2/constructors/${selectedYear}/${constructorId}.json`;
+      const driverUrl = `${BASE_F1_URL}constructors/${selectedYear}/${constructorId}.json`;
       
       const driverResponse = await fetch(driverUrl);
       if (driverResponse.ok) {
@@ -420,7 +424,7 @@ export const getConstructorStandings = async (selectedYear) => {
   
 
 export const getDriverStandings = async (selectedYear) => {
-  const url = `https://praneeth7781.github.io/f1nsight-api-2/races/${selectedYear}/driverStandings.json`;
+  const url = `${BASE_F1_URL}races/${selectedYear}/driverStandings.json`;
   try {
     const response = await fetch(url);
     if (response.ok) {
@@ -444,7 +448,7 @@ export const getDriverStandings = async (selectedYear) => {
 };
 
 export const getPartialDriverStandings = async (selectedYear, start, end) => {
-  const url = `https://praneeth7781.github.io/f1nsight-api-2/races/${selectedYear}/driverStandings.json`;
+  const url = `${BASE_F1_URL}races/${selectedYear}/driverStandings.json`;
   try {
     const response = await fetch(url);
     if (response.ok) {
@@ -506,7 +510,7 @@ export const fetchDriversAndTires = async (sessionKey) => {
 export const fetchRaceResultsByCircuit = async (year, circuitId) => {
   try {
 
-    const url = `https://praneeth7781.github.io/f1nsight-api-2/races/${year}/results.json`;
+    const url = `${BASE_F1_URL}races/${year}/results.json`;
     const response = await fetch(url);
     const data = await response.json();
     // console.log(data);
@@ -520,7 +524,7 @@ export const fetchRaceResultsByCircuit = async (year, circuitId) => {
 
 export const fetchQualifyingResultsByCircuit = async(year, circuitId) => {
   try {
-    const url = `https://praneeth7781.github.io/f1nsight-api-2/races/${year}/qualifying.json`;
+    const url = `${BASE_F1_URL}races/${year}/qualifying.json`;
     const response = await fetch(url);
     const data = await response.json();
     const results = data.find(element => element.Circuit.circuitId === circuitId).QualifyingResults;
@@ -591,7 +595,7 @@ export async function fetchLocationData(sessionKey, driverId, startTime, endTime
 export const fetchMostRecentRace = async (selectedYear) => {
   try {
     // Fetch the race details
-    const raceDetailsResponse = await fetch(`https://praneeth7781.github.io/f1nsight-api-2/races/${selectedYear}/raceDetails.json`);
+    const raceDetailsResponse = await fetch(`${BASE_F1_URL}races/${selectedYear}/raceDetails.json`);
     if (!raceDetailsResponse.ok) {
       throw new Error('Failed to fetch race details');
     }
