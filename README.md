@@ -20,7 +20,7 @@
 
 ## About
 
-F1nsight is a fork of the original [f1nsight](https://github.com/praneeth7781/f1nsight-api-2) project, refactored to **React 19** and **Vite 8** with additional features and enhancements. It's an interactive web application built for motorsport fans who want to go deeper than the broadcast — providing detailed race analytics, real-time telemetry visualisation, driver comparisons, and a 3D race viewer across **Formula 1**, **Formula 2**, and **F1 Academy**.
+F1-Telemetry is a fork of the original [f1nsight](https://github.com/praneeth7781/f1nsight-api-2) project, refactored to **React 19** and **Vite 8** with additional features and enhancements. It's an interactive web application built for motorsport fans who want to go deeper than the broadcast — providing detailed race analytics, real-time telemetry visualisation, driver comparisons, and a 3D race viewer across **Formula 1**, **Formula 2**, and **F1 Academy**.
 
 > **Attribution** — This project builds upon the work of the original f1nsight developers. Driver comparison data continues to be powered by the [f1nsight-api-2](https://github.com/praneeth7781/f1nsight-api-2) repository.
 
@@ -28,30 +28,30 @@ F1nsight is a fork of the original [f1nsight](https://github.com/praneeth7781/f1
 
 ## Features
 
-| Feature | Description |
-| --- | --- |
-| **Race Leaderboards** | Comprehensive race results with position changes, intervals and gap analysis |
-| **Lap-Time Analysis** | Lap-by-lap performance metrics for studying consistency and strategy |
-| **Tire Strategies** | Visual breakdown of compound choices and stint lengths across the grid |
-| **Fastest Laps** | Highlights of the quickest laps set during each session |
-| **Pit Stop Analytics** | Scatter-chart visualisation of pit-stop durations per driver |
-| **Driver Comparisons** | Head-to-head telemetry overlays for any two drivers in a session |
+| Feature                 | Description                                                                                              |
+| ----------------------- | -------------------------------------------------------------------------------------------------------- |
+| **Race Leaderboards**   | Comprehensive race results with position changes, intervals and gap analysis                             |
+| **Lap-Time Analysis**   | Lap-by-lap performance metrics for studying consistency and strategy                                     |
+| **Tire Strategies**     | Visual breakdown of compound choices and stint lengths across the grid                                   |
+| **Fastest Laps**        | Highlights of the quickest laps set during each session                                                  |
+| **Pit Stop Analytics**  | Scatter-chart visualisation of pit-stop durations per driver                                             |
+| **Driver Comparisons**  | Head-to-head telemetry overlays for any two drivers in a session                                         |
 | **3D Telemetry Viewer** | Follow drivers around the circuit in a synchronised 3D scene with multiple broadcast-style camera angles |
-| **AR Car Viewer** | High-fidelity 3D car models with Draco / Meshopt compression (90 MB → 23 MB) |
-| **2026 Race Calendar** | Up-to-date schedule covering F1, F2, and F1 Academy |
+| **AR Car Viewer**       | High-fidelity 3D car models with Draco / Meshopt compression (90 MB → 23 MB)                             |
+| **2026 Race Calendar**  | Up-to-date schedule covering F1, F2, and F1 Academy                                                      |
 
 ---
 
 ## Tech Stack
 
-| Layer | Technologies |
-| --- | --- |
-| **Framework** | React 19 · Vite 8 · React Router 7 |
-| **Styling** | Tailwind CSS 4 · Flowbite React |
-| **3D / Graphics** | Three.js · `@google/model-viewer` · Tween.js |
-| **Data Viz** | Recharts · D3.js |
-| **Animation** | Framer Motion · Lottie |
-| **Tooling** | PWA (vite-plugin-pwa) · Sitemap generation · SVGR |
+| Layer             | Technologies                                      |
+| ----------------- | ------------------------------------------------- |
+| **Framework**     | React 19 · Vite 8 · React Router 7                |
+| **Styling**       | Tailwind CSS 4 · Flowbite React                   |
+| **3D / Graphics** | Three.js · `@google/model-viewer` · Tween.js      |
+| **Data Viz**      | Recharts · D3.js                                  |
+| **Animation**     | Framer Motion · Lottie                            |
+| **Tooling**       | PWA (vite-plugin-pwa) · Sitemap generation · SVGR |
 
 ---
 
@@ -107,7 +107,7 @@ Script: `scripts/robust-compress-glbs.ps1` (requires PowerShell & Node.js).
 
 Videos use a custom **Luma Key** pipeline for cross-browser transparency:
 
-- Videos are encoded in a *side-by-side* layout — **left half = RGB**, **right half = alpha mask**.
+- Videos are encoded in a _side-by-side_ layout — **left half = RGB**, **right half = alpha mask**.
 - The `LumaKeyVideo` component composites both halves onto a `<canvas>` at runtime.
 
 **Generate a side-by-side asset from a PNG sequence:**
@@ -179,4 +179,4 @@ This project is available under a [custom open-source license](LICENSE.md) — f
 
 ## Disclaimer
 
-F1nsight is an **unofficial** fan project and is not associated with Formula One companies. *F1, FORMULA ONE, FORMULA 1, FIA FORMULA ONE WORLD CHAMPIONSHIP, GRAND PRIX*, and related marks are trademarks of Formula One Licensing B.V.
+F1nsight is an **unofficial** fan project and is not associated with Formula One companies. _F1, FORMULA ONE, FORMULA 1, FIA FORMULA ONE WORLD CHAMPIONSHIP, GRAND PRIX_, and related marks are trademarks of Formula One Licensing B.V.
