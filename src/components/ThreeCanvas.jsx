@@ -136,7 +136,7 @@ export const ThreeCanvas = ({
       currentMount.clientWidth / (currentMount.clientHeight || 700);
 
     haloCameraRef.current = new THREE.PerspectiveCamera(75, aspect, 0.01, 5000);
-    haloCameraRef.current.position.set(0, 0.59, 0.33); // Y is Height, Z is Depth
+    haloCameraRef.current.position.set(0, 0.59, 0.4); // Y is Height, Z is Depth
     haloCameraRef.current.rotation.set(Math.PI / 10, Math.PI, 0);
 
     topFollowCameraRef.current = new THREE.PerspectiveCamera(
@@ -382,7 +382,7 @@ export const ThreeCanvas = ({
     <div
       className={classNames(
         className,
-        "relative overflow-hidden w-full h-full min-h-[544px]",
+        "relative overflow-hidden w-full h-full min-h-[585px]",
       )}
     >
       <div
