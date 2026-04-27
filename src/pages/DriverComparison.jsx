@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import classNames from 'classnames';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { fetchDriverStats, fetchDriversList } from '../utils/api';
+import { fetchDriverStats, fetchDriversList, BASE_F1_URL } from '../utils/api';
 import { Loading, LineChartByYear, BarChartTotal, Button, ReactSelectComponent } from "../components";
 
 export function DriverComparison(){
@@ -106,7 +106,7 @@ export function DriverComparison(){
     useEffect(() => {
         const fetchRaceNames = async (year) => {
             try {
-                const response = await fetch(`https://praneeth7781.github.io/f1nsight-api-2/races/${year}/raceDetails.json`);
+                const response = await fetch(`${BASE_F1_URL}races/${year}/raceDetails.json`);
                 const races = await response.json();
                 return races.map(race => race.raceName);
             } catch (error) {
@@ -184,15 +184,18 @@ export function DriverComparison(){
         );
     };
 
-    const DriverImage = (driverCode) => {
-        const randomNumber = Math.floor(Math.random() * 5) + 1;
-    
-        const imageUrl = driverCode ? 
-          `/images/2024/drivers/${driverCode}.png`
-          : `/images/2024/drivers/default${randomNumber}.png`;
+    const DriverImage = (driverCode, driverId) => {
+        const identifier = driverCode || driverId;
+        const imageUrl = identifier ? 
+          `/images/2024/drivers/${identifier}.png`
+          : `/images/2024/drivers/default_driver.png`;
       
         const handleError = (event) => {
-          event.target.src = `/images/2024/drivers/default${randomNumber}.png`;
+          if (event.target.src.includes('/2024/')) {
+            event.target.src = `/images/historical/drivers/${identifier}.png`;
+          } else if (event.target.src.includes('/historical/')) {
+            event.target.src = `/images/2024/drivers/default_driver.png`;
+          }
         };
       
         return (
@@ -254,7 +257,7 @@ export function DriverComparison(){
                     )}
                 >
                     <div className="-mt-32 z-[1] md:flex md:items-end">
-                        {DriverImage(driverData.driverCode)}
+                        {DriverImage(driverData.driverCode, driverData.driverId || driverData.id)}
                         <div className="max-md:hidden">{mainData}</div>
                     </div>
                     <div className="constructor-stand bg-glow-md py-8 md:py-16 mt-4 w-[110%] text-center">

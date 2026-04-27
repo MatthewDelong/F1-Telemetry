@@ -3,9 +3,10 @@ import { buildOpenF1Url, OPENF1_API_BASE_URL } from "../config/openf1";
 
 const CANCELLED_RACES_2026 = ["Bahrain Grand Prix", "Saudi Arabian Grand Prix"];
 
-const BASE_F1_URL = import.meta.env.PROD 
+export const BASE_F1_URL = import.meta.env.PROD 
   ? '/api.php?source=f1&path=' 
   : 'http://localhost:3000/api/proxy/f1/';
+
 
 /**
  * Normalizes a date string to the format expected by the OpenF1 API (YYYY-MM-DDTHH:MM:SS.mmm)

@@ -13,6 +13,7 @@ import {
   fetchRaceDetails,
   fetchRaceMeetingKeys,
   fetchRaceControl,
+  BASE_F1_URL,
 } from "../utils/api.js";
 import { buildOpenF1Url } from "../config/openf1";
 
@@ -94,7 +95,7 @@ export function RacePage() {
     const fetchByMeetingKey = async () => {
       setIsLoading(true);
       const response = await fetch(
-        `https://praneeth7781.github.io/f1nsight-api-2/races/racesbyMK.json`,
+        `${BASE_F1_URL}races/racesbyMK.json`,
       ).then((res) => res.json());
       setYear(response[raceId]["year"]);
       setLocation(

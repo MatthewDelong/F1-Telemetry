@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { fetchDriversAndTires } from "../../utils/api";
-import { fetchRaceResultsByCircuit } from "../../utils/apiF1a";
+import { fetchRaceResultsByCircuit, BASE_F1A_URL } from "../../utils/apiF1a";
 
 import {
     DriverCard,
@@ -68,7 +68,7 @@ export function RacePageF1a({championshipLevel}) {
     useEffect(() => {
         const fetchByMeetingKey = async () => {
             const response = await fetch(
-                `https://ant-dot-comm.github.io/f1aapi/races/racesbyMK.json`
+                `${BASE_F1A_URL}races/racesbyMK.json`
             ).then((res) => res.json());
             setYear(response[raceId]["year"]);
             setLocation(response[raceId]["location"]);

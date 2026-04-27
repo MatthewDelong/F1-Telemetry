@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 
 
-import { fetchDriverStats } from '../utils/api';
+import { fetchDriverStats, BASE_F1_URL } from '../utils/api';
 import { getCurrentYear } from '../utils/currentYear';
 import { HeadToHeadChart, PositionsGainedLostChart, QualifyingLapTimesChart, QualifyingLapTimesDeltaChart, PositionsComparisonChart, ReactSelectComponent, Loading, Button } from '../components';
 
@@ -61,7 +61,7 @@ export const TeammatesComparison = () => {
     if (year && !teamCache[year]) {
       setIsLoading(true);
       try {
-        const response = await axios.get(`https://praneeth7781.github.io/f1nsight-api-2/constructors/${year}.json`);
+        const response = await axios.get(`${BASE_F1_URL}constructors/${year}.json`);
         const constructors = response.data;
         setTeamCache(prevCache => ({ ...prevCache, [year]: constructors }));
 
@@ -99,11 +99,11 @@ export const TeammatesComparison = () => {
 
   const submit = async (selectedTeam) => {
     try {
-      const response = await axios.get(`https://praneeth7781.github.io/f1nsight-api-2/constructors/${year}/${selectedTeam}.json`);
+      const response = await axios.get(`${BASE_F1_URL}constructors/${year}/${selectedTeam}.json`);
       const fetchedDrivers = response.data;
       setDrivers(fetchedDrivers);
 
-      const colorsResponse = await axios.get('https://praneeth7781.github.io/f1nsight-api-2/colors/teams.json');
+      const colorsResponse = await axios.get(`${BASE_F1_URL}colors/teams.json`);
       const teamColors = colorsResponse.data;
 
       setTeamColor(teamColors[year]?.[selectedTeam] || '5F0B84');
@@ -317,7 +317,6 @@ export const TeammatesComparison = () => {
 
 const driverLockup = (driverId, driverName) => {
   const driverSplitName = driverName.split(" ");
-  const randomNumber = Math.ceil(Math.random() * 5);
   return (
     <div 
       className="flex justify-center relative text-center group rounded-lg px-16"
@@ -327,7 +326,14 @@ const driverLockup = (driverId, driverName) => {
         alt="" 
         src={year >= 2023 ? 
           `${"/images/" + year + "/drivers/" + driverId +  ".png"}` 
-          : `${"/images/2024/drivers/default" + randomNumber + ".png"}`}
+          : `/images/2024/drivers/${driverId}.png`}
+        onError={(e) => {
+          if (e.target.src.includes(`/${year}/`) || e.target.src.includes('/2024/')) {
+            e.target.src = `/images/historical/drivers/${driverId}.png`;
+          } else if (e.target.src.includes('/historical/')) {
+            e.target.src = '/images/2024/drivers/default_driver.png';
+          }
+        }}
         width={150} 
         height={150} 
         className={classNames("-mt-32", {"group-[:first-of-type]:scale-x-[-1]" : year <= 2023 })}
