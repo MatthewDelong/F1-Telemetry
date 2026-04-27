@@ -1,15 +1,15 @@
-@import "./components/DriverCard.scss";
-@import "./components/Footer.scss";
-@import "./components/Header.scss";
-@import "./pages/LandingPage.scss";
-@import "./components/LapChart.scss";
-@import "./components/Loading.scss";
-@import "./pages/RacePage.scss";
-@import "./pages/RaceResultsPage.scss";
-@import "./components/Select.scss";
-@import "./components/TireStrategy.scss";
+@use "./components/DriverCard.scss";
+@use "./components/Footer.scss";
+@use "./components/Header.scss";
+@use "./pages/LandingPage.scss";
+@use "./components/LapChart.scss";
+@use "./components/Loading.scss";
+@use "./pages/RacePage.scss";
+@use "./pages/RaceResultsPage.scss";
+@use "./components/Select.scss";
+@use "./components/TireStrategy.scss";
 
-@import "./styles/typography.scss";
+@use "./styles/typography.scss";
 
 .video-container {
     background-color: red; /* Temporary check */

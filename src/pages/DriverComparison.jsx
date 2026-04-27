@@ -185,16 +185,38 @@ export function DriverComparison(){
     };
 
     const DriverImage = (driverCode, driverId) => {
-        const identifier = driverCode || driverId;
-        const imageUrl = identifier ? 
-          `/images/2024/drivers/${identifier}.png`
+        // Build a prioritized list of image paths to try
+        const fallbackChain = [];
+        
+        // 1. Try 2024 images with driverCode first (e.g., ALO.png)
+        if (driverCode) {
+          fallbackChain.push(`/images/2024/drivers/${driverCode}.png`);
+        }
+        // 2. Try 2024 images with driverId (e.g., alonso.png)
+        if (driverId && driverId !== driverCode) {
+          fallbackChain.push(`/images/2024/drivers/${driverId}.png`);
+        }
+        // 3. Try historical images with driverId (files are named by driverId)
+        if (driverId) {
+          fallbackChain.push(`/images/historical/drivers/${driverId}.png`);
+        }
+        // 4. Try historical images with driverCode as last resort
+        if (driverCode && driverCode !== driverId) {
+          fallbackChain.push(`/images/historical/drivers/${driverCode}.png`);
+        }
+        // 5. Default silhouette
+        fallbackChain.push(`/images/2024/drivers/default_driver.png`);
+      
+        const imageUrl = fallbackChain.length > 0 
+          ? fallbackChain[0] 
           : `/images/2024/drivers/default_driver.png`;
       
         const handleError = (event) => {
-          if (event.target.src.includes('/2024/')) {
-            event.target.src = `/images/historical/drivers/${identifier}.png`;
-          } else if (event.target.src.includes('/historical/')) {
-            event.target.src = `/images/2024/drivers/default_driver.png`;
+          const currentStep = parseInt(event.target.dataset.fallbackStep || '0', 10);
+          const nextStep = currentStep + 1;
+          if (nextStep < fallbackChain.length) {
+            event.target.dataset.fallbackStep = nextStep;
+            event.target.src = fallbackChain[nextStep];
           }
         };
       
@@ -203,6 +225,7 @@ export function DriverComparison(){
             alt="Driver" 
             className="w-[15rem] md:w-[22rem]"
             src={imageUrl}
+            data-fallback-step="0"
             onError={handleError}
           />
         );

@@ -277,6 +277,8 @@ export const TeammatesComparison = () => {
       driver2: drivers.find(d => d.driverId === driver2Id).givenName + ' ' + drivers.find(d => d.driverId === driver2Id).familyName,
       driver1Code: drivers.find(d => d.driverId === driver1Id).code,
       driver2Code: drivers.find(d => d.driverId === driver2Id).code,
+      driver1Id: driver1Id,
+      driver2Id: driver2Id,
       driver1QualifyingWins,
       driver2QualifyingWins,
       driver1RaceWins,
@@ -315,8 +317,40 @@ export const TeammatesComparison = () => {
   const memoizedHeadToHeadData = useMemo(() => headToHeadData, [headToHeadData]);
 
 
-const driverLockup = (driverId, driverName) => {
+const driverLockup = (driverCode, driverId, driverName) => {
   const driverSplitName = driverName.split(" ");
+  
+  // Build a prioritized fallback chain for image sources
+  const fallbackChain = [];
+  const imgId = driverCode || driverId;
+  
+  // 1. Try year-specific image with code/id
+  if (year >= 2023 && imgId) {
+    fallbackChain.push(`/images/${year}/drivers/${imgId}.png`);
+  }
+  // 2. Try year-specific with driverId if different from code
+  if (year >= 2023 && driverId && driverId !== imgId) {
+    fallbackChain.push(`/images/${year}/drivers/${driverId}.png`);
+  }
+  // 3. Try 2024 fallback with code
+  if (imgId) {
+    fallbackChain.push(`/images/2024/drivers/${imgId}.png`);
+  }
+  // 4. Try 2024 fallback with driverId
+  if (driverId && driverId !== imgId) {
+    fallbackChain.push(`/images/2024/drivers/${driverId}.png`);
+  }
+  // 5. Try historical with driverId (files named by driverId)
+  if (driverId) {
+    fallbackChain.push(`/images/historical/drivers/${driverId}.png`);
+  }
+  // 6. Try historical with code
+  if (driverCode && driverCode !== driverId) {
+    fallbackChain.push(`/images/historical/drivers/${driverCode}.png`);
+  }
+  // 7. Default silhouette
+  fallbackChain.push('/images/2024/drivers/default_driver.png');
+  
   return (
     <div 
       className="flex justify-center relative text-center group rounded-lg px-16"
@@ -324,14 +358,14 @@ const driverLockup = (driverId, driverName) => {
     >
       <img 
         alt="" 
-        src={year >= 2023 ? 
-          `${"/images/" + year + "/drivers/" + driverId +  ".png"}` 
-          : `/images/2024/drivers/${driverId}.png`}
+        src={fallbackChain[0]}
+        data-fallback-step="0"
         onError={(e) => {
-          if (e.target.src.includes(`/${year}/`) || e.target.src.includes('/2024/')) {
-            e.target.src = `/images/historical/drivers/${driverId}.png`;
-          } else if (e.target.src.includes('/historical/')) {
-            e.target.src = '/images/2024/drivers/default_driver.png';
+          const currentStep = parseInt(e.target.dataset.fallbackStep || '0', 10);
+          const nextStep = currentStep + 1;
+          if (nextStep < fallbackChain.length) {
+            e.target.dataset.fallbackStep = nextStep;
+            e.target.src = fallbackChain[nextStep];
           }
         }}
         width={150} 
@@ -449,13 +483,13 @@ const GridRow = (label, driver1, driver2, title) => {
           <div 
             className="flex items-center justify-center gap-64 mb-64 md:w-2/3 m-auto relative px-16"
           >
-            {driverLockup(memoizedHeadToHeadData.driver1Code, memoizedHeadToHeadData.driver1)}
+            {driverLockup(memoizedHeadToHeadData.driver1Code, memoizedHeadToHeadData.driver1Id, memoizedHeadToHeadData.driver1)}
             <div 
               className="text-center leading-none rounded-md absolute top-48 left-1/2 -translate-x-1/2 -z-[1] w-1/2"
             >
               <p className="font-display text-[2.4rem] gradient-text-light">VS</p>
             </div>
-            {driverLockup(memoizedHeadToHeadData.driver2Code, memoizedHeadToHeadData.driver2)}
+            {driverLockup(memoizedHeadToHeadData.driver2Code, memoizedHeadToHeadData.driver2Id, memoizedHeadToHeadData.driver2)}
           </div>
 
           {(ambQ || ambR) &&( 
