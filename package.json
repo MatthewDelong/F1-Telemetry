@@ -57,6 +57,11 @@
       "last 1 safari version"
     ]
   },
+  "overrides": {
+    "react": "$react",
+    "react-dom": "$react-dom",
+    "vite": "$vite"
+  },
   "devDependencies": {
     "@gltf-transform/cli": "^4.1.0",
     "@imgly/background-removal-node": "^1.4.5",
