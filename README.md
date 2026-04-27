@@ -67,8 +67,8 @@ F1-Telemetry is a fork of the original [f1nsight](https://github.com/adityakotha
 
 ```bash
 # Clone the repo
-git clone https://github.com/your-username/F1nsight.git
-cd F1nsight
+git clone https://github.com/your-username/F1-Telemetry.git
+cd F1-Telemetry
 
 # Install dependencies
 npm install
@@ -146,6 +146,7 @@ Draco and Meshopt decoders are bundled locally in `public/decoders/` to bypass b
 <summary><strong>Hybrid API Proxy Environment</strong></summary>
 
 F1-Telemetry features a fully decoupled, hybrid API backend to ensure permanent stability even if external bespoke APIs are taken offline:
+
 - **Local Development**: Running `npm run dev` starts both the Vite frontend and a local Node.js Express server (`backend/server.js`) connected to a SQLite caching database.
 - **Production Server**: When built for production, the Vite code automatically switches routing to a native `api.php` file, which seamlessly caches and routes data directly on IONOS Shared Web Hosting via file-based storage (`api_cache/`).
 
@@ -155,7 +156,7 @@ F1-Telemetry features a fully decoupled, hybrid API backend to ensure permanent 
 
 ## Deployment
 
-F1nsight is deployed as a static site on IONOS. Key deployment notes:
+F1-Telemetry is deployed as a static site on IONOS. Key deployment notes:
 
 1. The `.htaccess` in `public/` must be deployed at the web root to enable **Gzip compression** for `.glb` files.
 2. The `public/decoders/` folder must be included in the build output to avoid cross-domain script blocking.
@@ -168,7 +169,7 @@ F1nsight is deployed as a static site on IONOS. Key deployment notes:
 This project pulls data from four sources:
 
 - **[OpenF1 API](https://openf1.org)** — Real-time and historical telemetry, track positioning, and stint data.
-- **[Jolpica API](https://jolpi.ca/)** — Custom local backend parser fetches F1 historical Race results, Driver Standings, and Constructor Standings directly from the reliable Jolpica API framework. 
+- **[Jolpica API](https://jolpi.ca/)** — Custom local backend parser fetches F1 historical Race results, Driver Standings, and Constructor Standings directly from the reliable Jolpica API framework.
 - **Internal Gateway (`api.php`)** — A custom auto-caching proxy ensures that Formula 2 and F1 Academy data remains completely decoupled and safe from disappearing online, using internal fallbacks over volatile GitHub Pages databases.
 
 ---
