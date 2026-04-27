@@ -142,7 +142,8 @@ Uses `@imgly/background-removal-node` for automatic detection.
 
 Draco and Meshopt decoders are bundled locally in `public/decoders/` to bypass browser Tracking Prevention and ensure 100 % reliability.
 
-<details>
+</details>
+<details>  
 <summary><strong>Hybrid API Proxy Environment</strong></summary>
 
 F1-Telemetry features a fully decoupled, hybrid API backend to ensure permanent stability even if external bespoke APIs are taken offline:
