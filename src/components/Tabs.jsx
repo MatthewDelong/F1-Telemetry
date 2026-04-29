@@ -47,7 +47,7 @@ export const Tabs = ({
                         className={classNames(
                             "px-12 py-3 rounded-sm text-xs tracking-xs uppercase transition-colors",
                             tab.id === activeTab.id
-                                ? "bg-plum-500 text-white"
+                                ? "bg-brand-blue-500 text-white"
                                 : "bg-glow text-neutral-300 hover:text-white"
                         )}
                         onClick={() => setActiveTabId(tab.id)}

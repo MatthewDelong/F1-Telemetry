@@ -745,7 +745,7 @@ export function RacePage() {
                 className={classNames(
                   "race-controls__play bg-glow w-32 h-32 rounded-sm",
                   {
-                    "bg-plum-500": !isPaused,
+                    "bg-brand-blue-500": !isPaused,
                   },
                 )}
                 onClick={() => setIsPaused(false)}
@@ -756,7 +756,7 @@ export function RacePage() {
                 className={classNames(
                   "race-controls__pause bg-glow w-32 h-32 rounded-sm",
                   {
-                    "bg-plum-500": isPaused,
+                    "bg-brand-blue-500": isPaused,
                   },
                 )}
                 onClick={() => setIsPaused(true)}
@@ -765,7 +765,7 @@ export function RacePage() {
               </button>
               <button
                 className={classNames("bg-glow w-32 h-32 rounded-sm", {
-                  "bg-plum-500": showCameraControls,
+                  "bg-brand-blue-500": showCameraControls,
                 })}
                 onClick={() => setShowCameraControls(!showCameraControls)}
               >
@@ -773,7 +773,7 @@ export function RacePage() {
               </button>
               <button
                 className={classNames("bg-glow w-32 h-32 rounded-sm", {
-                  "bg-plum-500": showCarDetails,
+                  "bg-brand-blue-500": showCarDetails,
                 })}
                 onClick={() => setShowCarDetails(!showCarDetails)}
               >
@@ -815,7 +815,7 @@ export function RacePage() {
               >
                 <button
                   className={classNames("tracking-sm uppercase block", {
-                    "text-plum-300": speedFactor !== 4,
+                    "text-brand-blue-300": speedFactor !== 4,
                   })}
                   onClick={() => {
                     setSpeedFactor(4);
@@ -826,7 +826,7 @@ export function RacePage() {
                 </button>
                 <button
                   className={classNames("tracking-sm uppercase block", {
-                    "text-plum-300": speedFactor !== 1.5,
+                    "text-brand-blue-300": speedFactor !== 1.5,
                   })}
                   onClick={() => {
                     setSpeedFactor(1.5);
@@ -837,7 +837,7 @@ export function RacePage() {
                 </button>
                 <button
                   className={classNames("tracking-sm uppercase block", {
-                    "text-plum-300": speedFactor !== 0.2,
+                    "text-brand-blue-300": speedFactor !== 0.2,
                   })}
                   onClick={() => {
                     setSpeedFactor(0.2);
@@ -853,7 +853,7 @@ export function RacePage() {
               >
                 <button
                   className={classNames("tracking-sm uppercase block", {
-                    "text-plum-300": !haloView && !topFollowView,
+                    "text-brand-blue-300": !haloView && !topFollowView,
                   })}
                   onClick={() => {
                     setHaloView(false);
@@ -865,7 +865,7 @@ export function RacePage() {
                 </button>
                 <button
                   className={classNames("tracking-sm uppercase block", {
-                    "text-plum-300": haloView,
+                    "text-brand-blue-300": haloView,
                   })}
                   onClick={() => {
                     setHaloView(true);
@@ -877,7 +877,7 @@ export function RacePage() {
                 </button>
                 <button
                   className={classNames("tracking-sm uppercase block", {
-                    "text-plum-300": topFollowView,
+                    "text-brand-blue-300": topFollowView,
                   })}
                   onClick={() => {
                     setTopFollowView(true);
@@ -897,7 +897,7 @@ export function RacePage() {
             {hasRaceSession && (
               <button
                 className={classNames("tracking-sm uppercase block", {
-                  "text-plum-300": selectedSession === "Race",
+                  "text-brand-blue-300": selectedSession === "Race",
                 })}
                 onClick={() => {
                   setSelectedSession("Race");
@@ -910,7 +910,7 @@ export function RacePage() {
             {hasQualifyingSession && (
               <button
                 className={classNames("tracking-sm uppercase block", {
-                  "text-plum-300": selectedSession === "Qualifying",
+                  "text-brand-blue-300": selectedSession === "Qualifying",
                 })}
                 onClick={() => {
                   setSelectedSession("Qualifying");
@@ -923,7 +923,7 @@ export function RacePage() {
             {hasSprintSession && (
               <button
                 className={classNames("tracking-sm uppercase block", {
-                  "text-plum-300": selectedSession === "Sprint",
+                  "text-brand-blue-300": selectedSession === "Sprint",
                 })}
                 onClick={() => {
                   setSelectedSession("Sprint");

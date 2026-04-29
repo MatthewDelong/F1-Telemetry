@@ -38,6 +38,12 @@ const HeroSection = ({ layoutMobile, container }) => {
         <source src="/Media/Hero.mp4" type="video/mp4" />
       </video>
 
+      {/* Video Overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.3)", zIndex: 0 }}
+      />
+
       {/* Animated Title (Triggers when in view, moves on scroll) */}
       <motion.h1
         initial={{ opacity: 0, y: 50 }}
@@ -78,6 +84,17 @@ const HeroSection = ({ layoutMobile, container }) => {
           className="w-[90%] sm:w-[100%] lg:w-[105%] max-w-none drop-shadow-[0_-64px_64px_rgba(0,0,0,1)] mx-auto mb-0 lg:mb-[-4px]"
           style={{ filter: "brightness(1.1) contrast(1.1)" }}
         />
+        {/* Car Overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.0)", zIndex: 21 }}
+        />
+        {/* <img
+          src="/Media/placeholder_for-MP4.png"
+          className="w-[90%] sm:w-[100%] lg:w-[105%] max-w-none drop-shadow-[0_-64px_64px_rgba(0,0,0,1)] mx-auto mb-0 lg:mb-[-4px]"
+          style={{ filter: "brightness(1.1) contrast(1.1)" }}
+          alt="Telemetry Preview"
+        /> */}
       </div>
     </section>
   );

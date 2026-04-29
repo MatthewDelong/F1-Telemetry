@@ -62,7 +62,7 @@ export function ViewLatestRaceButton({
         className={classNames(
           "rounded px-24 py-8 text-white transition-all duration-200 font-display",
           meetingKey
-            ? "max-sm:bg-plum-500 bg-glow-dark"
+            ? "max-sm:bg-brand-blue-500 bg-glow-dark"
             : "bg-glow-dark/60 cursor-not-allowed",
         )}
         style={

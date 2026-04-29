@@ -43,7 +43,7 @@ const RaceControl = ({ messages, isLive = false }) => {
     <div className="race-control mt-64 px-8 sm:px-0 w-full overflow-visible">
       <div className="flex items-center justify-between mb-16">
         <h3 className="heading-6 uppercase tracking-widest text-neutral-400 flex items-center gap-8">
-          <FontAwesomeIcon icon="tower-broadcast" className="text-plum-400" />
+          <FontAwesomeIcon icon="tower-broadcast" className="text-brand-blue-400" />
           Race Control
         </h3>
         
@@ -58,7 +58,7 @@ const RaceControl = ({ messages, isLive = false }) => {
           {hasMore && (
             <button 
               onClick={() => setIsExpanded(!isExpanded)}
-              className="text-xs uppercase tracking-wider text-plum-400 hover:text-plum-300 font-bold transition-colors"
+              className="text-xs uppercase tracking-wider text-brand-blue-400 hover:text-brand-blue-300 font-bold transition-colors"
             >
               {isExpanded ? 'Show Less' : 'View All'}
             </button>
@@ -89,7 +89,7 @@ const RaceControl = ({ messages, isLive = false }) => {
                   icon={getIcon(msg.category)} 
                   className={classNames(
                     "text-sm",
-                    msg.flag ? getFlagColor(msg.flag) : "text-plum-400"
+                    msg.flag ? getFlagColor(msg.flag) : "text-brand-blue-400"
                   )} 
                 />
               </div>

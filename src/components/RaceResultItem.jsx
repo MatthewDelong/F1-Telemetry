@@ -75,14 +75,14 @@ export const RaceResultItem = (props) => {
               {fastestLap?.rank === "1" && (
                 <Popover
                   aria-labelledby="default-popover"
-                  className="bg-glow border-2 border-plum-500 p-4 bg-neutral-950 z-[10] rounded-md"
+                  className="bg-glow border-2 border-fastest-lap-plum p-4 bg-neutral-950 z-[10] rounded-md"
                   trigger="hover"
                   placement="top"
                   // open={true}
                   arrow={false}
                   content={
                     <div className="p-4">
-                      <div className="bg-plum-500 text-center font-display rounded-sm">
+                      <div className="bg-fastest-lap-plum text-center font-display rounded-sm">
                         {fastestLap.Time.time}
                       </div>
 
@@ -117,7 +117,7 @@ export const RaceResultItem = (props) => {
                     <FontAwesomeIcon icon="circle" className="text-white" />
                     <FontAwesomeIcon
                       icon="clock"
-                      className="text-plum-500"
+                      className="text-fastest-lap-plum"
                       transform="shrink-2"
                     />
                   </span>

@@ -9,9 +9,12 @@
 
 @theme {
   /* Colors */
-  --color-plum-300: #835897;
-  --color-plum-500: #5f0b84;
-  --color-deep-purple-500: #271d5a;
+  --color-brand-blue-300: #60a5fa;
+  --color-brand-blue-400: #3b82f6;
+  --color-brand-blue-500: #2563eb;
+  --color-brand-blue-600: #1d4ed8;
+  --color-deep-blue-500: #1a1b41;
+  --color-fastest-lap-plum: #5f0b84;
 
   /* Typography */
   --font-display: "Bungee", ui-serif;
@@ -195,11 +198,11 @@ button:hover {
 
 /* Buttons */
 .primary-button {
-  background-color: #5f0b84;
+  background-color: var(--color-brand-blue-500);
 }
 
 .primary-button:hover {
-  background-image: linear-gradient(to bottom right, #5f0b84, #835897);
+  background-image: linear-gradient(to bottom right, var(--color-brand-blue-500), var(--color-brand-blue-300));
 }
 
 /* backgrounds */

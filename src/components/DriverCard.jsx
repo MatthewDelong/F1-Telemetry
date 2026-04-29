@@ -150,13 +150,13 @@ export const DriverCard = (props) => {
             {isFastestLapDriver && (
               <Popover
                 aria-labelledby="default-popover"
-                className="bg-glow border-plum-500 border-[.1rem] rounded-md p-4 bg-neutral-950 z-[10]"
+                className="bg-glow border-fastest-lap-plum border-[.1rem] rounded-md p-4 bg-neutral-950 z-[10]"
                 trigger="hover"
                 placement="top"
                 arrow={false}
                 content={
                   <div className="p-4">
-                    <div className="bg-plum-500 text-center font-display rounded px-8 text-white">
+                    <div className="bg-fastest-lap-plum text-center font-display rounded px-8 text-white">
                       {fastestLapTime}
                     </div>
                     <div className="flex align-start justify-around mt-4">
@@ -202,7 +202,7 @@ export const DriverCard = (props) => {
                   <FontAwesomeIcon icon="circle" className="text-white" />
                   <FontAwesomeIcon
                     icon="clock"
-                    className="text-plum-500"
+                    className="text-fastest-lap-plum"
                     transform="shrink-2"
                   />
                 </span>
@@ -237,13 +237,13 @@ export const DriverCard = (props) => {
               {isFastestLapDriver && (
                 <Popover
                   aria-labelledby="hero-popover"
-                  className="bg-glow border-plum-500 border-[.1rem] rounded-md p-4 bg-neutral-950 z-[10]"
+                  className="bg-glow border-fastest-lap-plum border-[.1rem] rounded-md p-4 bg-neutral-950 z-[10]"
                   trigger="hover"
                   placement="top"
                   arrow={false}
                   content={
                     <div className="p-4 text-center">
-                      <div className="bg-plum-500 text-[12px] font-display rounded px-8 inline-block text-white">
+                      <div className="bg-fastest-lap-plum text-[12px] font-display rounded px-8 inline-block text-white">
                         {fastestLapTime}
                       </div>
                     </div>
@@ -253,7 +253,7 @@ export const DriverCard = (props) => {
                     <FontAwesomeIcon icon="circle" className="text-white" />
                     <FontAwesomeIcon
                       icon="clock"
-                      className="text-plum-500"
+                      className="text-fastest-lap-plum"
                       transform="shrink-2"
                     />
                   </span>

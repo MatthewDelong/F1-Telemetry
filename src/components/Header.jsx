@@ -188,7 +188,7 @@ export const Header = () => {
                 <div className="flex flex-col gap-8 p-16 rounded-lg bg-glow bg-neutral-800 shadow-lg">
                   <NavLink
                     to="/teammates-comparison"
-                    className="w-[300px] bg-glow-dark hover:bg-neutral-900 border-2 border-transparent hover:border-plum-500 py-12 px-16 text-neutral-300 hover:text-white rounded-md"
+                    className="w-[300px] bg-glow-dark hover:bg-neutral-900 border-2 border-transparent hover:border-brand-blue-500 py-12 px-16 text-neutral-300 hover:text-white rounded-md"
                     onClick={() => {
                       isOpen && setIsOpen(false);
                     }}
@@ -204,7 +204,7 @@ export const Header = () => {
                   </NavLink>
                   <NavLink
                     to="/driver-comparison"
-                    className="w-[300px] bg-glow-dark hover:bg-neutral-900 border-2 border-transparent hover:border-plum-500 py-12 px-16 text-neutral-300 hover:text-white rounded-md"
+                    className="w-[300px] bg-glow-dark hover:bg-neutral-900 border-2 border-transparent hover:border-brand-blue-500 py-12 px-16 text-neutral-300 hover:text-white rounded-md"
                     onClick={() => {
                       isOpen && setIsOpen(false);
                     }}
