@@ -5,16 +5,39 @@ const { Cache } = require('./database');
 async function updateF1Data(year = new Date().getFullYear()) {
   try {
     console.log(`[Updater] Fetching ${year} F1 driver standings from Jolpica...`);
-    const ergastRes = await axios.get(`https://api.jolpi.ca/ergast/f1/${year}/driverStandings.json`);
-    const lists = ergastRes.data.MRData.StandingsTable.StandingsLists;
-
-    // The F1nsight-api-2 structured it as a dictionary with round numbers as keys, e.g. "1": [...], "2": [...]
-    // Or sometimes just an array if it's the latest.
-    const structuredStandings = {};
-    for (const list of lists) {
-      structuredStandings[list.round] = list.DriverStandings;
-      structuredStandings['latest'] = list.DriverStandings;
+    
+    // First, fetch the latest standings to discover how many rounds exist
+    const latestRes = await axios.get(`https://api.jolpi.ca/ergast/f1/${year}/driverStandings.json`);
+    const latestLists = latestRes.data.MRData.StandingsTable.StandingsLists;
+    if (!latestLists || latestLists.length === 0) {
+      console.warn(`[Updater] No driver standings data available for ${year}`);
+      return;
     }
+    
+    const latestRound = parseInt(latestLists[0].round, 10);
+    console.log(`[Updater] Latest round for ${year}: ${latestRound}. Fetching all rounds...`);
+    
+    // Build structured standings with data for every round (matching old f1nsight-api-2 format)
+    const structuredStandings = {};
+    
+    for (let round = 1; round <= latestRound; round++) {
+      try {
+        const roundRes = await axios.get(`https://api.jolpi.ca/ergast/f1/${year}/${round}/driverStandings.json`);
+        const roundLists = roundRes.data.MRData.StandingsTable.StandingsLists;
+        if (roundLists && roundLists.length > 0) {
+          structuredStandings[round] = roundLists[0].DriverStandings;
+        }
+        // Small delay to avoid rate limiting
+        if (round < latestRound) {
+          await new Promise(r => setTimeout(r, 200));
+        }
+      } catch (roundErr) {
+        console.warn(`[Updater] Failed to fetch round ${round} driver standings:`, roundErr.message);
+      }
+    }
+    
+    // Also set 'latest' key for backwards compatibility
+    structuredStandings['latest'] = latestLists[0].DriverStandings;
 
     // Save into SQLite exactly matching the expected key from the old API
     const cacheKey = `f1:races/${year}/driverStandings.json`;
@@ -32,7 +55,7 @@ async function updateF1Data(year = new Date().getFullYear()) {
       });
     }
 
-    console.log('[Updater] F1 Driver Standings successfully synced to local DB from Jolpica/Ergast API.');
+    console.log(`[Updater] F1 Driver Standings successfully synced (${Object.keys(structuredStandings).length - 1} rounds) to local DB from Jolpica/Ergast API.`);
   } catch (error) {
     console.error('[Updater] F1 Data Error:', error.message);
   }
@@ -41,14 +64,38 @@ async function updateF1Data(year = new Date().getFullYear()) {
 async function updateF1ConstructorStandings(year = new Date().getFullYear()) {
   try {
     console.log(`[Updater] Fetching ${year} F1 constructor standings from Jolpica...`);
-    const ergastRes = await axios.get(`https://api.jolpi.ca/ergast/f1/${year}/constructorStandings.json`);
-    const lists = ergastRes.data.MRData.StandingsTable.StandingsLists;
+    
+    // First, fetch the latest standings to discover how many rounds exist
+    const latestRes = await axios.get(`https://api.jolpi.ca/ergast/f1/${year}/constructorStandings.json`);
+    const latestLists = latestRes.data.MRData.StandingsTable.StandingsLists;
+    if (!latestLists || latestLists.length === 0) {
+      console.warn(`[Updater] No constructor standings data available for ${year}`);
+      return;
+    }
+
+    const latestRound = parseInt(latestLists[0].round, 10);
+    console.log(`[Updater] Latest round for ${year}: ${latestRound}. Fetching all constructor rounds...`);
 
     const structuredStandings = {};
-    for (const list of lists) {
-      structuredStandings[list.round] = list.ConstructorStandings;
-      structuredStandings['latest'] = list.ConstructorStandings;
+
+    for (let round = 1; round <= latestRound; round++) {
+      try {
+        const roundRes = await axios.get(`https://api.jolpi.ca/ergast/f1/${year}/${round}/constructorStandings.json`);
+        const roundLists = roundRes.data.MRData.StandingsTable.StandingsLists;
+        if (roundLists && roundLists.length > 0) {
+          structuredStandings[round] = roundLists[0].ConstructorStandings;
+        }
+        // Small delay to avoid rate limiting
+        if (round < latestRound) {
+          await new Promise(r => setTimeout(r, 200));
+        }
+      } catch (roundErr) {
+        console.warn(`[Updater] Failed to fetch round ${round} constructor standings:`, roundErr.message);
+      }
     }
+
+    // Also set 'latest' key for backwards compatibility
+    structuredStandings['latest'] = latestLists[0].ConstructorStandings;
 
     const cacheKey = `f1:races/${year}/constructorStandings.json`;
     let cached = await Cache.findOne({ where: { key: cacheKey } });
@@ -65,7 +112,7 @@ async function updateF1ConstructorStandings(year = new Date().getFullYear()) {
       });
     }
 
-    console.log('[Updater] F1 Constructor Standings successfully synced to local DB.');
+    console.log(`[Updater] F1 Constructor Standings successfully synced (${Object.keys(structuredStandings).length - 1} rounds) to local DB.`);
   } catch (error) {
     console.error('[Updater] F1 Constructor Data Error:', error.message);
   }

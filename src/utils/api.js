@@ -303,25 +303,36 @@ export const getPartialConstructorStandings = async (selectedYear, start, end) =
 
     let startStandings = []
     if(parseInt(start)===1){
-      startStandings = constructorData[start].map(standing => ({
-        constructorName: standing.Constructor.name,
-        constructorId: standing.Constructor.constructorId,
-        points: 0,
-        driverCodes: []
-      }))
+      const startData = constructorData[start];
+      if (Array.isArray(startData)) {
+        startStandings = startData.map(standing => ({
+          constructorName: standing.Constructor.name,
+          constructorId: standing.Constructor.constructorId,
+          points: 0,
+          driverCodes: []
+        }))
+      }
     } else {
       // console.log("Value of start is: ", start)
-      startStandings = constructorData[start-1].map(standing => ({
-        constructorName: standing.Constructor.name,
-        constructorId: standing.Constructor.constructorId,
-        points: standing.points,
-        driverCodes: []
-      }))
+      const startData = constructorData[start-1];
+      if (Array.isArray(startData)) {
+        startStandings = startData.map(standing => ({
+          constructorName: standing.Constructor.name,
+          constructorId: standing.Constructor.constructorId,
+          points: standing.points,
+          driverCodes: []
+        }))
+      }
     }
     // console.log(startStandings);
 
+    const endData = constructorData[end];
+    if (!Array.isArray(endData)) {
+      console.warn(`[API] No constructor standings data found for round ${end}`);
+      return [];
+    }
 
-    let endStandings = constructorData[end].map(standing => ({
+    let endStandings = endData.map(standing => ({
       constructorName: standing.Constructor.name,
       constructorId: standing.Constructor.constructorId,
       points: standing.points,
@@ -455,8 +466,14 @@ export const getPartialDriverStandings = async (selectedYear, start, end) => {
     if (response.ok) {
       const data = await response.json();
       let endStandings = data[end];
+      if (!Array.isArray(endStandings)) {
+        console.warn(`[API] No driver standings data found for round ${end}`);
+        return [];
+      }
       let startStandings = [];
-      if(parseInt(start)!==1) startStandings = data[start-1];
+      if(parseInt(start)!==1) {
+        startStandings = data[start-1] || [];
+      }
       // console.log(endStandings);
       const standings =  endStandings.map(end => {
         const start = startStandings.find(start => start.Driver.driverId === end.Driver.driverId);

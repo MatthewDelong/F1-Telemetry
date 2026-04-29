@@ -64,7 +64,7 @@ export const ConstructorDriver = (props) => {
           {/* position / firstname */}
           <div className="w-fit mb-4">
             {showStanding && (
-              <div div className="flex items-end mb-4">
+              <div className="flex items-end mb-4">
                 <div className="font-display text-24 leading-none -mb-4 mr-8 text-neutral-400">
                   {index + 1}
                 </div>

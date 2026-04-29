@@ -4,6 +4,17 @@
 
 const RACE_KEYS = ["race0", "race1", "race2", "race3"];
 
+// Position-based scoring tables for when result.points is missing (e.g. F2 data)
+const SPRINT_POINTS = [10, 8, 6, 5, 4, 3, 2, 1];
+const FEATURE_POINTS = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
+
+const getPointsFromPosition = (position, raceKey) => {
+  const pos = parseInt(position, 10);
+  if (!Number.isFinite(pos) || pos < 1) return 0;
+  const table = raceKey === "race1" ? SPRINT_POINTS : FEATURE_POINTS;
+  return table[pos - 1] || 0;
+};
+
 const buildBlankRow = (raceName) => ({
   raceName,
   pointsByKey: {},
@@ -34,7 +45,11 @@ export const buildRacePointsMaps = (allRaceResults = []) => {
       if (!Array.isArray(results)) return;
 
       results.forEach((result) => {
-        const points = Number(result.points) || 0;
+        // Use result.points if available, otherwise calculate from position
+        const rawPoints = result.points !== undefined
+          ? Number(result.points)
+          : getPointsFromPosition(result.position, raceKey);
+        const points = rawPoints || 0;
 
         const driverId = result.Driver?.driverId;
         if (driverId) {
