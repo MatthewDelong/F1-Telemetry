@@ -5,7 +5,7 @@ const CANCELLED_RACES_2026 = ["Bahrain Grand Prix", "Saudi Arabian Grand Prix"];
 
 export const BASE_F1_URL = import.meta.env.PROD 
   ? '/api.php?source=f1&path=' 
-  : 'http://localhost:3000/api/proxy/f1/';
+  : '/api/proxy/f1/';
 
 
 /**

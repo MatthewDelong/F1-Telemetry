@@ -38,17 +38,11 @@ const Top3Drivers = ({ year, circuitId, index, championshipLevel }) => {
   return (
     <div className="relative group w-fit m-auto">
       <NavLink
-        disabled={!hasResults}
-        to={
-          hasResults
-            ? `/race-${championshipLevel === "F1A" ? "f1a" : "f2"}/${year}${index}`
-            : null
-        }
-        onClick={() => {}}
+        to={`/race-${championshipLevel === "F1A" ? "f1a" : "f2"}/${year}${index}`}
         className={classNames(
           "bg-glow-dark rounded-[2.4rem] p-32 block mt-32 w-fit m-auto",
           "bg-gradient-to-br from-neutral-950/50 via-neutral-800/50 to-neutral-900/50",
-          { "clickable-hover": hasResults },
+          "clickable-hover",
         )}
       >
         <h3 className="font-display tracking-xs leading-none text-center font-bold mb-32">
@@ -138,16 +132,13 @@ const Top3Drivers = ({ year, circuitId, index, championshipLevel }) => {
             </div>
           )}
         </div>
-      </NavLink>
-      {hasResults && (
         <Button
           size="sm"
-          disabled
-          className="opacity-0 group-hover:opacity-100 absolute bottom-[2rem] left-1/2 -translate-x-1/2"
+          className="opacity-100 lg:opacity-0 lg:group-hover:opacity-100 absolute bottom-[-4rem] left-1/2 -translate-x-1/2 pointer-events-none"
         >
           View Race Details
         </Button>
-      )}
+      </NavLink>
     </div>
   );
 };

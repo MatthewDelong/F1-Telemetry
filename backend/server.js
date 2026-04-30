@@ -1,8 +1,8 @@
-const express = require('express');
-const cors = require('cors');
-const { connectDB, Cache } = require('./database');
-const cron = require('node-cron');
-const axios = require('axios');
+const express = require("express");
+const cors = require("cors");
+const { connectDB, Cache } = require("./database");
+const cron = require("node-cron");
+const axios = require("axios");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,16 +15,16 @@ const getCachedData = async (key, fetchCallback, ttlMs = 1000 * 60 * 30) => {
   try {
     const cached = await Cache.findOne({ where: { key } });
     const now = new Date();
-    
+
     // If we have a cache and it's fresh enough (30 mins default)
-    if (cached && (now - cached.lastUpdated) < ttlMs) {
+    if (cached && now - cached.lastUpdated < ttlMs) {
       return JSON.parse(cached.value);
     }
-    
+
     // Otherwise, fetch fresh data
     console.log(`[Cache Miss] Fetching fresh data for: ${key}`);
     const data = await fetchCallback();
-    
+
     // Upsert to SQLite cache
     if (cached) {
       cached.value = JSON.stringify(data);
@@ -34,10 +34,10 @@ const getCachedData = async (key, fetchCallback, ttlMs = 1000 * 60 * 30) => {
       await Cache.create({
         key,
         value: JSON.stringify(data),
-        lastUpdated: now
+        lastUpdated: now,
       });
     }
-    
+
     return data;
   } catch (error) {
     console.error(`Error in getCachedData for ${key}:`, error.message);
@@ -51,25 +51,73 @@ const getCachedData = async (key, fetchCallback, ttlMs = 1000 * 60 * 30) => {
   }
 };
 
-// Generic Proxy Route to mirror external GitHub pages structured data until we implement native scrappers
-// This ensures we have 100% API compatibility on day 1 while we write the local scrappers.
-app.use('/api/proxy/:source', async (req, res) => {
+// Generic Proxy Route — cache-first for F1, passthrough for F1A/F2
+const { buildDriverStats } = require("./driverStatsBuilder");
+
+app.use("/api/proxy/:source", async (req, res) => {
   const { source } = req.params;
-  const path = req.path.replace(/^\//, ''); // get the rest of the path after /api/proxy/f1/
-  
-  if (!path) return res.status(400).json({ error: 'Path required' });
-  let baseUrl = '';
-  if (source === 'f1') {
-    baseUrl = 'https://praneeth7781.github.io/f1nsight-api-2/';
-  } else if (source === 'f1a') {
-    baseUrl = 'https://ant-dot-comm.github.io/f1aapi/';
-  } else if (source === 'f2') {
-    baseUrl = 'https://ant-dot-comm.github.io/f2api/';
-  } else {
-    return res.status(400).json({ error: 'Invalid source' });
-  }
+  const path = req.path.replace(/^\//, ""); // get the rest of the path after /api/proxy/f1/
+
+  if (!path) return res.status(400).json({ error: "Path required" });
 
   const cacheKey = `${source}:${path}`;
+
+  // ─── For F1: check local cache first (populated by updater from Jolpica) ───
+  if (source === "f1") {
+    try {
+      // Check if we already have this data cached from the updater
+      const cached = await Cache.findOne({ where: { key: cacheKey } });
+      if (cached) {
+        return res.json(JSON.parse(cached.value));
+      }
+
+      // On-demand: driver stats (drivers/{driverId}.json)
+      const driverMatch = path.match(/^drivers\/([^/]+)\.json$/);
+      if (driverMatch) {
+        const driverId = driverMatch[1];
+        console.log(`[On-Demand] Building stats for driver: ${driverId}`);
+        const stats = await buildDriverStats(driverId);
+        if (stats) {
+          // Cache permanently (historical driver data doesn't change)
+          await Cache.create({
+            key: cacheKey,
+            value: JSON.stringify(stats),
+            lastUpdated: new Date(),
+          });
+          return res.json(stats);
+        }
+      }
+
+      // Fallback: proxy from Praneeth (temporary, until all endpoints migrated)
+      console.log(
+        `[Proxy Fallback] ${cacheKey} not cached, proxying from Praneeth...`,
+      );
+      const baseUrl = "https://praneeth7781.github.io/f1nsight-api-2/";
+      const data = await getCachedData(
+        cacheKey,
+        async () => {
+          const response = await axios.get(`${baseUrl}${path}`);
+          return response.data;
+        },
+        1000 * 60 * 30,
+      );
+      return res.json(data);
+    } catch (err) {
+      console.error(`[Proxy] Error for ${cacheKey}:`, err.message);
+      return res.status(500).json({ error: "Failed to fetch data" });
+    }
+  }
+
+  // ─── F1A / F2: passthrough to GitHub Pages ───
+  let baseUrl = "";
+  if (source === "f1a") {
+    baseUrl = "https://ant-dot-comm.github.io/f1aapi/";
+  } else if (source === "f2") {
+    baseUrl = "https://ant-dot-comm.github.io/f2api/";
+  } else {
+    return res.status(400).json({ error: "Invalid source" });
+  }
+
   const targetUrl = `${baseUrl}${path}`;
 
   try {
@@ -79,25 +127,29 @@ app.use('/api/proxy/:source', async (req, res) => {
         const response = await axios.get(targetUrl);
         return response.data;
       },
-      1000 * 60 * 30 // 30 mins TTL
+      1000 * 60 * 30, // 30 mins TTL
     );
     res.json(data);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch data' });
+    res.status(500).json({ error: "Failed to fetch data" });
   }
 });
 
-const { startCronJobs, updateF1Data, updateF1ConstructorStandings } = require('./updater');
+const {
+  startCronJobs,
+  runCurrentSeasonUpdate,
+  updateDriversList,
+} = require("./updater");
 
 app.listen(PORT, async () => {
   await connectDB();
-  console.log(`F1nsight Backend running on http://localhost:${PORT}`);
-  
+  console.log(`F1-Telemetry Backend running on http://localhost:${PORT}`);
+
   // Start automated cron jobs
   startCronJobs();
-  
-  // Optionally do a first-run fetch asynchronously
+
+  // First-run: populate all data for current season + all-time drivers list
   const currentYear = new Date().getFullYear();
-  updateF1Data(currentYear).catch(e => console.error(e));
-  updateF1ConstructorStandings(currentYear).catch(e => console.error(e));
+  updateDriversList().catch((e) => console.error(e));
+  runCurrentSeasonUpdate(currentYear).catch((e) => console.error(e));
 });

@@ -38,13 +38,11 @@ const Top3Drivers = ({ year, circuitId, index, championshipLevel }) => {
   return (
     <div className="relative group w-fit m-auto">
       <NavLink
-        disabled={!hasResults}
-        to={hasResults ? `/race-f1a/${year}${index}` : null}
-        onClick={() => {}}
+        to={`/race-f1a/${year}${index}`}
         className={classNames(
           "bg-glow-dark rounded-[2.4rem] p-32 block mt-32 w-fit m-auto",
           "bg-gradient-to-br from-neutral-950/50 via-neutral-800/50 to-neutral-900/50",
-          { "clickable-hover": hasResults },
+          "clickable-hover",
         )}
       >
         <h3 className="font-display tracking-xs leading-none text-center font-bold mb-32">
@@ -135,16 +133,13 @@ const Top3Drivers = ({ year, circuitId, index, championshipLevel }) => {
             </div>
           )}
         </div>
-      </NavLink>
-      {hasResults && (
         <Button
           size="sm"
-          disabled
-          className="opacity-0 group-hover:opacity-100 absolute bottom-[2rem] left-1/2 -translate-x-1/2"
+          className="opacity-100 lg:opacity-0 lg:group-hover:opacity-100 absolute bottom-[-4rem] left-1/2 -translate-x-1/2 pointer-events-none"
         >
           View Race Details
         </Button>
-      )}
+      </NavLink>
     </div>
   );
 };
@@ -173,22 +168,22 @@ export function RaceResultsPageF1a({ selectedYear, championshipLevel }) {
   return (
     <div className="standard-scroll-container">
       <div className="race-results max-w-[120rem] m-auto mt-32">
-      {isLoading ? (
-        <Loading
-          className="mt-[20rem] mb-[20rem]"
-          message={`Loading ${selectedYear} Race Results`}
-        />
-      ) : (
-        filteredCircuits.map((circuit, index) => (
-          <Top3Drivers
-            key={circuit.circuitId}
-            year={selectedYear}
-            index={index + 1}
-            circuitId={circuit.circuitId}
-            championshipLevel={championshipLevel}
+        {isLoading ? (
+          <Loading
+            className="mt-[20rem] mb-[20rem]"
+            message={`Loading ${selectedYear} Race Results`}
           />
-        ))
-      )}
+        ) : (
+          filteredCircuits.map((circuit, index) => (
+            <Top3Drivers
+              key={circuit.circuitId}
+              year={selectedYear}
+              index={index + 1}
+              circuitId={circuit.circuitId}
+              championshipLevel={championshipLevel}
+            />
+          ))
+        )}
       </div>
     </div>
   );

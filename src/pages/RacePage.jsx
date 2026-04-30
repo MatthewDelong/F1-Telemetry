@@ -612,7 +612,7 @@ export function RacePage() {
     driverSelected && isAnimatedLocation && hasMap;
 
   const driverButtons = (layoutSmall) => (
-    <ul className="flex flex-col p-16">
+    <ul className="flex flex-col max-sm:p-8 sm:p-16">
       {raceResults.map((result, index) => (
         <button
           key={index}
@@ -1067,7 +1067,7 @@ export function RacePage() {
                 <div
                   className={classNames(
                     "text-center transition-all",
-                    showStartingGrid ? "w-2/3" : "w-1/2",
+                    showStartingGrid ? "w-[calc(66.666%-0.5rem)]" : "w-[calc(50%-0.5rem)]",
                   )}
                 >
                   <button
@@ -1083,7 +1083,7 @@ export function RacePage() {
                 <div
                   className={classNames(
                     "text-center transition-all",
-                    showStartingGrid ? "w-1/3" : "w-1/2",
+                    showStartingGrid ? "w-[calc(33.333%-0.5rem)]" : "w-[calc(50%-0.5rem)]",
                   )}
                 >
                   <button
@@ -1112,7 +1112,7 @@ export function RacePage() {
                 <StartingGrid
                   className={classNames(
                     "transition-all overflow-hidden",
-                    showStartingGrid ? "w-2/3" : "w-1/2 opacity-100",
+                    showStartingGrid ? "w-[calc(66.666%-0.5rem)]" : "w-[calc(50%-0.5rem)] opacity-100",
                   )}
                   raceResults={raceResults}
                   startingGrid={startingGrid}
@@ -1124,7 +1124,7 @@ export function RacePage() {
                 <div
                   className={classNames(
                     "bg-glow-large h-fit rounded-md sm:rounded-xlarge transition-all",
-                    showStartingGrid ? "w-1/3 opacity-100 overflow-hidden" : "w-1/1 max-sm:w-[50%] max-sm:pr-16 max-sm:overflow-visible sm:w-2/3 sm:overflow-hidden",
+                    showStartingGrid ? "w-[calc(33.333%-0.5rem)] opacity-100 overflow-hidden" : "max-sm:w-[calc(50%-0.5rem)] max-sm:overflow-visible sm:w-2/3 sm:overflow-hidden",
                   )}
                 >
                   {driverButtons(false)}

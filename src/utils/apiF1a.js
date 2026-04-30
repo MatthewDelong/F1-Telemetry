@@ -1,5 +1,5 @@
-export const BASE_F1A_URL = import.meta.env.PROD ? '/api.php?source=f1a&path=' : 'http://localhost:3000/api/proxy/f1a/';
-export const BASE_F2_URL = import.meta.env.PROD ? '/api.php?source=f2&path=' : 'http://localhost:3000/api/proxy/f2/';
+export const BASE_F1A_URL = import.meta.env.PROD ? '/api.php?source=f1a&path=' : '/api/proxy/f1a/';
+export const BASE_F2_URL = import.meta.env.PROD ? '/api.php?source=f2&path=' : '/api/proxy/f2/';
 
 export const fetchRaceMeetingKeysF1a = async (selectedYear, championshipLevel) => {
   try {
