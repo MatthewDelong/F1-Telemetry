@@ -7,6 +7,7 @@ import { F1TelemetryLogo as Logo } from "./F1TelemetryLogo";
 import { Button } from "./Button";
 import { F1ALinks, F1Links, F2Links, LegalLinks } from "./Links";
 import { getCurrentYear } from "../utils/currentYear";
+import { FaXTwitter } from "react-icons/fa6";
 
 const currentYear = getCurrentYear();
 
@@ -42,13 +43,13 @@ export const Footer2025 = ({ className }) => {
           <Button
             as="href"
             className="flex flex-row items-center gap-16"
-            href="https://www.instagram.com/f1nsight1/"
+            href="https://x.com/F1_Telemetry_uk"
             target="_blank"
             rel="noopener noreferrer"
             buttonStyle="hollow"
             size="sm"
           >
-            <FaInstagram size={24} />
+            <FaXTwitter size={24} />
             <p className="uppercase tracking-xs">Follow us</p>
           </Button>
         </div>
