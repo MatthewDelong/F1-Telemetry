@@ -10,6 +10,7 @@ import {
 import { fetchMostRecentRace } from "../utils/api";
 import { getCurrentYear } from "../utils/currentYear";
 import DatesSection from "../layouts/DatesSection";
+import teamColorsData from "../utils/teamColors.json";
 
 const currentYear = getCurrentYear();
 const HERO_BACKGROUND_IMAGES = [
@@ -25,7 +26,6 @@ const HERO_FADE_MS = 1200;
 
 export function LandingPage2025() {
   const [raceData, setRaceData] = useState(null);
-  const [teamColors, setTeamColors] = useState({});
   const snapContainerRef = useRef(null);
   const [heroBgIndex, setHeroBgIndex] = useState(0);
   const [isHeroImageVisible, setIsHeroImageVisible] = useState(true);
@@ -38,16 +38,9 @@ export function LandingPage2025() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const [mostRecentRace, colorsRes] = await Promise.all([
-        fetchMostRecentRace(currentYear),
-        fetch("/backend/teamColors.json")
-          .then((r) => r.json())
-          .catch(() => ({})),
-      ]);
+      const mostRecentRace = await fetchMostRecentRace(currentYear);
       setRaceData(mostRecentRace);
-      setTeamColors(colorsRes);
     };
-
     fetchData();
   }, []);
 
@@ -136,7 +129,7 @@ export function LandingPage2025() {
   const getTeamColor = (constructorId) => {
     if (!constructorId) return "#ffffff";
     const yearColors =
-      teamColors[String(selectedYear)] || teamColors["2025"] || {};
+      teamColorsData[String(selectedYear)] || teamColorsData["2025"] || {};
     const key = constructorId.toLowerCase().replace(/\s+/g, "_");
     return yearColors[key] ? `#${yearColors[key]}` : "#ffffff";
   };
