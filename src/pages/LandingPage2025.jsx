@@ -366,7 +366,7 @@ export function LandingPage2025() {
 
           {/* Podium */}
           <div
-            className="flex items-end justify-center mt-8 w-full"
+            className="flex items-end justify-center mt-8 w-full scale-90 sm:scale-100"
             style={{ paddingTop: "180px", paddingBottom: "30px", gap: 0 }}
           >
             {/* P2 */}
