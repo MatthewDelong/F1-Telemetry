@@ -11,6 +11,7 @@ import { fetchMostRecentRace } from "../utils/api";
 import { getCurrentYear } from "../utils/currentYear";
 import DatesSection from "../layouts/DatesSection";
 import teamColorsData from "../utils/teamColors.json";
+import raceDetails from "../config/raceDetails.json";
 
 const currentYear = getCurrentYear();
 const HERO_BACKGROUND_IMAGES = [
@@ -38,8 +39,35 @@ export function LandingPage2025() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const mostRecentRace = await fetchMostRecentRace(currentYear);
-      setRaceData(mostRecentRace);
+      const now = new Date();
+
+      // Get all past races from raceDetails.json sorted newest first
+      const pastRaces = raceDetails
+        .filter((r) => new Date(`${r.date}T${r.time}`) < now)
+        .sort((a, b) => new Date(`${b.date}T${b.time}`) - new Date(`${a.date}T${a.time}`));
+
+      // Try each past race newest first until we find one with podium data
+      for (const race of pastRaces) {
+        const round = parseInt(race.round, 10);
+        const season = parseInt(race.season, 10);
+        try {
+          const data = await fetchMostRecentRace(season, round);
+          // Check if it has podium results (positions 1-3)
+          const hasPodium = data?.raceResults?.some(
+            (r) => [1, 2, 3].includes(parseInt(r.position, 10))
+          );
+          if (hasPodium) {
+            setRaceData(data);
+            return;
+          }
+        } catch (e) {
+          continue;
+        }
+      }
+
+      // Absolute fallback — just fetch most recent and show whatever we get
+      const fallback = await fetchMostRecentRace(currentYear);
+      setRaceData(fallback);
     };
     fetchData();
   }, []);
