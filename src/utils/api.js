@@ -796,6 +796,13 @@ export const fetchOpenF1Podium = async (meetingKey) => {
         } : { rank: "0" }
       };
     });
+
+    // 2. Cache successful results
+    try {
+      localStorage.setItem(cacheKey, JSON.stringify({ data: results, timestamp: Date.now() }));
+    } catch (e) {}
+
+    return results;
   } catch (err) {
     console.error("[OpenF1 Fallback] Error fetching podium:", err.message);
     return [];
@@ -803,6 +810,18 @@ export const fetchOpenF1Podium = async (meetingKey) => {
 };
 
 export const fetchMostRecentRace = async (selectedYear, specificRound = null, specificRaceName = null) => {
+  const cacheKey = `${CACHE_PREFIX}most_recent_${selectedYear}_${specificRound || 'latest'}`;
+
+  // 1. Try browser cache
+  try {
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      const { data, timestamp } = JSON.parse(cached);
+      // For the most recent race, we use a shorter TTL (1 hour) to keep it fresh
+      if (Date.now() - timestamp < (1000 * 60 * 60)) return data;
+    }
+  } catch (e) {}
+
   try {
     // Fetch the race details
     const raceDetailsResponse = await fetch(`${BASE_F1_URL}races/${selectedYear}/raceDetails.json`);
@@ -852,12 +871,16 @@ export const fetchMostRecentRace = async (selectedYear, specificRound = null, sp
       raceResults = await fetchOpenF1Podium(meetingKey);
     }
 
-    // Combine the race details and results, including the meeting key
     const raceWithDetails = {
       ...mostRecentRace,
       meetingKey,
       raceResults,
     };
+
+    // 2. Cache successful results
+    try {
+      localStorage.setItem(cacheKey, JSON.stringify({ data: raceWithDetails, timestamp: Date.now() }));
+    } catch (e) {}
 
     return raceWithDetails;
   } catch (error) {
