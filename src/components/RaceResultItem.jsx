@@ -83,7 +83,7 @@ export const RaceResultItem = (props) => {
                   content={
                     <div className="p-4">
                       <div className="bg-fastest-lap-plum text-center font-display rounded-sm">
-                        {fastestLap.Time.time}
+                        {fastestLap?.Time?.time}
                       </div>
 
                       <div className="flex align-start justify-around">

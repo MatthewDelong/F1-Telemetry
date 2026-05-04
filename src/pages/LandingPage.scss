@@ -210,3 +210,12 @@
   /* -----------------*/
 
   
+
+/* Podium - mobile scaling */
+@media (max-width: 639px) {
+  .podium-wrapper {
+    transform: scale(0.75);
+    transform-origin: top center;
+    margin-bottom: -60px; /* compensate for scale shrinking height */
+  }
+}

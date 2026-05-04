@@ -41,31 +41,40 @@ export function LandingPage2025() {
     const fetchData = async () => {
       const now = new Date();
 
-      // Get all past races from raceDetails.json sorted newest first
+      // Get all past races sorted newest first
       const pastRaces = raceDetails
         .filter((r) => new Date(`${r.date}T${r.time}`) < now)
         .sort((a, b) => new Date(`${b.date}T${b.time}`) - new Date(`${a.date}T${a.time}`));
+
+      console.log("[Podium] Past races to try:", pastRaces.map(r => `${r.raceName} (round ${r.round})`));
 
       // Try each past race newest first until we find one with podium data
       for (const race of pastRaces) {
         const round = parseInt(race.round, 10);
         const season = parseInt(race.season, 10);
         try {
-          const data = await fetchMostRecentRace(season, round);
-          // Check if it has podium results (positions 1-3)
+          console.log(`[Podium] Trying ${race.raceName} season=${season} round=${round}`);
+          const data = await fetchMostRecentRace(season, round, race.raceName);
+          console.log(`[Podium] Results for ${race.raceName}:`, data?.raceResults?.length, "results");
           const hasPodium = data?.raceResults?.some(
             (r) => [1, 2, 3].includes(parseInt(r.position, 10))
           );
+          console.log(`[Podium] hasPodium:`, hasPodium);
           if (hasPodium) {
             setRaceData(data);
             return;
           }
+          // Small gap before trying the next race if this one failed or has no data
+          await new Promise((r) => setTimeout(r, 1000));
         } catch (e) {
+          console.log(`[Podium] Error for ${race.raceName}:`, e.message);
+          await new Promise(r => setTimeout(r, 500)); // Longer wait on error
           continue;
         }
       }
 
-      // Absolute fallback — just fetch most recent and show whatever we get
+      // Fallback — fetch most recent without a specific round
+      console.log("[Podium] All failed, using fallback");
       const fallback = await fetchMostRecentRace(currentYear);
       setRaceData(fallback);
     };
@@ -192,6 +201,7 @@ export function LandingPage2025() {
         team: teamName,
         constructorId,
         gap,
+        bestLapTime: r.bestLapTime || r.fastestLap?.Time?.time || "—",
         fastestLap: r.fastestLap?.rank === "1",
         headshot: `/images/${selectedYear}/drivers/${driverCode}.png`,
       };
@@ -303,29 +313,40 @@ export function LandingPage2025() {
           />
           {/* Gap / time */}
           <div
-            className="flex items-center gap-1"
+            className="flex flex-col items-center"
             style={{
-              fontSize: driver.position === 1 ? "1rem" : "0.9rem",
-              color: "#fff",
-              fontWeight: 600,
+              marginTop: "2px"
             }}
           >
-            {driver.gap}
-            {driver.fastestLap && (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-                width="14"
-                height="14"
-              >
-                <circle cx="256" cy="256" r="256" fill="#ffffff" />
-                <path
-                  fill="#571680"
-                  transform="translate(38.4 38.4) scale(0.85)"
-                  d="M256 0a256 256 0 1 1 0 512 256 256 0 1 1 0-512zM232 120l0 136c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2 280 120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"
-                />
-              </svg>
-            )}
+            <span style={{ fontSize: '0.65rem', color: '#888', fontWeight: 700, textTransform: 'uppercase', marginBottom: '-2px' }}>
+              {driver.position === 1 ? "Best Lap" : "Gap"}
+            </span>
+            <div
+              className="flex items-center gap-1"
+              style={{
+                fontSize: driver.position === 1 ? "1rem" : "0.9rem",
+                color: "#fff",
+                fontWeight: 600,
+              }}
+            >
+              {driver.position === 1 ? driver.bestLapTime : driver.gap}
+              {driver.fastestLap && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                  width="12"
+                  height="12"
+                  style={{ marginLeft: '2px' }}
+                >
+                  <circle cx="256" cy="256" r="256" fill="#ffffff" />
+                  <path
+                    fill="#571680"
+                    transform="translate(38.4 38.4) scale(0.85)"
+                    d="M256 0a256 256 0 1 1 0 512 256 256 0 1 1 0-512zM232 120l0 136c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2 280 120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"
+                  />
+                </svg>
+              )}
+            </div>
           </div>
         </div>
       </div>

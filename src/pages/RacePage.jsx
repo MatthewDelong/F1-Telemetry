@@ -5,6 +5,7 @@ import { useLocation, useParams } from "react-router-dom";
 
 import {
   fetchOpenF1Data,
+  fetchOpenF1FullSessionData,
   fetchWithPersistentCache,
   fetchDriversAndTires,
   fetchRaceResultsByCircuit,
@@ -107,10 +108,8 @@ export function RacePage() {
       // console.log(raceName);
     };
 
-    if (raceName) {
-    } else {
+    if (!raceName && raceId) {
       fetchByMeetingKey();
-      fetchData();
     }
 
     const handleResize = () => {
@@ -119,7 +118,13 @@ export function RacePage() {
     window.addEventListener("resize", handleResize);
     // Cleanup event listener on unmount
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [raceId, raceName]);
+
+  useEffect(() => {
+    if (raceName && meetingKey) {
+      fetchData();
+    }
+  }, [raceName, meetingKey, selectedSession]);
 
   const animatedLocations = [
     "austin",
@@ -243,9 +248,9 @@ export function RacePage() {
           // console.log(results);
         }
 
-        const raceSession = sessionsData.find(
-          (session) => session.session_name === "Race",
-        );
+        const raceSession = [...sessionsData]
+          .reverse()
+          .find((session) => session.session_name === "Race");
         if (!raceSession) throw new Error("Race session not found");
         const sessionKey = raceSession.session_key;
         setSelectedSessionKey(sessionKey);
@@ -255,26 +260,28 @@ export function RacePage() {
           `${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`,
         ).catch(() => []);
 
+        await new Promise((r) => setTimeout(r, 250));
         const raceControlData = await fetchRaceControl(sessionKey).catch(
           () => [],
         );
         setRaceControlMessages(raceControlData);
 
-        await new Promise((r) => setTimeout(r, 100));
-        const startingGridData = await fetchWithPersistentCache(
-          `${buildOpenF1Url("/position")}?session_key=${sessionKey}`,
-        ).catch(() => []);
+        await new Promise((r) => setTimeout(r, 250));
+        const startingGridData = await fetchOpenF1FullSessionData("/position", sessionKey);
         setPos(startingGridData);
 
-        await new Promise((r) => setTimeout(r, 100));
+        await new Promise((r) => setTimeout(r, 250));
         const driversData = await fetchDriversAndTires(sessionKey).catch(
           () => [],
         );
 
-        await new Promise((r) => setTimeout(r, 100));
-        const lapsData = await fetchOpenF1Data(
-          `${buildOpenF1Url("/laps")}?session_key=${sessionKey}`,
-        ).catch(() => []);
+        await new Promise((r) => setTimeout(r, 250));
+        const lapsData = await fetchOpenF1FullSessionData("/laps", sessionKey);
+
+        console.log(`[RacePage] Session Key: ${sessionKey}`);
+        console.log(`[RacePage] Drivers fetched: ${driverDetailsData?.length || 0}`);
+        console.log(`[RacePage] Laps fetched: ${lapsData?.length || 0}`);
+        console.log(`[RacePage] Pos data fetched: ${startingGridData?.length || 0}`);
 
         const driverDetailsMap = (driverDetailsData || []).reduce(
           (acc, driver) => ({

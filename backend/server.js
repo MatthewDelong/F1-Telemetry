@@ -92,7 +92,7 @@ app.use("/api/proxy/:source", async (req, res) => {
       console.log(
         `[Proxy Fallback] ${cacheKey} not cached, proxying from Praneeth...`,
       );
-      const baseUrl = "https://praneeth7781.github.io/f1nsight-api-2/";
+      const baseUrl = "https://raw.githubusercontent.com/MatthewDelong/f1nsight-api-2/main/";
       const data = await getCachedData(
         cacheKey,
         async () => {
