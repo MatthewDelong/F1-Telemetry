@@ -31,7 +31,7 @@ export function RaceResultsPage({ selectedYear }) {
           results: raceResult ? raceResult.Results.slice(0, 3).map(res => ({
             number: res.number,
             driver: res.Driver,
-            fastestLap: res.FastestLap,
+            fastestLap: res.FastestLap || res.fastestLap,
             grid: res.grid,
             position: res.position,
             status: res.status,
@@ -40,6 +40,7 @@ export function RaceResultsPage({ selectedYear }) {
         };
       });
 
+      console.log(`[RaceResultsPage] Enriched Details for ${selectedYear}:`, enrichedDetails);
       setRaceDetails(enrichedDetails);
       setRaces(racesMK);
       setIsLoading(false);

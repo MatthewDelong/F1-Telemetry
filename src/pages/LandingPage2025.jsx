@@ -202,7 +202,7 @@ export function LandingPage2025() {
         constructorId,
         gap,
         bestLapTime: r.bestLapTime || r.fastestLap?.Time?.time || "—",
-        fastestLap: r.fastestLap?.rank === "1",
+        fastestLap: parseInt(r.fastestLap?.rank || r.FastestLap?.rank, 10) === 1,
         headshot: `/images/${selectedYear}/drivers/${driverCode}.png`,
       };
     });

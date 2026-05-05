@@ -72,7 +72,7 @@ export const RaceResultItem = (props) => {
           <div className="text-xl -mt-4 flex items-center justify-center gap-4">
             {time}
             <span className="popover-wrapper flex flex-col items-center">
-              {fastestLap?.rank === "1" && (
+              {parseInt(fastestLap?.rank, 10) === 1 && (
                 <Popover
                   aria-labelledby="default-popover"
                   className="bg-glow border-2 border-fastest-lap-plum p-4 bg-neutral-950 z-[10] rounded-md"

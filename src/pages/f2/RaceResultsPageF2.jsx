@@ -61,7 +61,7 @@ const Top3Drivers = ({ year, circuitId, index, championshipLevel }) => {
                     className={`race-results__list__item-${index + 1}`}
                     carNumber={result.number}
                     driver={result.Driver}
-                    fastestLap={result.fastestLap}
+                    fastestLap={result.FastestLap || result.fastestLap}
                     startPosition={parseInt(result.grid, 10)}
                     key={index}
                     index={index}
@@ -91,7 +91,7 @@ const Top3Drivers = ({ year, circuitId, index, championshipLevel }) => {
                     className={`race-results__list__item-${index + 1}`}
                     carNumber={result.number}
                     driver={result.Driver}
-                    fastestLap={result.fastestLap}
+                    fastestLap={result.FastestLap || result.fastestLap}
                     startPosition={parseInt(result.grid, 10)}
                     key={index}
                     index={index}
@@ -117,7 +117,7 @@ const Top3Drivers = ({ year, circuitId, index, championshipLevel }) => {
                     className={`race-results__list__item-${index + 1}`}
                     carNumber={result.number}
                     driver={result.Driver}
-                    fastestLap={result.fastestLap}
+                    fastestLap={result.FastestLap || result.fastestLap}
                     startPosition={parseInt(result.grid, 10)}
                     key={index}
                     index={index}

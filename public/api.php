@@ -28,7 +28,6 @@ function fetchUrl($url, $timeout = 10, &$errorMsg = null) {
     $response = curl_exec($ch);
     $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $errorMsg = curl_error($ch);
-    curl_close($ch);
     
     if ($httpcode == 200 && $response) {
         return $response;
