@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { fetchRaceDetails, fetchRaceMeetingKeys } from "../utils/api";
+import { fetchRaceDetails, fetchRaceMeetingKeys, BASE_F1_URL } from "../utils/api";
 import classNames from "classnames";
 
 import { RaceResultItem, Loading, Button } from "../components";
@@ -14,11 +14,34 @@ export function RaceResultsPage({ selectedYear }) {
     const fetchData = async () => {
       setIsLoading(true);
       const details = await fetchRaceDetails(selectedYear);
-      const races = await fetchRaceMeetingKeys(selectedYear);
-      // console.log('details', races)
+      const racesMK = await fetchRaceMeetingKeys(selectedYear);
+      
+      // Fetch results for all races to populate the cards
+      const resultsResponse = await fetch(`${BASE_F1_URL}races/${selectedYear}/results.json`);
+      let allResults = [];
+      if (resultsResponse.ok) {
+        allResults = await resultsResponse.json();
+      }
 
-      setRaceDetails(details);
-      setRaces(races);
+      // Merge results into details
+      const enrichedDetails = details.map(race => {
+        const raceResult = allResults.find(r => parseInt(r.round, 10) === parseInt(race.round, 10));
+        return {
+          ...race,
+          results: raceResult ? raceResult.Results.slice(0, 3).map(res => ({
+            number: res.number,
+            driver: res.Driver,
+            fastestLap: res.FastestLap,
+            grid: res.grid,
+            position: res.position,
+            status: res.status,
+            time: res.Time?.time
+          })) : []
+        };
+      });
+
+      setRaceDetails(enrichedDetails);
+      setRaces(racesMK);
       setIsLoading(false);
     };
 

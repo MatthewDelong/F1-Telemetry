@@ -2,8 +2,9 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 
-// Simple proxy and cache script for IONOS Web Hosting Plus.
-// Requirements: Handles f1, f1a, f2 sources. Re-structures Jolpica data for F1 where possible, relies on old GitHub repos as structural fallbacks.
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 $source = $_GET['source'] ?? '';
 $path = $_GET['path'] ?? '';
@@ -14,34 +15,57 @@ if (empty($source) || empty($path)) {
     exit;
 }
 
-$cacheDir = __DIR__ . '/api_cache/' . $source;
-if (!is_dir($cacheDir)) {
-    mkdir($cacheDir, 0755, true);
-}
-
-// Convert path to a safe filename
-$safePath = str_replace(['/', '\\'], '_', $path);
-$cacheFile = $cacheDir . '/' . $safePath;
-$cacheTTL = 3600 * 2; // 2 hours
-
-// Function to fetch data via cURL
-function fetchUrl($url) {
+// Function to fetch data via cURL with file_get_contents fallback
+function fetchUrl($url, $timeout = 10, &$errorMsg = null) {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-    // Masquerade user agent
-    curl_setopt($ch, CURLOPT_USERAGENT, 'F1nsight-Backend/1.0');
+    curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    // Use a standard browser User-Agent
+    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
     $response = curl_exec($ch);
     $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $errorMsg = curl_error($ch);
     curl_close($ch);
     
     if ($httpcode == 200 && $response) {
         return $response;
     }
+
+    // Fallback to file_get_contents if cURL failed
+    if (ini_get('allow_url_fopen')) {
+        $options = [
+            "http" => [
+                "method" => "GET",
+                "header" => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36\r\n",
+                "timeout" => $timeout
+            ],
+            "ssl" => [
+                "verify_peer" => false,
+                "verify_peer_name" => false,
+            ]
+        ];
+        $context = stream_context_create($options);
+        $response = @file_get_contents($url, false, $context);
+        if ($response !== false) {
+            return $response;
+        }
+    }
+
     return false;
 }
+
+$cacheDir = __DIR__ . '/api_cache/' . $source;
+if (!is_dir($cacheDir)) {
+    @mkdir($cacheDir, 0755, true);
+}
+
+// Convert path to a safe filename
+$safePath = str_replace(['/', '\\'], '_', $path);
+$cacheFile = $cacheDir . '/' . $safePath;
+$cacheTTL = 3600 * 6; // 6 hours matches local storage
 
 // Check cache
 if (file_exists($cacheFile) && (time() - filemtime($cacheFile) < $cacheTTL)) {
@@ -50,13 +74,14 @@ if (file_exists($cacheFile) && (time() - filemtime($cacheFile) < $cacheTTL)) {
 }
 
 $data = null;
+$lastError = "";
 
 // Determine fetch URL
 if ($source === 'f1') {
     // Attempt native Jolpica transformations
     if (preg_match('/^races\/(\d{4})\/driverStandings\.json$/', $path, $matches)) {
         $year = $matches[1];
-        $raw = fetchUrl("https://api.jolpi.ca/ergast/f1/{$year}/driverStandings.json");
+        $raw = fetchUrl("https://api.jolpi.ca/ergast/f1/{$year}/driverStandings.json", 10, $lastError);
         if ($raw) {
             $parsed = json_decode($raw, true);
             $lists = $parsed['MRData']['StandingsTable']['StandingsLists'] ?? [];
@@ -70,7 +95,7 @@ if ($source === 'f1') {
     } 
     else if (preg_match('/^races\/(\d{4})\/constructorStandings\.json$/', $path, $matches)) {
         $year = $matches[1];
-        $raw = fetchUrl("https://api.jolpi.ca/ergast/f1/{$year}/constructorStandings.json");
+        $raw = fetchUrl("https://api.jolpi.ca/ergast/f1/{$year}/constructorStandings.json", 10, $lastError);
         if ($raw) {
             $parsed = json_decode($raw, true);
             $lists = $parsed['MRData']['StandingsTable']['StandingsLists'] ?? [];
@@ -85,16 +110,42 @@ if ($source === 'f1') {
 
     // Fallback F1 Proxy if not matched or failed to fetch
     if (!$data) {
-        $baseUrl = 'https://praneeth7781.github.io/f1nsight-api-2/';
-        $data = fetchUrl($baseUrl . $path);
+        $baseUrls = [
+            'https://raw.githubusercontent.com/MatthewDelong/f1nsight-api-2/master/' => 3, // Fast timeout for user repo
+            'https://raw.githubusercontent.com/praneeth-kakarla/f1nsight-api/main/' => 7   // Longer wait for fallback
+        ];
+        foreach ($baseUrls as $baseUrl => $timeout) {
+            $data = fetchUrl($baseUrl . $path, $timeout, $lastError);
+            if ($data) break;
+        }
     }
 
-} else if ($source === 'f1a') {
-    $baseUrl = 'https://ant-dot-comm.github.io/f1aapi/';
-    $data = fetchUrl($baseUrl . $path);
-} else if ($source === 'f2') {
-    $baseUrl = 'https://raw.githubusercontent.com/MatthewDelong/f2api/main/';
-    $data = fetchUrl($baseUrl . $path);
+} else if ($source === 'f1a' || $source === 'f2') {
+    $baseUrls = [];
+    if ($source === 'f1a') {
+        $baseUrls = [
+            'https://raw.githubusercontent.com/MatthewDelong/f1aapi/main/' => 3,
+            'https://raw.githubusercontent.com/ant-dot-comm/f1aapi/main/' => 7
+        ];
+    } else {
+        $baseUrls = [
+            'https://raw.githubusercontent.com/MatthewDelong/f2api/main/' => 3,
+            'https://raw.githubusercontent.com/ant-dot-comm/f2api/main/' => 7
+        ];
+    }
+
+    foreach ($baseUrls as $baseUrl => $timeout) {
+        // Try original path
+        $data = fetchUrl($baseUrl . $path, $timeout, $lastError);
+        if ($data) break;
+
+        // Try typo path if applicable
+        if (strpos($path, 'results.json') !== false) {
+            $typoPath = str_replace('results.json', 'resullts.json', $path);
+            $data = fetchUrl($baseUrl . $typoPath, $timeout, $lastError);
+            if ($data) break;
+        }
+    }
 }
 
 // Serve Data
@@ -107,6 +158,10 @@ if ($data) {
         echo file_get_contents($cacheFile);
     } else {
         http_response_code(500);
-        echo json_encode(['error' => 'Failed to fetch data and no stale cache available']);
+        echo json_encode([
+            'error' => 'Failed to fetch data and no stale cache available',
+            'path' => $path,
+            'curl_error' => $lastError
+        ]);
     }
 }

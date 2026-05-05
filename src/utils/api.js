@@ -218,6 +218,18 @@ export const fetchDriverStats = async (driverId1, driverId2) => {
 
 
 export const fetchRaceMeetingKeys = async (selectedYear) => {
+  const cacheKey = `${CACHE_PREFIX}meeting_keys_${selectedYear}`;
+  
+  // Try browser cache first
+  try {
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      const { data, timestamp } = JSON.parse(cached);
+      // Use 6 hour TTL
+      if (Date.now() - timestamp < (1000 * 60 * 60 * 6)) return data;
+    }
+  } catch (e) {}
+
   try {
     const raceResponse = await fetch(`${BASE_F1_URL}races/races.json`);
     if(!raceResponse.ok) {
@@ -226,6 +238,7 @@ export const fetchRaceMeetingKeys = async (selectedYear) => {
     const races = await raceResponse.json();
     const yearRaces = races[selectedYear];
 
+    let result = yearRaces;
     if (Number(selectedYear) === 2026 && yearRaces) {
       const filteredRaces = {};
       for (const [key, value] of Object.entries(yearRaces)) {
@@ -233,10 +246,15 @@ export const fetchRaceMeetingKeys = async (selectedYear) => {
           filteredRaces[key] = value;
         }
       }
-      return filteredRaces;
+      result = filteredRaces;
     }
 
-    return yearRaces;
+    // Cache the result
+    try {
+      localStorage.setItem(cacheKey, JSON.stringify({ data: result, timestamp: Date.now() }));
+    } catch (e) {}
+
+    return result;
   } catch(error) {
     console.error('Error fetching data:', error);
   }
@@ -326,7 +344,7 @@ const fetchRaceResults = async (selectedYear, raceId) => {
     }
   } catch (e) {}
 
-  const resultsUrl = `${BASE_F1_URL}races/${selectedYear}/results.json?t=${Date.now()}`;
+  const resultsUrl = `${BASE_F1_URL}races/${selectedYear}/results.json`;
   try {
     const response = await fetch(resultsUrl);
     if (response.ok) {
@@ -352,7 +370,7 @@ const fetchRaceResults = async (selectedYear, raceId) => {
       // console.log('response', data);
 
       // console.log(data.slice(0,3));
-      console.log(`[API Debug] Results for ${year} Round ${round}:`, data.length, "results");
+      console.log(`[API Debug] Results for ${selectedYear} Round ${raceId}:`, data.length, "results");
       const results = data.map(result => {
         console.log(`[API Debug] Driver ${result.Driver?.code} FastestLap:`, result.FastestLap);
         return {
@@ -643,7 +661,7 @@ export const fetchDriversAndTires = async (sessionKey) => {
 export const fetchRaceResultsByCircuit = async (year, circuitId) => {
   try {
 
-    const url = `${BASE_F1_URL}races/${year}/results.json`;
+    const url = `${BASE_F1_URL}races/${year}/results.json?t=${Date.now()}`;
     const response = await fetch(url);
     const data = await response.json();
     // console.log(data);
@@ -657,7 +675,7 @@ export const fetchRaceResultsByCircuit = async (year, circuitId) => {
 
 export const fetchQualifyingResultsByCircuit = async(year, circuitId) => {
   try {
-    const url = `${BASE_F1_URL}races/${year}/qualifying.json`;
+    const url = `${BASE_F1_URL}races/${year}/qualifying.json?t=${Date.now()}`;
     const response = await fetch(url);
     const data = await response.json();
     const results = data.find(element => element.Circuit.circuitId === circuitId).QualifyingResults;
@@ -838,18 +856,14 @@ export const fetchMostRecentRace = async (selectedYear, specificRound = null, sp
     const cached = localStorage.getItem(cacheKey);
     if (cached) {
       const { data, timestamp } = JSON.parse(cached);
-      // For the most recent race, we use a shorter TTL (1 hour) to keep it fresh
-      if (Date.now() - timestamp < (1000 * 60 * 60)) return data;
+      // Use 6 hour TTL as requested
+      if (Date.now() - timestamp < (1000 * 60 * 60 * 6)) return data;
     }
   } catch (e) {}
 
   try {
-    // Fetch the race details
-    const raceDetailsResponse = await fetch(`${BASE_F1_URL}races/${selectedYear}/raceDetails.json?t=${Date.now()}`);
-    if (!raceDetailsResponse.ok) {
-      throw new Error('Failed to fetch race details');
-    }
-    let raceDetails = await raceDetailsResponse.json();    
+    // Fetch the race details using persistent cache
+    let raceDetails = await fetchWithPersistentCache(`${BASE_F1_URL}races/${selectedYear}/raceDetails.json`);
 
     // Filter out cancelled races for 2026
     if (Number(selectedYear) === 2026) {

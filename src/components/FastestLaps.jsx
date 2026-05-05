@@ -1,7 +1,7 @@
 import React from "react";
 
 export const FastestLaps = (props) => {
-    const { raceResults, drivers} = props;
+    const { results: raceResults, drivers } = props;
 
     // console.log('FastestLaps', raceResults);
 

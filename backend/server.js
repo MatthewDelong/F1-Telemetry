@@ -71,18 +71,38 @@ app.use("/api/proxy/:source", async (req, res) => {
     if (path.includes("2026")) {
       const fileName = pathMod.basename(path);
       // Priority: 1. src/config/f1/{file}, 2. src/config/{file}
-      let localConfigPath = pathMod.join(__dirname, "..", "src", "config", "f1", fileName);
+      let localConfigPath = pathMod.join(
+        __dirname,
+        "..",
+        "src",
+        "config",
+        "f1",
+        fileName,
+      );
       if (!fs.existsSync(localConfigPath)) {
-        localConfigPath = pathMod.join(__dirname, "..", "src", "config", fileName);
+        localConfigPath = pathMod.join(
+          __dirname,
+          "..",
+          "src",
+          "config",
+          fileName,
+        );
       }
-      
+
       if (fs.existsSync(localConfigPath)) {
         try {
-          console.log(`[Local Override] Serving 2026 F1 data from: ${localConfigPath}`);
-          const localData = JSON.parse(fs.readFileSync(localConfigPath, "utf8"));
+          console.log(
+            `[Local Override] Serving 2026 F1 data from: ${localConfigPath}`,
+          );
+          const localData = JSON.parse(
+            fs.readFileSync(localConfigPath, "utf8"),
+          );
           return res.json(localData);
         } catch (e) {
-          console.error(`[Local Override] Error reading ${localConfigPath}:`, e.message);
+          console.error(
+            `[Local Override] Error reading ${localConfigPath}:`,
+            e.message,
+          );
         }
       }
     }
@@ -115,12 +135,23 @@ app.use("/api/proxy/:source", async (req, res) => {
       console.log(
         `[Proxy Fallback] ${cacheKey} not cached, proxying from Praneeth...`,
       );
-      const baseUrl = "https://raw.githubusercontent.com/MatthewDelong/f1nsight-api-2/main/";
+      const baseUrls = [
+        "https://raw.githubusercontent.com/MatthewDelong/f1nsight-api-2/master/",
+        "https://raw.githubusercontent.com/praneeth-kakarla/f1nsight-api/main/",
+      ];
       const data = await getCachedData(
         cacheKey,
         async () => {
-          const response = await axios.get(`${baseUrl}${path}`);
-          return response.data;
+          for (const baseUrl of baseUrls) {
+            try {
+              const response = await axios.get(`${baseUrl}${path}`);
+              return response.data;
+            } catch (e) {
+              if (e.response?.status === 404) continue;
+              throw e;
+            }
+          }
+          throw new Error("Data not found in any repository");
         },
         1000 * 60 * 30,
       );
@@ -135,47 +166,79 @@ app.use("/api/proxy/:source", async (req, res) => {
   // Check for local override in src/config (especially for 2026 data or global schedules)
   const fileName = pathMod.basename(path);
   // Priority: 1. src/config/{source}/{file}, 2. src/config/{file}
-  let localConfigPath = pathMod.join(__dirname, "..", "src", "config", source, fileName);
+  let localConfigPath = pathMod.join(
+    __dirname,
+    "..",
+    "src",
+    "config",
+    source,
+    fileName,
+  );
   if (!fs.existsSync(localConfigPath)) {
     localConfigPath = pathMod.join(__dirname, "..", "src", "config", fileName);
   }
-  
+
   if (fs.existsSync(localConfigPath)) {
     // If it's a 2026 file or the global schedule, prioritize local version
-    if (path.includes("2026") || fileName === "racesbyMK.json" || fileName === "races.json") {
+    if (
+      path.includes("2026") ||
+      fileName === "racesbyMK.json" ||
+      fileName === "races.json"
+    ) {
       try {
-        console.log(`[Local Override] Serving ${source} data from: ${localConfigPath}`);
+        console.log(
+          `[Local Override] Serving ${source} data from: ${localConfigPath}`,
+        );
         const localData = JSON.parse(fs.readFileSync(localConfigPath, "utf8"));
         return res.json(localData);
       } catch (e) {
-        console.error(`[Local Override] Error reading ${localConfigPath}:`, e.message);
+        console.error(
+          `[Local Override] Error reading ${localConfigPath}:`,
+          e.message,
+        );
       }
     }
   }
 
-  let baseUrl = "";
+  const baseUrls = [];
   if (source === "f1a") {
-    baseUrl = "https://ant-dot-comm.github.io/f1aapi/";
+    baseUrls.push("https://raw.githubusercontent.com/MatthewDelong/f1aapi/main/");
+    baseUrls.push("https://raw.githubusercontent.com/ant-dot-comm/f1aapi/main/");
   } else if (source === "f2") {
-    baseUrl = "https://raw.githubusercontent.com/MatthewDelong/f2api/main/";
+    baseUrls.push("https://raw.githubusercontent.com/MatthewDelong/f2api/main/");
+    baseUrls.push("https://raw.githubusercontent.com/ant-dot-comm/f2api/main/");
   } else {
     return res.status(400).json({ error: "Invalid source" });
   }
-
-  const targetUrl = `${baseUrl}${path}`;
 
   try {
     const data = await getCachedData(
       cacheKey,
       async () => {
-        const response = await axios.get(targetUrl);
-        return response.data;
+        for (const baseUrl of baseUrls) {
+          const tryPaths = [path];
+          // Handle common typo 'resullts.json' in user's repositories
+          if (path.endsWith("results.json")) {
+            tryPaths.push(path.replace("results.json", "resullts.json"));
+          }
+
+          for (const tryPath of tryPaths) {
+            try {
+              const response = await axios.get(`${baseUrl}${tryPath}`);
+              return response.data;
+            } catch (e) {
+              if (e.response?.status === 404) continue;
+              throw e;
+            }
+          }
+        }
+        throw new Error("Data not found in any repository");
       },
       1000 * 60 * 30, // 30 mins TTL
     );
     res.json(data);
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch data" });
+    res.status(500).json({ error: "Failed to fetch data", message: err.message });
   }
 });
 
@@ -185,22 +248,28 @@ app.get("/openf1/*", async (req, res) => {
     const rawPath = req.originalUrl.replace(/^\/openf1/, "");
     const decodedPath = decodeURIComponent(rawPath);
     const targetUrl = `https://api.openf1.org${decodedPath}`;
-    
+
     console.log(`[OpenF1 Proxy] Proxying: GET ${targetUrl}`);
-    
+
     const response = await axios.get(targetUrl, {
-      headers: { "Accept": "application/json" },
+      headers: { Accept: "application/json" },
       validateStatus: false,
-      timeout: 10000
+      timeout: 10000,
     });
-    
+
     res.status(response.status).json(response.data);
   } catch (error) {
     console.error("[OpenF1 Proxy] Proxy Error:", error.message);
     if (error.response) {
-      console.error("[OpenF1 Proxy] API Response Error:", error.response.status, error.response.data);
+      console.error(
+        "[OpenF1 Proxy] API Response Error:",
+        error.response.status,
+        error.response.data,
+      );
     }
-    res.status(500).json({ error: "Failed to fetch from OpenF1", message: error.message });
+    res
+      .status(500)
+      .json({ error: "Failed to fetch from OpenF1", message: error.message });
   }
 });
 

@@ -48,8 +48,10 @@ export function LandingPage2025() {
 
       console.log("[Podium] Past races to try:", pastRaces.map(r => `${r.raceName} (round ${r.round})`));
 
-      // Try each past race newest first until we find one with podium data
-      for (const race of pastRaces) {
+      // Try only the last 3 past races newest first until we find one with podium data
+      // This prevents the page from hanging for too long on first load
+      const racesToTry = pastRaces.slice(0, 3);
+      for (const race of racesToTry) {
         const round = parseInt(race.round, 10);
         const season = parseInt(race.season, 10);
         try {
@@ -65,11 +67,8 @@ export function LandingPage2025() {
             setRaceData(data);
             return;
           }
-          // Small gap before trying the next race if this one failed or has no data
-          await new Promise((r) => setTimeout(r, 1000));
         } catch (e) {
           console.log(`[Podium] Error for ${race.raceName}:`, e.message);
-          await new Promise(r => setTimeout(r, 500)); // Longer wait on error
           continue;
         }
       }
