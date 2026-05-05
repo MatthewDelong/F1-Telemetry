@@ -26,7 +26,10 @@ const SocialMedia = () => {
         if (mostRecentRaceWeekend?.meetingKey) {
             const results = await getRaceWeekendResults(
                 mostRecentRaceWeekend.meetingKey,
+                mostRecentRaceWeekend.raceName
             );
+            window.debugWeekendResults = results;
+            console.log('[SocialMedia Debug] results:', results);
             setWeekendResults(results);
             setRecentRaceWeekend(mostRecentRaceWeekend);
         }

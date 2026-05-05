@@ -243,11 +243,12 @@ export function RacePage() {
           setAnimatedMap(`${"/mapsAnimated/" + circuitId + "Animated.mp4"}`);
         }
 
+        let sessionResults = [];
         if (circuitId) {
-          const results = await fetchRaceResultsByCircuit(year, circuitId);
-          setRaceResults(results);
-          if (results && results.length > 0) {
-            console.log(`[RacePage] Results for ${results[0]?.raceName || raceName} Round ${results[0]?.round || '?'}`);
+          sessionResults = await fetchRaceResultsByCircuit(year, circuitId);
+          setRaceResults(sessionResults);
+          if (sessionResults && sessionResults.length > 0) {
+            console.log(`[RacePage] Results for ${sessionResults[0]?.raceName || raceName} Round ${sessionResults[0]?.round || '?'}`);
           }
         }
 
@@ -323,7 +324,15 @@ export function RacePage() {
         // ALWAYS use official race results for the starting grid if available, 
         // as telemetry grid data can be unreliable or missing.
         let filteredStartingGrid = [];
-        if (raceResults && raceResults.length > 0) {
+        if ((year === "2026" || year === 2026) && sessionResults && sessionResults.length > 0) {
+          console.log(`[RacePage] Using official results for 2026 starting grid override`);
+          filteredStartingGrid = sessionResults.map(r => ({
+            driver_number: parseInt(r.number || r.Driver?.number, 10),
+            driver_acronym: r.Driver?.code || r.Driver?.driverId,
+            position: parseInt(r.grid || r.position, 10),
+            date: startTimeValue
+          })).filter(r => r.position > 0);
+        } else if (raceResults && raceResults.length > 0) {
           console.log(`[RacePage] Using official race results for starting grid`);
           filteredStartingGrid = raceResults.map(r => ({
             driver_number: parseInt(r.number || r.Driver?.number, 10),
@@ -372,13 +381,13 @@ export function RacePage() {
           setAnimatedMap(`${"/mapsAnimated/" + circuitId + "Animated.mp4"}`);
         }
 
+        let sessionResults = [];
         if (circuitId) {
-          const results = await fetchQualifyingResultsByCircuit(
+          sessionResults = await fetchQualifyingResultsByCircuit(
             year,
             circuitId,
           );
-          setRaceResults(results);
-          // console.log(results);
+          setRaceResults(sessionResults);
         }
 
         const raceSession = sessionsData.find(
@@ -430,10 +439,23 @@ export function RacePage() {
         setStartTime(startTime);
         setEndTime(endTime);
 
-        const earliestDateTime = startingGridData[0]?.date;
-        const filteredStartingGrid = startingGridData.filter(
-          (item) => item.date === earliestDateTime,
-        );
+        let filteredStartingGrid = [];
+        // For 2026, prioritize official results for the grid to ensure accuracy
+        if ((year === "2026" || year === 2026) && sessionResults && sessionResults.length > 0) {
+          console.log(`[RacePage] Using official qualifying results for 2026 starting grid override`);
+          filteredStartingGrid = sessionResults.map(r => ({
+            driver_number: parseInt(r.number || r.Driver?.number, 10),
+            driver_acronym: r.Driver?.code || r.Driver?.driverId,
+            position: parseInt(r.position, 10),
+            date: startTime
+          })).filter(r => r.position > 0);
+        } else {
+          const earliestDateTime = startingGridData[0]?.date;
+          filteredStartingGrid = startingGridData.filter(
+            (item) => item.date === earliestDateTime,
+          );
+        }
+        
         setStartingGrid(filteredStartingGrid);
         setPos(startingGridData);
 
@@ -463,6 +485,12 @@ export function RacePage() {
           console.warn("Sprint session not found in session data");
           setIsLoading(false);
           return;
+        }
+
+        let sessionResults = [];
+        if (circuitId) {
+          // Try to fetch results for the sprint (usually in results.json but might be different round/name)
+          sessionResults = await fetchRaceResultsByCircuit(year, circuitId);
         }
 
         const sessionKey = sprintSession.session_key;
@@ -522,6 +550,32 @@ export function RacePage() {
             driver_acronym: driverDetailsMap[lap.driver_number],
           })),
         );
+
+        const { startTime: sStartTime } = getPositionTimeBounds(
+          positionData,
+          sprintSession,
+        );
+
+        setStartTime(sStartTime);
+
+        let filteredStartingGrid = [];
+        // For 2026, prioritize official results for the grid to ensure accuracy
+        if ((year === "2026" || year === 2026) && sessionResults && sessionResults.length > 0) {
+          console.log(`[RacePage] Using official results for 2026 sprint starting grid override`);
+          filteredStartingGrid = sessionResults.map(r => ({
+            driver_number: parseInt(r.number || r.Driver?.number, 10),
+            driver_acronym: r.Driver?.code || r.Driver?.driverId,
+            position: parseInt(r.grid || r.position, 10),
+            date: sStartTime
+          })).filter(r => r.position > 0);
+        } else {
+          const earliestDateTime = positionData[0]?.date;
+          filteredStartingGrid = positionData.filter(
+            (item) => item.date === earliestDateTime,
+          );
+        }
+        
+        setStartingGrid(filteredStartingGrid);
 
         // Determine if session is live
         const isLive =

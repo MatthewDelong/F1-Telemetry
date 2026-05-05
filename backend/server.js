@@ -10,6 +10,9 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+const fs = require("fs");
+const pathMod = require("path");
+
 // Utility to fetch or get cached data
 const getCachedData = async (key, fetchCallback, ttlMs = 1000 * 60 * 30) => {
   try {
@@ -64,6 +67,22 @@ app.use("/api/proxy/:source", async (req, res) => {
 
   // ─── For F1: check local cache first (populated by updater from Jolpica) ───
   if (source === "f1") {
+    // Override: For 2026 data, check local src/config files first to respect manual edits
+    if (path.includes("2026")) {
+      const fileName = pathMod.basename(path);
+      const localConfigPath = pathMod.join(__dirname, "..", "src", "config", fileName);
+      
+      if (fs.existsSync(localConfigPath)) {
+        try {
+          console.log(`[Local Override] Serving 2026 data from: ${localConfigPath}`);
+          const localData = JSON.parse(fs.readFileSync(localConfigPath, "utf8"));
+          return res.json(localData);
+        } catch (e) {
+          console.error(`[Local Override] Error reading ${localConfigPath}:`, e.message);
+        }
+      }
+    }
+
     try {
       // Check if we already have this data cached from the updater
       const cached = await Cache.findOne({ where: { key: cacheKey } });
