@@ -18,15 +18,23 @@ const lightenColor = (color, percent) => {
 };
 
 export const LapChart = (props) => {
-    const { laps, driversDetails, driversColor, raceResults, driverCode } = props;
+    const { laps, driversDetails, driversColor, raceResults, driverCode, startGrid } = props;
 
     // Initialize visibility state for drivers
     const [driverVisibility, setDriverVisibility] = useState({});
     const [newDriversColor, setnewDriversColor] = useState({});
 
-    const sortedDriverAcronyms = React.useMemo(() => raceResults
-        .sort((a, b) => parseInt(a.position, 10) - parseInt(b.position, 10))
-        .map(result => result.Driver.code), [raceResults]);
+    const sortedDriverAcronyms = React.useMemo(() => {
+        if (raceResults && raceResults.length > 0) {
+            return raceResults
+                .sort((a, b) => parseInt(a.position, 10) - parseInt(b.position, 10))
+                .map(result => result.Driver.code);
+        }
+        // Fallback to startGrid if raceResults is empty
+        return (props.startGrid || [])
+            .sort((a, b) => a.position - b.position)
+            .map(entry => entry.driver_acronym);
+    }, [raceResults, props.startGrid]);
 
     useEffect(() => {
         const initialVisibility = {};

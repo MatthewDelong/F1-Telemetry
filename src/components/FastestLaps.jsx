@@ -69,6 +69,11 @@ export const FastestLaps = (props) => {
                         </React.Fragment>
                     ))}
             </ul>
+            {(!raceResults || raceResults.filter(r => r.FastestLap && r.FastestLap.rank).length === 0) && (
+              <div className="text-center text-neutral-500 py-16">
+                Fastest lap data will be available once the session results are finalized.
+              </div>
+            )}
         </div>
         </>
     );

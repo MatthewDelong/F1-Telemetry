@@ -135,6 +135,31 @@ app.use("/api/proxy/:source", async (req, res) => {
   }
 });
 
+// ─── OpenF1 Proxy: passthrough to api.openf1.org ───
+app.get("/openf1/*", async (req, res) => {
+  try {
+    const rawPath = req.originalUrl.replace(/^\/openf1/, "");
+    const decodedPath = decodeURIComponent(rawPath);
+    const targetUrl = `https://api.openf1.org${decodedPath}`;
+    
+    console.log(`[OpenF1 Proxy] Proxying: GET ${targetUrl}`);
+    
+    const response = await axios.get(targetUrl, {
+      headers: { "Accept": "application/json" },
+      validateStatus: false,
+      timeout: 10000
+    });
+    
+    res.status(response.status).json(response.data);
+  } catch (error) {
+    console.error("[OpenF1 Proxy] Proxy Error:", error.message);
+    if (error.response) {
+      console.error("[OpenF1 Proxy] API Response Error:", error.response.status, error.response.data);
+    }
+    res.status(500).json({ error: "Failed to fetch from OpenF1", message: error.message });
+  }
+});
+
 const {
   startCronJobs,
   runCurrentSeasonUpdate,

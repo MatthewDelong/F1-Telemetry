@@ -15,13 +15,14 @@ export const BASE_F1_URL = import.meta.env.PROD
  */
 export function normalizeOpenF1Date(date) {
   if (!date) return "";
-  const d = new Date(date);
+  // Ensure the date string ends with Z or +00:00 to force UTC parsing
+  let dateStr = String(date);
+  if (!dateStr.endsWith('Z') && !dateStr.includes('+')) {
+    dateStr += 'Z';
+  }
+  const d = new Date(dateStr);
   if (isNaN(d.getTime())) return "";
-  
-  // OpenF1 expects UTC time in format YYYY-MM-DDTHH:MM:SS.mmm
-  // toISOString gives YYYY-MM-DDTHH:MM:SS.mmmZ
-  // We trim the 'Z' and ensure only 3 decimal places
-  return d.toISOString().split('.')[0] + '.' + d.toISOString().split('.')[1].slice(0, 3);
+  return d.toISOString().replace("Z", "+00:00");
 }
 
 const CACHE_PREFIX = "f1_cache_";
@@ -40,6 +41,11 @@ export const fetchOpenF1Data = async (url, retries = 7, backoff = 1500) => {
         }
 
         if (!response.ok) {
+            // OpenF1 uses 404 to signal "No results found" for a specific filter.
+            // We should treat this as an empty batch rather than a fatal error.
+            if (response.status === 404) {
+                return [];
+            }
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         return response.json();
@@ -66,45 +72,55 @@ export const fetchOpenF1FullSessionData = async (endpoint, sessionKey, extraPara
     
     try {
         while (hasMore) {
-            const urlObj = new URL(baseUrl, window.location.origin);
-            urlObj.searchParams.append("session_key", sessionKey);
+            let url = buildOpenF1Url(endpoint);
+            url += `?session_key=${sessionKey}`;
             
-            // Add extra params if any (handling string format)
             if (extraParams) {
                 const search = extraParams.startsWith("?") ? extraParams.slice(1) : extraParams;
-                const sp = new URLSearchParams(search);
-                sp.forEach((v, k) => urlObj.searchParams.append(k, v));
+                url += `&${search}`;
             }
             
             if (lastDate) {
-                // Using URLSearchParams correctly encodes the '>' character
-                urlObj.searchParams.append("date>", lastDate);
+                const filterName = (endpoint.includes("laps") || endpoint.includes("sessions")) 
+                    ? "date_start" 
+                    : "date";
+                
+                // Add 1ms to lastDate to skip the record we just got, avoiding duplicates
+                // without needing the potentially unsupported '>=' operator.
+                const d = new Date(lastDate);
+                d.setMilliseconds(d.getMilliseconds() + 1);
+                const incrementedDate = d.toISOString().replace("Z", "+00:00");
+                
+                url += `&${filterName}>${incrementedDate}`;
             }
             
-            const url = urlObj.toString().replace(window.location.origin, "");
-            
+            console.log(`[API] Fetching OpenF1 Batch: ${url}`);
             const batch = await fetchOpenF1Data(url);
             if (!batch || batch.length === 0) {
+                console.log(`[API] End of data reached for ${endpoint} (404/Empty)`);
                 hasMore = false;
             } else {
-                allData = [...allData, ...batch];
-                const nextLastDate = normalizeOpenF1Date(batch[batch.length - 1].date);
+                const lastItem = batch[batch.length - 1];
+                const firstItem = batch[0];
                 
-                // If we didn't advance in time, stop to avoid infinite loop
-                if (nextLastDate === lastDate) {
-                    hasMore = false;
+                if (allData.length === 0) {
+                  console.log(`[API] ${endpoint} Keys in first record:`, Object.keys(firstItem));
                 }
+
+                const firstDate = normalizeOpenF1Date(firstItem.date || firstItem.date_start);
+                const nextLastDate = normalizeOpenF1Date(lastItem.date || lastItem.date_start);
+                
+                console.log(`[API] ${endpoint} Batch: ${batch.length} records. Range: [${firstDate}] -> [${nextLastDate}]`);
+                
+                allData = [...allData, ...batch];
+                
                 lastDate = nextLastDate;
                 
-                // OpenF1 default limit is 500. If we got fewer, we've reached the end
-                if (batch.length < 500) {
-                    hasMore = false;
-                }
                 // Stop if we have an absurd amount of data (safety)
-                if (allData.length > 200000) hasMore = false; 
+                if (allData.length > 500000) hasMore = false; 
                 
-                // Significant delay between batches to avoid 429
-                await delay(500);
+                // Delay to avoid 429
+                await delay(300);
             }
         }
         return allData;

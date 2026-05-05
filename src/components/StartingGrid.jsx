@@ -11,6 +11,7 @@ export const StartingGrid = (props) => {
     driversDetails,
     driversColor,
     className,
+    driverTeamMap,
   } = props;
 
   return (
@@ -25,19 +26,44 @@ export const StartingGrid = (props) => {
           .sort((a, b) => a.position - b.position)
           .map((gridPosition, index) => {
             // Create a lookup map for the constructors
-            const constructorMap = raceResults.reduce((acc, result) => {
-              acc[result.Driver.code] = result.Constructor.constructorId;
-              return acc;
-            }, {});
+            const constructorMap = (raceResults && raceResults.length > 0) 
+              ? raceResults.reduce((acc, result) => {
+                  acc[result.Driver.code] = result.Constructor.constructorId;
+                  return acc;
+                }, {})
+              : (driverTeamMap || {});
+
+            const getConstructorIdFromTeam = (teamName) => {
+              if (!teamName) return "f1";
+              const name = teamName.toLowerCase();
+              if (name.includes("red bull")) return "red_bull";
+              if (name.includes("mercedes")) return "mercedes";
+              if (name.includes("ferrari")) return "ferrari";
+              if (name.includes("mclaren")) return "mclaren";
+              if (name.includes("aston martin")) return "aston_martin";
+              if (name.includes("alpine")) return "alpine";
+              if (name.includes("williams")) return "williams";
+              if (name.includes("rb") || name.includes("visa cash")) return "rb";
+              if (name.includes("sauber") || name.includes("kick")) return "sauber";
+              if (name.includes("haas")) return "haas";
+              return "f1";
+            };
 
             const getCarTopView = (driver) => {
-              return constructorMap[driver];
+              const constructorOrTeam = constructorMap[driver];
+              if (!constructorOrTeam) return "f1";
+              // If it's already a slug (like 'red_bull'), use it. 
+              // If it's a team name (like 'Oracle Red Bull Racing'), map it.
+              if (constructorOrTeam.includes(" ")) {
+                return getConstructorIdFromTeam(constructorOrTeam);
+              }
+              return constructorOrTeam;
             };
 
             return (
               <li
                 key={index}
-                className="text-center w-fit even:-mt-[8rem] even:ml-[6rem] even:mb-8 relative group"
+                className="text-center w-fit even:-mt-[6rem] even:ml-[8rem] even:mb-12 relative group"
               >
                 <div
                   className={classNames(

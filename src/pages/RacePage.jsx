@@ -56,6 +56,7 @@ export function RacePage() {
   const [driverCode, setDriverCode] = useState("");
   const [driverNumber, setDriverNumber] = useState("");
   const [driversColor, setDriversColor] = useState({});
+  const [driverTeamMap, setDriverTeamMap] = useState({});
   const [startingGrid, setStartingGrid] = useState([]);
   const [animatedMap, setAnimatedMap] = useState(null);
   const [MapPath, setMapPath] = useState(null);
@@ -245,7 +246,9 @@ export function RacePage() {
         if (circuitId) {
           const results = await fetchRaceResultsByCircuit(year, circuitId);
           setRaceResults(results);
-          // console.log(results);
+          if (results && results.length > 0) {
+            console.log(`[RacePage] Results for ${results[0]?.raceName || raceName} Round ${results[0]?.round || '?'}`);
+          }
         }
 
         const raceSession = [...sessionsData]
@@ -282,6 +285,13 @@ export function RacePage() {
         console.log(`[RacePage] Drivers fetched: ${driverDetailsData?.length || 0}`);
         console.log(`[RacePage] Laps fetched: ${lapsData?.length || 0}`);
         console.log(`[RacePage] Pos data fetched: ${startingGridData?.length || 0}`);
+        
+        if (startingGridData && startingGridData.length > 0) {
+          console.log(`[RacePage] Sample Pos Record:`, startingGridData[0]);
+          console.log(`[RacePage] Last Pos Record:`, startingGridData[startingGridData.length - 1]);
+          const uniqueDriversInPos = [...new Set(startingGridData.map(p => p.driver_number))];
+          console.log(`[RacePage] Unique Drivers in Pos data:`, uniqueDriversInPos);
+        }
 
         const driverDetailsMap = (driverDetailsData || []).reduce(
           (acc, driver) => ({
@@ -303,18 +313,42 @@ export function RacePage() {
 
         setDriversColor(driverColorMap);
 
-        const { startTime, endTime } = getPositionTimeBounds(
-          startingGridData,
-          raceSession,
-        );
+        // Always use session start time if available to ensure we cover the whole race
+        const startTimeValue = raceSession?.date_start || startingGridData[0]?.date || "";
+        const endTimeValue = raceSession?.date_end || startingGridData[startingGridData.length - 1]?.date || "";
+        
+        setStartTime(startTimeValue);
+        setEndTime(endTimeValue);
 
-        setStartTime(startTime);
-        setEndTime(endTime);
-
-        const earliestDateTime = startingGridData[0]?.date;
-        const filteredStartingGrid = startingGridData.filter(
-          (item) => item.date === earliestDateTime,
-        );
+        // ALWAYS use official race results for the starting grid if available, 
+        // as telemetry grid data can be unreliable or missing.
+        let filteredStartingGrid = [];
+        if (raceResults && raceResults.length > 0) {
+          console.log(`[RacePage] Using official race results for starting grid`);
+          filteredStartingGrid = raceResults.map(r => ({
+            driver_number: parseInt(r.number || r.Driver?.number, 10),
+            driver_acronym: r.Driver?.code || r.Driver?.driverId,
+            position: parseInt(r.grid, 10),
+            date: startTimeValue
+          })).filter(r => r.position > 0);
+        } else {
+          const uniqueDrivers = new Map();
+          
+          // Sort by date to ensure we get the EARLIEST record for each driver
+          const sortedPosData = [...startingGridData].sort((a, b) => new Date(a.date) - new Date(b.date));
+          
+          sortedPosData.forEach(item => {
+            if (!uniqueDrivers.has(item.driver_number)) {
+              uniqueDrivers.set(item.driver_number, {
+                ...item,
+                driver_acronym: driverDetailsMap[item.driver_number]
+              });
+            }
+          });
+          
+          filteredStartingGrid = Array.from(uniqueDrivers.values());
+        }
+        
         setStartingGrid(filteredStartingGrid);
 
         setDrivers(driversData);
@@ -470,6 +504,15 @@ export function RacePage() {
           {},
         );
         setDriversColor(driverColorMap);
+
+        const teamMap = (driverDetailsData || []).reduce(
+          (acc, driver) => ({
+            ...acc,
+            [driver.name_acronym]: driver.team_name,
+          }),
+          {},
+        );
+        setDriverTeamMap(teamMap);
 
         setPos(positionData);
         setDrivers(driversData);
@@ -679,6 +722,7 @@ export function RacePage() {
             <LapChart
               laps={laps}
               setLaps={() => setLaps}
+              startGrid={startingGrid}
               driversDetails={driversDetails}
               driversColor={driversColor}
               raceResults={raceResults}
@@ -694,6 +738,7 @@ export function RacePage() {
             <TireStrategy
               drivers={drivers}
               raceResults={raceResults}
+              startGrid={startingGrid}
               driverCode={selectedDriverAcronym}
               driverColor={driversColor[driverCode]}
             />
@@ -714,6 +759,7 @@ export function RacePage() {
             <PitStopTimes
               sessionKey={selectedSessionKey}
               raceResults={raceResults}
+              startGrid={startingGrid}
               driversDetails={driversDetails}
               driversColor={driversColor}
               driverCode={selectedDriverAcronym}
@@ -1127,6 +1173,7 @@ export function RacePage() {
                   driverCode={driverCode}
                   driversDetails={driversDetails}
                   driversColor={driversColor}
+                  driverTeamMap={driverTeamMap}
                 />
                 <div
                   className={classNames(
@@ -1145,6 +1192,7 @@ export function RacePage() {
                 driverCode={driverCode}
                 driversDetails={driversDetails}
                 driversColor={driversColor}
+                driverTeamMap={driverTeamMap}
               />
             </div>
           )}

@@ -137,9 +137,8 @@ export default defineConfig({
     open: true,
     proxy: {
       "/openf1": {
-        target: "https://api.openf1.org",
+        target: "http://localhost:3000",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/openf1/, ""),
       },
       "/api": {
         target: "http://localhost:3000",

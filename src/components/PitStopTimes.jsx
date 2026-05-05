@@ -31,6 +31,7 @@ export const PitStopTimes = ({
   driversDetails,
   driversColor,
   driverCode,
+  startGrid,
   showTitle = true,
 }) => {
   const [pitData, setPitData] = useState([]);
@@ -53,10 +54,16 @@ export const PitStopTimes = ({
   }, [sessionKey]);
 
   const sortedDriverAcronyms = useMemo(() => {
-    return (raceResults || [])
-      .sort((a, b) => parseInt(a.position, 10) - parseInt(b.position, 10))
-      .map((result) => result.Driver.code);
-  }, [raceResults]);
+    if (raceResults && raceResults.length > 0) {
+      return raceResults
+        .sort((a, b) => parseInt(a.position, 10) - parseInt(b.position, 10))
+        .map((result) => result.Driver.code);
+    }
+    // Fallback to startGrid if raceResults is empty
+    return (startGrid || [])
+      .sort((a, b) => a.position - b.position)
+      .map(entry => entry.driver_acronym);
+  }, [raceResults, startGrid]);
 
   const chartData = useMemo(() => {
     if (!pitData.length || !driversDetails) return [];

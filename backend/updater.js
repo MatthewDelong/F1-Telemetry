@@ -308,7 +308,9 @@ async function updateRacesByMeetingKey(years) {
     const cached = await Cache.findOne({ where: { key: 'f1:races/racesbyMK.json' } });
     const racesByMK = cached ? JSON.parse(cached.value) : {};
 
-    for (const year of years) {
+    // Sort years ascending so later years overwrite earlier ones in the mapping
+    const sortedYears = [...years].sort((a, b) => a - b);
+    for (const year of sortedYears) {
       try {
         await sleep(THROTTLE_MS);
         const meetingsRes = await axios.get(`${OPENF1_BASE}/meetings?year=${year}`);

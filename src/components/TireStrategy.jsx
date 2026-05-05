@@ -5,11 +5,19 @@ import {
 } from 'recharts';
 
 export const TireStrategy = (props) => {
-  const { drivers, raceResults, driverCode, driverColor } = props; // Adding driverCode to props
+  const { drivers, raceResults, driverCode, driverColor, startGrid } = props; // Adding driverCode to props
 
-  const sortedDriverAcronyms = React.useMemo(() => raceResults
-    .sort((a, b) => parseInt(a.position, 10) - parseInt(b.position, 10))
-    .map(result => result.Driver.code), [raceResults]);
+  const sortedDriverAcronyms = React.useMemo(() => {
+    if (raceResults && raceResults.length > 0) {
+      return raceResults
+        .sort((a, b) => parseInt(a.position, 10) - parseInt(b.position, 10))
+        .map(result => result.Driver.code);
+    }
+    // Fallback to startGrid if raceResults is empty
+    return (startGrid || [])
+      .sort((a, b) => a.position - b.position)
+      .map(entry => entry.driver_acronym);
+  }, [raceResults, startGrid]);
 
     const transformedData = React.useMemo(() => drivers.map(driver => {
       const driverData = { acronym: driver.acronym };

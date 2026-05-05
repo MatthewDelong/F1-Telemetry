@@ -20,6 +20,7 @@ export const locationMaps = {
     montréal: "villeneuve",
     zandvoort: "zandvoort",
     miami: "miami",
+    "miami gardens": "miami",
     monza: "monza",
     barcelona: "catalunya",
     lusail: "losail",
