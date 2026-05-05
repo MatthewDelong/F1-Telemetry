@@ -73,6 +73,11 @@ cd F1-Telemetry
 # Install dependencies
 npm install
 
+# Install dependencies
+cd backend
+npm install
+cd..
+
 # Start the dev server
 npm run dev
 ```
