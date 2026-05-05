@@ -1218,7 +1218,7 @@ export function RacePage() {
               >
                 <StartingGrid
                   className={classNames(
-                    "transition-all overflow-hidden",
+                    "transition-all",
                     showStartingGrid ? "w-[calc(66.666%-0.5rem)]" : "w-[calc(50%-0.5rem)] opacity-100",
                   )}
                   raceResults={raceResults}

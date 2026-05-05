@@ -94,7 +94,7 @@ export const fetchRaceResultsByCircuit = async (year, circuitId, top3 = false, c
       url = `${BASE_F1A_URL}races/${year}/resullts.json`;
     }
     if (championshipLevel === 'F2') {
-      url = `${BASE_F2_URL}races/${year}/resullts.json`;
+      url = `${BASE_F2_URL}races/${year}/results.json`;
     }
     const response = await fetch(url);
     const data = await response.json();
@@ -136,7 +136,7 @@ export const fetchAllRaceResults = async (year, championshipLevel) => {
       url = `${BASE_F1A_URL}races/${year}/resullts.json`;
     }
     if (championshipLevel === 'F2') {
-      url = `${BASE_F2_URL}races/${year}/resullts.json`;
+      url = `${BASE_F2_URL}races/${year}/results.json`;
     }
     const response = await fetch(url);
     const data = await response.json();
@@ -179,7 +179,7 @@ export const fetchMostRecentRaceWeekend = async (selectedYear, championshipLevel
       raceUrl = `${BASE_F1A_URL}races/${selectedYear}/resullts.json`;
     }
     if (championshipLevel === 'F2') {
-      raceUrl = `${BASE_F2_URL}races/${selectedYear}/resullts.json`;
+      raceUrl = `${BASE_F2_URL}races/${selectedYear}/results.json`;
     }
     const response = await fetch(raceUrl);
     if (!response.ok) {

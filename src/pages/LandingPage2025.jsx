@@ -61,6 +61,7 @@ export function LandingPage2025() {
           );
           console.log(`[Podium] hasPodium:`, hasPodium);
           if (hasPodium) {
+            console.log("[Podium] Found data for", race.raceName, data.raceResults[0]);
             setRaceData(data);
             return;
           }

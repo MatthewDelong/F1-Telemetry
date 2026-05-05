@@ -326,7 +326,7 @@ const fetchRaceResults = async (selectedYear, raceId) => {
     }
   } catch (e) {}
 
-  const resultsUrl = `${BASE_F1_URL}races/${selectedYear}/results.json`;
+  const resultsUrl = `${BASE_F1_URL}races/${selectedYear}/results.json?t=${Date.now()}`;
   try {
     const response = await fetch(resultsUrl);
     if (response.ok) {
@@ -352,16 +352,21 @@ const fetchRaceResults = async (selectedYear, raceId) => {
       // console.log('response', data);
 
       // console.log(data.slice(0,3));
-      const results = data.map(result => ({
-        driver: result.Driver,
-        fastestLap: result.FastestLap,
-        grid: result.grid,
-        position: result.position,
-        time: result.Time?.time || 'N/A',
-        status: result.status,
-        number: result.number,
-        constructor: result.Constructor,
-      }));
+      console.log(`[API Debug] Results for ${year} Round ${round}:`, data.length, "results");
+      const results = data.map(result => {
+        console.log(`[API Debug] Driver ${result.Driver?.code} FastestLap:`, result.FastestLap);
+        return {
+          driver: result.Driver,
+          fastestLap: result.FastestLap,
+          bestLapTime: result.FastestLap?.Time?.time || '—',
+          grid: result.grid,
+          position: result.position,
+          time: result.Time?.time || 'N/A',
+          status: result.status,
+          number: result.number,
+          constructor: result.Constructor,
+        };
+      });
       
       // Cache successful results
       try {
@@ -840,7 +845,7 @@ export const fetchMostRecentRace = async (selectedYear, specificRound = null, sp
 
   try {
     // Fetch the race details
-    const raceDetailsResponse = await fetch(`${BASE_F1_URL}races/${selectedYear}/raceDetails.json`);
+    const raceDetailsResponse = await fetch(`${BASE_F1_URL}races/${selectedYear}/raceDetails.json?t=${Date.now()}`);
     if (!raceDetailsResponse.ok) {
       throw new Error('Failed to fetch race details');
     }

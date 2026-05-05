@@ -93,7 +93,7 @@ if ($source === 'f1') {
     $baseUrl = 'https://ant-dot-comm.github.io/f1aapi/';
     $data = fetchUrl($baseUrl . $path);
 } else if ($source === 'f2') {
-    $baseUrl = 'https://ant-dot-comm.github.io/f2api/';
+    $baseUrl = 'https://raw.githubusercontent.com/MatthewDelong/f2api/main/';
     $data = fetchUrl($baseUrl . $path);
 }
 

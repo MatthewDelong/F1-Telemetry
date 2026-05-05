@@ -18,7 +18,7 @@ export const StartingGrid = (props) => {
     <div
       className={classNames(
         className,
-        "bg-glow-large py-32 h-fit rounded-md sm:rounded-xlarge",
+        "bg-glow-large py-32 px-20 sm:px-0 h-fit rounded-md sm:rounded-xlarge",
       )}
     >
       <ul className="flex flex-col w-fit m-auto">
@@ -49,11 +49,22 @@ export const StartingGrid = (props) => {
               return "f1";
             };
 
-            const getCarTopView = (driver) => {
-              const constructorOrTeam = constructorMap[driver];
+            const getCarTopView = (driver, driverNumber) => {
+              // Try to find constructor from the race results first (most accurate for the year)
+              let constructorOrTeam = constructorMap[driver] || constructorMap[driverNumber];
+              
+              if (!constructorOrTeam) {
+                // Fallback to searching the raceResults array directly
+                const result = raceResults?.find(r => 
+                  r.Driver?.code === driver || 
+                  r.Driver?.driverId === driver || 
+                  r.number === driverNumber
+                );
+                constructorOrTeam = result?.Constructor?.constructorId || result?.Constructor?.name;
+              }
+
               if (!constructorOrTeam) return "f1";
-              // If it's already a slug (like 'red_bull'), use it. 
-              // If it's a team name (like 'Oracle Red Bull Racing'), map it.
+              
               if (constructorOrTeam.includes(" ")) {
                 return getConstructorIdFromTeam(constructorOrTeam);
               }
@@ -63,7 +74,7 @@ export const StartingGrid = (props) => {
             return (
               <li
                 key={index}
-                className="text-center w-fit even:-mt-[6rem] even:ml-[8rem] even:mb-12 relative group"
+                className="text-center w-fit even:-mt-[8rem] even:ml-[8rem] even:mb-12 relative group min-h-[100px] sm:min-h-[120px]"
               >
                 <div
                   className={classNames(
@@ -84,7 +95,8 @@ export const StartingGrid = (props) => {
                           year +
                           "/carTopView/" +
                           getCarTopView(
-                            driversDetails[gridPosition.driver_number],
+                            driversDetails[gridPosition.driver_number] || gridPosition.driver_acronym,
+                            gridPosition.driver_number
                           ) +
                           ".png"
                         }`
@@ -95,7 +107,7 @@ export const StartingGrid = (props) => {
 
                 <div
                   className={classNames(
-                    "font-display leading-none text-18",
+                    "font-display leading-none text-14 sm:text-18",
                     "absolute top-1/2 -translate-y-1/2",
                     "flex flex-col",
                     "group-odd:right-[90%] group-even:left-[90%]",
@@ -114,7 +126,7 @@ export const StartingGrid = (props) => {
                             : "#f1f1f1",
                     }}
                   >
-                    {driversDetails[gridPosition.driver_number]}
+                    {driversDetails[gridPosition.driver_number] || gridPosition.driver_acronym || ""}
                   </p>
                 </div>
               </li>
@@ -175,10 +187,10 @@ export const StartingGridF1A = (props) => {
 
               <div
                 className={classNames(
-                  "font-display leading-none text-18",
+                  "font-display leading-none text-14 sm:text-18",
                   "absolute top-1/2 -translate-y-1/2",
                   "flex flex-col",
-                  "group-odd:right-[90%] group-even:left-[90%]",
+                  "group-odd:right-[80%] group-even:left-[80%] sm:group-odd:right-[90%] sm:group-even:left-[90%]",
                   "group-odd:items-end group-even:items-start",
                 )}
               >
