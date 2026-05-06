@@ -319,7 +319,7 @@ export function LandingPage2025() {
             }}
           >
             <span style={{ fontSize: '0.65rem', color: '#888', fontWeight: 700, textTransform: 'uppercase', marginBottom: '-2px' }}>
-              {driver.position === 1 ? "Best Lap" : "Gap"}
+              {driver.position === 1 ? "TOTAL TIME" : "Gap"}
             </span>
             <div
               className="flex items-center gap-1"
@@ -329,7 +329,7 @@ export function LandingPage2025() {
                 fontWeight: 600,
               }}
             >
-              {driver.position === 1 ? driver.bestLapTime : driver.gap}
+              {driver.gap}
               {driver.fastestLap && (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
