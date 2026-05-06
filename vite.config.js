@@ -13,10 +13,10 @@ export default defineConfig({
     VitePWA({
       registerType: "prompt",
       includeAssets: [
-        "favicon.ico", 
-        "apple-touch-icon.png", 
-        "android-chrome-192x192.png", 
-        "android-chrome-512x512.png"
+        "favicon.ico",
+        "apple-touch-icon.png",
+        "maskable_icon_192x192.png",
+        "maskable_icon_512x512.png",
       ],
       manifestFilename: "manifest.json",
       manifest: {
@@ -31,20 +31,28 @@ export default defineConfig({
         orientation: "any",
         icons: [
           {
-            src: "android-chrome-192x192.png",
+            src: "maskable_icon_192x192.png",
             sizes: "192x192",
             type: "image/png",
+            purpose: "any",
           },
           {
-            src: "android-chrome-512x512.png",
-            sizes: "512x512",
+            src: "maskable_icon_192x192.png",
+            sizes: "192x192",
             type: "image/png",
+            purpose: "maskable",
           },
           {
-            src: "android-chrome-512x512.png",
+            src: "maskable_icon_512x512.png",
             sizes: "512x512",
             type: "image/png",
-            purpose: "any maskable",
+            purpose: "any",
+          },
+          {
+            src: "maskable_icon_512x512.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "maskable",
           },
         ],
       },
@@ -55,40 +63,40 @@ export default defineConfig({
         clientsClaim: true,
         inlineWorkboxRuntime: true,
         navigateFallbackDenylist: [
-          /^\/openf1/, 
+          /^\/openf1/,
           /^https:\/\/(www|region1)\.google-analytics\.com/,
-          /^https:\/\/www\.googletagmanager\.com/
+          /^https:\/\/www\.googletagmanager\.com/,
         ],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/(www|region1)\.google-analytics\.com\/.*/i,
-            handler: 'NetworkOnly',
+            handler: "NetworkOnly",
           },
           {
             urlPattern: /^https:\/\/www\.googletagmanager\.com\/.*/i,
-            handler: 'NetworkOnly',
+            handler: "NetworkOnly",
           },
           {
             urlPattern: /\.(?:png|jpg|jpeg|svg|webp|ico|glb|bin)$/,
-            handler: 'NetworkFirst',
+            handler: "NetworkFirst",
             options: {
-              cacheName: 'assets-cache',
+              cacheName: "assets-cache",
               expiration: {
                 maxEntries: 100,
                 maxAgeSeconds: 60 * 60 * 24 * 30,
               },
               cacheableResponse: {
-                statuses: [0, 200]
-              }
+                statuses: [0, 200],
+              },
             },
-          }
-        ]
+          },
+        ],
       },
       devOptions: {
         enabled: false,
         suppressWarnings: true,
-        type: 'module',
-        navigateFallback: "index.html"
+        type: "module",
+        navigateFallback: "index.html",
       },
     }),
   ],
