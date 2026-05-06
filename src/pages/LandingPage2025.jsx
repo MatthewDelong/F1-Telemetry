@@ -11,7 +11,7 @@ import { fetchMostRecentRace } from "../utils/api";
 import { getCurrentYear } from "../utils/currentYear";
 import DatesSection from "../layouts/DatesSection";
 import teamColorsData from "../utils/teamColors.json";
-import raceDetails from "../config/raceDetails.json";
+import raceDetails from "../config/f1/raceDetails.json";
 
 const currentYear = getCurrentYear();
 const HERO_BACKGROUND_IMAGES = [

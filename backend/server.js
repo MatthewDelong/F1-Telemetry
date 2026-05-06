@@ -67,32 +67,39 @@ app.use("/api/proxy/:source", async (req, res) => {
 
   // ─── For F1: check local cache first (populated by updater from Jolpica) ───
   if (source === "f1") {
-    // Override: For 2026 data, check local src/config files first to respect manual edits
-    if (path.includes("2026")) {
-      const fileName = pathMod.basename(path);
-      // Priority: 1. src/config/f1/{file}, 2. src/config/{file}
-      let localConfigPath = pathMod.join(
+    // Override: For F1 data, check local src/config/f1 files first to respect manual edits
+    const fileName = pathMod.basename(path);
+    // Priority: 1. src/config/f1/{file}, 2. src/config/{file}
+    let localConfigPath = pathMod.join(
+      __dirname,
+      "..",
+      "src",
+      "config",
+      "f1",
+      fileName,
+    );
+    if (!fs.existsSync(localConfigPath)) {
+      localConfigPath = pathMod.join(
         __dirname,
         "..",
         "src",
         "config",
-        "f1",
         fileName,
       );
-      if (!fs.existsSync(localConfigPath)) {
-        localConfigPath = pathMod.join(
-          __dirname,
-          "..",
-          "src",
-          "config",
-          fileName,
-        );
-      }
+    }
 
-      if (fs.existsSync(localConfigPath)) {
+    if (fs.existsSync(localConfigPath)) {
+      // If it's a 2026 file or a global schedule file, prioritize local version
+      if (
+        path.includes("2026") ||
+        fileName === "races.json" ||
+        fileName === "qualifying.json" ||
+        fileName === "raceDetails.json" ||
+        fileName === "results.json"
+      ) {
         try {
           console.log(
-            `[Local Override] Serving 2026 F1 data from: ${localConfigPath}`,
+            `[Local Override] Serving F1 data from: ${localConfigPath}`,
           );
           const localData = JSON.parse(
             fs.readFileSync(localConfigPath, "utf8"),
