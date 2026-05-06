@@ -1,0 +1,22 @@
+========================================================
+             API MIGRATION & DECOUPLING NOTICE
+========================================================
+
+Please Note: 
+As of this version, this project has officially completed its full migration and decoupling from external third-party data ecosystems (formerly f1nsight-api-2 by praneeth7781, f2api/f1aapi by ant-dot-comm).
+
+We have transitioned to a strictly authorized data infrastructure:
+
+1. PRIVATE INFRASTRUCTURE: All data fetching is now centralized to our own GitHub repositories and local filesystem configurations. 
+   - F1 Data: MatthewDelong/f1nsight-api-2
+   - F2 Data: MatthewDelong/f2api
+   - F1A Data: MatthewDelong/f1aapi
+
+2. LOCAL SOURCE OF TRUTH: The application now prioritizes local configuration files in `src/config/` (including year-specific overrides) as the primary source of truth for current seasons (2026), ensuring manual edits and corrections are preserved.
+
+3. HISTORICAL STABILITY: All historical data (2023-2025) is natively supported via our personal repositories, removing any dependency on out-of-date external codebases.
+
+4. NATIVE F1 DATA: F1 standings and results continue to be synchronized via our self-hosted caching architecture and PHP gateway, drawing directly from official sources to guarantee long-term stability.
+
+- Matthew Delong & the F1-Telemetry Development Team
+========================================================

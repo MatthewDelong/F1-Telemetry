@@ -70,14 +70,32 @@ app.use("/api/proxy/:source", async (req, res) => {
     // Override: For F1 data, check local src/config/f1 files first to respect manual edits
     const fileName = pathMod.basename(path);
     // Priority: 1. src/config/f1/{file}, 2. src/config/{file}
-    let localConfigPath = pathMod.join(
-      __dirname,
-      "..",
-      "src",
-      "config",
-      "f1",
-      fileName,
-    );
+    const yearMatch = path.match(/(\d{4})/);
+    const year = yearMatch ? yearMatch[1] : null;
+
+    let localConfigPath = null;
+    if (year) {
+      localConfigPath = pathMod.join(
+        __dirname,
+        "..",
+        "src",
+        "config",
+        "f1",
+        year,
+        fileName,
+      );
+    }
+
+    if (!localConfigPath || !fs.existsSync(localConfigPath)) {
+      localConfigPath = pathMod.join(
+        __dirname,
+        "..",
+        "src",
+        "config",
+        "f1",
+        fileName,
+      );
+    }
     if (!fs.existsSync(localConfigPath)) {
       localConfigPath = pathMod.join(
         __dirname,
@@ -89,13 +107,19 @@ app.use("/api/proxy/:source", async (req, res) => {
     }
 
     if (fs.existsSync(localConfigPath)) {
-      // If it's a 2026 file or a global schedule file, prioritize local version
+      const isGlobal =
+        fileName === "races.json" || fileName === "raceDetails.json";
+      const isYearSpecificMatch =
+        year && localConfigPath.includes(pathMod.join(year, fileName));
+      const isRootAnd2026 =
+        (!year || year === "2026") &&
+        localConfigPath.endsWith(pathMod.join("f1", fileName));
+
       if (
-        path.includes("2026") ||
-        fileName === "races.json" ||
-        fileName === "qualifying.json" ||
-        fileName === "raceDetails.json" ||
-        fileName === "results.json"
+        isGlobal ||
+        isYearSpecificMatch ||
+        isRootAnd2026 ||
+        path.includes("2026")
       ) {
         try {
           console.log(
@@ -144,7 +168,7 @@ app.use("/api/proxy/:source", async (req, res) => {
       );
       const baseUrls = [
         "https://raw.githubusercontent.com/MatthewDelong/f1nsight-api-2/master/",
-        "https://raw.githubusercontent.com/praneeth-kakarla/f1nsight-api/main/",
+        "https://matthewdelong.github.io/f1nsight-api-2/",
       ];
       const data = await getCachedData(
         cacheKey,
@@ -173,24 +197,50 @@ app.use("/api/proxy/:source", async (req, res) => {
   // Check for local override in src/config (especially for 2026 data or global schedules)
   const fileName = pathMod.basename(path);
   // Priority: 1. src/config/{source}/{file}, 2. src/config/{file}
-  let localConfigPath = pathMod.join(
-    __dirname,
-    "..",
-    "src",
-    "config",
-    source,
-    fileName,
-  );
+  const yearMatch = path.match(/(\d{4})/);
+  const year = yearMatch ? yearMatch[1] : null;
+
+  let localConfigPath = null;
+  if (year) {
+    localConfigPath = pathMod.join(
+      __dirname,
+      "..",
+      "src",
+      "config",
+      source,
+      year,
+      fileName,
+    );
+  }
+
+  if (!localConfigPath || !fs.existsSync(localConfigPath)) {
+    localConfigPath = pathMod.join(
+      __dirname,
+      "..",
+      "src",
+      "config",
+      source,
+      fileName,
+    );
+  }
   if (!fs.existsSync(localConfigPath)) {
     localConfigPath = pathMod.join(__dirname, "..", "src", "config", fileName);
   }
 
   if (fs.existsSync(localConfigPath)) {
-    // If it's a 2026 file or the global schedule, prioritize local version
+    const isGlobal =
+      fileName === "racesbyMK.json" || fileName === "races.json";
+    const isYearSpecificMatch =
+      year && localConfigPath.includes(pathMod.join(year, fileName));
+    const isRootAnd2026 =
+      (!year || year === "2026") &&
+      localConfigPath.endsWith(pathMod.join(source, fileName));
+
     if (
-      path.includes("2026") ||
-      fileName === "racesbyMK.json" ||
-      fileName === "races.json"
+      isGlobal ||
+      isYearSpecificMatch ||
+      isRootAnd2026 ||
+      path.includes("2026")
     ) {
       try {
         console.log(
@@ -210,10 +260,8 @@ app.use("/api/proxy/:source", async (req, res) => {
   const baseUrls = [];
   if (source === "f1a") {
     baseUrls.push("https://raw.githubusercontent.com/MatthewDelong/f1aapi/main/");
-    baseUrls.push("https://raw.githubusercontent.com/ant-dot-comm/f1aapi/main/");
   } else if (source === "f2") {
     baseUrls.push("https://raw.githubusercontent.com/MatthewDelong/f2api/main/");
-    baseUrls.push("https://raw.githubusercontent.com/ant-dot-comm/f2api/main/");
   } else {
     return res.status(400).json({ error: "Invalid source" });
   }
