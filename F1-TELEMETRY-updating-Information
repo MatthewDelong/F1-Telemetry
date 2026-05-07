@@ -22,6 +22,10 @@ F1-TELEMETRY Files + Repositories that need to update post race.
 			drivers.json
 			results.json  << Update + Repo (2026 folder)
 			racesbyMK.json
+			
+You can force the live site to clear its cache and fetch your latest GitHub data
+To refresh F1A Results: https://f1-telemetry.matthews-world.co.uk//api.php?source=f1a&path=races/2026/results.json&flush=1
+To refresh F1A Drivers: https://f1-telemetry.matthews-world.co.uk//api.php?source=f1a&path=constructors/2026/drivers.json&flush=1
 
 
 

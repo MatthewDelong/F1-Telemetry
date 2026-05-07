@@ -64,10 +64,11 @@ if (!is_dir($cacheDir)) {
 // Convert path to a safe filename
 $safePath = str_replace(['/', '\\'], '_', $path);
 $cacheFile = $cacheDir . '/' . $safePath;
-$cacheTTL = 3600 * 6; // 6 hours matches local storage
+$cacheTTL = 60 * 30; // 30 minutes
 
-// Check cache
-if (file_exists($cacheFile) && (time() - filemtime($cacheFile) < $cacheTTL)) {
+// Check cache - allow bypass with ?flush=1
+$flush = isset($_GET['flush']) && $_GET['flush'] == '1';
+if (!$flush && file_exists($cacheFile) && (time() - filemtime($cacheFile) < $cacheTTL)) {
     echo file_get_contents($cacheFile);
     exit;
 }
@@ -110,8 +111,7 @@ if ($source === 'f1') {
     // Fallback F1 Proxy if not matched or failed to fetch
     if (!$data) {
         $baseUrls = [
-            'https://raw.githubusercontent.com/MatthewDelong/f1nsight-api-2/master/' => 3, // Fast timeout for user repo
-            'https://raw.githubusercontent.com/praneeth-kakarla/f1nsight-api/main/' => 7   // Longer wait for fallback
+            'https://raw.githubusercontent.com/MatthewDelong/f1nsight-api-2/master/' => 5,
         ];
         foreach ($baseUrls as $baseUrl => $timeout) {
             $data = fetchUrl($baseUrl . $path, $timeout, $lastError);
@@ -123,13 +123,11 @@ if ($source === 'f1') {
     $baseUrls = [];
     if ($source === 'f1a') {
         $baseUrls = [
-            'https://raw.githubusercontent.com/MatthewDelong/f1aapi/main/' => 3,
-            'https://raw.githubusercontent.com/ant-dot-comm/f1aapi/main/' => 7
+            'https://raw.githubusercontent.com/MatthewDelong/f1aapi/main/' => 5,
         ];
     } else {
         $baseUrls = [
-            'https://raw.githubusercontent.com/MatthewDelong/f2api/main/' => 3,
-            'https://raw.githubusercontent.com/ant-dot-comm/f2api/main/' => 7
+            'https://raw.githubusercontent.com/MatthewDelong/f2api/main/' => 5,
         ];
     }
 
