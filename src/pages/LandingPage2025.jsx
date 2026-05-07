@@ -10,6 +10,7 @@ import {
 import { fetchMostRecentRace } from "../utils/api";
 import { getCurrentYear } from "../utils/currentYear";
 import DatesSection from "../layouts/DatesSection";
+import NextRaceSection from "../layouts/NextRaceSection";
 import teamColorsData from "../utils/teamColors.json";
 import raceDetails from "../config/f1/raceDetails.json";
 
@@ -477,6 +478,7 @@ export function LandingPage2025() {
       </section>
 
       <DatesSection />
+      <NextRaceSection />
 
       <section className="snap-start bg-black">
         <Footer2025 />
