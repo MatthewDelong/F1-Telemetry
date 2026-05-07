@@ -47,9 +47,9 @@ function App() {
   useEffect(() => {
     // Update title for PWA standalone window to show full tagline
     if (window.matchMedia('(display-mode: standalone)').matches) {
-      document.title = "F1-Telemetry - In-depth Formula One Telemetry and Analysis";
+      document.title = "F1 TELEMETRY - In-depth Formula One Telemetry and Analysis";
     } else {
-      document.title = "F1-Telemetry";
+      document.title = "F1 TELEMETRY";
     }
   }, []);
 
