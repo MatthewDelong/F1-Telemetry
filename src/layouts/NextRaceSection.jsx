@@ -522,6 +522,9 @@ const NextRaceSection = () => {
                                   {day.tempMax}°
                                   <span className="forecast-temp-min">/{day.tempMin}°</span>
                                 </span>
+                                <span className="forecast-pop mt-2">
+                                  {day.pop}% 💧
+                                </span>
                               </div>
                             ))}
                           </div>
