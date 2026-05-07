@@ -149,7 +149,7 @@ export const fetchAllRaceResults = async (year, championshipLevel) => {
       let race0Results = race.Results.race0 ? enrichDriverData(race.Results.race0, driverInfo) : [];
       let race1Results = race.Results.race1 ? enrichDriverData(race.Results.race1, driverInfo) : [];
       let race2Results = race.Results.race2 ? enrichDriverData(race.Results.race2, driverInfo) : [];
-      let race3Results = race.Results.race0 ? enrichDriverData(race.Results.race0, driverInfo) : [];
+      let race3Results = race.Results.race3 ? enrichDriverData(race.Results.race3, driverInfo) : [];
 
       return {
         raceName: race.raceName,

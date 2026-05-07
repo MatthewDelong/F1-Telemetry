@@ -41,15 +41,6 @@ export function ConstructorStandingsF1a({ selectedYear, championshipLevel }) {
               const points = parseInt(result.points, 10);
               const driverCode = result.Driver.code;
 
-              if (
-                wildCardDrivers[selectedYear] &&
-                wildCardDrivers[selectedYear].includes(driverCode)
-              ) {
-                console.log(
-                  `Skipping wild card driver ${driverCode} for constructor ${constructorId}`,
-                );
-                return;
-              }
 
               if (!constructorPoints[constructorId]) {
                 constructorPoints[constructorId] = {

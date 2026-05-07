@@ -62,18 +62,13 @@ export const calculateSeriesPoints2025 = (allRaceResults, championshipLevel) => 
       const fastestLapDriverNumber = String(calculateFastestLapDriver(results, fastestLapLimit));
       let fastestLapPointAwarded = false;
 
+      // Temporary map to track constructor points in THIS SPECIFIC RACE
+      const raceConstructorPoints = {};
+
       results.forEach((result) => {
         const resolvedDriver = result?.Driver;
         const resolvedConstructor = result?.Constructor;
         if (!resolvedDriver?.driverId || !resolvedConstructor?.constructorId) {
-          console.warn("Skipping points: missing enriched driver/constructor", {
-            championshipLevel,
-            raceName: race?.raceName,
-            raceKey,
-            number: result?.number,
-            hasDriver: Boolean(resolvedDriver?.driverId),
-            hasConstructor: Boolean(resolvedConstructor?.constructorId),
-          });
           return;
         }
 
@@ -82,115 +77,90 @@ export const calculateSeriesPoints2025 = (allRaceResults, championshipLevel) => 
         const code = resolvedDriver.code;
 
         const finishPosition = parseInt(result.position, 10);
-        const positionIndex = Number.isFinite(finishPosition)
-          ? finishPosition - 1
-          : -1;
+        const positionIndex = Number.isFinite(finishPosition) ? finishPosition - 1 : -1;
         const pointsFromFinish = points[positionIndex] || 0;
         let fastestLapPoint = 0;
 
         const isFastestLap = String(result.number) === fastestLapDriverNumber;
-        const eligibleForFastestLap = isEligibleForFastestLapPoint(
-          result,
-          fastestLapLimit
-        );
+        const eligibleForFastestLap = isEligibleForFastestLapPoint(result, fastestLapLimit);
 
         if (isFastestLap && eligibleForFastestLap && !fastestLapPointAwarded) {
           fastestLapPoint = 1;
           fastestLapPointAwarded = true;
         }
 
-        // Add driver points
-        if (!driverPoints[driverId]) {
-          driverPoints[driverId] = {
-            ...resolvedDriver,
-            points: 0
-          };
-        }
-        driverPoints[driverId].points += pointsFromFinish + fastestLapPoint;
+        const totalDriverPoints = pointsFromFinish + fastestLapPoint;
 
-        if (
-          championshipLevel === "F1A" &&
-          wildcardCodesForSeason.includes(code)
-        ) {
-          console.log(`Skipping wild card driver ${code} for constructor ${constructorId}`);
+        // Add to driver standings
+        if (!driverPoints[driverId]) {
+          driverPoints[driverId] = { ...resolvedDriver, points: 0 };
+        }
+        driverPoints[driverId].points += totalDriverPoints;
+
+        // Collect points for constructor aggregation (top 2 rule)
+        if (championshipLevel === "F1A" && wildcardCodesForSeason.includes(code)) {
           return;
         }
 
-        // Add constructor points
+        if (!raceConstructorPoints[constructorId]) {
+          raceConstructorPoints[constructorId] = {
+            constructor: resolvedConstructor,
+            scores: []
+          };
+        }
+        raceConstructorPoints[constructorId].scores.push({ code, points: totalDriverPoints });
+      });
+
+      // After the race results are processed, add all eligible scores for F1A
+      Object.keys(raceConstructorPoints).forEach(constructorId => {
+        const teamData = raceConstructorPoints[constructorId];
+        
         if (!constructorPoints[constructorId]) {
           constructorPoints[constructorId] = {
-            ...resolvedConstructor,
+            ...teamData.constructor,
             points: 0,
             driverCodes: new Set()
           };
         }
-        // console.log(`${result.Driver.code} P${result.position} | FL=${String(result.number) === String(fastestLapDriverNumber)} | ${pointsFromFinish} pts + ${fastestLapPoint} FL = ${pointsFromFinish + fastestLapPoint}`);
-        constructorPoints[constructorId].points += pointsFromFinish + fastestLapPoint;
-        constructorPoints[constructorId].driverCodes.add(code);
+
+        teamData.scores.forEach(score => {
+          constructorPoints[constructorId].points += score.points;
+          constructorPoints[constructorId].driverCodes.add(score.code);
+        });
       });
     });
 
-    // Pole bonus for Race 2 final grid
-    if (race[config.poleBonusRace] && Array.isArray(race[config.poleBonusRace])) {
-      const poleDriver = race[config.poleBonusRace]?.find(
-        (d) => parseInt(d.grid, 10) === 1
-      );
-
+    // Pole bonus for Feature Race (Race 2)
+    const race2Results = race[config.featureKey];
+    if (Array.isArray(race2Results)) {
+      const poleDriver = race2Results.find(d => parseInt(d.grid, 10) === 1);
       if (poleDriver) {
         const resolvedPoleDriver = poleDriver?.Driver;
         const resolvedPoleConstructor = poleDriver?.Constructor;
         const driverId = resolvedPoleDriver?.driverId;
         const constructorId = resolvedPoleConstructor?.constructorId;
         const code = resolvedPoleDriver?.code;
-        if (!driverId) {
-          console.warn("Skipping pole bonus: missing enriched pole driver", {
-            championshipLevel,
-            raceName: race?.raceName,
-            raceKey: config.poleBonusRace,
-            number: poleDriver?.number,
-            grid: poleDriver?.grid,
-          });
-          return;
-        }
-    
-        // Driver gets 2 pts for pole
-        if (!driverPoints[driverId]) {
-          driverPoints[driverId] = {
-            ...resolvedPoleDriver,
-            points: 0
-          };
-        }
-        driverPoints[driverId].points += 2;
+        
+        if (driverId) {
+          if (!driverPoints[driverId]) {
+            driverPoints[driverId] = { ...resolvedPoleDriver, points: 0 };
+          }
+          driverPoints[driverId].points += 2;
 
-        // F1A wildcard drivers should not score constructor points
-        if (
-          championshipLevel === "F1A" &&
-          wildcardCodesForSeason.includes(code)
-        ) {
-          return;
-        }
-
-        if (!constructorId) {
-          console.warn("Skipping pole bonus: missing enriched pole constructor", {
-            championshipLevel,
-            raceName: race?.raceName,
-            raceKey: config.poleBonusRace,
-            number: poleDriver?.number,
-            grid: poleDriver?.grid,
-          });
-          return;
-        }
-
-        if (!constructorPoints[constructorId]) {
-          constructorPoints[constructorId] = {
-            ...resolvedPoleConstructor,
-            points: 0,
-            driverCodes: new Set()
-          };
-        }
-        constructorPoints[constructorId].points += 2;
-        if (code) {
-          constructorPoints[constructorId].driverCodes.add(code);
+          // Pole points for constructors
+          if (championshipLevel === "F1A" && wildcardCodesForSeason.includes(code)) {
+             // Wildcards don't score pole points for team
+          } else if (constructorId) {
+            if (!constructorPoints[constructorId]) {
+              constructorPoints[constructorId] = {
+                ...resolvedPoleConstructor,
+                points: 0,
+                driverCodes: new Set()
+              };
+            }
+            constructorPoints[constructorId].points += 2;
+            if (code) constructorPoints[constructorId].driverCodes.add(code);
+          }
         }
       }
     }
