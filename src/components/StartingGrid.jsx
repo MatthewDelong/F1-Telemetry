@@ -142,9 +142,9 @@ export const StartingGridF1A = (props) => {
 
   // Function to create an array of driver codes in the order of grid positions 1-16
   const getDriverCodesByGridPosition = (results) => {
-    // Sort results by grid position
-    const sortedResults = results.sort(
-      (a, b) => parseInt(a.grid) - parseInt(b.grid),
+    // Sort a copy of the results by grid position
+    const sortedResults = [...results].sort(
+      (a, b) => (parseInt(a.grid) || 99) - (parseInt(b.grid) || 99),
     );
     // Initialize an array to store driver codes
     const driverCodes = [];

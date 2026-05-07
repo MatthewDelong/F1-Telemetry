@@ -84,13 +84,14 @@ export const FastestLapsF1A = (props) => {
 
     // console.log('FastestLaps', raceResults);
 
-   // Sort results by fastest lap time (down to milliseconds)
-    const sortedResults = raceResults.sort((a, b) => {
-        const timeA = parseFloat(a.FastestLap.Time.time.replace(':', '')); // Convert time to numeric for comparison
-        const timeB = parseFloat(b.FastestLap.Time.time.replace(':', ''));
-
-        return timeA - timeB; // Ascending order (fastest first)
-    });
+    // Create a copy to avoid mutating the prop and filter for valid data
+    const sortedResults = [...raceResults]
+        .filter((result) => result.FastestLap?.Time?.time)
+        .sort((a, b) => {
+            const timeA = parseFloat(a.FastestLap.Time.time.replace(":", ""));
+            const timeB = parseFloat(b.FastestLap.Time.time.replace(":", ""));
+            return timeA - timeB;
+        });
 
     return (
         <>

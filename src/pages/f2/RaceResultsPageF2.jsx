@@ -67,7 +67,7 @@ const Top3Drivers = ({ year, circuitId, index, championshipLevel }) => {
                     index={index}
                     endPosition={parseInt(result.position, 10)}
                     status={result.status}
-                    time={result.Time.time}
+                    time={result.Time?.time || result.status}
                     year={year}
                     wireframe={result.length === 0}
                   />
@@ -97,7 +97,7 @@ const Top3Drivers = ({ year, circuitId, index, championshipLevel }) => {
                     index={index}
                     endPosition={parseInt(result.position, 10)}
                     status={result.status}
-                    time={result.Time.time}
+                    time={result.Time?.time || result.status}
                     year={year}
                     wireframe={result.length === 0}
                   />
@@ -123,7 +123,7 @@ const Top3Drivers = ({ year, circuitId, index, championshipLevel }) => {
                     index={index}
                     endPosition={parseInt(result.position, 10)}
                     status={result.status}
-                    time={result.Time.time}
+                    time={result.Time?.time || result.status}
                     year={year}
                     wireframe={result.length === 0}
                   />
