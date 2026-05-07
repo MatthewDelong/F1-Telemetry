@@ -29,7 +29,7 @@ const DatesSection = () => {
         </motion.p>
 
         <motion.div
-          className="relative w-full max-w-5xl mx-auto rounded-2xl overflow-hidden border-2 border-[#00d2be] shadow-[0_8px_32px_rgba(0,210,190,0.3)] bg-neutral-900"
+          className="relative w-full max-w-5xl mx-auto rounded-2xl overflow-hidden border-2 border-[#4f63e3]"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.4 }}
