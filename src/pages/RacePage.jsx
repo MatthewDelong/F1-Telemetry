@@ -553,12 +553,13 @@ export function RacePage() {
           })),
         );
 
-        const { startTime: sStartTime } = getPositionTimeBounds(
+        const { startTime: sStartTime, endTime: sEndTime } = getPositionTimeBounds(
           positionData,
           sprintSession,
         );
 
         setStartTime(sStartTime);
+        setEndTime(sEndTime);
 
         let filteredStartingGrid = [];
         // For 2026, prioritize official results for the grid to ensure accuracy
