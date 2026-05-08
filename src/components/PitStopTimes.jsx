@@ -13,6 +13,7 @@ import {
   Cell,
 } from 'recharts';
 import { fetchPitStops } from '../utils/api';
+import { Loading } from './Loading';
 
 const STOP_COLORS = {
   1: '#3B82F6', // Blue
@@ -108,6 +109,20 @@ export const PitStopTimes = ({
     return finalData;
   }, [pitData, driversDetails, driverCode, sortedDriverAcronyms]);
 
+  // Determine X-axis domain to handle extreme outliers (like 1000s+)
+  const xDomain = useMemo(() => {
+    if (chartData.length === 0) return [0, 40];
+    const durations = chartData.map(d => d.duration);
+    const min = Math.min(...durations);
+    const max = Math.max(...durations);
+    
+    // If we have extreme outliers, cap the default view at 60s or 1.5x the median to keep normal stops visible
+    if (max > 120) {
+      return [Math.max(0, min - 5), 60]; 
+    }
+    return ['auto', 'auto'];
+  }, [chartData]);
+
   const displayAcronyms = driverCode
     ? sortedDriverAcronyms.filter((a) => a === driverCode)
     : sortedDriverAcronyms;
@@ -152,8 +167,21 @@ export const PitStopTimes = ({
     return displayAcronyms.map(acronym => sortedDriverAcronyms.indexOf(acronym));
   }, [displayAcronyms, sortedDriverAcronyms]);
 
-  if (isLoading && pitData.length === 0) return null;
-  if (!isLoading && chartData.length === 0) return null;
+  if (isLoading && pitData.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-[400px] bg-glow-dark rounded-xlarge">
+        <Loading message="Fetching pit stop data..." />
+      </div>
+    );
+  }
+
+  if (!isLoading && chartData.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-[400px] bg-glow-dark text-neutral-500 rounded-xlarge">
+        No pit stop data available for this session.
+      </div>
+    );
+  }
 
   return (
     <div className={classNames("bg-glow-dark p-16 sm:p-32 rounded-md sm:rounded-xlarge relative overflow-hidden", { "mb-32": showTitle })}>
@@ -179,7 +207,8 @@ export const PitStopTimes = ({
                 stroke="#A0AEC0"
                 axisLine={false}
                 tickLine={false}
-                domain={['auto', 'auto']}
+                domain={xDomain}
+                allowDataOverflow={true}
                 label={{ value: 'Time (s)', position: 'bottom', fill: '#A0AEC0', offset: 20 }}
               />
               <YAxis

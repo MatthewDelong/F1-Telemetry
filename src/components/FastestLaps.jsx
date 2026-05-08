@@ -1,7 +1,8 @@
 import React from "react";
 
 export const FastestLaps = (props) => {
-    const { results: raceResults, drivers } = props;
+    const { results, raceResults: propRaceResults, drivers = [] } = props;
+    const raceResults = propRaceResults || results || [];
 
     // console.log('FastestLaps', raceResults);
 
@@ -80,7 +81,7 @@ export const FastestLaps = (props) => {
 };
 
 export const FastestLapsF1A = (props) => {
-    const { raceResults} = props;
+    const { raceResults = [] } = props;
 
     // console.log('FastestLaps', raceResults);
 
