@@ -13,7 +13,9 @@ export const TeammatesComparison = () => {
   const currentYear = getCurrentYear();
   const years = Array.from({ length: currentYear - 1975 + 1 }, (_, i) => currentYear - i);
 
-  const { state } = useLocation();
+  const { state, search } = useLocation();
+  const isAdmin = useMemo(() => import.meta.env.DEV || search.includes('admin=true'), [search]);
+
   const { urlYear, urlTeam } = useParams();
   const navigate = useNavigate();
 
@@ -28,6 +30,7 @@ export const TeammatesComparison = () => {
   const [ambQ, setAmbQ] = useState(true);
   const [ambR, setAmbR] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [teamColor, setTeamColor] = useState('5F0B84');
   const [renderHead, setRenderHead] = useState(true);
   const [showTimes, setShowTimes] = useState(true);
@@ -68,7 +71,7 @@ export const TeammatesComparison = () => {
         if (team && !constructors.some(constructor => constructor.constructorId === team)) {
           window.alert(`${team} did not participate in ${year}`);
           setTeam('');
-          navigate(`/teammates-comparison/${year}`, { replace: true });
+          navigate(`/teammates-comparison/${year}${search}`, { replace: true });
         }
       } catch (error) {
         console.error("Error fetching teams:", error);
@@ -86,14 +89,14 @@ export const TeammatesComparison = () => {
     setTeam('');
     setDrivers([]);
     setHeadToHeadData(null);
-    navigate(team ? `/teammates-comparison/${selectedYear}/${team}` : `/teammates-comparison/${selectedYear}`, { replace: true });
+    navigate(team ? `/teammates-comparison/${selectedYear}/${team}${search}` : `/teammates-comparison/${selectedYear}${search}`, { replace: true });
   };
 
   
   const handleTeamChange = (selectedOption) => {
     const selectedTeam = selectedOption.value;
     setTeam(selectedTeam);
-    navigate(`/teammates-comparison/${year}/${selectedTeam}`, { replace: true });
+    navigate(`/teammates-comparison/${year}/${selectedTeam}${search}`, { replace: true });
     submit(selectedTeam);
   };
 
@@ -120,28 +123,32 @@ export const TeammatesComparison = () => {
     }
   };
 
-  const fetchDriverData = async (drivers) => {
+  const fetchDriverData = async (drivers, refresh = false) => {
     setIsLoading(true);
     try {
       const driverPromises = drivers.map(driver => driver.driverId);
-      const driverResults = await fetchDriverStats(driverPromises[0], driverPromises[1]);
+      const driverResults = await fetchDriverStats(driverPromises[0], driverPromises[1], refresh);
+
+      if (!driverResults || !driverResults.driver1 || !driverResults.driver2 || driverResults.driver1.error || driverResults.driver2.error) {
+        throw new Error("Failed to fetch driver statistics. The data source might be temporarily unavailable.");
+      }
 
       const filterDataByYear = (data, year) => ({
-        qualifyingTimes: data.driverQualifyingTimes[year] || {},
-        racePosition: data.racePosition[year] || {},
-        qualiPosition: data.qualiPosition[year] || {},
-        finalStandings: data.finalStandings[year] || {},
-        seasonPodiums: data.seasonPodiums[year] || 0,
-        seasonPoles: data.seasonPoles[year] || 0,
-        seasonWins: data.seasonWins[year] || 0,
+        qualifyingTimes: (data.driverQualifyingTimes && data.driverQualifyingTimes[year]) || {},
+        racePosition: (data.racePosition && data.racePosition[year]) || {},
+        qualiPosition: (data.qualiPosition && data.qualiPosition[year]) || {},
+        finalStandings: (data.finalStandings && data.finalStandings[year]) || {},
+        seasonPodiums: (data.seasonPodiums && data.seasonPodiums[year]) || 0,
+        seasonPoles: (data.seasonPoles && data.seasonPoles[year]) || 0,
+        seasonWins: (data.seasonWins && data.seasonWins[year]) || 0,
         lastUpdate: data.lastUpdate,
-        positionsGainLost: data.positionsGainLost[year] || {},
-        avgRacePositions: data.avgRacePositions[year] || {},
-        avgQualiPositions: data.avgQualiPositions[year] || {},
-        win_rates: data.rates.wins[year] || {},
-        podium_rates: data.rates.podiums[year] || {},
-        pole_rates: data.rates.poles[year] || {},
-        seasonDNFs: data.seasonDNFs[year] || 0
+        positionsGainLost: (data.positionsGainLost && data.positionsGainLost[year]) || {},
+        avgRacePositions: (data.avgRacePositions && data.avgRacePositions[year]) || {},
+        avgQualiPositions: (data.avgQualiPositions && data.avgQualiPositions[year]) || {},
+        win_rates: (data.rates && data.rates.wins && data.rates.wins[year]) || {},
+        podium_rates: (data.rates && data.rates.podiums && data.rates.podiums[year]) || {},
+        pole_rates: (data.rates && data.rates.poles && data.rates.poles[year]) || {},
+        seasonDNFs: (data.seasonDNFs && data.seasonDNFs[year]) || 0
       });
 
       const filteredDriver1Data = filterDataByYear(driverResults.driver1, year);
@@ -157,8 +164,20 @@ export const TeammatesComparison = () => {
       }
     } catch (error) {
       console.error("Error fetching driver data:", error);
+      setError(error.message);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleRefresh = async () => {
+    setError(null);
+    if (memoizedHeadToHeadData) {
+      const d1 = drivers.find(d => d.driverId === memoizedHeadToHeadData.driver1Id);
+      const d2 = drivers.find(d => d.driverId === memoizedHeadToHeadData.driver2Id);
+      if (d1 && d2) {
+        await fetchDriverData([d1, d2], true);
+      }
     }
   };
 
@@ -463,6 +482,12 @@ const GridRow = (label, driver1, driver2, title) => {
       </div>
     )}
 
+      {error && (
+        <div className="bg-red-500/10 border border-red-500 text-red-500 p-16 rounded-lg mb-32 text-center max-w-[40rem] mx-auto">
+          {error}
+        </div>
+      )}
+
       {isLoading ? (
         <Loading className="mt-[20rem] mb-[20rem]" message={`Comparing selected drivers`} />
       ) : (
@@ -498,9 +523,21 @@ const GridRow = (label, driver1, driver2, title) => {
             </p>
           )}
 
-          <p className="text-center text-sm tracking-xs gradient-text-light mb-32">
-            Last Updated {formatDate(memoizedHeadToHeadData.lastUpdate)}
-          </p>
+          <div className="flex flex-col items-center gap-8 mb-32">
+            <p className="text-center text-sm tracking-xs gradient-text-light">
+              Last Updated {formatDate(memoizedHeadToHeadData.lastUpdate)}
+            </p>
+            {isAdmin && (
+              <Button
+                size="xs"
+                buttonStyle="hollow"
+                onClick={handleRefresh}
+                disabled={isLoading}
+              >
+                {isLoading ? "Refreshing..." : "Refresh Data"}
+              </Button>
+            )}
+          </div>
           <HeadToHeadChart headToHeadData={memoizedHeadToHeadData} color={`#${teamColor}`} />
 
           <h3 className="heading-4 mb-16 text-neutral-400 ml-24 text-center">Driver Statistics Comparison</h3>

@@ -20,36 +20,129 @@
  */
 
 const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
+const { Cache } = require('./database');
 
 const JOLPICA_BASE = 'https://api.jolpi.ca/ergast/f1';
-const THROTTLE_MS = 250;
+const THROTTLE_MS = 500;
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+// ─── Helper: upsert into SQLite cache ───
+async function upsertCache(key, data) {
+  const value = JSON.stringify(data);
+  const now = new Date();
+  let cached = await Cache.findOne({ where: { key } });
+  if (cached) {
+    cached.value = value;
+    cached.lastUpdated = now;
+    await cached.save();
+  } else {
+    await Cache.create({ key, value, lastUpdated: now });
+  }
+}
+
+/**
+ * Helper to match a driver from local JSON results/qualifying
+ */
+const matchesDriver = (driver, id) => {
+  if (!driver) return false;
+  const lowerId = id.toLowerCase();
+  return (
+    (driver.driverId && driver.driverId.toLowerCase() === lowerId) ||
+    (driver.code && driver.code.toLowerCase() === lowerId) ||
+    (driver.familyName && driver.familyName.toLowerCase() === lowerId)
+  );
+};
 
 /**
  * Discover which seasons a driver participated in
  */
 async function getDriverSeasons(driverId) {
+  let seasons = [];
+  const cacheKey = `jolpica:seasons:${driverId}`;
+  
   try {
-    const res = await axios.get(`${JOLPICA_BASE}/drivers/${driverId}/seasons.json?limit=100`);
-    const seasons = res.data.MRData.SeasonTable.Seasons;
-    return seasons ? seasons.map(s => s.season) : [];
+    let data;
+    const cached = await Cache.findOne({ where: { key: cacheKey } });
+    if (cached) {
+      data = JSON.parse(cached.value);
+    } else {
+      const res = await axios.get(`${JOLPICA_BASE}/drivers/${driverId}/seasons.json?limit=100`);
+      data = res.data;
+      await upsertCache(cacheKey, data);
+    }
+    const ergastSeasons = data.MRData.SeasonTable.Seasons;
+    seasons = ergastSeasons ? ergastSeasons.map(s => s.season) : [];
   } catch (err) {
+    if (err.response?.status === 429) throw new Error("Rate limit hit");
     console.warn(`[DriverStats] Failed to get seasons for ${driverId}:`, err.message);
-    return [];
   }
+
+  // Check local 2026
+  try {
+    const resultsPath = path.join(__dirname, '..', 'src', 'config', 'f1', 'results.json');
+    if (fs.existsSync(resultsPath)) {
+      const results = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
+      const has2026 = results.some(race =>
+        race.Results.some(r => matchesDriver(r.Driver, driverId))
+      );
+      if (has2026) {
+        if (!seasons.includes("2026")) {
+          seasons.push("2026");
+          console.log(`[DriverStats] Added 2026 to seasons for ${driverId} (found in local results)`);
+        }
+      }
+    }
+  } catch (e) {
+    console.error("[DriverStats] Error checking local 2026 seasons:", e.message);
+  }
+
+  return seasons;
 }
 
 /**
  * Fetch all race results for a driver in a given season
  */
 async function fetchDriverResults(driverId, year) {
+  if (year === "2026") {
+    try {
+      const resultsPath = path.join(__dirname, '..', 'src', 'config', 'f1', 'results.json');
+      if (fs.existsSync(resultsPath)) {
+        const results = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
+        const filtered = results.filter(race =>
+          race.Results.some(r => matchesDriver(r.Driver, driverId))
+        ).map(race => ({
+          ...race,
+          Results: race.Results.filter(r => matchesDriver(r.Driver, driverId)).map(r => ({
+            ...r,
+            status: r.status || (r.Time?.time === "DNF" ? "DNF" : (r.Time?.time === "DNS" ? "DNS" : "Finished"))
+          }))
+        }));
+        console.log(`[DriverStats] Loaded ${filtered.length} local 2026 races for ${driverId}`);
+        return filtered;
+      }
+    } catch (e) {
+      console.error("[DriverStats] Error loading local 2026 results:", e.message);
+    }
+  }
   try {
-    const res = await axios.get(
-      `${JOLPICA_BASE}/${year}/drivers/${driverId}/results.json?limit=100`
-    );
-    const races = res.data.MRData.RaceTable.Races;
+    let data;
+    const cacheKey = `jolpica:results:${year}:${driverId}`;
+    const cached = await Cache.findOne({ where: { key: cacheKey } });
+    if (cached) {
+      data = JSON.parse(cached.value);
+    } else {
+      const res = await axios.get(
+        `${JOLPICA_BASE}/${year}/drivers/${driverId}/results.json?limit=100`
+      );
+      data = res.data;
+      await upsertCache(cacheKey, data);
+    }
+    const races = data.MRData.RaceTable.Races;
     return races || [];
   } catch (err) {
+    if (err.response?.status === 429) throw new Error(`Rate limit hit for ${year} results`);
     console.warn(`[DriverStats] Failed to fetch ${year} results for ${driverId}:`, err.message);
     return [];
   }
@@ -59,13 +152,39 @@ async function fetchDriverResults(driverId, year) {
  * Fetch all qualifying results for a driver in a given season
  */
 async function fetchDriverQualifying(driverId, year) {
+  if (year === "2026") {
+    try {
+      const qualiPath = path.join(__dirname, '..', 'src', 'config', 'f1', 'qualifying.json');
+      if (fs.existsSync(qualiPath)) {
+        const quali = JSON.parse(fs.readFileSync(qualiPath, 'utf8'));
+        return quali.filter(race =>
+          race.QualifyingResults.some(r => matchesDriver(r.Driver, driverId))
+        ).map(race => ({
+          ...race,
+          QualifyingResults: race.QualifyingResults.filter(r => matchesDriver(r.Driver, driverId))
+        }));
+      }
+    } catch (e) {
+      console.error("[DriverStats] Error loading local 2026 qualifying:", e.message);
+    }
+  }
   try {
-    const res = await axios.get(
-      `${JOLPICA_BASE}/${year}/drivers/${driverId}/qualifying.json?limit=100`
-    );
-    const races = res.data.MRData.RaceTable.Races;
+    let data;
+    const cacheKey = `jolpica:qualifying:${year}:${driverId}`;
+    const cached = await Cache.findOne({ where: { key: cacheKey } });
+    if (cached) {
+      data = JSON.parse(cached.value);
+    } else {
+      const res = await axios.get(
+        `${JOLPICA_BASE}/${year}/drivers/${driverId}/qualifying.json?limit=100`
+      );
+      data = res.data;
+      await upsertCache(cacheKey, data);
+    }
+    const races = data.MRData.RaceTable.Races;
     return races || [];
   } catch (err) {
+    if (err.response?.status === 429) throw new Error(`Rate limit hit for ${year} qualifying`);
     console.warn(`[DriverStats] Failed to fetch ${year} qualifying for ${driverId}:`, err.message);
     return [];
   }
@@ -75,17 +194,48 @@ async function fetchDriverQualifying(driverId, year) {
  * Fetch end-of-season standing for a driver
  */
 async function fetchDriverStanding(driverId, year) {
-  try {
-    const res = await axios.get(
-      `${JOLPICA_BASE}/${year}/drivers/${driverId}/driverStandings.json`
-    );
-    const lists = res.data.MRData.StandingsTable.StandingsLists;
-    if (lists && lists.length > 0 && lists[0].DriverStandings.length > 0) {
-      const standing = lists[0].DriverStandings[0];
-      return { year, position: standing.position, points: standing.points };
+  if (year === "2026") {
+    try {
+      const resultsPath = path.join(__dirname, '..', 'src', 'config', 'f1', 'results.json');
+      console.log(`[DriverStats] Checking for 2026 results at: ${resultsPath}`);
+      if (fs.existsSync(resultsPath)) {
+        console.log(`[DriverStats] Found 2026 results file.`);
+        const resultsData = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
+        let points = 0;
+        resultsData.forEach(race => {
+          const result = race.Results.find(r => matchesDriver(r.Driver, driverId));
+          if (result) points += parseInt(result.points || '0', 10);
+        });
+        console.log(`[DriverStats] Calculated 2026 points for ${driverId}: ${points}`);
+        return { year, position: '0', points: String(points) };
+      } else {
+        console.warn(`[DriverStats] 2026 results file NOT found at: ${resultsPath}`);
+      }
+    } catch (e) {
+      console.error("[DriverStats] Error calculating 2026 standing:", e.message);
     }
-    return null;
+  }
+  try {
+    let data;
+    const cacheKey = `jolpica:standings:${year}:${driverId}`;
+    const cached = await Cache.findOne({ where: { key: cacheKey } });
+    if (cached) {
+      data = JSON.parse(cached.value);
+    } else {
+      const res = await axios.get(`${JOLPICA_BASE}/${year}/drivers/${driverId}/driverStandings.json`);
+      data = res.data;
+      await upsertCache(cacheKey, data);
+    }
+    const standingsList = data.MRData.StandingsTable.StandingsLists[0];
+    if (!standingsList) return null;
+    const standings = standingsList.DriverStandings[0];
+    return standings ? {
+      year,
+      position: standings.position,
+      points: standings.points
+    } : null;
   } catch (err) {
+    if (err.response?.status === 429) throw new Error(`Rate limit hit for ${year} standings`);
     console.warn(`[DriverStats] Failed to fetch ${year} standing for ${driverId}:`, err.message);
     return null;
   }
@@ -122,6 +272,7 @@ function isFinished(status) {
 }
 
 function isDNF(status) {
+  if (!status) return false;
   return !isFinished(status) && status !== 'Disqualified' && status !== 'Not classified';
 }
 
@@ -345,7 +496,92 @@ async function buildDriverStats(driverId) {
     avgRacePositions,
     avgQualiPositions,
     rates,
+    lastUpdate: new Date().toISOString(),
   };
 }
 
-module.exports = { buildDriverStats };
+async function getLocal2026Stats(driverId) {
+  const year = "2026";
+  try {
+    const results = await fetchDriverResults(driverId, year);
+    if (results.length === 0) return null;
+
+    const qualifying = await fetchDriverQualifying(driverId, year);
+    const finalStanding = await fetchDriverStanding(driverId, year);
+
+    let yearWins = 0, yearPodiums = 0, yearDNFs = 0;
+    const yearPodiumsMap = {};
+    const yearDNFsMap = {};
+    const yearFastLaps = {};
+    const yearRacePos = { positions: {} };
+    const yearQualiPos = { positions: {} };
+    const yearQualiTimes = { QualiTimes: {} };
+    const yearPolesArr = [];
+    let yearPoles = 0;
+
+    for (const race of results) {
+      const result = race.Results[0];
+      if (!result) continue;
+      const pos = parseInt(result.position, 10);
+      const raceName = race.raceName;
+      if (pos === 1) yearWins++;
+      if (pos <= 3) {
+        yearPodiums++;
+        yearPodiumsMap[raceName] = String(pos);
+      }
+      if (isDNF(result.status)) {
+        yearDNFs++;
+        yearDNFsMap[raceName] = result.status;
+      }
+      if (result.FastestLap && result.FastestLap.Time) {
+        yearFastLaps[raceName] = result.FastestLap.Time.time;
+      }
+      yearRacePos.positions[raceName] = String(pos);
+    }
+
+    for (const race of qualifying) {
+      const qResult = race.QualifyingResults[0];
+      if (!qResult) continue;
+      const qPos = parseInt(qResult.position, 10);
+      const raceName = race.raceName;
+      if (qPos === 1) {
+        yearPoles++;
+        yearPolesArr.push(raceName);
+      }
+      yearQualiPos.positions[raceName] = String(qPos);
+      yearQualiTimes.QualiTimes[raceName] = [
+        qResult.Q1 || 'N/A',
+        qResult.Q2 || 'N/A',
+        qResult.Q3 || 'N/A',
+      ];
+    }
+
+    const racePositions = Object.values(yearRacePos.positions).map(Number).filter(n => !isNaN(n));
+    const avgRacePosition = racePositions.length > 0 ? (racePositions.reduce((a, b) => a + b, 0) / racePositions.length).toFixed(2) : '0.00';
+
+    const qualiPositions = Object.values(yearQualiPos.positions).map(Number).filter(n => !isNaN(n));
+    const avgQualiPosition = qualiPositions.length > 0 ? (qualiPositions.reduce((a, b) => a + b, 0) / qualiPositions.length).toFixed(2) : '0.00';
+
+    return {
+      finalStanding,
+      seasonWins: yearWins,
+      seasonPodiums: yearPodiums,
+      seasonPoles: yearPoles,
+      seasonDNFs: yearDNFs,
+      poles: yearPolesArr,
+      podiums: yearPodiumsMap,
+      DNFs: yearDNFsMap,
+      fastLaps: yearFastLaps,
+      racePosition: yearRacePos,
+      qualiPosition: yearQualiPos,
+      driverQualifyingTimes: yearQualiTimes,
+      avgRacePosition,
+      avgQualiPosition
+    };
+  } catch (e) {
+    console.error(`[DriverStats] Error in getLocal2026Stats for ${driverId}:`, e.message);
+    return null;
+  }
+}
+
+module.exports = { buildDriverStats, getLocal2026Stats };

@@ -4,6 +4,33 @@ const { connectDB, Cache } = require("./database");
 const cron = require("node-cron");
 const axios = require("axios");
 
+async function tryGitHubFallback(path, cacheKey) {
+  const baseUrls = [
+    "https://raw.githubusercontent.com/MatthewDelong/f1nsight-api-2/master/",
+    "https://matthewdelong.github.io/f1nsight-api-2/",
+  ];
+  return await getCachedData(
+    cacheKey,
+    async () => {
+      for (const baseUrl of baseUrls) {
+        try {
+          const response = await axios.get(`${baseUrl}${path}`);
+          const resData = response.data;
+          if (typeof resData === 'object' && !resData.lastUpdate) {
+            resData.lastUpdate = new Date().toISOString();
+          }
+          return resData;
+        } catch (e) {
+          if (e.response?.status === 404) continue;
+          throw e;
+        }
+      }
+      throw new Error("Not found on GitHub");
+    },
+    1000 * 60 * 60 * 24 // Cache GitHub data for 24h
+  );
+}
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -54,9 +81,89 @@ const getCachedData = async (key, fetchCallback, ttlMs = 1000 * 60 * 30) => {
   }
 };
 
-// Generic Proxy Route — cache-first for F1, passthrough for F1A/F2
-const { buildDriverStats } = require("./driverStatsBuilder");
+const { buildDriverStats, getLocal2026Stats } = require("./driverStatsBuilder");
 
+// ─── Admin: Rebuild all 2026 drivers ───
+app.get('/api/admin/rebuild-2026', async (req, res) => {
+  try {
+    const resultsPath = pathMod.join(__dirname, '..', 'src', 'config', 'f1', 'results.json');
+    if (!fs.existsSync(resultsPath)) {
+      return res.status(404).json({ error: "2026 results.json not found" });
+    }
+    
+    const resultsData = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
+    const driverIds = new Set();
+    resultsData.forEach(race => {
+      race.Results.forEach(r => {
+        if (r.Driver.driverId) driverIds.add(r.Driver.driverId);
+        else if (r.Driver.code) driverIds.add(r.Driver.code.toLowerCase());
+      });
+    });
+
+    console.log(`[Admin] Starting batch rebuild for ${driverIds.size} drivers...`);
+    const results = [];
+    const teamDrivers = {}; // { constructorId: [DriverObjects] }
+
+    for (const id of driverIds) {
+      try {
+        const stats = await buildDriverStats(id);
+        if (stats) {
+          const cacheKey = `f1:drivers/${id}.json`;
+          const value = JSON.stringify(stats);
+          const now = new Date();
+          let cached = await Cache.findOne({ where: { key: cacheKey } });
+          if (cached) {
+            cached.value = value;
+            cached.lastUpdated = now;
+            await cached.save();
+          } else {
+            await Cache.create({ key: cacheKey, value, lastUpdated: now });
+          }
+          results.push({ id, status: 'success' });
+
+          // Track driver for team roster
+          const lastRace = resultsData[resultsData.length - 1];
+          const driverResult = lastRace.Results.find(r => 
+            (r.Driver.driverId && r.Driver.driverId.toLowerCase() === id) || 
+            (r.Driver.code && r.Driver.code.toLowerCase() === id) ||
+            (r.Driver.familyName && r.Driver.familyName.toLowerCase() === id)
+          );
+          
+          if (driverResult && driverResult.Constructor) {
+            const teamId = driverResult.Constructor.constructorId;
+            if (!teamDrivers[teamId]) teamDrivers[teamId] = [];
+            // Only add if not already in list
+            if (!teamDrivers[teamId].some(d => d.driverId === id)) {
+              teamDrivers[teamId].push({
+                driverId: id,
+                permanentNumber: driverResult.number,
+                code: driverResult.Driver.code,
+                givenName: driverResult.Driver.givenName,
+                familyName: driverResult.Driver.familyName
+              });
+            }
+          }
+        }
+      } catch (e) {
+        results.push({ id, status: 'error', message: e.message });
+      }
+      await new Promise(r => setTimeout(r, 200));
+    }
+
+    // Save team rosters to cache
+    for (const [teamId, drivers] of Object.entries(teamDrivers)) {
+      const cacheKey = `f1:constructors/2026/${teamId}.json`;
+      await Cache.upsert({ key: cacheKey, value: JSON.stringify(drivers), lastUpdated: new Date() });
+      console.log(`[Admin] Updated 2026 roster for ${teamId}: ${drivers.map(d => d.driverId).join(', ')}`);
+    }
+
+    return res.json({ message: "Batch rebuild complete", results, rosters: Object.keys(teamDrivers) });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// Generic Proxy Route — cache-first for F1, passthrough for F1A/F2
 app.use("/api/proxy/:source", async (req, res) => {
   const { source } = req.params;
   const path = req.path.replace(/^\//, ""); // get the rest of the path after /api/proxy/f1/
@@ -139,58 +246,108 @@ app.use("/api/proxy/:source", async (req, res) => {
     }
 
     try {
-      // Check if we already have this data cached from the updater
-      const cached = await Cache.findOne({ where: { key: cacheKey } });
-      if (cached) {
-        return res.json(JSON.parse(cached.value));
-      }
-
-      // On-demand: driver stats (drivers/{driverId}.json)
+      const forceRefresh = req.query.refresh === 'true';
       const driverMatch = path.match(/^drivers\/([^/]+)\.json$/);
-      if (driverMatch) {
-        const driverId = driverMatch[1];
-        console.log(`[On-Demand] Building stats for driver: ${driverId}`);
-        const stats = await buildDriverStats(driverId);
-        if (stats) {
-          // Cache permanently (historical driver data doesn't change)
-          await Cache.create({
-            key: cacheKey,
-            value: JSON.stringify(stats),
-            lastUpdated: new Date(),
-          });
-          return res.json(stats);
+
+      // Check if we already have this data cached
+      const cached = await Cache.findOne({ where: { key: cacheKey } });
+
+      if (cached && !forceRefresh) {
+        // For driver stats, check if it's older than 24 hours
+        if (driverMatch) {
+          const now = new Date();
+          const ageHours = (now - cached.lastUpdated) / (1000 * 60 * 60);
+          if (ageHours < 24) {
+            const data = JSON.parse(cached.value);
+            data.lastUpdate = cached.lastUpdated; // Standardize field name
+            return res.json(data);
+          }
+          console.log(
+            `[Cache Stale] Rebuilding stats for ${driverMatch[1]} (Age: ${ageHours.toFixed(1)}h)`,
+          );
+        } else {
+          const data = JSON.parse(cached.value);
+          data.lastUpdate = cached.lastUpdated;
+          return res.json(data);
         }
       }
 
-      // Fallback: proxy from Praneeth (temporary, until all endpoints migrated)
-      console.log(
-        `[Proxy Fallback] ${cacheKey} not cached, proxying from Praneeth...`,
-      );
-      const baseUrls = [
-        "https://raw.githubusercontent.com/MatthewDelong/f1nsight-api-2/master/",
-        "https://matthewdelong.github.io/f1nsight-api-2/",
-      ];
-      const data = await getCachedData(
-        cacheKey,
-        async () => {
-          for (const baseUrl of baseUrls) {
-            try {
-              const response = await axios.get(`${baseUrl}${path}`);
-              return response.data;
-            } catch (e) {
-              if (e.response?.status === 404) continue;
-              throw e;
+      // ─── NEW: Try GitHub Fallback BEFORE building (to avoid Jolpica 429s) ───
+      // If forceRefresh is NOT true, try to get from GitHub first
+      if (driverMatch && !forceRefresh) {
+        console.log(`[Proxy] Checking GitHub for pre-built stats: ${cacheKey}`);
+        try {
+          const data = await tryGitHubFallback(path, cacheKey);
+          if (data) return res.json(data);
+        } catch (e) {
+          console.log(`[Proxy] Not found on GitHub, will attempt local build: ${e.message}`);
+        }
+      }
+
+      // On-demand: driver stats (drivers/{driverId}.json)
+      if (driverMatch) {
+        const driverId = driverMatch[1];
+        console.log(`[On-Demand] Building stats from Jolpica for: ${driverId}`);
+        try {
+          const stats = await buildDriverStats(driverId);
+          if (stats) {
+            if (cached) {
+              cached.value = JSON.stringify(stats);
+              cached.lastUpdated = new Date();
+              await cached.save();
+            } else {
+              await Cache.create({
+                key: cacheKey,
+                value: JSON.stringify(stats),
+                lastUpdated: new Date(),
+              });
             }
+            return res.json(stats);
           }
-          throw new Error("Data not found in any repository");
-        },
-        1000 * 60 * 30,
-      );
-      return res.json(data);
+        } catch (buildErr) {
+          console.warn(`[Builder Error] ${driverId} build failed: ${buildErr.message}. Falling back to GitHub.`);
+          // If building fails (likely 429), try GitHub even if it's a refresh
+          try {
+            let githubData = await tryGitHubFallback(path, cacheKey);
+            if (githubData) {
+              // IMPORTANT: Merge local 2026 data into GitHub data if applicable
+              if (driverId) {
+                console.log(`[Proxy] Merging local 2026 data into GitHub data for ${driverId}`);
+                const stats2026 = await getLocal2026Stats(driverId);
+                if (stats2026) {
+                  const y = "2026";
+                  githubData.finalStandings[y] = stats2026.finalStanding;
+                  githubData.seasonWins[y] = stats2026.seasonWins;
+                  githubData.seasonPodiums[y] = stats2026.seasonPodiums;
+                  githubData.seasonPoles[y] = stats2026.seasonPoles;
+                  githubData.seasonDNFs[y] = stats2026.seasonDNFs;
+                  githubData.poles[y] = stats2026.poles;
+                  githubData.podiums[y] = stats2026.podiums;
+                  githubData.DNFs[y] = stats2026.DNFs;
+                  githubData.fastLaps[y] = stats2026.fastLaps;
+                  githubData.racePosition[y] = stats2026.racePosition;
+                  githubData.qualiPosition[y] = stats2026.qualiPosition;
+                  githubData.driverQualifyingTimes[y] = stats2026.driverQualifyingTimes;
+                  githubData.avgRacePositions[y] = stats2026.avgRacePosition;
+                  githubData.avgQualiPositions[y] = stats2026.avgQualiPosition;
+                }
+              }
+              return res.json(githubData);
+            }
+          } catch (githubErr) {
+            console.error(`[Proxy Error] Both builder and GitHub failed for ${driverId}`);
+          }
+          return res.status(503).json({ error: "Stats building failed due to rate limits. Please try again later." });
+        }
+      }
+      // No data found anywhere
+      console.log(`[Proxy] Data not found for: ${cacheKey}`);
+      return res.status(404).json({ error: "Data not found" });
     } catch (err) {
-      console.error(`[Proxy] Error for ${cacheKey}:`, err.message);
-      return res.status(500).json({ error: "Failed to fetch data" });
+      console.error(`[Proxy Error] Path: ${path}`, err);
+      return res.status(500).json({ error: "Failed to fetch data", message: err.message });
     }
+
   }
 
   // ─── F1A / F2: passthrough to GitHub Pages ───

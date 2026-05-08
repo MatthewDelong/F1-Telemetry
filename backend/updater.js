@@ -28,6 +28,10 @@ async function upsertCache(key, data) {
 
 // ─── 1a. Driver Standings (per round) — EXISTING ───
 async function updateF1Data(year = new Date().getFullYear()) {
+  if (year === 2026) {
+    console.log("[Updater] 2026 data is managed via local config files. Skipping Jolpica update.");
+    return;
+  }
   try {
     console.log(`[Updater] Fetching ${year} F1 driver standings from Jolpica...`);
     const latestRes = await axios.get(`${JOLPICA_BASE}/${year}/driverStandings.json`);
@@ -62,6 +66,7 @@ async function updateF1Data(year = new Date().getFullYear()) {
 
 // ─── 1b. Constructor Standings (per round) — EXISTING ───
 async function updateF1ConstructorStandings(year = new Date().getFullYear()) {
+  if (year === 2026) return;
   try {
     console.log(`[Updater] Fetching ${year} F1 constructor standings from Jolpica...`);
     const latestRes = await axios.get(`${JOLPICA_BASE}/${year}/constructorStandings.json`);
@@ -96,6 +101,7 @@ async function updateF1ConstructorStandings(year = new Date().getFullYear()) {
 
 // ─── 1c. Race Details (schedule + practice/qualifying/sprint sessions) ───
 async function updateRaceDetails(year = new Date().getFullYear()) {
+  if (year === 2026) return;
   try {
     console.log(`[Updater] Fetching ${year} race schedule from Jolpica...`);
     const res = await axios.get(`${JOLPICA_BASE}/${year}.json`);
@@ -114,6 +120,7 @@ async function updateRaceDetails(year = new Date().getFullYear()) {
 
 // ─── 1d. Race Results (all rounds combined) ───
 async function updateRaceResults(year = new Date().getFullYear()) {
+  if (year === 2026) return;
   try {
     console.log(`[Updater] Fetching ${year} race results from Jolpica...`);
     // First discover how many rounds have results
@@ -146,6 +153,7 @@ async function updateRaceResults(year = new Date().getFullYear()) {
 
 // ─── 1e. Qualifying Results (all rounds combined) ───
 async function updateQualifyingResults(year = new Date().getFullYear()) {
+  if (year === 2026) return;
   try {
     console.log(`[Updater] Fetching ${year} qualifying results from Jolpica...`);
     const schedRes = await axios.get(`${JOLPICA_BASE}/${year}.json`);
@@ -176,6 +184,7 @@ async function updateQualifyingResults(year = new Date().getFullYear()) {
 
 // ─── 1f. Constructors List (for a year) ───
 async function updateConstructorsList(year = new Date().getFullYear()) {
+  if (year === 2026) return;
   try {
     console.log(`[Updater] Fetching ${year} constructors list from Jolpica...`);
     const res = await axios.get(`${JOLPICA_BASE}/${year}/constructors.json`);
@@ -193,6 +202,7 @@ async function updateConstructorsList(year = new Date().getFullYear()) {
 
 // ─── 1g. Constructor Drivers (per constructor for a year) ───
 async function updateConstructorDrivers(year = new Date().getFullYear()) {
+  if (year === 2026) return;
   try {
     console.log(`[Updater] Fetching ${year} constructor drivers from Jolpica...`);
     // First get the list of constructors

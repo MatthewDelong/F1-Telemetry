@@ -194,26 +194,29 @@ export const fetchDriversList = async () => {
     }));
 };
 
-export const fetchDriverStats = async (driverId1, driverId2) => {
+export const fetchDriverStats = async (driverId1, driverId2, refresh = false) => {
   const fetchDriverData = async (driverId) => {
-    try{
-      const dataResponse1 = await fetch(`${BASE_F1_URL}drivers/${driverId}.json`);
-      if(dataResponse1.ok){
+    try {
+      let url = `${BASE_F1_URL}drivers/${driverId}.json`;
+      if (refresh) {
+        url += (url.includes('?') ? '&' : '?') + 'refresh=true';
+        url += `&t=${Date.now()}`; // Add timestamp to bust browser cache too
+      }
+      const dataResponse1 = await fetch(url);
+      if (dataResponse1.ok) {
         const data1 = await dataResponse1.json();
-        // console.log("here", data1);
         return data1;
-      }else{
+      } else {
         console.log("Failed to fetch data");
       }
-      // console.log(dataResponse.json());
-    } catch(error){
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
   const driverData1 = await fetchDriverData(driverId1);
   const driverData2 = await fetchDriverData(driverId2);
-  return {driver1: driverData1, driver2: driverData2};
-}
+  return { driver1: driverData1, driver2: driverData2 };
+};
 
 
 

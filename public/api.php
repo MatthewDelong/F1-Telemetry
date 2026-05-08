@@ -66,11 +66,26 @@ $safePath = str_replace(['/', '\\'], '_', $path);
 $cacheFile = $cacheDir . '/' . $safePath;
 $cacheTTL = 60 * 30; // 30 minutes
 
-// Check cache - allow bypass with ?flush=1
-$flush = isset($_GET['flush']) && $_GET['flush'] == '1';
-if (!$flush && file_exists($cacheFile) && (time() - filemtime($cacheFile) < $cacheTTL)) {
+// Check cache - allow bypass with ?flush=1 or ?refresh=true
+$flush = (isset($_GET['flush']) && $_GET['flush'] == '1') || 
+         (isset($_GET['refresh']) && $_GET['refresh'] == 'true') ||
+         (strpos($path, 'refresh=true') !== false); // Safety catch
+
+if ($flush) {
+    if (file_exists($cacheFile)) {
+        @unlink($cacheFile); // Delete old cache to be safe
+    }
+} else if (file_exists($cacheFile) && (time() - filemtime($cacheFile) < $cacheTTL)) {
     echo file_get_contents($cacheFile);
     exit;
+}
+
+// Clean up path if refresh was passed inside it
+if (strpos($path, '?') !== false) {
+    $path = explode('?', $path)[0];
+}
+if (strpos($path, '&') !== false) {
+    $path = explode('&', $path)[0];
 }
 
 $data = null;
