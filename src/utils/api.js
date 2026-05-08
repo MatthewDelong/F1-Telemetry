@@ -689,6 +689,20 @@ export const fetchQualifyingResultsByCircuit = async(year, circuitId) => {
   }
 };
 
+export const fetchSprintResultsByCircuit = async(year, circuitId) => {
+  try {
+    const url = `${BASE_F1_URL}races/${year}/sprint.json?t=${Date.now()}`;
+    const response = await fetch(url);
+    if (!response.ok) return [];
+    const data = await response.json();
+    const results = data.find(element => element.Circuit.circuitId === circuitId).Results;
+    return results || [];
+  } catch(error){
+    console.error("Error fetching sprint results:", error);
+    return [];
+  }
+};
+
 function scaleCoordinates(x, y, scale_factor) {
   return [x / scale_factor, y / scale_factor];
 }

@@ -10,6 +10,7 @@ import {
   fetchDriversAndTires,
   fetchRaceResultsByCircuit,
   fetchQualifyingResultsByCircuit,
+  fetchSprintResultsByCircuit,
   fetchLocationData,
   fetchRaceDetails,
   fetchRaceMeetingKeys,
@@ -489,8 +490,9 @@ export function RacePage() {
 
         let sessionResults = [];
         if (circuitId) {
-          // Try to fetch results for the sprint (usually in results.json but might be different round/name)
-          sessionResults = await fetchRaceResultsByCircuit(year, circuitId);
+          // Fetch official sprint results from sprint.json
+          sessionResults = await fetchSprintResultsByCircuit(year, circuitId);
+          setRaceResults(sessionResults);
         }
 
         const sessionKey = sprintSession.session_key;
