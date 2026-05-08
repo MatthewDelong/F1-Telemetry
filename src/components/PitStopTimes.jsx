@@ -141,6 +141,22 @@ export const PitStopTimes = ({
     return null;
   };
 
+  const renderCustomShape = (props) => {
+    const { cx, cy, fill, payload } = props;
+    if (payload.isFastest) {
+      return (
+        <g transform={`translate(${cx - 10}, ${cy - 12})`}>
+          <path
+            d="M13.2,2H5.1L3,13.2h4.5l-2.4,8.8l10.1-11.2h-4.5L13.2,2z"
+            fill="#FDE047"
+            filter="drop-shadow(0 0 3px rgba(253, 224, 71, 0.8))"
+          />
+        </g>
+      );
+    }
+    return <circle cx={cx} cy={cy} r={6} fill={fill} />;
+  };
+
   const Legend = () => (
     <div className="flex flex-col gap-12 w-[110px] sm:w-[130px] shrink-0 border-l border-slate-800 pl-16 sm:pl-24 ml-16 sm:ml-24">
       <h3 className="text-xs font-display uppercase text-white tracking-widest mb-4">Pit Stop Legend</h3>
@@ -154,11 +170,13 @@ export const PitStopTimes = ({
         </div>
       ))}
       <div className="flex items-center gap-8 mt-8 pt-8 border-t border-slate-800">
-        <div
-          className="w-10 h-10 rounded-full border-2"
-          style={{ borderColor: FASTEST_COLOR, backgroundColor: 'transparent' }}
-        />
-        <span className="text-[10px] text-purple-400 font-display uppercase leading-tight">Fastest Pit Stop</span>
+        <svg width="12" height="12" viewBox="0 0 20 20" className="shrink-0">
+          <path
+            d="M13.2,2H5.1L3,13.2h4.5l-2.4,8.8l10.1-11.2h-4.5L13.2,2z"
+            fill="#FDE047"
+          />
+        </svg>
+        <span className="text-[10px] text-yellow-300 font-display uppercase leading-tight">Fastest Pit Stop</span>
       </div>
     </div>
   );
@@ -228,13 +246,15 @@ export const PitStopTimes = ({
               />
               <ZAxis type="number" range={[140, 140]} />
               <Tooltip content={<CustomTooltip />} />
-              <Scatter name="Pit Stops" data={chartData}>
+              <Scatter 
+                name="Pit Stops" 
+                data={chartData}
+                shape={renderCustomShape}
+              >
                 {chartData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
                     fill={STOP_COLORS[entry.stopNumber] || STOP_COLORS[6]}
-                    stroke={entry.isFastest ? FASTEST_COLOR : "none"}
-                    strokeWidth={entry.isFastest ? 3 : 0}
                   />
                 ))}
               </Scatter>
