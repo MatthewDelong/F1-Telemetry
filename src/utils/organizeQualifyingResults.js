@@ -9,7 +9,7 @@ export const organizeQualifyingResults = (raceResults) => {
     const sortByQualifyingTime = (drivers, qualiKey) => {
       return drivers
         .filter(driver => driver[qualiKey] !== undefined) // Ensure the driver has qualifying times
-        .sort((a, b) => timeToSeconds(a[qualiKey]) - timeToSeconds(b[qualiKey]));
+        .sort((a, b) => (parseInt(a.position, 10) || 999) - (parseInt(b.position, 10) || 999));
     };
   
     // Organize Q1 results
