@@ -45,7 +45,7 @@ const CustomizedYAxisTick = ({ x, y, payload }) => {
 export const QualifyingLapTimesChart = ({ headToHeadData, teamColor }) => {
   const chartData = useMemo(() => {
     if (!headToHeadData) return [];
-    return headToHeadData.driver1QualifyingTimes.map((q) => {
+    return headToHeadData.driver1QualifyingTimes.map((q, index) => {
       const driver2Race = headToHeadData.driver2QualifyingTimes.find(r => r.race === q.race);
       if (driver2Race && driver2Race.race === q.race) {
         const getTime = (times) => {
@@ -66,6 +66,7 @@ export const QualifyingLapTimesChart = ({ headToHeadData, teamColor }) => {
         const bestTime2 = getTime(driver2Race.QualiTimes);
 
         return {
+          index,
           race: q.race,
           [headToHeadData.driver1Code]: bestTime1 ? convertToSeconds(bestTime1) : null,
           [headToHeadData.driver2Code]: bestTime2 ? convertToSeconds(bestTime2) : null,
@@ -98,14 +99,19 @@ export const QualifyingLapTimesChart = ({ headToHeadData, teamColor }) => {
           </linearGradient>
         </defs>
         <CartesianGrid strokeDasharray="3 3" stroke="#444444" />
-        <XAxis tick={<CustomizedXAxisTick />} />
+        <XAxis dataKey="index" tick={<CustomizedXAxisTick />} />
         <YAxis
           domain={yAxisLimits}
           tick={<CustomizedYAxisTick />}
         />
         <Tooltip
-          labelFormatter={(name) => chartData[name] ? chartData[name].race : name}
+          labelFormatter={(name) => {
+            const data = chartData[name];
+            if (data && typeof data.race === 'object') return 'Race';
+            return data ? data.race : name;
+          }}
           formatter={(value) => {
+            if (typeof value === 'object') return '—';
             const minutes = Math.floor(value / 60);
             const totalSeconds = (value % 60);
             const seconds = Math.floor(totalSeconds);
@@ -114,8 +120,8 @@ export const QualifyingLapTimesChart = ({ headToHeadData, teamColor }) => {
           }}
         />
         <Legend verticalAlign="top" height={32} />
-        <Bar dataKey={headToHeadData.driver1Code} fillOpacity={1} fill={darkenColor(teamColor)} connectNulls={true} />
-        <Bar dataKey={headToHeadData.driver2Code} fillOpacity={1} fill={lightenColor(teamColor)} connectNulls={true} />
+        <Bar dataKey={headToHeadData.driver1Code} fillOpacity={1} fill={teamColor.startsWith('#') ? teamColor : `#${teamColor}`} connectNulls={true} />
+        <Bar dataKey={headToHeadData.driver2Code} fillOpacity={1} fill={lightenColor(teamColor, 40)} connectNulls={true} />
       </BarChart>
     </ResponsiveContainer>
   );

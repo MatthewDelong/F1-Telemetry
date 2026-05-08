@@ -516,6 +516,7 @@ async function getLocal2026Stats(driverId) {
     const yearRacePos = { positions: {} };
     const yearQualiPos = { positions: {} };
     const yearQualiTimes = { QualiTimes: {} };
+    const yearPosGainLost = { positions: {} };
     const yearPolesArr = [];
     let yearPoles = 0;
 
@@ -537,6 +538,12 @@ async function getLocal2026Stats(driverId) {
         yearFastLaps[raceName] = result.FastestLap.Time.time;
       }
       yearRacePos.positions[raceName] = String(pos);
+
+      // Calculate positions gained/lost
+      const grid = parseInt(result.grid, 10);
+      if (!isNaN(grid) && grid > 0) {
+        yearPosGainLost.positions[raceName] = String(grid - pos);
+      }
     }
 
     for (const race of qualifying) {
@@ -574,6 +581,7 @@ async function getLocal2026Stats(driverId) {
       fastLaps: yearFastLaps,
       racePosition: yearRacePos,
       qualiPosition: yearQualiPos,
+      positionsGainLost: yearPosGainLost,
       driverQualifyingTimes: yearQualiTimes,
       avgRacePosition,
       avgQualiPosition

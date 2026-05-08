@@ -39,7 +39,7 @@ STEP 4: CLEAR LIVE CACHE
 ------------------------
 Visit the live site with ?admin=true and click the "Refresh Data" button:
 https://f1-telemetry.matthews-world.co.uk/teammates-comparison?admin=true
-https://localhost:3000/teammates-comparison?admin=true
+http://localhost:3006/teammates-comparison?admin=true
 
 Individual Force-Refresh Links:
 - F1A Results: https://f1-telemetry.matthews-world.co.uk/api.php?source=f1a&path=races/2026/results.json&refresh=true

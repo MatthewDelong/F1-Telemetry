@@ -181,6 +181,43 @@ export const TeammatesComparison = () => {
     }
   };
 
+  const handleRefreshAll = async () => {
+    if (!drivers || drivers.length === 0) return;
+    setIsLoading(true);
+    setError(null);
+    let successCount = 0;
+    
+    try {
+      console.log(`[Admin] Starting batch refresh for ${drivers.length} drivers...`);
+      for (const driver of drivers) {
+        try {
+          const url = `${BASE_F1_URL}drivers/${driver.driverId}.json?refresh=true&t=${Date.now()}`;
+          await fetch(url);
+          successCount++;
+          console.log(`[Admin] Refreshed ${driver.driverId} (${successCount}/${drivers.length})`);
+        } catch (e) {
+          console.error(`[Admin] Failed to refresh ${driver.driverId}:`, e);
+        }
+        // Small delay to prevent browser freezing
+        await new Promise(r => setTimeout(r, 100));
+      }
+      
+      // Finally, refresh the current view to show new data
+      if (memoizedHeadToHeadData) {
+        const d1 = drivers.find(d => d.driverId === memoizedHeadToHeadData.driver1Id);
+        const d2 = drivers.find(d => d.driverId === memoizedHeadToHeadData.driver2Id);
+        if (d1 && d2) {
+          await fetchDriverData([d1, d2], false); // false because we already refreshed
+        }
+      }
+      alert(`Successfully refreshed ${successCount} drivers!`);
+    } catch (err) {
+      setError("Batch refresh failed: " + err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleDriver1Change = async (selectedOption) => {
     setSelectedDriver1(selectedOption.value);
     if (selectedDriver2) {
@@ -203,6 +240,19 @@ export const TeammatesComparison = () => {
       const driver2Data = drivers.find(driver => driver.driverId === selectedOption.value);
       await fetchDriverData([driver1Data, driver2Data]);
     }
+  };
+
+  const normalizeToNumber = (val) => {
+    if (typeof val === 'number') return val;
+    if (typeof val === 'string') return parseFloat(val) || 0;
+    if (val && typeof val === 'object') {
+      // If it's an object with race names/rounds as keys, sum the values
+      return Object.values(val).reduce((acc, curr) => {
+        const num = parseFloat(curr);
+        return acc + (isNaN(num) ? 0 : num);
+      }, 0);
+    }
+    return 0;
   };
 
   const calculateHeadToHead = async (driverResults, driver1Id, driver2Id, drivers) => {
@@ -291,7 +341,11 @@ export const TeammatesComparison = () => {
     }, {});
     
     setHeadToHeadData({
-      lastUpdate: driverResults[driver1Id]?.lastUpdate,
+      lastUpdate: typeof driverResults[driver1Id]?.lastUpdate === 'string' 
+        ? driverResults[driver1Id].lastUpdate 
+        : (driverResults[driver1Id]?.lastUpdate && typeof driverResults[driver1Id].lastUpdate === 'object' 
+           ? Object.values(driverResults[driver1Id].lastUpdate)[0] 
+           : ''),
       driver1: drivers.find(d => d.driverId === driver1Id).givenName + ' ' + drivers.find(d => d.driverId === driver1Id).familyName,
       driver2: drivers.find(d => d.driverId === driver2Id).givenName + ' ' + drivers.find(d => d.driverId === driver2Id).familyName,
       driver1Code: drivers.find(d => d.driverId === driver1Id).code,
@@ -302,34 +356,34 @@ export const TeammatesComparison = () => {
       driver2QualifyingWins,
       driver1RaceWins,
       driver2RaceWins,
-      driver1Points: parseInt(driverResults[driver1Id]?.finalStandings.points || "0", 10),
-      driver2Points: parseInt(driverResults[driver2Id]?.finalStandings.points || "0", 10),
-      driver1Podiums: driverResults[driver1Id]?.seasonPodiums || 0,
-      driver2Podiums: driverResults[driver2Id]?.seasonPodiums || 0,
-      driver1Poles: driverResults[driver1Id]?.seasonPoles || 0,
-      driver2Poles: driverResults[driver2Id]?.seasonPoles || 0,
+      driver1Points: normalizeToNumber(driverResults[driver1Id]?.finalStandings?.points ?? driverResults[driver1Id]?.finalStandings),
+      driver2Points: normalizeToNumber(driverResults[driver2Id]?.finalStandings?.points ?? driverResults[driver2Id]?.finalStandings),
+      driver1Podiums: normalizeToNumber(driverResults[driver1Id]?.seasonPodiums),
+      driver2Podiums: normalizeToNumber(driverResults[driver2Id]?.seasonPodiums),
+      driver1Poles: normalizeToNumber(driverResults[driver1Id]?.seasonPoles),
+      driver2Poles: normalizeToNumber(driverResults[driver2Id]?.seasonPoles),
       driver1QualifyingTimes: driver1QualifyingTimesProcessed,
       driver2QualifyingTimes: driver2QualifyingTimesProcessed,
       driver1QualifyingPosList: filteredDriver1QualifyingPosList,
       driver2QualifyingPosList: filteredDriver2QualifyingPosList,
       driver1RacePosList: filteredDriver1RacePosList,
       driver2RacePosList: filteredDriver2RacePosList,
-      driver1AvgRacePosition: isNaN(parseFloat(driverResults[driver1Id]?.avgRacePositions)) ? 0.00 : parseFloat(driverResults[driver1Id]?.avgRacePositions).toFixed(2),
-      driver2AvgRacePosition: isNaN(parseFloat(driverResults[driver2Id]?.avgRacePositions)) ? 0.00 : parseFloat(driverResults[driver2Id]?.avgRacePositions).toFixed(2),
-      driver1AvgQualiPositions: isNaN(parseFloat(driverResults[driver1Id]?.avgQualiPositions)) ? 0.00 : parseFloat(driverResults[driver1Id]?.avgQualiPositions).toFixed(2),
-      driver2AvgQualiPositions: isNaN(parseFloat(driverResults[driver2Id]?.avgQualiPositions)) ? 0.00 : parseFloat(driverResults[driver2Id]?.avgQualiPositions).toFixed(2),
-      driver1_win_rates: isNaN(parseFloat(driverResults[driver1Id]?.win_rates)) ? 0.00 : parseFloat(driverResults[driver1Id]?.win_rates).toFixed(2),
-      driver2_win_rates: isNaN(parseFloat(driverResults[driver2Id]?.win_rates)) ? 0.00 : parseFloat(driverResults[driver2Id]?.win_rates).toFixed(2),
-      driver1_podium_rates: isNaN(parseFloat(driverResults[driver1Id]?.podium_rates)) ? 0.00 : parseFloat(driverResults[driver1Id]?.podium_rates).toFixed(2),
-      driver2_podium_rates: isNaN(parseFloat(driverResults[driver2Id]?.podium_rates)) ? 0.00 : parseFloat(driverResults[driver2Id]?.podium_rates).toFixed(2),
-      driver1_pole_rates: isNaN(parseFloat(driverResults[driver1Id]?.pole_rates)) ? 0.00 : parseFloat(driverResults[driver1Id]?.pole_rates).toFixed(2),
-      driver2_pole_rates: isNaN(parseFloat(driverResults[driver2Id]?.pole_rates)) ? 0.00 : parseFloat(driverResults[driver2Id]?.pole_rates).toFixed(2),
-      driver1PositionsGainLost: driverResults[driver1Id]?.positionsGainLost || {},
-      driver2PositionsGainLost: driverResults[driver2Id]?.positionsGainLost || {},
-      driver1DNF: driverResults[driver1Id]?.seasonDNFs || 0,
-      driver2DNF: driverResults[driver2Id]?.seasonDNFs || 0,
-      driver1Wins: driverResults[driver1Id]?.seasonWins || 0,
-      driver2Wins: driverResults[driver2Id]?.seasonWins || 0,
+      driver1AvgRacePosition: normalizeToNumber(driverResults[driver1Id]?.avgRacePositions).toFixed(2),
+      driver2AvgRacePosition: normalizeToNumber(driverResults[driver2Id]?.avgRacePositions).toFixed(2),
+      driver1AvgQualiPositions: normalizeToNumber(driverResults[driver1Id]?.avgQualiPositions).toFixed(2),
+      driver2AvgQualiPositions: normalizeToNumber(driverResults[driver2Id]?.avgQualiPositions).toFixed(2),
+      driver1_win_rates: normalizeToNumber(driverResults[driver1Id]?.win_rates).toFixed(2),
+      driver2_win_rates: normalizeToNumber(driverResults[driver2Id]?.win_rates).toFixed(2),
+      driver1_podium_rates: normalizeToNumber(driverResults[driver1Id]?.podium_rates).toFixed(2),
+      driver2_podium_rates: normalizeToNumber(driverResults[driver2Id]?.podium_rates).toFixed(2),
+      driver1_pole_rates: normalizeToNumber(driverResults[driver1Id]?.pole_rates).toFixed(2),
+      driver2_pole_rates: normalizeToNumber(driverResults[driver2Id]?.pole_rates).toFixed(2),
+      driver1PositionsGainLost: driverResults[driver1Id]?.positionsGainLost?.positions || driverResults[driver1Id]?.positionsGainLost || {},
+      driver2PositionsGainLost: driverResults[driver2Id]?.positionsGainLost?.positions || driverResults[driver2Id]?.positionsGainLost || {},
+      driver1DNF: normalizeToNumber(driverResults[driver1Id]?.seasonDNFs),
+      driver2DNF: normalizeToNumber(driverResults[driver2Id]?.seasonDNFs),
+      driver1Wins: normalizeToNumber(driverResults[driver1Id]?.seasonWins),
+      driver2Wins: normalizeToNumber(driverResults[driver2Id]?.seasonWins),
     });
   };
 
@@ -528,14 +582,24 @@ const GridRow = (label, driver1, driver2, title) => {
               Last Updated {formatDate(memoizedHeadToHeadData.lastUpdate)}
             </p>
             {isAdmin && (
-              <Button
-                size="xs"
-                buttonStyle="hollow"
-                onClick={handleRefresh}
-                disabled={isLoading}
-              >
-                {isLoading ? "Refreshing..." : "Refresh Data"}
-              </Button>
+              <div className="flex gap-8">
+                <Button
+                  size="xs"
+                  buttonStyle="hollow"
+                  onClick={handleRefresh}
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Refreshing..." : "Refresh Current Drivers"}
+                </Button>
+                <Button
+                  size="xs"
+                  buttonStyle="hollow"
+                  onClick={handleRefreshAll}
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Batch Refreshing..." : "Refresh All Season Data"}
+                </Button>
+              </div>
             )}
           </div>
           <HeadToHeadChart headToHeadData={memoizedHeadToHeadData} color={`#${teamColor}`} />

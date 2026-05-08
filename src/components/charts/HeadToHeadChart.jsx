@@ -23,25 +23,25 @@ export const HeadToHeadChart = ({ headToHeadData, color }) => {
         <h6 className="text-center mb-8">{stat}</h6>
         <div className="flex items-center mb-16">
           <div className="flex items-center gap-8 w-1/2">
-            <div className="font-display gradient-text-light">{d1Data}</div>
+            <div className="font-display gradient-text-light">{typeof d1Data === 'object' ? '0' : d1Data}</div>
             <div className="grow bg-glow-sm rounded-l-[.8rem] h-32 flex justify-end overflow-hidden">
               <div
                 className={classNames("h-full")}
                 style={{
-                  width: d1Data + d2Data > 0 ? FillMath(d1Data, d2Data, 'driver1') : '0%',
-                  backgroundColor: d1Data + d2Data > 0 ? d1Color : 'transparent',
+                  width: (Number(d1Data) || 0) + (Number(d2Data) || 0) > 0 ? FillMath(Number(d1Data) || 0, Number(d2Data) || 0, 'driver1') : '0%',
+                  backgroundColor: (Number(d1Data) || 0) + (Number(d2Data) || 0) > 0 ? d1Color : 'transparent',
                 }}
               />
             </div>
           </div>
           <div className="flex flex-row-reverse items-center gap-8 w-1/2">
-            <div className="font-display gradient-text-light">{d2Data}</div>
+            <div className="font-display gradient-text-light">{typeof d2Data === 'object' ? '0' : d2Data}</div>
             <div className="grow bg-glow-sm rounded-r-[.8rem] h-32 flex overflow-hidden">
               <div
                 className={classNames("h-full")}
                 style={{
-                  width: d1Data + d2Data > 0 ? FillMath(d1Data, d2Data, 'driver2') : '0%',
-                  backgroundColor: d1Data + d2Data > 0 ? d2Color : 'transparent',
+                  width: (Number(d1Data) || 0) + (Number(d2Data) || 0) > 0 ? FillMath(Number(d1Data) || 0, Number(d2Data) || 0, 'driver2') : '0%',
+                  backgroundColor: (Number(d1Data) || 0) + (Number(d2Data) || 0) > 0 ? d2Color : 'transparent',
                 }}
               />
             </div>

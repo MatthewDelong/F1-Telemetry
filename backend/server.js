@@ -327,6 +327,7 @@ app.use("/api/proxy/:source", async (req, res) => {
                   githubData.fastLaps[y] = stats2026.fastLaps;
                   githubData.racePosition[y] = stats2026.racePosition;
                   githubData.qualiPosition[y] = stats2026.qualiPosition;
+                  githubData.positionsGainLost[y] = stats2026.positionsGainLost;
                   githubData.driverQualifyingTimes[y] = stats2026.driverQualifyingTimes;
                   githubData.avgRacePositions[y] = stats2026.avgRacePosition;
                   githubData.avgQualiPositions[y] = stats2026.avgQualiPosition;

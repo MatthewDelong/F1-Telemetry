@@ -32,8 +32,8 @@ export const PositionsGainedLostChart = ({ headToHeadData, teamColor }) => {
       return driver1Data !== undefined && driver2Data !== undefined ? {
         race,
         index,
-        [headToHeadData.driver1Code]: driver1Data,
-        [headToHeadData.driver2Code]: driver2Data
+        [headToHeadData.driver1Code]: parseInt(driver1Data) || 0,
+        [headToHeadData.driver2Code]: parseInt(driver2Data) || 0
       } : null;
     }).filter(item => item !== null);
   }, [headToHeadData]);
@@ -46,11 +46,11 @@ export const PositionsGainedLostChart = ({ headToHeadData, teamColor }) => {
         <YAxis tick={{ fontSize: 12, fill: '#f1f1f1' }} />
         <Tooltip
           labelFormatter={(index) => chartData[index] ? chartData[index].race : index}
-          formatter={(value) => value}
+          formatter={(value) => typeof value === 'object' ? '0' : value}
         />
         <Legend verticalAlign="top" height={36} />
-        <Bar dataKey={headToHeadData.driver1Code} fillOpacity={1} fill={darkenColor(teamColor)} />
-        <Bar dataKey={headToHeadData.driver2Code} fillOpacity={1} fill={lightenColor(teamColor)} />
+        <Bar dataKey={headToHeadData.driver1Code} fillOpacity={1} fill={teamColor.startsWith('#') ? teamColor : `#${teamColor}`} />
+        <Bar dataKey={headToHeadData.driver2Code} fillOpacity={1} fill={lightenColor(teamColor, 40)} />
       </BarChart>
     </ResponsiveContainer>
   );

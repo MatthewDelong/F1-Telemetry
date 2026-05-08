@@ -28,11 +28,12 @@ export const PositionsComparisonChart = ({ headToHeadData, teamColor, isQualifyi
     const driver1PosList = isQualifying ? headToHeadData.driver1QualifyingPosList : headToHeadData.driver1RacePosList;
     const driver2PosList = isQualifying ? headToHeadData.driver2QualifyingPosList : headToHeadData.driver2RacePosList;
 
-    return Object.keys(driver1PosList).map((raceName) => {
+    return Object.keys(driver1PosList).map((raceName, index) => {
       const driver1Pos = driver1PosList[raceName];
       const driver2Pos = driver2PosList[raceName];
   
       return {
+        index,
         race: raceName,
         [headToHeadData.driver1Code]: driver1Pos ? parseInt(driver1Pos) : null,
         [headToHeadData.driver2Code]: driver2Pos ? parseInt(driver2Pos) : null,
@@ -44,15 +45,19 @@ export const PositionsComparisonChart = ({ headToHeadData, teamColor, isQualifyi
     <ResponsiveContainer width="100%" height={400}>
       <LineChart data={chartData} margin={{ top: 20, right: 30 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="#444444" />
-        <XAxis tick={<CustomizedXAxisTick />} />
+        <XAxis dataKey="index" tick={<CustomizedXAxisTick />} />
         <YAxis reversed={true} domain={[1, 'dataMax']} />
         <Tooltip 
-          labelFormatter={(name) => chartData[name] && chartData[name].race ? chartData[name].race : name} 
-          formatter={(value) => `P${value}`}
+          labelFormatter={(name) => {
+            const data = chartData[name];
+            if (data && typeof data.race === 'object') return 'Race';
+            return data && data.race ? data.race : name;
+          }}
+          formatter={(value) => typeof value === 'object' ? '—' : `P${value}`}
         />
         <Legend verticalAlign="top" height={32} />
-        <Line type="monotone" dataKey={headToHeadData.driver1Code} stroke={darkenColor(teamColor)} connectNulls={true}/>
-        <Line type="monotone" dataKey={headToHeadData.driver2Code} stroke={lightenColor(teamColor)} connectNulls={true}/>
+        <Line type="monotone" dataKey={headToHeadData.driver1Code} stroke={teamColor.startsWith('#') ? teamColor : `#${teamColor}`} connectNulls={true}/>
+        <Line type="monotone" dataKey={headToHeadData.driver2Code} stroke={lightenColor(teamColor, 40)} connectNulls={true}/>
       </LineChart>
     </ResponsiveContainer>
   );
