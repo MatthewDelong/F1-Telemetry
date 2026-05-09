@@ -18,8 +18,12 @@ export const Header = () => {
   const [selectedYear, setSelectedYear] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [headerOpen, setHeaderOpen] = useState(false);
+  const [resultsDropdownOpen, setResultsDropdownOpen] = useState(false);
+  const [comparisonsDropdownOpen, setComparisonsDropdownOpen] = useState(false);
   const [raceViewerDropdownOpen, setRaceViewerDropdownOpen] = useState(false);
 
+  const resultsRef = useRef(null);
+  const comparisonsRef = useRef(null);
   const raceViewerRef = useRef(null);
   const headerRef = useRef(null);
 
@@ -52,6 +56,15 @@ export const Header = () => {
       !raceViewerRef.current.contains(event.target)
     ) {
       setRaceViewerDropdownOpen(false);
+    }
+    if (resultsRef.current && !resultsRef.current.contains(event.target)) {
+      setResultsDropdownOpen(false);
+    }
+    if (
+      comparisonsRef.current &&
+      !comparisonsRef.current.contains(event.target)
+    ) {
+      setComparisonsDropdownOpen(false);
     }
   };
 
@@ -154,37 +167,85 @@ export const Header = () => {
                 About
               </Link>
             </div>
-            <div className="relative group w-max uppercase text-lg ">
-              <button className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs">
+            <div className="relative w-max uppercase text-lg" ref={resultsRef}>
+              <button
+                className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs"
+                onClick={() => {
+                  setResultsDropdownOpen(!resultsDropdownOpen);
+                  setComparisonsDropdownOpen(false);
+                  setRaceViewerDropdownOpen(false);
+                }}
+              >
                 Results
                 <FontAwesomeIcon
                   icon="chevron-down"
-                  className="global-header__main-nav__button__icon opacity-0 group-hover:opacity-100"
+                  className={classNames(
+                    "global-header__main-nav__button__icon opacity-0",
+                    { "opacity-100": resultsDropdownOpen },
+                  )}
                 />
               </button>
-              <div className="absolute right-1 -mt-2 pt-12 w-max hidden group-hover:block animate-fade-in-down">
+              <div
+                className={classNames(
+                  "absolute right-1 -mt-2 pt-12 w-max animate-fade-in-down",
+                  resultsDropdownOpen ? "block" : "hidden",
+                )}
+              >
                 <div className="flex flex-row gap-16 p-16 rounded-xl glass shadow-2xl">
                   <div className="flex flex-col gap-4 p-16 rounded-lg glass-dark min-w-[240px]">
-                    <F1Links />
+                    <F1Links
+                      onClick={() => {
+                        setResultsDropdownOpen(false);
+                        setIsOpen(false);
+                      }}
+                    />
                   </div>
                   <div className="flex flex-col gap-4 p-16 rounded-lg glass-dark min-w-[240px]">
-                    <F2Links />
+                    <F2Links
+                      onClick={() => {
+                        setResultsDropdownOpen(false);
+                        setIsOpen(false);
+                      }}
+                    />
                   </div>
                   <div className="flex flex-col gap-4 p-16 rounded-lg glass-dark min-w-[240px]">
-                    <F1ALinks />
+                    <F1ALinks
+                      onClick={() => {
+                        setResultsDropdownOpen(false);
+                        setIsOpen(false);
+                      }}
+                    />
                   </div>
                 </div>
               </div>
             </div>
-            <div className="relative group w-max text-lg ">
-              <button className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs">
+            <div
+              className="relative w-max text-lg"
+              ref={comparisonsRef}
+            >
+              <button
+                className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs"
+                onClick={() => {
+                  setComparisonsDropdownOpen(!comparisonsDropdownOpen);
+                  setResultsDropdownOpen(false);
+                  setRaceViewerDropdownOpen(false);
+                }}
+              >
                 Comparisons
                 <FontAwesomeIcon
                   icon="chevron-down"
-                  className="global-header__main-nav__button__icon opacity-0 group-hover:opacity-100"
+                  className={classNames(
+                    "global-header__main-nav__button__icon opacity-0",
+                    { "opacity-100": comparisonsDropdownOpen },
+                  )}
                 />
               </button>
-              <div className="absolute right-1 -mt-2 pt-12 w-max hidden group-hover:block animate-fade-in-down">
+              <div
+                className={classNames(
+                  "absolute right-1 -mt-2 pt-12 w-max animate-fade-in-down",
+                  comparisonsDropdownOpen ? "block" : "hidden",
+                )}
+              >
                 <div className="flex flex-col gap-12 p-16 rounded-xl glass shadow-2xl">
                   <div className="w-[320px] glass-dark border border-white/5 py-16 px-20 rounded-lg">
                     <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
@@ -195,6 +256,7 @@ export const Header = () => {
                       to="/teammates-comparison"
                       className="text-sm leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
                       onClick={() => {
+                        setComparisonsDropdownOpen(false);
                         isOpen && setIsOpen(false);
                       }}
                     >
@@ -211,6 +273,7 @@ export const Header = () => {
                       to="/driver-comparison"
                       className="text-sm leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
                       onClick={() => {
+                        setComparisonsDropdownOpen(false);
                         isOpen && setIsOpen(false);
                       }}
                     >
@@ -226,9 +289,11 @@ export const Header = () => {
             <div className="relative w-max" ref={raceViewerRef}>
               <button
                 className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs text-lg "
-                onClick={() =>
-                  setRaceViewerDropdownOpen(!raceViewerDropdownOpen)
-                }
+                onClick={() => {
+                  setRaceViewerDropdownOpen(!raceViewerDropdownOpen);
+                  setResultsDropdownOpen(false);
+                  setComparisonsDropdownOpen(false);
+                }}
               >
                 Race Viewer
                 <FontAwesomeIcon
