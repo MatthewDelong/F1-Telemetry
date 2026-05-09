@@ -23,7 +23,11 @@ export const StartingGrid = (props) => {
     >
       <ul className="flex flex-col w-fit m-auto">
         {startingGrid
-          .sort((a, b) => a.position - b.position)
+          .sort((a, b) => {
+            const posA = a.position === "PL" ? 100 : parseInt(a.position, 10);
+            const posB = b.position === "PL" ? 100 : parseInt(b.position, 10);
+            return posA - posB;
+          })
           .map((gridPosition, index) => {
             // Create a lookup map for the constructors
             const constructorMap = (raceResults && raceResults.length > 0) 
@@ -114,7 +118,9 @@ export const StartingGrid = (props) => {
                     "group-odd:items-end group-even:items-start",
                   )}
                 >
-                  <p className="text-neutral-500">P{gridPosition.position}</p>
+                  <p className="text-neutral-500">
+                    {gridPosition.position === "PL" ? "PL" : `P${gridPosition.position}`}
+                  </p>
                   <p
                     style={{
                       color:

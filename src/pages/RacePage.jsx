@@ -330,17 +330,17 @@ export function RacePage() {
           filteredStartingGrid = sessionResults.map(r => ({
             driver_number: parseInt(r.number || r.Driver?.number, 10),
             driver_acronym: r.Driver?.code || r.Driver?.driverId,
-            position: parseInt(r.grid || r.position, 10),
+            position: r.grid === "PL" ? "PL" : parseInt(r.grid || r.position, 10),
             date: startTimeValue
-          })).filter(r => r.position > 0);
+          })).filter(r => r.position === "PL" || r.position > 0);
         } else if (raceResults && raceResults.length > 0) {
           console.log(`[RacePage] Using official race results for starting grid`);
           filteredStartingGrid = raceResults.map(r => ({
             driver_number: parseInt(r.number || r.Driver?.number, 10),
             driver_acronym: r.Driver?.code || r.Driver?.driverId,
-            position: parseInt(r.grid, 10),
+            position: r.grid === "PL" ? "PL" : parseInt(r.grid, 10),
             date: startTimeValue
-          })).filter(r => r.position > 0);
+          })).filter(r => r.position === "PL" || r.position > 0);
         } else {
           const uniqueDrivers = new Map();
           
@@ -568,9 +568,9 @@ export function RacePage() {
           filteredStartingGrid = sessionResults.map(r => ({
             driver_number: parseInt(r.number || r.Driver?.number, 10),
             driver_acronym: r.Driver?.code || r.Driver?.driverId,
-            position: parseInt(r.grid || r.position, 10),
+            position: r.grid === "PL" ? "PL" : parseInt(r.grid || r.position, 10),
             date: sStartTime
-          })).filter(r => r.position > 0);
+          })).filter(r => r.position === "PL" || r.position > 0);
         } else {
           const earliestDateTime = positionData[0]?.date;
           filteredStartingGrid = positionData.filter(
