@@ -11,7 +11,7 @@ const Accordion = ({ title, children, className, contentClasses, titleClassName,
     <div className={classNames(className, "border-b border-neutral-700")}>
       {/* Header */}
       <button
-        className={classNames("w-full flex justify-between items-center py-16 px-8 tracking-sm uppercase", titleClassName)}
+        className={classNames("w-full flex justify-between items-center py-4 px-8 tracking-sm uppercase", titleClassName)}
         onClick={() => setIsOpen(!isOpen)}
       >
         {title}
@@ -27,7 +27,7 @@ const Accordion = ({ title, children, className, contentClasses, titleClassName,
         animate={{ height: isOpen ? "auto" : 0 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
-        <div className={classNames(contentClasses, "px-8 py-16")}>{children}</div>
+        <div className={classNames(contentClasses, "px-8 py-4")}>{children}</div>
       </motion.div>
     </div>
     <div className="divider-glow-dark" />

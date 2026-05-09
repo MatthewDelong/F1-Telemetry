@@ -162,15 +162,15 @@ export const Header = () => {
                   className="global-header__main-nav__button__icon opacity-0 group-hover:opacity-100"
                 />
               </button>
-              <div className="absolute right-1 -mt-2 pt-12 w-max hidden group-hover:block">
-                <div className="flex flex-row gap-32 py-16 px-32 rounded-lg bg-glow bg-neutral-800 shadow-lg">
-                  <div className="flex flex-col gap-4 ">
+              <div className="absolute right-1 -mt-2 pt-12 w-max hidden group-hover:block animate-fade-in-down">
+                <div className="flex flex-row gap-16 p-16 rounded-xl glass shadow-2xl">
+                  <div className="flex flex-col gap-4 p-16 rounded-lg glass-dark min-w-[240px]">
                     <F1Links />
                   </div>
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-4 p-16 rounded-lg glass-dark min-w-[240px]">
                     <F2Links />
                   </div>
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-4 p-16 rounded-lg glass-dark min-w-[240px]">
                     <F1ALinks />
                   </div>
                 </div>
@@ -184,42 +184,42 @@ export const Header = () => {
                   className="global-header__main-nav__button__icon opacity-0 group-hover:opacity-100"
                 />
               </button>
-              <div className="absolute right-1 -mt-2 pt-12 w-max hidden group-hover:block">
-                <div className="flex flex-col gap-8 p-16 rounded-lg bg-glow bg-neutral-800 shadow-lg">
-                  <NavLink
-                    to="/teammates-comparison"
-                    className="w-[300px] bg-glow-dark hover:bg-neutral-900 border-2 border-transparent hover:border-brand-blue-500 py-12 px-16 text-neutral-300 hover:text-white rounded-md"
-                    onClick={() => {
-                      isOpen && setIsOpen(false);
-                    }}
-                  >
-                    <p className="uppercase tracking-xs gradient-text-light text-14">
+              <div className="absolute right-1 -mt-2 pt-12 w-max hidden group-hover:block animate-fade-in-down">
+                <div className="flex flex-col gap-12 p-16 rounded-xl glass shadow-2xl">
+                  <div className="w-[320px] glass-dark border border-white/5 py-16 px-20 rounded-lg">
+                    <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
                       Teammate Comparisons
                     </p>
-                    <div className="divider-glow-dark mt-8 border-t border-neutral-700" />
-                    <p className="text-base">
+                    <div className="divider-glow-dark mt-8 mb-12 border-t border-neutral-700/50" />
+                    <NavLink
+                      to="/teammates-comparison"
+                      className="text-sm leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
+                      onClick={() => {
+                        isOpen && setIsOpen(false);
+                      }}
+                    >
                       Compare teammates directly, evaluating their performances
                       in the same car during specific seasons.
-                    </p>
-                  </NavLink>
-                  <NavLink
-                    to="/driver-comparison"
-                    className="w-[300px] bg-glow-dark hover:bg-neutral-900 border-2 border-transparent hover:border-brand-blue-500 py-12 px-16 text-neutral-300 hover:text-white rounded-md"
-                    onClick={() => {
-                      isOpen && setIsOpen(false);
-                    }}
-                  >
-                    <p className="uppercase tracking-xs gradient-text-light text-14">
+                    </NavLink>
+                  </div>
+                  <div className="w-[320px] glass-dark border border-white/5 py-16 px-20 rounded-lg">
+                    <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
                       Driver Comparisons
                     </p>
-                    <div className="divider-glow-dark mt-8 border-t border-neutral-700" />
-                    <p className="text-base">
+                    <div className="divider-glow-dark mt-8 mb-12 border-t border-neutral-700/50" />
+                    <NavLink
+                      to="/driver-comparison"
+                      className="text-sm leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
+                      onClick={() => {
+                        isOpen && setIsOpen(false);
+                      }}
+                    >
                       Any driver from any team throughout F1's illustrious
                       history. This feature empowers you to examine a vast array
                       of performance metrics, such as the number of race wins,
                       pole positions, and qualifying statistics.
-                    </p>
-                  </NavLink>
+                    </NavLink>
+                  </div>
                 </div>
               </div>
             </div>
@@ -243,12 +243,18 @@ export const Header = () => {
               </button>
               <div
                 className={classNames(
-                  "absolute right-1 -mt-2 pt-12 w-max min-w-[20rem]",
+                  "absolute right-1 -mt-2 pt-12 w-max animate-fade-in-down",
                   raceViewerDropdownOpen ? "block" : "hidden",
                 )}
               >
-                <div className="flex flex-col p-16 rounded-md bg-glow bg-neutral-800 shadow-lg">
-                  {raceSelectorContent}
+                <div className="flex flex-col p-16 rounded-xl glass shadow-2xl min-w-[300px]">
+                  <div className="glass-dark border border-white/5 p-20 rounded-lg">
+                    <p className="uppercase tracking-xs gradient-text-light text-lg font-bold mb-12">
+                      Session Selection
+                    </p>
+                    <div className="divider-glow-dark mb-16 border-t border-neutral-700/50" />
+                    {raceSelectorContent}
+                  </div>
                 </div>
               </div>
             </div>
@@ -259,21 +265,21 @@ export const Header = () => {
 
       {/* Mobile */}
       <Modal isOpen={isOpen} onClose={toggleOpen}>
-        <div className="fixed top-[0] left-[0] w-full h-full bg-glow bg-neutral-900/95 backdrop-blur-sm md:hidden z-[1001]">
-          <div className="pt-32 px-32 mb-16 flex justify-center">
+        <div className="flex flex-col h-full overflow-y-auto no-scrollbar pb-120">
+          <div className="pt-4 px-16 flex justify-center mb-8">
             <Link to="/" onClick={toggleOpen}>
-              <Logo height={40} />
+              <Logo height={32} />
             </Link>
           </div>
-          <div className="pt-16 px-32">
+          <div className="px-0">
             <Link
               to="/about-us"
-              className="w-full flex justify-between items-center py-16 px-8 tracking-sm uppercase text-lg"
+              className="w-full flex justify-between items-center py-4 px-8 tracking-sm uppercase text-lg hover:text-brand-blue-400 transition-colors"
               onClick={toggleOpen}
             >
               About
             </Link>
-            <div className="divider-glow-dark mt-8 border-t border-neutral-700" />
+            <div className="divider-glow-dark mt-4 border-t border-neutral-700" />
             <div className="flex flex-col">
               <F1Links accordion onClick={toggleOpen} />
             </div>
@@ -283,14 +289,6 @@ export const Header = () => {
             <div className="flex flex-col">
               <F2Links accordion onClick={toggleOpen} />
             </div>
-
-            {/* <p className="font-display mt-16 border-b border-neutral-700">
-                            Race Viewer
-                        </p>
-                        <div className="divider-glow-dark" />
-                        <div className="flex flex-col gap-16 mt-16">
-                            {raceSelectorContent}
-                        </div> */}
           </div>
         </div>
       </Modal>

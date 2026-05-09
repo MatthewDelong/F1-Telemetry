@@ -11,7 +11,7 @@ export default defineConfig({
     tailwindcss(),
     svgr(),
     VitePWA({
-      registerType: "prompt",
+      registerType: "autoUpdate",
       includeAssets: [
         "favicon.ico",
         "apple-touch-icon.png",
@@ -24,6 +24,7 @@ export default defineConfig({
       ],
       manifestFilename: "manifest.json",
       manifest: {
+        id: "/",
         name: "F1 TELEMETRY",
         short_name: "F1 TELEMETRY",
         description: "In-depth Formula One Telemetry and Analysis",
@@ -63,7 +64,7 @@ export default defineConfig({
       workbox: {
         maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
         cleanupOutdatedCaches: true,
-        skipWaiting: false,
+        skipWaiting: true,
         clientsClaim: true,
         inlineWorkboxRuntime: true,
         navigateFallbackDenylist: [
@@ -82,7 +83,7 @@ export default defineConfig({
           },
           {
             urlPattern: /\.(?:png|jpg|jpeg|svg|webp|ico|glb|bin)$/,
-            handler: "NetworkFirst",
+            handler: "StaleWhileRevalidate",
             options: {
               cacheName: "assets-cache",
               expiration: {
