@@ -543,7 +543,7 @@ const GridRow = (label, driver1, driver2, title) => {
       )}
 
       {isLoading ? (
-        <Loading className="mt-[20rem] mb-[20rem]" message={`Comparing selected drivers`} />
+        <Loading message={`Comparing selected drivers`} />
       ) : (
         <div className="max-md:px-8">
 

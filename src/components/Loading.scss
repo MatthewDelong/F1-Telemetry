@@ -1,35 +1,182 @@
-/* loading animation */
-.loading-animation__title {
-    backdrop-filter: blur(12px);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: linear-gradient(90deg, rgba(31,31,31,0) 0%, rgba(31,31,31,.7) 15%, rgba(31,31,31,.7) 5%, rgba(31,31,31,0) 100%);
-    text-align: center;
-    z-index: 1;
-    width: 150%;
-    @media (min-width: 480px) {
-      height: 3.2rem;
-      white-space: nowrap;
-      width: initial;
-    }
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@500&display=swap');
+
+.loading-screen-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  z-index: 99999 !important;
+  background: rgba(0, 0, 0, 0.9) !important;
+}
+
+.f1-dash-container {
+  background: #111;
+  border: 4px solid #333;
+  border-radius: 10px;
+  padding: 15px;
+  width: 95%;
+  max-width: 380px;
+  font-family: 'Orbitron', sans-serif;
+  color: #fff;
+  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease;
+
+  @media (min-width: 768px) {
+    transform: scale(1.3);
+    padding: 20px;
   }
-  .loading-animation__title:before {
-    content: '';
-    background: radial-gradient(ellipse at bottom , theme('colors.neutral.900') 0%, transparent 50%);
-    height: 1rem;
-    width: 100%;
-    position: absolute;
-      bottom: 100%;
-      left: 0;
+}
+
+/* LED Shift Lights */
+.shift-lights {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  padding: 0 10px;
+}
+
+.led {
+  width: 35px;
+  height: 12px;
+  background: #222;
+  border-radius: 2px;
+
+  @media (max-width: 480px) {
+    width: 25px;
+    height: 10px;
   }
-  .loading-animation__title:after {
-    content: '';
-    background: radial-gradient(ellipse at top , theme('colors.neutral.900') 0%, transparent 50%);
-    height: 1rem;
-    width: 100%;
-    position: absolute;
-      top: 100%;
-      left: 0;
+}
+
+.led.green { animation: led-flash 0.5s infinite alternate 0.1s; }
+.led.red   { animation: led-flash 0.5s infinite alternate 0.3s; }
+.led.blue  { animation: led-flash 0.5s infinite alternate 0.5s; }
+
+@keyframes led-flash {
+  from { background: #222; box-shadow: none; }
+  to { 
+    background: var(--color); 
+    box-shadow: 0 0 10px var(--color); 
   }
+}
+
+.green { --color: #00ff00; }
+.red   { --color: #ff0000; }
+.blue  { --color: #0066ff; }
+
+/* Main Dash Structure */
+.main-display {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  gap: 10px;
+  background: #000;
+  padding: 10px;
+  border: 2px solid #444;
+
+  @media (min-width: 480px) {
+    padding: 15px;
+  }
+}
+
+.center-gear {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+  min-height: 80px;
+}
+
+.gear-box {
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+}
+
+.dash-title {
+  font-size: 0.6rem;
+  color: #e10600;
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  max-width: 140px;
+  line-height: 1.4;
+  font-weight: 700;
+  word-wrap: break-word;
+
+  @media (min-width: 480px) {
+    font-size: 0.75rem;
+  }
+}
+
+.side-metrics {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  font-size: 0.6rem;
+}
+
+.metric {
+  margin-bottom: 8px;
+  color: #aaa;
+}
+
+.metric span { display: block; margin-bottom: 2px; }
+.metric strong { color: #fff; font-size: 0.9rem; }
+
+.ers-bar {
+  background: #0066ff !important; /* Blue for ERS */
+  animation: ers-cycle 4s infinite ease-in-out;
+}
+
+.fuel-bar {
+  animation: fuel-cycle 20s infinite linear;
+}
+
+@keyframes ers-cycle {
+  0% { width: 100%; background: #0066ff; }
+  40% { width: 20%; background: #ff0000; } /* Discharging */
+  60% { width: 20%; background: #ff0000; } /* Empty */
+  100% { width: 100%; background: #0066ff; } /* Charging back */
+}
+
+@keyframes fuel-cycle {
+  0% { width: 100%; }
+  100% { width: 10%; }
+}
+
+.bar-fill {
+  height: 4px;
+  background: #e10600;
+}
+
+.data-stream {
+  margin-top: 15px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: #00ff00;
+  text-align: center;
+}
+
+/* Gear animation display */
+.gear-box::after {
+  content: "8";
+  animation: gear-cycle 3s infinite;
+}
+
+@keyframes gear-cycle {
+  0% { content: "N"; color: #e10600; }
+  12.5% { content: "1"; color: #fff; }
+  25% { content: "2"; color: #fff; }
+  37.5% { content: "3"; color: #fff; }
+  50% { content: "4"; color: #fff; }
+  62.5% { content: "5"; color: #fff; }
+  75% { content: "6"; color: #fff; }
+  87.5% { content: "7"; color: #fff; }
+  100% { content: "8"; color: #fff; }
+}

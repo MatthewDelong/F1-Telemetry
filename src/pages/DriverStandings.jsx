@@ -45,7 +45,7 @@ export function DriverStandings({ selectedYear }) {
     <div className="standard-scroll-container">
       <div className="max-w-[45rem] m-auto  pb-64">
       {isLoading ? (
-        <Loading className="mt-[20rem] mb-[20rem]" message={`Loading ${selectedYear} Driver Standings`} />
+        <Loading message={`Loading ${selectedYear} Driver Standings`} />
       ) : (
         <>
           <RangeSelector 

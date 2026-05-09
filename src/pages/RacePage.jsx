@@ -842,7 +842,6 @@ export function RacePage() {
   //   console.log('selectedSessionKey:', selectedSessionKey);
   return isLoading ? (
     <Loading
-      className="mt-[20rem] mb-[20rem]"
       message={`Loading ${raceName} ${year} ${selectedSession}`}
     />
   ) : (

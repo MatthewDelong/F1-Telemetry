@@ -59,7 +59,7 @@ export function ConstructorStandings({ selectedYear }) {
     <div className="standard-scroll-container">
       <div className="max-w-[45rem] m-auto  pb-64">
       {isLoading ? (
-        <Loading className="mt-[20rem] mb-[20rem]" message={`Loading ${selectedYear} Constructor Standings`} />
+        <Loading message={`Loading ${selectedYear} Constructor Standings`} />
       ) : (
         <>
           <RangeSelector 
