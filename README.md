@@ -43,7 +43,7 @@ F1-Telemetry is a fork of the original [f1nsight](https://github.com/adityakotha
 | **Driver Comparisons**  | Head-to-head telemetry overlays for any two drivers in a session                                         |
 | **3D Telemetry Viewer** | Follow drivers around the circuit in a synchronised 3D scene with multiple broadcast-style camera angles |
 | **AR Car Viewer**       | High-fidelity 3D car models with Draco / Meshopt compression (90 MB → 23 MB)                             |
-| **2026 Race Calendar**  | Up-to-date schedule covering F1, F2, and F1 Academy                                                      |
+| **2026 Race Calendar**  | Up-to-date schedule covering F1                                                     |
 
 ---
 
