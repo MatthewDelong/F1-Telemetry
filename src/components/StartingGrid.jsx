@@ -8,6 +8,7 @@ export const StartingGrid = (props) => {
     startingGrid,
     year,
     driverCode,
+    driverNumber,
     driversDetails,
     driversColor,
     className,
@@ -32,7 +33,7 @@ export const StartingGrid = (props) => {
           })
           .map((gridPosition, index) => {
             const currentDriverAcronym = driversDetails[gridPosition.driver_number] || gridPosition.driver_acronym || "";
-            const isSelected = driverCode === currentDriverAcronym;
+            const isSelected = String(driverNumber) === String(gridPosition.driver_number);
             const currentDriverColor = driversColor[currentDriverAcronym];
 
             // Create a lookup map for the constructors

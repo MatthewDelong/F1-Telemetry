@@ -374,9 +374,12 @@ const fetchRaceResults = async (selectedYear, raceId) => {
       // console.log(data.slice(0,3));
       console.log(`[API Debug] Results for ${selectedYear} Round ${raceId}:`, data.length, "results");
       const results = data.map(result => {
-        console.log(`[API Debug] Driver ${result.Driver?.code} FastestLap:`, result.FastestLap);
+        console.log(`[API Debug] Driver ${result.Driver?.code} object:`, result.Driver);
         return {
-          driver: result.Driver,
+          driver: {
+            ...result.Driver,
+            nationality: result.Driver?.nationality || result.Driver?.country_code || result.Driver?.country || ""
+          },
           fastestLap: result.FastestLap,
           bestLapTime: result.FastestLap?.Time?.time || '—',
           grid: result.grid,
@@ -851,7 +854,8 @@ export const fetchOpenF1Podium = async (meetingKey) => {
         position: td.pos,
         driver: {
           code: drv.name_acronym || drv.last_name?.substring(0, 3).toUpperCase() || `NO${td.driver_number}`,
-          familyName: drv.last_name
+          familyName: drv.last_name,
+          nationality: drv.country_code
         },
         constructor: {
           constructorId: (drv.team_name || "").toLowerCase().replace(/\s+/g, '_'),

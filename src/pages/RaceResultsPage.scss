@@ -18,7 +18,7 @@
     grid-template-areas: "item-2 item-1 item-3";
     justify-content: center;
     width: 100%;
-    img {
+    .driver-headshot {
         border-top-right-radius: 2rem;
         border-top-left-radius: 2rem;
     }
@@ -34,7 +34,7 @@
         width: 100%;
         background: #171717;
     }
-    img {
+    .driver-headshot {
         position: absolute;
         bottom: 7.6rem;
         left: 50%;
@@ -81,7 +81,7 @@
         width: 100%;
         background: #171717;
     }
-    img {
+    .driver-headshot {
         position: absolute;
         bottom: 6.4rem;
         left: 1.6rem;
@@ -103,7 +103,7 @@
         width: 100%;
         background: #171717;
     }
-    img {
+    .driver-headshot {
         position: absolute;
         bottom: 6rem;
         left: 1.6rem;

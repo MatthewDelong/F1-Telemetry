@@ -1,5 +1,6 @@
 import React from "react";
 import { trackLengths } from "../utils/trackLengths";
+import { nationalityToFlag } from "../utils/nationalityToFlag";
 
 export const SelectedDriverStats = (props) => {
     const { selectedDriverData, selectedDriverRaceData, year, speedUnit } = props;
@@ -66,6 +67,15 @@ export const SelectedDriverStats = (props) => {
                                     : selectedDriverRaceData?.status}
                             </span>
                         </div>
+                    </div>
+                    <div className="flex flex-col items-center self-center -mt-8">
+                        {(selectedDriverData?.country_code || selectedDriverData?.nationality || selectedDriverData?.acronym || selectedDriverData?.code) && (
+                            <img 
+                                src={nationalityToFlag(selectedDriverData.country_code || selectedDriverData.nationality || selectedDriverData.acronym || selectedDriverData.code)} 
+                                alt="flag"
+                                className="h-24 rounded-sm shadow-md"
+                            />
+                        )}
                     </div>
                     <div className="text-right">
                         <div className="uppercase tracking-xs text-xs">

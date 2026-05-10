@@ -714,7 +714,7 @@ export function RacePage() {
             {!driverSelected && <div className="bg-glow-dark text-center py-8 max-sm:hidden">Select a driver from the leaderboard to activate telemetry viewer</div>}
             <div className="race-page__track-view__display relative">
               {driverSelectedShowTrack && MapPath ? (
-                <ThreeCanvas className="race-page__track-view__display__canvas" MapFile={MapPath} locData={locData} driverSelected={driverSelected} constructorId={selectedDriverRaceData?.Constructor?.constructorId || ""} driverCode={driverCode} driverColor={driversColor[driverCode]} isPaused={isPaused} haloView={haloView} topFollowView={topFollowView} speedFactor={speedFactor} year={year} showCarDetails={showCarDetails} showCameraControls={showCameraControls} speedUnit={speedUnit} />
+                <ThreeCanvas className="race-page__track-view__display__canvas" MapFile={MapPath} locData={locData} driverSelected={driverSelected} constructorId={selectedDriverRaceData?.Constructor?.constructorId || ""} driverCode={driverCode} driverColor={driversColor[driverCode]} isPaused={isPaused} haloView={haloView} topFollowView={topFollowView} speedFactor={speedFactor} year={year} showCarDetails={showCarDetails} showCameraControls={showCameraControls} speedUnit={speedUnit} selectedDriverData={selectedDriverData} onToggleUnit={handleUnitToggle} />
               ) : (
                 <div className="race-page__track-view__display__preview">{animatedMap && <video src={animatedMap} loop autoPlay muted playsInline className="w-full h-full object-cover" />}</div>
               )}
@@ -758,10 +758,10 @@ export function RacePage() {
               </div>
               <div className="max-sm:hidden flex justify-center"><button className="text-neutral-400 font-display sm:text-xl sm:mb-16 leading-none">Starting Grid</button></div>
               <div className={classNames("flex flex-row items-start gap-4 sm:hidden mb-24")}>
-               <StartingGrid className={classNames("transition-all", showStartingGrid ? "w-[calc(66.666%-0.5rem)]" : "w-[calc(50%-0.5rem)] opacity-100")} raceResults={fullRaceResults} startingGrid={startingGrid} year={year} driverCode={driverCode} driversDetails={driversDetails} driversColor={driversColor} driverTeamMap={driverTeamMap} />
+               <StartingGrid className={classNames("transition-all", showStartingGrid ? "w-[calc(66.666%-0.5rem)]" : "w-[calc(50%-0.5rem)] opacity-100")} raceResults={fullRaceResults} startingGrid={startingGrid} year={year} driverCode={driverCode} driverNumber={driverNumber} driversDetails={driversDetails} driversColor={driversColor} driverTeamMap={driverTeamMap} />
                 <div className={classNames("bg-glow-large h-fit rounded-md sm:rounded-xlarge transition-all", showStartingGrid ? "w-[calc(33.333%-0.5rem)] opacity-100 overflow-hidden" : "max-sm:w-[calc(50%-0.5rem)] max-sm:overflow-visible sm:w-2/3 sm:overflow-hidden")}>{driverButtons(false)}</div>
               </div>
-              <StartingGrid className="max-sm:hidden w-[26rem]" raceResults={fullRaceResults} startingGrid={startingGrid} year={year} driverCode={driverCode} driversDetails={driversDetails} driversColor={driversColor} driverTeamMap={driverTeamMap} />
+              <StartingGrid className="max-sm:hidden w-[26rem]" raceResults={fullRaceResults} startingGrid={startingGrid} year={year} driverCode={driverCode} driverNumber={driverNumber} driversDetails={driversDetails} driversColor={driversColor} driverTeamMap={driverTeamMap} />
             </div>
           )}
           <div className="sm:grow">

@@ -1,14 +1,34 @@
+import React from "react";
 import classNames from "classnames";
-import React, { useState } from "react";
+import { nationalityToFlag } from "../utils/nationalityToFlag";
 
-const DriverCarDetails = ({ driverDetails, speedUnit }) => {
+const DriverCarDetails = ({ driverDetails, speedUnit, selectedDriverData, onToggleUnit }) => {
     const isMph = speedUnit === "mph";
     const displayUnit = isMph ? "mph" : "kph";
 
     const drsActiveNumbers = [10, 12, 14];
 
     return (
-        <div className="px-16 py-10 shadow-xl bg-neutral-800/90 backdrop-blur-sm rounded-l-md">
+        <div className="px-16 py-10 shadow-xl bg-neutral-800/90 backdrop-blur-sm rounded-l-md min-w-[200px]">
+            {selectedDriverData && (
+                <div className="flex items-center gap-8 mb-8 border-b border-white/10 pb-8">
+                    <div className="flex flex-col">
+                        <p className="text-[10px] uppercase tracking-widest opacity-60 leading-none mb-4">Driver</p>
+                        <div className="flex items-center gap-8">
+                            <p className="font-display text-lg leading-none uppercase">
+                                {selectedDriverData.first_name} <span className="font-black italic text-brand-blue-400">{selectedDriverData.last_name}</span>
+                            </p>
+                            {(selectedDriverData.country_code || selectedDriverData.nationality || selectedDriverData.acronym || selectedDriverData.code) && (
+                                <img 
+                                    src={nationalityToFlag(selectedDriverData.country_code || selectedDriverData.nationality || selectedDriverData.acronym || selectedDriverData.code)} 
+                                    alt="flag"
+                                    className="h-12 rounded-sm"
+                                />
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
             <div className="flex flex-col">
                 <p className="gradient-text-light uppercase text-[1rem] tracking-sm leading-none">
                     Gear
@@ -39,8 +59,14 @@ const DriverCarDetails = ({ driverDetails, speedUnit }) => {
                             ? driverDetails.speed
                             : Math.round(driverDetails.speed * 0.621371)}
                     </p>
-                    <div className="flex gap-16 uppercase text-[1rem] tracking-xs opacity-60">
+                    <div className="flex items-center gap-8 uppercase text-[1rem] tracking-xs opacity-60">
                         {displayUnit}
+                        <button 
+                            onClick={onToggleUnit}
+                            className="bg-white/10 hover:bg-white/20 px-6 py-2 rounded text-[8px] transition-colors border border-white/5"
+                        >
+                            Toggle
+                        </button>
                     </div>
                     <p
                         className={classNames(

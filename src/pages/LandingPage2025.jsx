@@ -8,6 +8,7 @@ import {
   Footer2025,
 } from "../components";
 import { fetchMostRecentRace } from "../utils/api";
+import { nationalityToFlag } from "../utils/nationalityToFlag";
 import { getCurrentYear } from "../utils/currentYear";
 import DatesSection from "../layouts/DatesSection";
 import NextRaceSection from "../layouts/NextRaceSection";
@@ -205,9 +206,10 @@ export function LandingPage2025() {
         bestLapTime: r.bestLapTime || r.fastestLap?.Time?.time || "—",
         fastestLap: parseInt(r.fastestLap?.rank || r.FastestLap?.rank, 10) === 1,
         headshot: `/images/${selectedYear}/drivers/${driverCode}.png`,
+        nationality: r.driver?.nationality || r.driver?.country_code || r.Driver?.nationality || r.Driver?.country_code || "",
       };
     });
-
+  
   const p1 = podiumDrivers.find((d) => d.position === 1);
   const p2 = podiumDrivers.find((d) => d.position === 2);
   const p3 = podiumDrivers.find((d) => d.position === 3);
@@ -278,7 +280,8 @@ export function LandingPage2025() {
             >
               {posLabel}
             </span>
-            <span
+            <div
+              className="flex items-center gap-2"
               style={{
                 fontSize: driver.position === 1 ? "1.4rem" : "1.2rem",
                 fontWeight: 800,
@@ -287,7 +290,14 @@ export function LandingPage2025() {
               }}
             >
               {driver.code}
-            </span>
+              {(driver.nationality || driver.country_code || driver.code) && (
+                <img 
+                  src={nationalityToFlag(driver.nationality || driver.country_code || driver.code)} 
+                  alt="flag"
+                  style={{ height: '14px', borderRadius: '2px' }}
+                />
+              )}
+            </div>
           </div>
           {/* Team name */}
           <div

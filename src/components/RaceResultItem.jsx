@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "flowbite-react";
 import { useInView } from "framer-motion";
+import { nationalityToFlag } from "../utils/nationalityToFlag";
 
 export const RaceResultItem = (props) => {
   const {
@@ -28,7 +29,7 @@ export const RaceResultItem = (props) => {
   const isInView = useInView(ref, { once: true });
 
   // console.log({driver})
-
+  
   return (
     <li
       className={classNames(
@@ -44,6 +45,7 @@ export const RaceResultItem = (props) => {
         })}
       >
         <img
+          className="driver-headshot"
           alt={driver.code}
           src={
             championshipLevel === "F1A" || championshipLevel === "F2"
@@ -64,9 +66,16 @@ export const RaceResultItem = (props) => {
           }}
         />
         <div className="stand bg-glow px-14 text-center">
-          <div className="font-display text-[1.8rem] ">
+          <div className="font-display text-[1.8rem] flex items-center justify-center gap-2">
             <span className="text-neutral-500">P{endPosition}</span>{" "}
             {driver.code}
+            {(driver.nationality || driver.country_code || driver.code) && (
+              <img 
+                src={nationalityToFlag(driver.nationality || driver.country_code || driver.code)} 
+                alt="flag"
+                style={{ height: '0.6em', borderRadius: '1px' }}
+              />
+            )}
           </div>
           <div className="divider-glow w-full" />
           <div className="text-xl -mt-4 flex items-center justify-center gap-4">
