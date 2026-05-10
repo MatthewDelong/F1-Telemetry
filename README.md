@@ -181,6 +181,7 @@ This project pulls data from four sources:
 
 - **[OpenF1 API](https://openf1.org)** — Real-time and historical telemetry, track positioning, and stint data.
 - **[Jolpica API](https://jolpi.ca/)** — Custom local backend parser fetches F1 historical Race results, Driver Standings, and Constructor Standings directly from the reliable Jolpica API framework.
+- **[OpenWeather API](https://openweathermap.org/)** —  Weather data.
 - **Internal Gateway (`api.php`)** — A custom auto-caching proxy ensures that Formula 2 and F1 Academy data remains completely decoupled and safe from disappearing online, using internal fallbacks over volatile GitHub Pages databases.
 
 ---
@@ -197,7 +198,7 @@ Contributions are welcome! Whether it's improving the codebase, adding features,
 - Special thanks to data providers and API service [OpenF1](https://openf1.org/) that enable access to current and historical F1 data.
 - [Flagpedia](https://flagpedia.net/) — High-quality country flag WebP images used for race locations and driver nationalities.
 - This work is based on "basic Lowpoly F1 Car V1" by arthihalder, available under a Creative Commons Attribution 4.0 International license. [View the model on Sketchfab](https://sketchfab.com/3d-models/basic-lowpoly-f1-car-v1-b4c6a1cfe0154f4d86b39ff3b7f955a1). License details can be found at [CC-BY-4.0](http://creativecommons.org/licenses/by/4.0/).
-
+  
 ---
 
 ## License
