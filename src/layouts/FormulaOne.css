@@ -215,9 +215,25 @@
   color: #00d2be;
 }
 
+.weather-location {
+  font-family: "Titillium Web", sans-serif;
+  color: #ffffff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.weather-info-text {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 1.5rem;
+}
+
 .weather-condition {
   font-family: "Titillium Web", sans-serif;
   color: #aaaaaa;
+  font-weight: 400;
 }
 
 .weather-forecast {

@@ -328,10 +328,14 @@ const NextRaceSection = () => {
   // Find the next upcoming race
   const nowTime = new Date().getTime();
   const sortedRaces = Object.values(RACES_DATA).sort(
-    (a, b) => new Date(a.countDownDate).getTime() - new Date(b.countDownDate).getTime()
+    (a, b) =>
+      new Date(a.countDownDate).getTime() - new Date(b.countDownDate).getTime(),
   );
-  
-  const currentRaceData = sortedRaces.find(r => new Date(r.countDownDate).getTime() > nowTime - 2 * 60 * 60 * 1000) || sortedRaces[sortedRaces.length - 1];
+
+  const currentRaceData =
+    sortedRaces.find(
+      (r) => new Date(r.countDownDate).getTime() > nowTime - 2 * 60 * 60 * 1000,
+    ) || sortedRaces[sortedRaces.length - 1];
 
   const countDownDate = new Date(currentRaceData.countDownDate).getTime();
 
@@ -344,8 +348,12 @@ const NextRaceSection = () => {
 
       if (difference > 0) {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const hours = Math.floor(
+          (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        );
+        const minutes = Math.floor(
+          (difference % (1000 * 60 * 60)) / (1000 * 60),
+        );
         setCountdown({ days, hours, minutes });
         setRaceStatus("upcoming");
       } else if (difference > -TWO_HOURS_MS) {
@@ -363,7 +371,7 @@ const NextRaceSection = () => {
       setLoadingWeather(true);
       try {
         const baseUrl = `https://weather-bar.matthew-delong73.workers.dev/?city=${encodeURIComponent(currentRaceData.city)}&lang=en`;
-        
+
         const [currentResponse, forecastResponse] = await Promise.all([
           fetch(baseUrl),
           fetch(`${baseUrl}&forecast=daily`),
@@ -411,8 +419,8 @@ const NextRaceSection = () => {
     <section className="min-h-screen snap-start flex flex-col items-center justify-center px-16 bg-black relative pt-[100px] pb-16 overflow-hidden border-t border-neutral-900">
       {/* Background with blurred image and gradient overlay */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src="/images/bg.png" 
+        <img
+          src="/images/bg.png"
           className="w-full h-full object-cover opacity-40 mix-blend-overlay"
           alt=""
         />
@@ -421,7 +429,7 @@ const NextRaceSection = () => {
       </div>
 
       <div className="max-w-5xl w-full mx-auto z-10">
-        <motion.div 
+        <motion.div
           className="f1-next-race"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -463,26 +471,27 @@ const NextRaceSection = () => {
                     Your Time
                   </button>
                 </div>
-                
+
                 <div className="flex flex-col sm:flex-row items-center gap-10">
                   <span className="race-date">
                     {showTrackTime
                       ? `${new Date(currentRaceData.date).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" })}, ${currentRaceData.localTime} Local`
-                      : new Date(currentRaceData.countDownDate).toLocaleString("en-GB", {
-                          weekday: "short",
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                          hour12: false,
-                          timeZoneName: "short",
-                        })}
+                      : new Date(currentRaceData.countDownDate).toLocaleString(
+                          "en-GB",
+                          {
+                            weekday: "short",
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                            timeZoneName: "short",
+                          },
+                        )}
                   </span>
                   <span className="hidden sm:inline opacity-30">•</span>
-                  <span className="race-laps">
-                    {currentRaceData.laps} Laps
-                  </span>
+                  <span className="race-laps">{currentRaceData.laps} Laps</span>
                 </div>
               </div>
 
@@ -490,7 +499,10 @@ const NextRaceSection = () => {
               <div className="race-weather max-w-xl mx-auto mt-8">
                 {loadingWeather ? (
                   <div className="weather-loading py-4">
-                    <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+                    <span
+                      className="spinner-border spinner-border-sm me-2"
+                      role="status"
+                    ></span>
                     Loading weather...
                   </div>
                 ) : weather ? (
@@ -504,7 +516,14 @@ const NextRaceSection = () => {
                           className="weather-icon"
                         />
                         <span className="weather-temp">{weather.temp}°C</span>
-                        <span className="weather-condition">{weather.condition}</span>
+                        <div className="weather-info-text">
+                          <span className="weather-condition">
+                            {weather.condition}
+                          </span>
+                          <span className="weather-location">
+                            {weather.location}
+                          </span>
+                        </div>
                       </div>
 
                       {forecast.length > 0 && (
@@ -514,7 +533,10 @@ const NextRaceSection = () => {
                             {forecast.map((day) => (
                               <div key={day.dt} className="forecast-day">
                                 <span className="forecast-label">
-                                  {new Date(day.dt * 1000).toLocaleDateString("en-GB", { weekday: "short" })}
+                                  {new Date(day.dt * 1000).toLocaleDateString(
+                                    "en-GB",
+                                    { weekday: "short" },
+                                  )}
                                 </span>
                                 <img
                                   src={`https://openweathermap.org/img/wn/${day.icon}.png`}
@@ -523,7 +545,9 @@ const NextRaceSection = () => {
                                 />
                                 <span className="forecast-temp">
                                   {day.tempMax}°
-                                  <span className="forecast-temp-min">/{day.tempMin}°</span>
+                                  <span className="forecast-temp-min">
+                                    /{day.tempMin}°
+                                  </span>
                                 </span>
                                 <span className="forecast-pop mt-2">
                                   {day.pop}% 💧
@@ -536,7 +560,9 @@ const NextRaceSection = () => {
                     </div>
                   </>
                 ) : (
-                  <div className="weather-error py-4">Weather data unavailable</div>
+                  <div className="weather-error py-4">
+                    Weather data unavailable
+                  </div>
                 )}
               </div>
             </div>
