@@ -747,9 +747,6 @@ export function RacePage() {
           />
         </button>
       ))}
-      <p className="text-10 text-neutral-500 mt-16 text-center">
-        PL denotes Starting from pitlane
-      </p>
     </ul>
   );
 

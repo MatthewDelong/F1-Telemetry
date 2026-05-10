@@ -24,18 +24,21 @@ export const StartingGrid = (props) => {
       <ul className="flex flex-col w-fit m-auto">
         {startingGrid
           .sort((a, b) => {
-            const posA = a.position === "PL" ? 100 : (parseInt(a.position, 10) || 99);
-            const posB = b.position === "PL" ? 100 : (parseInt(b.position, 10) || 99);
+            const posA =
+              a.position === "PL" ? 100 : parseInt(a.position, 10) || 99;
+            const posB =
+              b.position === "PL" ? 100 : parseInt(b.position, 10) || 99;
             return posA - posB;
           })
           .map((gridPosition, index) => {
             // Create a lookup map for the constructors
-            const constructorMap = (raceResults && raceResults.length > 0) 
-              ? raceResults.reduce((acc, result) => {
-                  acc[result.Driver.code] = result.Constructor.constructorId;
-                  return acc;
-                }, {})
-              : (driverTeamMap || {});
+            const constructorMap =
+              raceResults && raceResults.length > 0
+                ? raceResults.reduce((acc, result) => {
+                    acc[result.Driver.code] = result.Constructor.constructorId;
+                    return acc;
+                  }, {})
+                : driverTeamMap || {};
 
             const getConstructorIdFromTeam = (teamName) => {
               if (!teamName) return "f1";
@@ -47,28 +50,34 @@ export const StartingGrid = (props) => {
               if (name.includes("aston martin")) return "aston_martin";
               if (name.includes("alpine")) return "alpine";
               if (name.includes("williams")) return "williams";
-              if (name.includes("rb") || name.includes("visa cash")) return "rb";
-              if (name.includes("sauber") || name.includes("kick")) return "sauber";
+              if (name.includes("rb") || name.includes("visa cash"))
+                return "rb";
+              if (name.includes("sauber") || name.includes("kick"))
+                return "sauber";
               if (name.includes("haas")) return "haas";
               return "f1";
             };
 
             const getCarTopView = (driver, driverNumber) => {
               // Try to find constructor from the race results first (most accurate for the year)
-              let constructorOrTeam = constructorMap[driver] || constructorMap[driverNumber];
-              
+              let constructorOrTeam =
+                constructorMap[driver] || constructorMap[driverNumber];
+
               if (!constructorOrTeam) {
                 // Fallback to searching the raceResults array directly
-                const result = raceResults?.find(r => 
-                  r.Driver?.code === driver || 
-                  r.Driver?.driverId === driver || 
-                  r.number === driverNumber
+                const result = raceResults?.find(
+                  (r) =>
+                    r.Driver?.code === driver ||
+                    r.Driver?.driverId === driver ||
+                    r.number === driverNumber,
                 );
-                constructorOrTeam = result?.Constructor?.constructorId || result?.Constructor?.name;
+                constructorOrTeam =
+                  result?.Constructor?.constructorId ||
+                  result?.Constructor?.name;
               }
 
               if (!constructorOrTeam) return "f1";
-              
+
               if (constructorOrTeam.includes(" ")) {
                 return getConstructorIdFromTeam(constructorOrTeam);
               }
@@ -99,8 +108,9 @@ export const StartingGrid = (props) => {
                           year +
                           "/carTopView/" +
                           getCarTopView(
-                            driversDetails[gridPosition.driver_number] || gridPosition.driver_acronym,
-                            gridPosition.driver_number
+                            driversDetails[gridPosition.driver_number] ||
+                              gridPosition.driver_acronym,
+                            gridPosition.driver_number,
                           ) +
                           ".png"
                         }`
@@ -119,7 +129,9 @@ export const StartingGrid = (props) => {
                   )}
                 >
                   <p className="text-neutral-500">
-                    {gridPosition.position === "PL" ? "PL" : `P${gridPosition.position}`}
+                    {gridPosition.position === "PL"
+                      ? "PL"
+                      : `P${gridPosition.position}`}
                   </p>
                   <p
                     style={{
@@ -132,14 +144,16 @@ export const StartingGrid = (props) => {
                             : "#f1f1f1",
                     }}
                   >
-                    {driversDetails[gridPosition.driver_number] || gridPosition.driver_acronym || ""}
+                    {driversDetails[gridPosition.driver_number] ||
+                      gridPosition.driver_acronym ||
+                      ""}
                   </p>
                 </div>
               </li>
             );
           })}
       </ul>
-      <p className="text-10 text-neutral-500 mt-16 text-center">
+      <p className="text-[8px] text-white-500 mt-8 text-center uppercase tracking-wider">
         PL denotes Starting from pitlane
       </p>
     </div>
