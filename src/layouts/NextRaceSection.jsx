@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import "./FormulaOne.css";
+import "./NextRaceSection.css";
 
 // Race Data for Automation - Using the data provided by the user
 const RACES_DATA = {
