@@ -128,7 +128,7 @@ export const ThreeCanvas = ({
       currentMount.clientWidth / (currentMount.clientHeight || 700),
       0.5,
       30000,
-    );
+    1);
     cameraRef.current.up.set(0, 0, 1);
 
     // Car Cameras
@@ -306,14 +306,8 @@ export const ThreeCanvas = ({
 
   // 6. Telemetry Analysis & Synchronization
   useEffect(() => {
-    if (
-      !locData ||
-      !Array.isArray(locData) ||
-      locData.length === 0 ||
-      !isCircuitLoaded
-    )
-      return;
-    locDataRef.current = [...locData];
+    if (!isCircuitLoaded) return;
+    locDataRef.current = Array.isArray(locData) ? [...locData] : [];
   }, [locData, isCircuitLoaded]);
 
   // 7. Driver Car Population

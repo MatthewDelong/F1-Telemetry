@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useLocation, useParams } from "react-router-dom";
 
@@ -96,18 +96,23 @@ export function RacePage() {
 
   useEffect(() => {
     const fetchByMeetingKey = async () => {
-      setIsLoading(true);
-      const response = await fetch(
-        `${BASE_F1_URL}races/racesbyMK.json`,
-      ).then((res) => res.json());
-      setYear(response[raceId]["year"]);
-      setLocation(
-        response[raceId]["location"]
-          ? response[raceId]["location"].toLowerCase()
-          : null,
-      );
-      setRaceName(response[raceId]["raceName"]);
-      // console.log(raceName);
+      try {
+        setIsLoading(true);
+        const response = await fetchWithPersistentCache(
+          `${BASE_F1_URL}races/racesbyMK.json`,
+        );
+        if (response && response[raceId]) {
+          setYear(response[raceId]["year"]);
+          setLocation(
+            response[raceId]["location"]
+              ? response[raceId]["location"].toLowerCase()
+              : null,
+          );
+          setRaceName(response[raceId]["raceName"]);
+        }
+      } catch (err) {
+        console.error("Error fetching by meeting key:", err);
+      }
     };
 
     if (!raceName && raceId) {
@@ -129,34 +134,38 @@ export function RacePage() {
   }, [raceName, meetingKey, selectedSession]);
 
   const animatedLocations = [
-    "austin",
+    "albert_park",
+    "americas",
     "bahrain",
     "baku",
-    "budapest",
+    "catalunya",
+    "hungaroring",
+    "imola",
+    "interlagos",
     "jeddah",
-    "las vegas",
-    "lusail",
-    "marina bay",
-    "melbourne",
-    "mexico city",
+    "losail",
+    "marina_bay",
     "miami",
     "monaco",
     "monza",
-    "são paulo",
-    "sakhir",
+    "red_bull_ring",
+    "rodriguez",
     "shanghai",
     "silverstone",
-    "spa-francorchamps",
+    "spa",
     "suzuka",
-    "yas island",
+    "vegas",
+    "villeneuve",
+    "yas_marina",
     "zandvoort",
   ];
 
   const selectedDriverData = drivers.find(
     (obj) => obj["acronym"] === driverCode,
   );
+  
   const selectedDriverRaceData = raceResults.find(
-    (obj) => obj["number"] === driverNumber,
+    (obj) => String(obj["number"] || obj["Driver"]?.number) === String(driverNumber),
   );
 
   const getPositionTimeBounds = (positionData, sessionData) => {
@@ -240,8 +249,11 @@ export function RacePage() {
         setIsLoading(true);
 
         if (circuitId) {
-          setMapPath(`${"/map/" + circuitId + ".gltf"}`);
-          setAnimatedMap(`${"/mapsAnimated/" + circuitId + "Animated.mp4"}`);
+          const mapUrl = `/map/${circuitId}.gltf`;
+          const animatedMapUrl = `/mapsAnimated/${circuitId}Animated.mp4`;
+          console.log(`[RacePage] Setting Race map paths for ${circuitId}:`, { mapUrl, animatedMapUrl });
+          setMapPath(mapUrl);
+          setAnimatedMap(animatedMapUrl);
         }
 
         let sessionResults = [];
@@ -289,8 +301,6 @@ export function RacePage() {
         console.log(`[RacePage] Pos data fetched: ${startingGridData?.length || 0}`);
         
         if (startingGridData && startingGridData.length > 0) {
-          console.log(`[RacePage] Sample Pos Record:`, startingGridData[0]);
-          console.log(`[RacePage] Last Pos Record:`, startingGridData[startingGridData.length - 1]);
           const uniqueDriversInPos = [...new Set(startingGridData.map(p => p.driver_number))];
           console.log(`[RacePage] Unique Drivers in Pos data:`, uniqueDriversInPos);
         }
@@ -322,11 +332,9 @@ export function RacePage() {
         setStartTime(startTimeValue);
         setEndTime(endTimeValue);
 
-        // ALWAYS use official race results for the starting grid if available, 
-        // as telemetry grid data can be unreliable or missing.
+        // ALWAYS use official race results for the starting grid if available
         let filteredStartingGrid = [];
         if ((year === "2026" || year === 2026) && sessionResults && sessionResults.length > 0) {
-          console.log(`[RacePage] Using official results for 2026 starting grid override`);
           filteredStartingGrid = sessionResults.map(r => ({
             driver_number: parseInt(r.number || r.Driver?.number, 10),
             driver_acronym: r.Driver?.code || r.Driver?.driverId,
@@ -334,7 +342,6 @@ export function RacePage() {
             date: startTimeValue
           })).filter(r => r.position === "PL" || r.position > 0);
         } else if (raceResults && raceResults.length > 0) {
-          console.log(`[RacePage] Using official race results for starting grid`);
           filteredStartingGrid = raceResults.map(r => ({
             driver_number: parseInt(r.number || r.Driver?.number, 10),
             driver_acronym: r.Driver?.code || r.Driver?.driverId,
@@ -343,10 +350,7 @@ export function RacePage() {
           })).filter(r => r.position === "PL" || r.position > 0);
         } else {
           const uniqueDrivers = new Map();
-          
-          // Sort by date to ensure we get the EARLIEST record for each driver
           const sortedPosData = [...startingGridData].sort((a, b) => new Date(a.date) - new Date(b.date));
-          
           sortedPosData.forEach(item => {
             if (!uniqueDrivers.has(item.driver_number)) {
               uniqueDrivers.set(item.driver_number, {
@@ -355,14 +359,11 @@ export function RacePage() {
               });
             }
           });
-          
           filteredStartingGrid = Array.from(uniqueDrivers.values());
         }
         
         setStartingGrid(filteredStartingGrid);
-
         setDrivers(driversData);
-
         setLaps(
           lapsData.map((lap) => ({
             ...lap,
@@ -370,80 +371,46 @@ export function RacePage() {
           })),
         );
 
-        // Determine if session is live
-        const isLive =
-          !raceSession.date_end || new Date() < new Date(raceSession.date_end);
-        setIsSessionLive(isLive);
+        setIsSessionLive(!raceSession.date_end || new Date() < new Date(raceSession.date_end));
       } else if (selectedSession === "Qualifying") {
         setIsLoading(true);
-
         if (circuitId) {
-          setMapPath(`${"/map/" + circuitId + ".gltf"}`);
-          setAnimatedMap(`${"/mapsAnimated/" + circuitId + "Animated.mp4"}`);
+          const mapUrl = `/map/${circuitId}.gltf`;
+          const animatedMapUrl = `/mapsAnimated/${circuitId}Animated.mp4`;
+          setMapPath(mapUrl);
+          setAnimatedMap(animatedMapUrl);
         }
 
         let sessionResults = [];
         if (circuitId) {
-          sessionResults = await fetchQualifyingResultsByCircuit(
-            year,
-            circuitId,
-          );
+          sessionResults = await fetchQualifyingResultsByCircuit(year, circuitId);
           setRaceResults(sessionResults);
         }
 
-        const raceSession = sessionsData.find(
-          (session) => session.session_name === "Qualifying",
-        );
-        if (!raceSession) throw new Error("Race session not found");
+        const raceSession = sessionsData.find(session => session.session_name === "Qualifying");
+        if (!raceSession) throw new Error("Qualifying session not found");
         const sessionKey = raceSession.session_key;
         setSelectedSessionKey(sessionKey);
 
-        const [driverDetailsData, startingGridData, driversData, lapsData] =
-          await Promise.all([
-            fetchWithPersistentCache(
-              `${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`,
-            ),
-            fetchWithPersistentCache(
-              `${buildOpenF1Url("/position")}?session_key=${sessionKey}`,
-            ),
-            fetchDriversAndTires(sessionKey),
-            fetchOpenF1Data(
-              `${buildOpenF1Url("/laps")}?session_key=${sessionKey}`,
-            ).catch(() => []),
-          ]);
+        const driverDetailsData = await fetchWithPersistentCache(`${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`).catch(() => []);
+        await new Promise(r => setTimeout(r, 250));
+        const startingGridData = await fetchOpenF1FullSessionData("/position", sessionKey);
+        await new Promise(r => setTimeout(r, 250));
+        const driversData = await fetchDriversAndTires(sessionKey).catch(() => []);
+        await new Promise(r => setTimeout(r, 250));
+        const lapsData = await fetchOpenF1FullSessionData("/laps", sessionKey);
 
-        const driverDetailsMap = driverDetailsData.reduce(
-          (acc, driver) => ({
-            ...acc,
-            [driver.driver_number]: driver.name_acronym,
-          }),
-          {},
-        );
-
+        const driverDetailsMap = driverDetailsData.reduce((acc, driver) => ({ ...acc, [driver.driver_number]: driver.name_acronym }), {});
         setDriversDetails(driverDetailsMap);
-
-        const driverColorMap = driverDetailsData.reduce(
-          (acc, driver) => ({
-            ...acc,
-            [driver.name_acronym]: driver.team_colour,
-          }),
-          {},
-        );
-
+        const driverColorMap = driverDetailsData.reduce((acc, driver) => ({ ...acc, [driver.name_acronym]: driver.team_colour }), {});
         setDriversColor(driverColorMap);
 
-        const { startTime, endTime } = getPositionTimeBounds(
-          startingGridData,
-          raceSession,
-        );
-
+        const { startTime, endTime } = getPositionTimeBounds(startingGridData, raceSession);
         setStartTime(startTime);
         setEndTime(endTime);
 
         let filteredStartingGrid = [];
-        // For 2026, prioritize official results for the grid to ensure accuracy
         if ((year === "2026" || year === 2026) && sessionResults && sessionResults.length > 0) {
-          console.log(`[RacePage] Using official qualifying results for 2026 starting grid override`);
           filteredStartingGrid = sessionResults.map(r => ({
             driver_number: parseInt(r.number || r.Driver?.number, 10),
             driver_acronym: r.Driver?.code || r.Driver?.driverId,
@@ -452,45 +419,30 @@ export function RacePage() {
           })).filter(r => r.position > 0);
         } else {
           const earliestDateTime = startingGridData[0]?.date;
-          filteredStartingGrid = startingGridData.filter(
-            (item) => item.date === earliestDateTime,
-          );
+          filteredStartingGrid = startingGridData.filter(item => item.date === earliestDateTime);
         }
         
         setStartingGrid(filteredStartingGrid);
         setPos(startingGridData);
-
         setDrivers(driversData);
-
-        setLaps(
-          lapsData.map((lap) => ({
-            ...lap,
-            driver_acronym: driverDetailsMap[lap.driver_number],
-          })),
-        );
+        setLaps(lapsData.map(lap => ({ ...lap, driver_acronym: driverDetailsMap[lap.driver_number] })));
       } else if (selectedSession === "Sprint") {
         setIsLoading(true);
-
         if (circuitId) {
-          setMapPath(`${"/map/" + circuitId + ".gltf"}`);
-          setAnimatedMap(`${"/mapsAnimated/" + circuitId + "Animated.mp4"}`);
+          const mapUrl = `/map/${circuitId}.gltf`;
+          const animatedMapUrl = `/mapsAnimated/${circuitId}Animated.mp4`;
+          setMapPath(mapUrl);
+          setAnimatedMap(animatedMapUrl);
         }
 
-        const sprintSession = sessionsData.find((session) =>
-          ["Sprint", "Sprint Qualifying", "Sprint Shootout"].includes(
-            session.session_name,
-          ),
-        );
-
+        const sprintSession = sessionsData.find(session => ["Sprint", "Sprint Qualifying", "Sprint Shootout"].includes(session.session_name));
         if (!sprintSession) {
-          console.warn("Sprint session not found in session data");
           setIsLoading(false);
           return;
         }
 
         let sessionResults = [];
         if (circuitId) {
-          // Fetch official sprint results from sprint.json
           sessionResults = await fetchSprintResultsByCircuit(year, circuitId);
           setRaceResults(sessionResults);
         }
@@ -498,73 +450,28 @@ export function RacePage() {
         const sessionKey = sprintSession.session_key;
         setSelectedSessionKey(sessionKey);
 
-        const [driverDetailsData, driversData, lapsData, positionData] =
-          await Promise.all([
-            fetchWithPersistentCache(
-              `${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`,
-            ).catch(() => []),
-            fetchDriversAndTires(sessionKey).catch(() => []),
-            fetchOpenF1Data(
-              `${buildOpenF1Url("/laps")}?session_key=${sessionKey}`,
-            ).catch(() => []),
-            fetchWithPersistentCache(
-              `${buildOpenF1Url("/position")}?session_key=${sessionKey}`,
-            ).catch(() => []),
-          ]);
+        const driverDetailsData = await fetchWithPersistentCache(`${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`).catch(() => []);
+        await new Promise(r => setTimeout(r, 250));
+        const driversData = await fetchDriversAndTires(sessionKey).catch(() => []);
+        await new Promise(r => setTimeout(r, 250));
+        const lapsData = await fetchOpenF1FullSessionData("/laps", sessionKey);
+        await new Promise(r => setTimeout(r, 250));
+        const positionData = await fetchOpenF1FullSessionData("/position", sessionKey);
 
-        const raceControlData = await fetchRaceControl(sessionKey).catch(
-          () => [],
-        );
+        const raceControlData = await fetchRaceControl(sessionKey).catch(() => []);
         setRaceControlMessages(raceControlData);
 
-        const driverDetailsMap = (driverDetailsData || []).reduce(
-          (acc, driver) => ({
-            ...acc,
-            [driver.driver_number]: driver.name_acronym,
-          }),
-          {},
-        );
+        const driverDetailsMap = (driverDetailsData || []).reduce((acc, driver) => ({ ...acc, [driver.driver_number]: driver.name_acronym }), {});
         setDriversDetails(driverDetailsMap);
-
-        const driverColorMap = (driverDetailsData || []).reduce(
-          (acc, driver) => ({
-            ...acc,
-            [driver.name_acronym]: driver.team_colour,
-          }),
-          {},
-        );
+        const driverColorMap = (driverDetailsData || []).reduce((acc, driver) => ({ ...acc, [driver.name_acronym]: driver.team_colour }), {});
         setDriversColor(driverColorMap);
 
-        const teamMap = (driverDetailsData || []).reduce(
-          (acc, driver) => ({
-            ...acc,
-            [driver.name_acronym]: driver.team_name,
-          }),
-          {},
-        );
-        setDriverTeamMap(teamMap);
-
-        setPos(positionData);
-        setDrivers(driversData);
-        setLaps(
-          lapsData.map((lap) => ({
-            ...lap,
-            driver_acronym: driverDetailsMap[lap.driver_number],
-          })),
-        );
-
-        const { startTime: sStartTime, endTime: sEndTime } = getPositionTimeBounds(
-          positionData,
-          sprintSession,
-        );
-
+        const { startTime: sStartTime, endTime: sEndTime } = getPositionTimeBounds(positionData, sprintSession);
         setStartTime(sStartTime);
         setEndTime(sEndTime);
 
         let filteredStartingGrid = [];
-        // For 2026, prioritize official results for the grid to ensure accuracy
         if ((year === "2026" || year === 2026) && sessionResults && sessionResults.length > 0) {
-          console.log(`[RacePage] Using official results for 2026 sprint starting grid override`);
           filteredStartingGrid = sessionResults.map(r => ({
             driver_number: parseInt(r.number || r.Driver?.number, 10),
             driver_acronym: r.Driver?.code || r.Driver?.driverId,
@@ -573,18 +480,14 @@ export function RacePage() {
           })).filter(r => r.position === "PL" || r.position > 0);
         } else {
           const earliestDateTime = positionData[0]?.date;
-          filteredStartingGrid = positionData.filter(
-            (item) => item.date === earliestDateTime,
-          );
+          filteredStartingGrid = positionData.filter(item => item.date === earliestDateTime);
         }
         
         setStartingGrid(filteredStartingGrid);
-
-        // Determine if session is live
-        const isLive =
-          !sprintSession.date_end ||
-          new Date() < new Date(sprintSession.date_end);
-        setIsSessionLive(isLive);
+        setPos(positionData);
+        setDrivers(driversData);
+        setLaps(lapsData.map(lap => ({ ...lap, driver_acronym: driverDetailsMap[lap.driver_number] })));
+        setIsSessionLive(!sprintSession.date_end || new Date() < new Date(sprintSession.date_end));
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -604,58 +507,47 @@ export function RacePage() {
       intervalId = setInterval(async () => {
         try {
           const data = await fetchRaceControl(selectedSessionKey);
-          if (data && data.length > 0) {
-            setRaceControlMessages(data);
-          }
+          if (data && data.length > 0) setRaceControlMessages(data);
         } catch (error) {
           console.error("Error polling race control:", error);
         }
-      }, 60000); // Poll every 60 seconds
+      }, 60000);
     }
-    return () => {
-      if (intervalId) clearInterval(intervalId);
-    };
+    return () => { if (intervalId) clearInterval(intervalId); };
   }, [isSessionLive, selectedSessionKey]);
 
   const handleDriverSelectionClick = (index) => {
-    // console.log(raceResults[index].Driver.code); // Log the driver code
-    // console.log(raceResults[index].number);
+    if (!raceResults || !raceResults[index]) return;
 
     if (activeButtonIndex === index) {
-      setLocData({});
+      setLocData([]);
       setDriverSelected(false);
-      setActiveButtonIndex(null); // Reset the active button index
+      setActiveButtonIndex(null);
       setDriverCode("");
     } else {
-      setLocData({});
+      setLocData([]);
       setDriverSelected(true);
       setDriverCode(raceResults[index].Driver.code);
       setDriverNumber(raceResults[index].number);
-      setActiveButtonIndex(index); // Set new active button index
+      setActiveButtonIndex(index);
 
       (async () => {
         try {
-          // Fetch sessions to find the race session
-          const sessionsResponse = await fetch(
-            `${buildOpenF1Url("/sessions")}?meeting_key=${meetingKey}`,
-          );
-          const sessionsData = await sessionsResponse.json();
-          const raceSession = sessionsData.find(
-            (session) => session.session_name === "Race",
-          );
+          const currentCircuitId = location && locationMaps[location.toLowerCase()];
+          if (currentCircuitId && !MapPath) {
+            const mapUrl = `/map/${currentCircuitId}.gltf`;
+            const animatedMapUrl = `/mapsAnimated/${currentCircuitId}Animated.mp4`;
+            setMapPath(mapUrl);
+            setAnimatedMap(animatedMapUrl);
+          }
+
+          const sessionsData = await fetchWithPersistentCache(`${buildOpenF1Url("/sessions")}?meeting_key=${meetingKey}`);
+          if (!Array.isArray(sessionsData)) throw new Error("Sessions data is not an array");
+          const raceSession = sessionsData.find(session => session.session_name === "Race");
           if (!raceSession) throw new Error("Race session not found");
           const sessionKey = raceSession.session_key;
 
-          const scaleFactor = 1500;
-
-          // Fetch location data using sessionKey, driverId (from state), startTime, and endTime
-          const locationData = await fetchLocationData(
-            sessionKey,
-            raceResults[index].number,
-            startTime,
-            endTime,
-            scaleFactor,
-          );
+          const locationData = await fetchLocationData(sessionKey, raceResults[index].number, startTime, endTime, 1500);
           setLocData(locationData);
         } catch (error) {
           console.error("Error fetching location data:", error);
@@ -664,70 +556,20 @@ export function RacePage() {
     }
   };
 
-  const DriverList = ({
-    results,
-    activeButtonIndex,
-    handleDriverSelectionClick,
-    drivers,
-    driversColor,
-    year,
-    session,
-  }) => {
-    return (
-      <ul className="w-fit mx-auto">
-        {results.map((result, index) => (
-          <DriverCard
-            hasHover={false}
-            isActive={activeButtonIndex === index}
-            index={index}
-            driver={result.Driver}
-            stint={drivers}
-            driverColor={driversColor[result.Driver.code]} // Use driver code here
-            startPosition={parseInt(result.grid, 10)}
-            endPosition={parseInt(result.position, 10)}
-            year={parseInt(year)}
-            time={result[session]}
-            fastestLap={result.FastestLap}
-            layoutSmall={index > 2}
-            mobileSmall
-            isRace={true}
-          />
-        ))}
-      </ul>
-    );
-  };
+  const { q1Results, q2Results, q3Results } = React.useMemo(() => organizeQualifyingResults(raceResults), [raceResults]);
 
-  // console.log(location, MapPath);
-  // console.log({raceResults});
-  // console.log({startingGrid});
-
-  const { q1Results, q2Results, q3Results } = React.useMemo(() => 
-    organizeQualifyingResults(raceResults), [raceResults]);
-
-  // console.log('Q1 Results:', q1Results);
-  // console.log('Q2 Results:', q2Results);
-  // console.log('Q3 Results:', q3Results);
-
-  // console.log('selectedSession', selectedSession);
-
-  const isAnimatedLocation =
-    location && animatedLocations.includes(location.toLowerCase());
-  const hasMap = location && locationMaps[location.toLowerCase()];
-
-  // Show 3D track if a driver is selected AND the site supports animation/map
-  const driverSelectedShowTrack =
-    driverSelected && isAnimatedLocation && hasMap;
+  const circuitIdCanonical = location && locationMaps[location.toLowerCase()];
+  const isAnimatedLocation = circuitIdCanonical && animatedLocations.includes(circuitIdCanonical);
+  const hasMap = !!circuitIdCanonical;
+  const driverSelectedShowTrack = driverSelected && isAnimatedLocation && hasMap;
 
   const driverButtons = (layoutSmall) => (
     <ul className="flex flex-col max-sm:p-8 sm:p-16">
       {raceResults.map((result, index) => (
         <button
           key={index}
-          className="block w-full mb-2 sm:mb-2 max-sm:mb-8 relative max-sm:overflow-visible transition-all"
-          onClick={() => {
-            handleDriverSelectionClick(index);
-            setIsDrawerOpen(false);
-          }}
+          className="block w-full mb-2 sm:mb-2 max-sm:mb-8 relative transition-all"
+          onClick={() => { handleDriverSelectionClick(index); setIsDrawerOpen(false); }}
         >
           <DriverCard
             hasHover
@@ -742,7 +584,6 @@ export function RacePage() {
             time={result.Time?.time || result.status}
             fastestLap={result.FastestLap}
             layoutSmall={layoutSmall}
-            // mobileSmall
             isRace={true}
           />
         </button>
@@ -750,517 +591,120 @@ export function RacePage() {
     </ul>
   );
 
-  const selectedDriverAcronym = driverSelected
-    ? driversDetails[driverNumber]
-    : null;
+  const selectedDriverAcronym = driverSelected ? driversDetails[driverNumber] : null;
 
-  const statsTabs = React.useMemo(
-    () =>
-      [
-        selectedSession === "Race" && {
-          id: "position",
-          label: "Position",
-          content: (
-            <PositionCharts
-              laps={laps}
-              pos={pos}
-              startGrid={startingGrid}
-              driversDetails={driversDetails}
-              driversColor={driversColor}
-              raceResults={raceResults}
-              driverCode={selectedDriverAcronym}
-            />
-          ),
-        },
-        {
-          id: "laps",
-          label: "Lap Chart",
-          content: (
-            <LapChart
-              laps={laps}
-              setLaps={() => setLaps}
-              startGrid={startingGrid}
-              driversDetails={driversDetails}
-              driversColor={driversColor}
-              raceResults={raceResults}
-              className="lap-chart"
-              driverCode={selectedDriverAcronym}
-            />
-          ),
-        },
-        {
-          id: "tires",
-          label: "Tire Strategy",
-          content: (
-            <TireStrategy
-              drivers={drivers}
-              raceResults={raceResults}
-              startGrid={startingGrid}
-              driverCode={selectedDriverAcronym}
-              driverColor={driversColor[driverCode]}
-            />
-          ),
-        },
-        !driverSelected &&
-          (selectedSession === "Race" || selectedSession === "Sprint") && {
-            id: "fastest",
-            label: "Fastest Laps",
-            content: (
-              <FastestLaps raceResults={raceResults} drivers={drivers} />
-            ),
-          },
-        (selectedSession === "Race" || selectedSession === "Sprint") && {
-          id: "pitstops",
-          label: "Pit Stops",
-          content: (
-            <PitStopTimes
-              sessionKey={selectedSessionKey}
-              raceResults={raceResults}
-              startGrid={startingGrid}
-              driversDetails={driversDetails}
-              driversColor={driversColor}
-              driverCode={selectedDriverAcronym}
-              showTitle={false}
-            />
-          ),
-        },
-      ].filter(Boolean),
-    [
-      selectedSession,
-      laps,
-      pos,
-      startingGrid,
-      driversDetails,
-      driversColor,
-      raceResults,
-      selectedDriverAcronym,
-      driverSelected,
-      driverCode,
-    ],
-  );
+  const statsTabs = React.useMemo(() => [
+    selectedSession === "Race" && { id: "position", label: "Position", content: <PositionCharts laps={laps} pos={pos} startGrid={startingGrid} driversDetails={driversDetails} driversColor={driversColor} raceResults={raceResults} driverCode={selectedDriverAcronym} /> },
+    { id: "laps", label: "Lap Chart", content: <LapChart laps={laps} setLaps={() => setLaps} startGrid={startingGrid} driversDetails={driversDetails} driversColor={driversColor} raceResults={raceResults} className="lap-chart" driverCode={selectedDriverAcronym} /> },
+    { id: "tires", label: "Tire Strategy", content: <TireStrategy drivers={drivers} raceResults={raceResults} startGrid={startingGrid} driverCode={selectedDriverAcronym} driverColor={driversColor[driverCode]} /> },
+    !driverSelected && (selectedSession === "Race" || selectedSession === "Sprint") && { id: "fastest", label: "Fastest Laps", content: <FastestLaps raceResults={raceResults} drivers={drivers} /> },
+    (selectedSession === "Race" || selectedSession === "Sprint") && { id: "pitstops", label: "Pit Stops", content: <PitStopTimes sessionKey={selectedSessionKey} raceResults={raceResults} startGrid={startingGrid} driversDetails={driversDetails} driversColor={driversColor} driverCode={selectedDriverAcronym} showTitle={false} /> },
+  ].filter(Boolean), [selectedSession, laps, pos, startingGrid, driversDetails, driversColor, raceResults, selectedDriverAcronym, driverSelected, driverCode]);
 
-  //   console.log('selectedSessionKey:', selectedSessionKey);
   return isLoading ? (
-    <Loading
-      message={`Loading ${raceName} ${year} ${selectedSession}`}
-    />
+    <Loading message={`Loading ${raceName} ${year} ${selectedSession}`} />
   ) : (
     <div className="race-page">
       <div className="race-page__track-view relative">
         <div className="absolute bottom-8 w-full flex justify-between sm:justify-end items-center z-10 gap-8 px-8">
           {driverSelected && (
             <div className="flex items-center gap-8">
-              <button
-                className={classNames(
-                  "race-controls__play bg-glow w-32 h-32 rounded-sm",
-                  {
-                    "bg-brand-blue-500": !isPaused,
-                  },
-                )}
-                onClick={() => setIsPaused(false)}
-              >
-                <FontAwesomeIcon icon="play" />
-              </button>
-              <button
-                className={classNames(
-                  "race-controls__pause bg-glow w-32 h-32 rounded-sm",
-                  {
-                    "bg-brand-blue-500": isPaused,
-                  },
-                )}
-                onClick={() => setIsPaused(true)}
-              >
-                <FontAwesomeIcon icon="pause" />
-              </button>
-              <button
-                className={classNames("bg-glow w-32 h-32 rounded-sm", {
-                  "bg-brand-blue-500": showCameraControls,
-                })}
-                onClick={() => setShowCameraControls(!showCameraControls)}
-              >
-                <FontAwesomeIcon icon="camera-rotate" />
-              </button>
-              <button
-                className={classNames("bg-glow w-32 h-32 rounded-sm", {
-                  "bg-brand-blue-500": showCarDetails,
-                })}
-                onClick={() => setShowCarDetails(!showCarDetails)}
-              >
-                <FontAwesomeIcon icon="gauge" />
-              </button>
+              <button className={classNames("race-controls__play bg-glow w-32 h-32 rounded-sm", { "bg-brand-blue-500": !isPaused })} onClick={() => setIsPaused(false)}><FontAwesomeIcon icon="play" /></button>
+              <button className={classNames("race-controls__pause bg-glow w-32 h-32 rounded-sm", { "bg-brand-blue-500": isPaused })} onClick={() => setIsPaused(true)}><FontAwesomeIcon icon="pause" /></button>
+              <button className={classNames("bg-glow w-32 h-32 rounded-sm", { "bg-brand-blue-500": showCameraControls })} onClick={() => setShowCameraControls(!showCameraControls)}><FontAwesomeIcon icon="camera-rotate" /></button>
+              <button className={classNames("bg-glow w-32 h-32 rounded-sm", { "bg-brand-blue-500": showCarDetails })} onClick={() => setShowCarDetails(!showCarDetails)}><FontAwesomeIcon icon="gauge" /></button>
             </div>
           )}
           <div className="flex items-center gap-8">
-            <button
-              className="bg-glow w-32 h-32 rounded-sm sm:hidden"
-              onClick={() => setDriverDrawerOpen(true)}
-            >
-              <FontAwesomeIcon icon="user" />
-            </button>
-            <button
-              className="bg-glow w-32 h-32 rounded-sm"
-              onClick={() => setIsDrawerOpen(true)}
-            >
-              <FontAwesomeIcon icon="gear" />
-            </button>
+            <button className="bg-glow w-32 h-32 rounded-sm sm:hidden" onClick={() => setDriverDrawerOpen(true)}><FontAwesomeIcon icon="user" /></button>
+            <button className="bg-glow w-32 h-32 rounded-sm" onClick={() => setIsDrawerOpen(true)}><FontAwesomeIcon icon="gear" /></button>
           </div>
         </div>
 
-        <Drawer
-          isOpen={driverDrawerOpen}
-          onClose={() => setDriverDrawerOpen(false)}
-        >
-          <div className="w-full tracking-xs text-center text-neutral-300 py-24 leading-none">
-            Select driver from the leaderboard to activate race mode
-          </div>
+        <Drawer isOpen={driverDrawerOpen} onClose={() => setDriverDrawerOpen(false)}>
+          <div className="w-full tracking-xs text-center text-neutral-300 py-24 leading-none">Select driver from the leaderboard to activate race mode</div>
           {driverButtons(true)}
         </Drawer>
         <Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)}>
           {driverSelected && (
             <>
-              <Accordion
-                title="Playback Speed"
-                contentClasses="flex flex-col gap-8 items-start"
-              >
-                <button
-                  className={classNames("tracking-sm uppercase block", {
-                    "text-brand-blue-300": speedFactor !== 4,
-                  })}
-                  onClick={() => {
-                    setSpeedFactor(4);
-                    setIsDrawerOpen(false);
-                  }}
-                >
-                  Normal
-                </button>
-                <button
-                  className={classNames("tracking-sm uppercase block", {
-                    "text-brand-blue-300": speedFactor !== 1.5,
-                  })}
-                  onClick={() => {
-                    setSpeedFactor(1.5);
-                    setIsDrawerOpen(false);
-                  }}
-                >
-                  Push Push
-                </button>
-                <button
-                  className={classNames("tracking-sm uppercase block", {
-                    "text-brand-blue-300": speedFactor !== 0.2,
-                  })}
-                  onClick={() => {
-                    setSpeedFactor(0.2);
-                    setIsDrawerOpen(false);
-                  }}
-                >
-                  DRS
-                </button>
+              <Accordion title="Playback Speed" contentClasses="flex flex-col gap-8 items-start">
+                <button className={classNames("tracking-sm uppercase block", { "text-brand-blue-300": speedFactor !== 4 })} onClick={() => { setSpeedFactor(4); setIsDrawerOpen(false); }}>Normal</button>
+                <button className={classNames("tracking-sm uppercase block", { "text-brand-blue-300": speedFactor !== 1.5 })} onClick={() => { setSpeedFactor(1.5); setIsDrawerOpen(false); }}>Push Push</button>
+                <button className={classNames("tracking-sm uppercase block", { "text-brand-blue-300": speedFactor !== 0.2 })} onClick={() => { setSpeedFactor(0.2); setIsDrawerOpen(false); }}>DRS</button>
               </Accordion>
-              <Accordion
-                title="Camera Angle"
-                contentClasses="flex flex-col gap-8 items-start"
-              >
-                <button
-                  className={classNames("tracking-sm uppercase block", {
-                    "text-brand-blue-300": !haloView && !topFollowView,
-                  })}
-                  onClick={() => {
-                    setHaloView(false);
-                    setTopFollowView(false);
-                    setIsDrawerOpen(false);
-                  }}
-                >
-                  Sky View
-                </button>
-                <button
-                  className={classNames("tracking-sm uppercase block", {
-                    "text-brand-blue-300": haloView,
-                  })}
-                  onClick={() => {
-                    setHaloView(true);
-                    setTopFollowView(false);
-                    setIsDrawerOpen(false);
-                  }}
-                >
-                  Halo View
-                </button>
-                <button
-                  className={classNames("tracking-sm uppercase block", {
-                    "text-brand-blue-300": topFollowView,
-                  })}
-                  onClick={() => {
-                    setTopFollowView(true);
-                    setHaloView(false);
-                    setIsDrawerOpen(false);
-                  }}
-                >
-                  Top Follow View
-                </button>
+              <Accordion title="Camera Angle" contentClasses="flex flex-col gap-8 items-start">
+                <button className={classNames("tracking-sm uppercase block", { "text-brand-blue-300": !haloView && !topFollowView })} onClick={() => { setHaloView(false); setTopFollowView(false); setIsDrawerOpen(false); }}>Sky View</button>
+                <button className={classNames("tracking-sm uppercase block", { "text-brand-blue-300": haloView })} onClick={() => { setHaloView(true); setTopFollowView(false); setIsDrawerOpen(false); }}>Halo View</button>
+                <button className={classNames("tracking-sm uppercase block", { "text-brand-blue-300": topFollowView })} onClick={() => { setTopFollowView(true); setHaloView(false); setIsDrawerOpen(false); }}>Top Follow View</button>
               </Accordion>
             </>
           )}
-          <Accordion
-            title="Race Selection"
-            contentClasses="flex flex-col gap-8 items-start"
-          >
-            {hasRaceSession && (
-              <button
-                className={classNames("tracking-sm uppercase block", {
-                  "text-brand-blue-300": selectedSession === "Race",
-                })}
-                onClick={() => {
-                  setSelectedSession("Race");
-                  setIsDrawerOpen(false);
-                }}
-              >
-                Race
-              </button>
-            )}
-            {hasQualifyingSession && (
-              <button
-                className={classNames("tracking-sm uppercase block", {
-                  "text-brand-blue-300": selectedSession === "Qualifying",
-                })}
-                onClick={() => {
-                  setSelectedSession("Qualifying");
-                  setIsDrawerOpen(false);
-                }}
-              >
-                Qualifying
-              </button>
-            )}
-            {hasSprintSession && (
-              <button
-                className={classNames("tracking-sm uppercase block", {
-                  "text-brand-blue-300": selectedSession === "Sprint",
-                })}
-                onClick={() => {
-                  setSelectedSession("Sprint");
-                  setIsDrawerOpen(false);
-                }}
-              >
-                Sprint
-              </button>
-            )}
+          <Accordion title="Race Selection" contentClasses="flex flex-col gap-8 items-start">
+            {hasRaceSession && <button className={classNames("tracking-sm uppercase block", { "text-brand-blue-300": selectedSession === "Race" })} onClick={() => { setSelectedSession("Race"); setIsDrawerOpen(false); }}>Race</button>}
+            {hasQualifyingSession && <button className={classNames("tracking-sm uppercase block", { "text-brand-blue-300": selectedSession === "Qualifying" })} onClick={() => { setSelectedSession("Qualifying"); setIsDrawerOpen(false); }}>Qualifying</button>}
+            {hasSprintSession && <button className={classNames("tracking-sm uppercase block", { "text-brand-blue-300": selectedSession === "Sprint" })} onClick={() => { setSelectedSession("Sprint"); setIsDrawerOpen(false); }}>Sprint</button>}
           </Accordion>
         </Drawer>
 
         {(selectedSession === "Race" || selectedSession === "Sprint") && (
           <>
-            {!driverSelected && (
-              <div className="bg-glow-dark text-center py-8 max-sm:hidden">
-                Select a driver from the leaderboard to activate telemetry
-                viewer
-              </div>
-            )}
+            {!driverSelected && <div className="bg-glow-dark text-center py-8 max-sm:hidden">Select a driver from the leaderboard to activate telemetry viewer</div>}
             <div className="race-page__track-view__display relative">
               {driverSelectedShowTrack && MapPath ? (
-                <ThreeCanvas
-                  className="race-page__track-view__display__canvas"
-                  MapFile={MapPath}
-                  locData={locData}
-                  driverSelected={driverSelected}
-                  constructorId={
-                    selectedDriverRaceData
-                      ? selectedDriverRaceData.Constructor.constructorId
-                      : ""
-                  }
-                  driverCode={driverCode}
-                  driverColor={driversColor[driverCode]}
-                  isPaused={isPaused}
-                  haloView={haloView}
-                  topFollowView={topFollowView}
-                  speedFactor={speedFactor}
-                  year={year}
-                  showCarDetails={showCarDetails}
-                  showCameraControls={showCameraControls}
-                />
+                <ThreeCanvas className="race-page__track-view__display__canvas" MapFile={MapPath} locData={locData} driverSelected={driverSelected} constructorId={selectedDriverRaceData?.Constructor?.constructorId || ""} driverCode={driverCode} driverColor={driversColor[driverCode]} isPaused={isPaused} haloView={haloView} topFollowView={topFollowView} speedFactor={speedFactor} year={year} showCarDetails={showCarDetails} showCameraControls={showCameraControls} />
               ) : (
-                <div className="race-page__track-view__display__preview">
-                  {animatedMap && (
-                    <video
-                      src={animatedMap}
-                      loop
-                      autoPlay
-                      muted
-                      playsInline
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
+                <div className="race-page__track-view__display__preview">{animatedMap && <video src={animatedMap} loop autoPlay muted playsInline className="w-full h-full object-cover" />}</div>
               )}
-              <div className="race-page__leaderboard-desktop-wrapper max-sm:hidden absolute top-[0] left-[0]">
-                {driverButtons(true)}
-              </div>
+              <div className="race-page__leaderboard-desktop-wrapper max-sm:hidden absolute top-[0] left-[0]">{driverButtons(true)}</div>
             </div>
           </>
         )}
       </div>
-      {/* End .race-page__track-view */}
 
       <div className="race-page__scroll-container">
-        {selectedSession === "Qualifying" && (
-          <button
-            className="text-xs tracking-xs uppercase mb-16 bg-glow rounded-sm p-4 ml-8"
-            onClick={() => setSelectedSession("Race")}
-          >
-            <FontAwesomeIcon icon="chevron-left" className="mr-16" />
-            race
-          </button>
-        )}
-
+        {selectedSession === "Qualifying" && <button className="text-xs tracking-xs uppercase mb-16 bg-glow rounded-sm p-4 ml-8" onClick={() => setSelectedSession("Race")}><FontAwesomeIcon icon="chevron-left" className="mr-16" />race</button>}
         <div className="mb-40 flex flex-col gap-4 items-center uppercase">
           <p className="text-sm tracking-sm">{year}</p>
           <h1 className="heading-3">{raceName}</h1>
-          {(selectedSession === "Qualifying" || selectedSession === "Sprint") && (
-            <p className="text-sm tracking-sm">{selectedSession}</p>
-          )}
+          {(selectedSession === "Qualifying" || selectedSession === "Sprint") && <p className="text-sm tracking-sm">{selectedSession}</p>}
           <div className="divider-glow-dark mt-32" />
         </div>
 
-        {/* Qualifying View */}
         {selectedSession === "Qualifying" && (
           <div className="flex items-start justify-center gap-8 sm:gap-32 mx-8 mb-32">
-            <div className="p-16 bg-glow-dark rounded-md sm:rounded-xlarge max-md:w-full">
-              <h3 className="heading-3 mb-32 gradient-text-light">Q1</h3>
-              <DriverList
-                results={q1Results}
-                activeButtonIndex={activeButtonIndex}
-                handleDriverSelectionClick={handleDriverSelectionClick}
-                drivers={drivers}
-                driversColor={driversColor}
-                year={year}
-                session="Q1"
-              />
-            </div>
-            <div className="p-16 bg-glow-dark rounded-md sm:rounded-xlarge max-md:w-full">
-              <h3 className="heading-3 mb-32 gradient-text-light">Q2</h3>
-              <DriverList
-                results={q2Results}
-                activeButtonIndex={activeButtonIndex}
-                handleDriverSelectionClick={handleDriverSelectionClick}
-                drivers={drivers}
-                driversColor={driversColor}
-                year={year}
-                session="Q2"
-              />
-            </div>
-            <div className="p-16 bg-glow-dark rounded-md sm:rounded-xlarge max-md:w-full">
-              <h3 className="heading-3 mb-32 gradient-text-light">Q3</h3>
-              <DriverList
-                results={q3Results}
-                activeButtonIndex={activeButtonIndex}
-                handleDriverSelectionClick={handleDriverSelectionClick}
-                drivers={drivers}
-                driversColor={driversColor}
-                year={year}
-                session="Q3"
-              />
-            </div>
+            {[q1Results, q2Results, q3Results].map((res, i) => (
+              <div key={i} className="p-16 bg-glow-dark rounded-md sm:rounded-xlarge max-md:w-full">
+                <h3 className="heading-3 mb-32 gradient-text-light">Q{i + 1}</h3>
+                <ul className="w-fit mx-auto">
+                  {res.map((r, idx) => (
+                    <DriverCard key={idx} hasHover={false} isActive={activeButtonIndex === idx} index={idx} driver={r.Driver} stint={drivers} driverColor={driversColor[r.Driver.code]} startPosition={parseInt(r.grid, 10)} endPosition={parseInt(r.position, 10)} year={parseInt(year)} time={r[`Q${i + 1}`]} fastestLap={r.FastestLap} layoutSmall={idx > 2} mobileSmall isRace={true} />
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         )}
 
-        {/* Raace View */}
         <div className="page-container-centered flex flex-col justify-center sm:flex-row gap-16 mt-32">
           {(selectedSession === "Race" || selectedSession === "Sprint") && (
             <div className="sm:w-[26rem]">
-              {driverSelected && (
-                <SelectedDriverStats
-                  selectedDriverData={selectedDriverData}
-                  selectedDriverRaceData={selectedDriverRaceData}
-                  year={year}
-                />
-              )}
-              {/* Mobile headings aligned with columns */}
+              {driverSelected && <SelectedDriverStats selectedDriverData={selectedDriverData} selectedDriverRaceData={selectedDriverRaceData} year={year} />}
               <div className="flex flex-row gap-4 sm:hidden max-sm:mb-16">
-                <div
-                  className={classNames(
-                    "text-center transition-all",
-                    showStartingGrid ? "w-[calc(66.666%-0.5rem)]" : "w-[calc(50%-0.5rem)]",
-                  )}
-                >
-                  <button
-                    className={classNames(
-                      "text-neutral-400 font-display text-12 leading-none",
-                      showStartingGrid && "text-white",
-                    )}
-                    onClick={() => setShowStartingGrid(true)}
-                  >
-                    Starting Grid
-                  </button>
-                </div>
-                <div
-                  className={classNames(
-                    "text-center transition-all",
-                    showStartingGrid ? "w-[calc(33.333%-0.5rem)]" : "w-[calc(50%-0.5rem)]",
-                  )}
-                >
-                  <button
-                    className={classNames(
-                      "text-neutral-400 font-display text-12 leading-none",
-                      !showStartingGrid && "text-white",
-                    )}
-                    onClick={() => setShowStartingGrid(false)}
-                  >
-                    Race Results
-                  </button>
-                </div>
+                <div className={classNames("text-center transition-all", showStartingGrid ? "w-[calc(66.666%-0.5rem)]" : "w-[calc(50%-0.5rem)]")}><button className={classNames("text-neutral-400 font-display text-12 leading-none", showStartingGrid && "text-white")} onClick={() => setShowStartingGrid(true)}>Starting Grid</button></div>
+                <div className={classNames("text-center transition-all", showStartingGrid ? "w-[calc(33.333%-0.5rem)]" : "w-[calc(50%-0.5rem)]")}><button className={classNames("text-neutral-400 font-display text-12 leading-none", !showStartingGrid && "text-white")} onClick={() => setShowStartingGrid(false)}>Race Results</button></div>
               </div>
-
-              {/* Desktop only heading */}
-              <div className="max-sm:hidden flex justify-center">
-                <button className="text-neutral-400 font-display sm:text-xl sm:mb-16 leading-none">
-                  Starting Grid
-                </button>
+              <div className="max-sm:hidden flex justify-center"><button className="text-neutral-400 font-display sm:text-xl sm:mb-16 leading-none">Starting Grid</button></div>
+              <div className={classNames("flex flex-row items-start gap-4 sm:hidden mb-24")}>
+                <StartingGrid className={classNames("transition-all", showStartingGrid ? "w-[calc(66.666%-0.5rem)]" : "w-[calc(50%-0.5rem)] opacity-100")} raceResults={raceResults} startingGrid={startingGrid} year={year} driverCode={driverCode} driversDetails={driversDetails} driversColor={driversColor} driverTeamMap={driverTeamMap} />
+                <div className={classNames("bg-glow-large h-fit rounded-md sm:rounded-xlarge transition-all", showStartingGrid ? "w-[calc(33.333%-0.5rem)] opacity-100 overflow-hidden" : "max-sm:w-[calc(50%-0.5rem)] max-sm:overflow-visible sm:w-2/3 sm:overflow-hidden")}>{driverButtons(false)}</div>
               </div>
-              <div
-                className={classNames(
-                  "flex flex-row items-start gap-4 sm:hidden mb-24",
-                )}
-              >
-                <StartingGrid
-                  className={classNames(
-                    "transition-all",
-                    showStartingGrid ? "w-[calc(66.666%-0.5rem)]" : "w-[calc(50%-0.5rem)] opacity-100",
-                  )}
-                  raceResults={raceResults}
-                  startingGrid={startingGrid}
-                  year={year}
-                  driverCode={driverCode}
-                  driversDetails={driversDetails}
-                  driversColor={driversColor}
-                  driverTeamMap={driverTeamMap}
-                />
-                <div
-                  className={classNames(
-                    "bg-glow-large h-fit rounded-md sm:rounded-xlarge transition-all",
-                    showStartingGrid ? "w-[calc(33.333%-0.5rem)] opacity-100 overflow-hidden" : "max-sm:w-[calc(50%-0.5rem)] max-sm:overflow-visible sm:w-2/3 sm:overflow-hidden",
-                  )}
-                >
-                  {driverButtons(false)}
-                </div>
-              </div>
-              <StartingGrid
-                className={classNames("max-sm:hidden w-[26rem]")}
-                raceResults={raceResults}
-                startingGrid={startingGrid}
-                year={year}
-                driverCode={driverCode}
-                driversDetails={driversDetails}
-                driversColor={driversColor}
-                driverTeamMap={driverTeamMap}
-              />
+              <StartingGrid className="max-sm:hidden w-[26rem]" raceResults={raceResults} startingGrid={startingGrid} year={year} driverCode={driverCode} driversDetails={driversDetails} driversColor={driversColor} driverTeamMap={driverTeamMap} />
             </div>
           )}
-
           <div className="sm:grow">
             <Tabs tabs={statsTabs} />
-            {(selectedSession === "Race" || selectedSession === "Sprint") && (
-              <RaceControl
-                messages={raceControlMessages}
-                isLive={isSessionLive}
-              />
-            )}
+            {(selectedSession === "Race" || selectedSession === "Sprint") && <RaceControl messages={raceControlMessages} isLive={isSessionLive} />}
           </div>
         </div>
       </div>

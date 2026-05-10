@@ -349,18 +349,15 @@ const fetchRaceResults = async (selectedYear, raceId) => {
 
   const resultsUrl = `${BASE_F1_URL}races/${selectedYear}/results.json`;
   try {
-    const response = await fetch(resultsUrl);
-    if (response.ok) {
-      // const data = await response.json();
-      const tempdata = await response.json();
+    const tempdata = await fetchWithPersistentCache(resultsUrl);
+    if (tempdata) {
       const raceIdNum = parseInt(raceId, 10);
       const raceData = tempdata.find(element => parseInt(element.round, 10) === raceIdNum);
       if (!raceData || !raceData.Results) {
         // Fallback to OpenF1 if this is a past race
         console.log(`[API] Results empty for round ${raceId}, checking OpenF1 fallback...`);
         const meetingKeys = await fetchRaceMeetingKeys(selectedYear);
-        const raceDetailsRes = await fetch(`${BASE_F1_URL}races/${selectedYear}/raceDetails.json`);
-        const raceDetails = await raceDetailsRes.json();
+        const raceDetails = await fetchWithPersistentCache(`${BASE_F1_URL}races/${selectedYear}/raceDetails.json`);
         const raceInfo = raceDetails.find(r => parseInt(r.round, 10) === parseInt(raceId, 10));
         
         if (raceInfo && meetingKeys[raceInfo.raceName]) {
@@ -664,12 +661,12 @@ export const fetchDriversAndTires = async (sessionKey) => {
 export const fetchRaceResultsByCircuit = async (year, circuitId) => {
   try {
 
-    const url = `${BASE_F1_URL}races/${year}/results.json?t=${Date.now()}`;
-    const response = await fetch(url);
-    const data = await response.json();
-    // console.log(data);
-    const results = data.find(element => element.Circuit.circuitId === circuitId).Results;
-    return results || [];
+    const url = `${BASE_F1_URL}races/${year}/results.json`;
+    const data = await fetchWithPersistentCache(url);
+    if (!data || !Array.isArray(data)) return [];
+    
+    const raceData = data.find(element => element.Circuit && element.Circuit.circuitId === circuitId);
+    return raceData?.Results || [];
   } catch (error) {
     console.error("Error fetching race results:", error);
     return []
@@ -678,11 +675,12 @@ export const fetchRaceResultsByCircuit = async (year, circuitId) => {
 
 export const fetchQualifyingResultsByCircuit = async(year, circuitId) => {
   try {
-    const url = `${BASE_F1_URL}races/${year}/qualifying.json?t=${Date.now()}`;
-    const response = await fetch(url);
-    const data = await response.json();
-    const results = data.find(element => element.Circuit.circuitId === circuitId).QualifyingResults;
-    return results || [];
+    const url = `${BASE_F1_URL}races/${year}/qualifying.json`;
+    const data = await fetchWithPersistentCache(url);
+    if (!data || !Array.isArray(data)) return [];
+
+    const raceData = data.find(element => element.Circuit && element.Circuit.circuitId === circuitId);
+    return raceData?.QualifyingResults || [];
   } catch(error){
     console.error("Error fetching qualifiying results:", error);
     return [];
@@ -691,12 +689,12 @@ export const fetchQualifyingResultsByCircuit = async(year, circuitId) => {
 
 export const fetchSprintResultsByCircuit = async(year, circuitId) => {
   try {
-    const url = `${BASE_F1_URL}races/${year}/sprint.json?t=${Date.now()}`;
-    const response = await fetch(url);
-    if (!response.ok) return [];
-    const data = await response.json();
-    const results = data.find(element => element.Circuit.circuitId === circuitId).Results;
-    return results || [];
+    const url = `${BASE_F1_URL}races/${year}/sprint.json`;
+    const data = await fetchWithPersistentCache(url);
+    if (!data || !Array.isArray(data)) return [];
+
+    const raceData = data.find(element => element.Circuit && element.Circuit.circuitId === circuitId);
+    return raceData?.Results || [];
   } catch(error){
     console.error("Error fetching sprint results:", error);
     return [];

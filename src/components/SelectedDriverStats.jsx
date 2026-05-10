@@ -3,6 +3,10 @@ import React from "react";
 export const SelectedDriverStats = (props) => {
     const { selectedDriverData, selectedDriverRaceData, year } = props;
 
+    if (!selectedDriverData || !selectedDriverRaceData) {
+        return null;
+    }
+
     return (
         <div className="mb-32">
             <div className="flex items-end relative w-[23.6rem] mx-auto">
@@ -12,7 +16,7 @@ export const SelectedDriverStats = (props) => {
                         "/images/" +
                         year +
                         "/drivers/" +
-                        selectedDriverData.acronym +
+                        (selectedDriverData?.acronym || "placeholder") +
                         ".png"
                     }`}
                     width={120}
@@ -25,20 +29,20 @@ export const SelectedDriverStats = (props) => {
                         "/images/" +
                         year +
                         "/cars/" +
-                        selectedDriverRaceData.Constructor.constructorId +
+                        (selectedDriverRaceData?.Constructor?.constructorId || "placeholder") +
                         ".png"
                     }`}
                     width={150}
                 />
                 <div className="-ml-32 w-full">
                     <h3 className="tracking-xs text-sm uppercase gradient-text-medium -mb-8">
-                        {selectedDriverData.first_name}
+                        {selectedDriverData?.first_name}
                     </h3>
                     <h3 className="font-display gradient-text-light text-[2rem]">
-                        {selectedDriverData.last_name}
+                        {selectedDriverData?.last_name}
                     </h3>
                     <p className="font-display gradient-text-dark text-[6.4rem] mr-16 leading-none text-right">
-                        {selectedDriverData.driver_number}
+                        {selectedDriverData?.driver_number}
                     </p>
                 </div>
             </div>
@@ -46,16 +50,16 @@ export const SelectedDriverStats = (props) => {
                 <div className="flex items-start justify-between">
                     <div>
                         <div className="uppercase tracking-xs text-xs">
-                            Finshed
+                            Finished
                         </div>
                         <div>
                             <span className="font-display text-[3.2rem]">
-                                {selectedDriverRaceData.position}
+                                {selectedDriverRaceData?.position}
                             </span>
                             <span className="uppercase tracking-xs text-xs ml-4">
-                                {selectedDriverRaceData.status === "Finished"
-                                    ? selectedDriverRaceData.Time.time
-                                    : selectedDriverRaceData.status}
+                                {selectedDriverRaceData?.status === "Finished"
+                                    ? selectedDriverRaceData?.Time?.time
+                                    : selectedDriverRaceData?.status}
                             </span>
                         </div>
                     </div>
@@ -64,7 +68,7 @@ export const SelectedDriverStats = (props) => {
                             Started
                         </div>
                         <div className="font-display text-[3.2rem]">
-                            {selectedDriverRaceData.grid}
+                            {selectedDriverRaceData?.grid}
                         </div>
                     </div>
                 </div>
@@ -81,33 +85,28 @@ export const SelectedDriverStats = (props) => {
                             Time
                         </div>
                         <div className="font-display">
-                            {selectedDriverRaceData.FastestLap.Time.time}
+                            {selectedDriverRaceData?.FastestLap?.Time?.time || "N/A"}
                         </div>
                     </div>
                     <div className="text-right">
                         <div className="uppercase tracking-xs text-xs">Lap</div>
                         <div className="font-display">
-                            {selectedDriverRaceData.FastestLap.lap}
+                            {selectedDriverRaceData?.FastestLap?.lap || "N/A"}
                         </div>
                     </div>
                 </div>
 
                 <div className="flex items-center justify-between mt-16">
-                    
                     <div>
                         <div className="uppercase tracking-xs text-xs">
                             avg speed
                         </div>
                         <div>
                             <span className="font-display">
-                                {
-                                    selectedDriverRaceData.FastestLap?.AverageSpeed ? selectedDriverRaceData.FastestLap?.AverageSpeed?.speed : "N/A"
-                                }
+                                {selectedDriverRaceData?.FastestLap?.AverageSpeed?.speed || "N/A"}
                             </span>
-                            <span className="uppercase tracking-xs text-xs">
-                                {
-                                    selectedDriverRaceData.FastestLap?.AverageSpeed?.units
-                                }
+                            <span className="uppercase tracking-xs text-xs ml-4">
+                                {selectedDriverRaceData?.FastestLap?.AverageSpeed?.units}
                             </span>
                         </div>
                     </div>
@@ -116,7 +115,7 @@ export const SelectedDriverStats = (props) => {
                             Rank
                         </div>
                         <div>
-                            <span className="font-display">{selectedDriverRaceData.FastestLap.rank}</span> <span className="text-xs">/ 20</span>
+                            <span className="font-display">{selectedDriverRaceData?.FastestLap?.rank || "N/A"}</span> <span className="text-xs">/ 20</span>
                         </div>
                     </div>
                 </div>
