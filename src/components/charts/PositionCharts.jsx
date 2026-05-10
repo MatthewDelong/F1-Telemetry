@@ -69,11 +69,11 @@ export const PositionCharts = ({ laps, pos, startGrid, driversDetails, driversCo
       return;
     }
 
-    // Initialize positions with starting grid for lap 1
+    // Initialize positions with starting grid for lap 0 (Start)
     startGrid.forEach(entry => {
       const acronym = entry.driver_acronym || driversDetails[entry.driver_number];
       if (acronym) {
-        positionData[acronym] = [{ lap: 1, position: entry.position }];
+        positionData[acronym] = [{ lap: 0, position: entry.position }];
       }
     });
 
@@ -115,7 +115,7 @@ export const PositionCharts = ({ laps, pos, startGrid, driversDetails, driversCo
     }
     const totalLaps = Math.max(...lapNumbers);
 
-    for (let lap = 1; lap <= totalLaps; lap++) {
+    for (let lap = 0; lap <= totalLaps; lap++) {
       const lapData = { lap };
       Object.keys(positionData).forEach(acronym => {
         const lastPosition = positionData[acronym]
@@ -176,7 +176,7 @@ export const PositionCharts = ({ laps, pos, startGrid, driversDetails, driversCo
     }));
   };
 
-  const lapTickFormatter = (tick) => `Lap ${tick}`;
+  const lapTickFormatter = (tick) => tick === 0 ? 'Grid' : `Lap ${tick}`;
 
   if (!chartData || chartData.length === 0) {
     return (
@@ -213,7 +213,7 @@ export const PositionCharts = ({ laps, pos, startGrid, driversDetails, driversCo
               contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid #444' }}
               itemStyle={{ fontSize: '12px' }}
               formatter={(value, name) => [`P${value}`, driversDetails[name] || name]}
-              labelFormatter={(label) => `Lap ${label}`}
+              labelFormatter={(label) => label === 0 ? 'Grid' : `Lap ${label}`}
             />
             {renderLines()}
           </LineChart>
