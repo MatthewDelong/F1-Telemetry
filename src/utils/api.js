@@ -1,5 +1,7 @@
 import teamColors from "./teamColors.json";
 import { buildOpenF1Url, OPENF1_API_BASE_URL } from "../config/openf1";
+import { trackLengths } from "./trackLengths";
+import { locationMaps } from "./locationMaps";
 
 const CANCELLED_RACES_2026 = ["Bahrain Grand Prix", "Saudi Arabian Grand Prix"];
 
@@ -831,6 +833,20 @@ export const fetchOpenF1Podium = async (meetingKey) => {
       const isFastest = bestLapSec > 0 && bestLapSec === overallBestLap;
       const fastestLapData = lapsData.find(l => parseInt(l.driver_number, 10) === td.driver_number && l.lap_duration === bestLapSec) || {};
       
+      // Calculate Average Speed if possible
+      let averageSpeed = null;
+      if (isFastest && bestLapSec > 0) {
+        const location = sessionData[0]?.location?.toLowerCase();
+        const circuitId = location && locationMaps[location];
+        const length = circuitId && trackLengths[circuitId];
+        if (length) {
+          averageSpeed = {
+            units: "kph",
+            speed: ((length / bestLapSec) * 3600).toFixed(3)
+          };
+        }
+      }
+
       return {
         position: td.pos,
         driver: {
@@ -846,7 +862,8 @@ export const fetchOpenF1Podium = async (meetingKey) => {
         fastestLap: isFastest ? { 
           rank: "1",
           lap: String(fastestLapData.lap_number || "?"),
-          Time: { time: formatF1Time(bestLapSec) }
+          Time: { time: formatF1Time(bestLapSec) },
+          AverageSpeed: averageSpeed
         } : { rank: "0" }
       };
     });

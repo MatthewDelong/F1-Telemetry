@@ -31,11 +31,17 @@ export const StartingGrid = (props) => {
             return posA - posB;
           })
           .map((gridPosition, index) => {
+            const currentDriverAcronym = driversDetails[gridPosition.driver_number] || gridPosition.driver_acronym || "";
+            const isSelected = driverCode === currentDriverAcronym;
+            const currentDriverColor = driversColor[currentDriverAcronym];
+
             // Create a lookup map for the constructors
             const constructorMap =
               raceResults && raceResults.length > 0
                 ? raceResults.reduce((acc, result) => {
-                    acc[result.Driver.code] = result.Constructor.constructorId;
+                    if (result.Driver && result.Constructor) {
+                      acc[result.Driver.code] = result.Constructor.constructorId;
+                    }
                     return acc;
                   }, {})
                 : driverTeamMap || {};
@@ -59,12 +65,10 @@ export const StartingGrid = (props) => {
             };
 
             const getCarTopView = (driver, driverNumber) => {
-              // Try to find constructor from the race results first (most accurate for the year)
               let constructorOrTeam =
                 constructorMap[driver] || constructorMap[driverNumber];
 
               if (!constructorOrTeam) {
-                // Fallback to searching the raceResults array directly
                 const result = raceResults?.find(
                   (r) =>
                     r.Driver?.code === driver ||
@@ -91,11 +95,12 @@ export const StartingGrid = (props) => {
               >
                 <div
                   className={classNames(
-                    "border-x-2 border-t-2 border-solid w-48 font-display h-32 ml-4",
-                    driverCode === driversDetails[gridPosition.driver_number]
-                      ? `border-neutral-[#${driversColor[driverCode]}]`
-                      : " border-neutral-700",
+                    "border-x-2 border-t-2 border-solid w-48 font-display h-32 ml-4 transition-colors",
+                    isSelected ? "border-white" : "border-neutral-700",
                   )}
+                  style={{
+                    borderColor: isSelected && currentDriverColor ? `#${currentDriverColor}` : undefined
+                  }}
                 />
 
                 <img
@@ -108,8 +113,7 @@ export const StartingGrid = (props) => {
                           year +
                           "/carTopView/" +
                           getCarTopView(
-                            driversDetails[gridPosition.driver_number] ||
-                              gridPosition.driver_acronym,
+                            currentDriverAcronym,
                             gridPosition.driver_number,
                           ) +
                           ".png"
@@ -134,19 +138,16 @@ export const StartingGrid = (props) => {
                       : `P${gridPosition.position}`}
                   </p>
                   <p
+                    className="transition-colors"
                     style={{
-                      color:
-                        driverCode ===
-                        driversDetails[gridPosition.driver_number]
-                          ? `#${driversColor[driverCode]}`
-                          : driverCode
-                            ? "text-neutral-400"
-                            : "#f1f1f1",
+                      color: isSelected && currentDriverColor
+                        ? `#${currentDriverColor}`
+                        : driverCode
+                          ? "#737373" // neutral-400
+                          : "#f1f1f1",
                     }}
                   >
-                    {driversDetails[gridPosition.driver_number] ||
-                      gridPosition.driver_acronym ||
-                      ""}
+                    {currentDriverAcronym}
                   </p>
                 </div>
               </li>

@@ -102,8 +102,27 @@ export const DriverCard = (props) => {
     fastestLap?.Time ||
     fastestLap?.time ||
     "";
-  const fastestLapAverageSpeed =
-    fastestLap?.AverageSpeed || fastestLap?.averageSpeed;
+  const isMph = props.speedUnit === "mph";
+  const displayUnit = isMph ? "mph" : "kph";
+  
+  const rawAverageSpeed = fastestLap?.AverageSpeed || fastestLap?.averageSpeed;
+  const fastestLapAverageSpeed = React.useMemo(() => {
+    if (!rawAverageSpeed?.speed) return null;
+    const baseSpeed = parseFloat(rawAverageSpeed.speed);
+    const baseUnits = (rawAverageSpeed.units || "").toLowerCase();
+    
+    let convertedSpeed = baseSpeed;
+    if (isMph && (baseUnits === "kph" || baseUnits === "km/h" || !baseUnits)) {
+      convertedSpeed = baseSpeed * 0.621371;
+    } else if (!isMph && baseUnits === "mph") {
+      convertedSpeed = baseSpeed / 0.621371;
+    }
+    
+    return {
+      speed: convertedSpeed.toFixed(3),
+      units: displayUnit
+    };
+  }, [rawAverageSpeed, isMph, displayUnit]);
 
   return (
     <div
@@ -202,7 +221,7 @@ export const DriverCard = (props) => {
                   <FontAwesomeIcon icon="circle" className="text-white" />
                   <FontAwesomeIcon
                     icon="clock"
-                    className="text-fastest-lap-plum"
+                    className={classNames(isFastestLapDriver ? "text-fastest-lap-plum" : "text-neutral-500")}
                     transform="shrink-2"
                   />
                 </span>

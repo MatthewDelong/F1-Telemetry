@@ -1,18 +1,11 @@
 import classNames from "classnames";
 import React, { useState } from "react";
 
-const DriverCarDetails = ({ driverDetails }) => {
-    const [unit, setUnit] = useState("km/h");
-
+const DriverCarDetails = ({ driverDetails, speedUnit }) => {
+    const isMph = speedUnit === "mph";
+    const displayUnit = isMph ? "mph" : "kph";
 
     const drsActiveNumbers = [10, 12, 14];
-    const handleUnitChange = (newUnit) => {
-        if (newUnit === "mph" && unit !== "mph") {
-            setUnit("mph");
-        } else if (newUnit === "km/h" && unit !== "km/h") {
-            setUnit("km/h");
-        }
-    };
 
     return (
         <div className="px-16 py-10 shadow-xl bg-neutral-800/90 backdrop-blur-sm rounded-l-md">
@@ -42,28 +35,12 @@ const DriverCarDetails = ({ driverDetails }) => {
             <div className="flex gap-32">
                 <div className="flex flex-col w-[10rem] sm:w-[20rem]">
                     <p className="font-display max-sm:text-[2.4rem] sm:text-[6.4rem] leading-none">
-                        {unit === "km/h"
+                        {!isMph
                             ? driverDetails.speed
                             : Math.round(driverDetails.speed * 0.621371)}
                     </p>
-                    <div className="flex gap-16 uppercase text-[1rem] tracking-xs">
-                        <button
-                            className={`${
-                                unit === "km/h" ? "" : "gradient-text-light"
-                            }`}
-                            onClick={() => handleUnitChange("km/h")}
-                        >
-                            km/h
-                        </button>
-                        /
-                        <button
-                            className={`${
-                                unit === "mph" ? "" : "gradient-text-light"
-                            }`}
-                            onClick={() => handleUnitChange("mph")}
-                        >
-                            mph
-                        </button>
+                    <div className="flex gap-16 uppercase text-[1rem] tracking-xs opacity-60">
+                        {displayUnit}
                     </div>
                     <p
                         className={classNames(

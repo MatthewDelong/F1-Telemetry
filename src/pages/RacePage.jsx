@@ -83,6 +83,7 @@ export function RacePage() {
   const [showCameraControls, setShowCameraControls] = useState(false);
   const [raceControlMessages, setRaceControlMessages] = useState([]);
   const [isSessionLive, setIsSessionLive] = useState(false);
+  const [speedUnit, setSpeedUnit] = useState("kph");
 
   useEffect(() => {
     const setBaseData = async () => {
@@ -164,7 +165,59 @@ export function RacePage() {
     (obj) => obj["acronym"] === driverCode,
   );
   
-  const selectedDriverRaceData = raceResults.find(
+  const fullRaceResults = React.useMemo(() => {
+    if (!raceResults || raceResults.length === 0 || !laps || laps.length === 0) {
+      return raceResults;
+    }
+
+    // 1. Find the best lap for each driver from 'laps'
+    const bestLapsByDriver = {};
+    laps.forEach((lap) => {
+      const num = lap.driver_number;
+      const duration = parseFloat(lap.lap_duration);
+      if (!isNaN(duration) && duration > 0) {
+        if (!bestLapsByDriver[num] || duration < bestLapsByDriver[num].duration) {
+          bestLapsByDriver[num] = {
+            duration,
+            lap_number: lap.lap_number,
+          };
+        }
+      }
+    });
+
+    // 2. Rank the best laps
+    const sortedBestLaps = Object.entries(bestLapsByDriver)
+      .sort((a, b) => a[1].duration - b[1].duration);
+    
+    sortedBestLaps.forEach(([num, data], index) => {
+      bestLapsByDriver[num].rank = index + 1;
+    });
+
+    // 3. Augment raceResults
+    return raceResults.map((result) => {
+      const num = parseInt(result.number || result.Driver?.number, 10);
+      const bestLap = bestLapsByDriver[num];
+      
+      if (bestLap && (!result.FastestLap || !result.FastestLap.Time)) {
+        const mins = Math.floor(bestLap.duration / 60);
+        const secs = (bestLap.duration % 60).toFixed(3);
+        const timeStr = mins > 0 ? `${mins}:${secs.padStart(6, '0')}` : secs;
+
+        return {
+          ...result,
+          FastestLap: {
+            ...result.FastestLap,
+            rank: String(bestLap.rank),
+            lap: String(bestLap.lap_number),
+            Time: { time: timeStr }
+          }
+        };
+      }
+      return result;
+    });
+  }, [raceResults, laps]);
+
+  const selectedDriverRaceData = fullRaceResults.find(
     (obj) => String(obj["number"] || obj["Driver"]?.number) === String(driverNumber),
   );
 
@@ -556,6 +609,10 @@ export function RacePage() {
     }
   };
 
+  const handleUnitToggle = () => {
+    setSpeedUnit(prev => prev === "kph" ? "mph" : "kph");
+  };
+
   const { q1Results, q2Results, q3Results } = React.useMemo(() => organizeQualifyingResults(raceResults), [raceResults]);
 
   const circuitIdCanonical = location && locationMaps[location.toLowerCase()];
@@ -565,7 +622,7 @@ export function RacePage() {
 
   const driverButtons = (layoutSmall) => (
     <ul className="flex flex-col max-sm:p-8 sm:p-16">
-      {raceResults.map((result, index) => (
+      {fullRaceResults.map((result, index) => (
         <button
           key={index}
           className="block w-full mb-2 sm:mb-2 max-sm:mb-8 relative transition-all"
@@ -585,6 +642,7 @@ export function RacePage() {
             fastestLap={result.FastestLap}
             layoutSmall={layoutSmall}
             isRace={true}
+            speedUnit={speedUnit}
           />
         </button>
       ))}
@@ -594,12 +652,12 @@ export function RacePage() {
   const selectedDriverAcronym = driverSelected ? driversDetails[driverNumber] : null;
 
   const statsTabs = React.useMemo(() => [
-    selectedSession === "Race" && { id: "position", label: "Position", content: <PositionCharts laps={laps} pos={pos} startGrid={startingGrid} driversDetails={driversDetails} driversColor={driversColor} raceResults={raceResults} driverCode={selectedDriverAcronym} /> },
-    { id: "laps", label: "Lap Chart", content: <LapChart laps={laps} setLaps={() => setLaps} startGrid={startingGrid} driversDetails={driversDetails} driversColor={driversColor} raceResults={raceResults} className="lap-chart" driverCode={selectedDriverAcronym} /> },
-    { id: "tires", label: "Tire Strategy", content: <TireStrategy drivers={drivers} raceResults={raceResults} startGrid={startingGrid} driverCode={selectedDriverAcronym} driverColor={driversColor[driverCode]} /> },
-    !driverSelected && (selectedSession === "Race" || selectedSession === "Sprint") && { id: "fastest", label: "Fastest Laps", content: <FastestLaps raceResults={raceResults} drivers={drivers} /> },
-    (selectedSession === "Race" || selectedSession === "Sprint") && { id: "pitstops", label: "Pit Stops", content: <PitStopTimes sessionKey={selectedSessionKey} raceResults={raceResults} startGrid={startingGrid} driversDetails={driversDetails} driversColor={driversColor} driverCode={selectedDriverAcronym} showTitle={false} /> },
-  ].filter(Boolean), [selectedSession, laps, pos, startingGrid, driversDetails, driversColor, raceResults, selectedDriverAcronym, driverSelected, driverCode]);
+    selectedSession === "Race" && { id: "position", label: "Position", content: <PositionCharts laps={laps} pos={pos} startGrid={startingGrid} driversDetails={driversDetails} driversColor={driversColor} raceResults={fullRaceResults} driverCode={selectedDriverAcronym} /> },
+    { id: "laps", label: "Lap Chart", content: <LapChart laps={laps} setLaps={() => setLaps} startGrid={startingGrid} driversDetails={driversDetails} driversColor={driversColor} raceResults={fullRaceResults} className="lap-chart" driverCode={selectedDriverAcronym} /> },
+    { id: "tires", label: "Tire Strategy", content: <TireStrategy drivers={drivers} raceResults={fullRaceResults} startGrid={startingGrid} driverCode={selectedDriverAcronym} driverColor={driversColor[driverCode]} /> },
+    !driverSelected && (selectedSession === "Race" || selectedSession === "Sprint") && { id: "fastest", label: "Fastest Laps", content: <FastestLaps raceResults={fullRaceResults} drivers={drivers} /> },
+    (selectedSession === "Race" || selectedSession === "Sprint") && { id: "pitstops", label: "Pit Stops", content: <PitStopTimes sessionKey={selectedSessionKey} raceResults={fullRaceResults} startGrid={startingGrid} driversDetails={driversDetails} driversColor={driversColor} driverCode={selectedDriverAcronym} showTitle={false} /> },
+  ].filter(Boolean), [selectedSession, laps, pos, startingGrid, driversDetails, driversColor, fullRaceResults, selectedDriverAcronym, driverSelected, driverCode, selectedSessionKey]);
 
   return isLoading ? (
     <Loading message={`Loading ${raceName} ${year} ${selectedSession}`} />
@@ -645,6 +703,10 @@ export function RacePage() {
             {hasQualifyingSession && <button className={classNames("tracking-sm uppercase block", { "text-brand-blue-300": selectedSession === "Qualifying" })} onClick={() => { setSelectedSession("Qualifying"); setIsDrawerOpen(false); }}>Qualifying</button>}
             {hasSprintSession && <button className={classNames("tracking-sm uppercase block", { "text-brand-blue-300": selectedSession === "Sprint" })} onClick={() => { setSelectedSession("Sprint"); setIsDrawerOpen(false); }}>Sprint</button>}
           </Accordion>
+          <Accordion title="Units" contentClasses="flex flex-col gap-8 items-start">
+            <button className={classNames("tracking-sm uppercase block", { "text-brand-blue-300": speedUnit === "kph" })} onClick={() => { setSpeedUnit("kph"); setIsDrawerOpen(false); }}>KPH</button>
+            <button className={classNames("tracking-sm uppercase block", { "text-brand-blue-300": speedUnit === "mph" })} onClick={() => { setSpeedUnit("mph"); setIsDrawerOpen(false); }}>MPH</button>
+          </Accordion>
         </Drawer>
 
         {(selectedSession === "Race" || selectedSession === "Sprint") && (
@@ -652,7 +714,7 @@ export function RacePage() {
             {!driverSelected && <div className="bg-glow-dark text-center py-8 max-sm:hidden">Select a driver from the leaderboard to activate telemetry viewer</div>}
             <div className="race-page__track-view__display relative">
               {driverSelectedShowTrack && MapPath ? (
-                <ThreeCanvas className="race-page__track-view__display__canvas" MapFile={MapPath} locData={locData} driverSelected={driverSelected} constructorId={selectedDriverRaceData?.Constructor?.constructorId || ""} driverCode={driverCode} driverColor={driversColor[driverCode]} isPaused={isPaused} haloView={haloView} topFollowView={topFollowView} speedFactor={speedFactor} year={year} showCarDetails={showCarDetails} showCameraControls={showCameraControls} />
+                <ThreeCanvas className="race-page__track-view__display__canvas" MapFile={MapPath} locData={locData} driverSelected={driverSelected} constructorId={selectedDriverRaceData?.Constructor?.constructorId || ""} driverCode={driverCode} driverColor={driversColor[driverCode]} isPaused={isPaused} haloView={haloView} topFollowView={topFollowView} speedFactor={speedFactor} year={year} showCarDetails={showCarDetails} showCameraControls={showCameraControls} speedUnit={speedUnit} />
               ) : (
                 <div className="race-page__track-view__display__preview">{animatedMap && <video src={animatedMap} loop autoPlay muted playsInline className="w-full h-full object-cover" />}</div>
               )}
@@ -678,7 +740,7 @@ export function RacePage() {
                 <h3 className="heading-3 mb-32 gradient-text-light">Q{i + 1}</h3>
                 <ul className="w-fit mx-auto">
                   {res.map((r, idx) => (
-                    <DriverCard key={idx} hasHover={false} isActive={activeButtonIndex === idx} index={idx} driver={r.Driver} stint={drivers} driverColor={driversColor[r.Driver.code]} startPosition={parseInt(r.grid, 10)} endPosition={parseInt(r.position, 10)} year={parseInt(year)} time={r[`Q${i + 1}`]} fastestLap={r.FastestLap} layoutSmall={idx > 2} mobileSmall isRace={true} />
+                    <DriverCard key={idx} hasHover={false} isActive={activeButtonIndex === idx} index={idx} driver={r.Driver} stint={drivers} driverColor={driversColor[r.Driver.code]} startPosition={parseInt(r.grid, 10)} endPosition={parseInt(r.position, 10)} year={parseInt(year)} time={r[`Q${i + 1}`]} fastestLap={r.FastestLap} layoutSmall={idx > 2} mobileSmall isRace={true} speedUnit={speedUnit} />
                   ))}
                 </ul>
               </div>
@@ -689,17 +751,17 @@ export function RacePage() {
         <div className="page-container-centered flex flex-col justify-center sm:flex-row gap-16 mt-32">
           {(selectedSession === "Race" || selectedSession === "Sprint") && (
             <div className="sm:w-[26rem]">
-              {driverSelected && <SelectedDriverStats selectedDriverData={selectedDriverData} selectedDriverRaceData={selectedDriverRaceData} year={year} />}
+              {driverSelected && <SelectedDriverStats selectedDriverData={selectedDriverData} selectedDriverRaceData={selectedDriverRaceData} year={year} circuitId={circuitIdCanonical} speedUnit={speedUnit} onToggleUnit={handleUnitToggle} />}
               <div className="flex flex-row gap-4 sm:hidden max-sm:mb-16">
                 <div className={classNames("text-center transition-all", showStartingGrid ? "w-[calc(66.666%-0.5rem)]" : "w-[calc(50%-0.5rem)]")}><button className={classNames("text-neutral-400 font-display text-12 leading-none", showStartingGrid && "text-white")} onClick={() => setShowStartingGrid(true)}>Starting Grid</button></div>
                 <div className={classNames("text-center transition-all", showStartingGrid ? "w-[calc(33.333%-0.5rem)]" : "w-[calc(50%-0.5rem)]")}><button className={classNames("text-neutral-400 font-display text-12 leading-none", !showStartingGrid && "text-white")} onClick={() => setShowStartingGrid(false)}>Race Results</button></div>
               </div>
               <div className="max-sm:hidden flex justify-center"><button className="text-neutral-400 font-display sm:text-xl sm:mb-16 leading-none">Starting Grid</button></div>
               <div className={classNames("flex flex-row items-start gap-4 sm:hidden mb-24")}>
-                <StartingGrid className={classNames("transition-all", showStartingGrid ? "w-[calc(66.666%-0.5rem)]" : "w-[calc(50%-0.5rem)] opacity-100")} raceResults={raceResults} startingGrid={startingGrid} year={year} driverCode={driverCode} driversDetails={driversDetails} driversColor={driversColor} driverTeamMap={driverTeamMap} />
+               <StartingGrid className={classNames("transition-all", showStartingGrid ? "w-[calc(66.666%-0.5rem)]" : "w-[calc(50%-0.5rem)] opacity-100")} raceResults={fullRaceResults} startingGrid={startingGrid} year={year} driverCode={driverCode} driversDetails={driversDetails} driversColor={driversColor} driverTeamMap={driverTeamMap} />
                 <div className={classNames("bg-glow-large h-fit rounded-md sm:rounded-xlarge transition-all", showStartingGrid ? "w-[calc(33.333%-0.5rem)] opacity-100 overflow-hidden" : "max-sm:w-[calc(50%-0.5rem)] max-sm:overflow-visible sm:w-2/3 sm:overflow-hidden")}>{driverButtons(false)}</div>
               </div>
-              <StartingGrid className="max-sm:hidden w-[26rem]" raceResults={raceResults} startingGrid={startingGrid} year={year} driverCode={driverCode} driversDetails={driversDetails} driversColor={driversColor} driverTeamMap={driverTeamMap} />
+              <StartingGrid className="max-sm:hidden w-[26rem]" raceResults={fullRaceResults} startingGrid={startingGrid} year={year} driverCode={driverCode} driversDetails={driversDetails} driversColor={driversColor} driverTeamMap={driverTeamMap} />
             </div>
           )}
           <div className="sm:grow">

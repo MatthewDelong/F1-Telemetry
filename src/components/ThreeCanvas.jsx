@@ -30,6 +30,7 @@ export const ThreeCanvas = ({
   showCameraControls,
   constructorId,
   year,
+  speedUnit,
 }) => {
   // 1. Initial Refs for Scene
   const mountRef = useRef(null);
@@ -396,7 +397,7 @@ export const ThreeCanvas = ({
           {showCarDetails && (
             <div className="telemetry-panel shadow-2xl">
               {driverDetails ? (
-                <DriverCarDetails driverDetails={driverDetails} />
+                <DriverCarDetails driverDetails={driverDetails} speedUnit={speedUnit} />
               ) : (
                 <Loading message="Syncing telemetry..." />
               )}

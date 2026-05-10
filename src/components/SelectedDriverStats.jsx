@@ -1,7 +1,11 @@
 import React from "react";
+import { trackLengths } from "../utils/trackLengths";
 
 export const SelectedDriverStats = (props) => {
-    const { selectedDriverData, selectedDriverRaceData, year } = props;
+    const { selectedDriverData, selectedDriverRaceData, year, speedUnit } = props;
+    const isMph = speedUnit === "mph";
+    const displayUnit = isMph ? "mph" : "kph";
+    const conversionFactor = isMph ? 0.621371 : 1;
 
     if (!selectedDriverData || !selectedDriverRaceData) {
         return null;
@@ -98,15 +102,63 @@ export const SelectedDriverStats = (props) => {
 
                 <div className="flex items-center justify-between mt-16">
                     <div>
-                        <div className="uppercase tracking-xs text-xs">
-                            avg speed
+                        <div className="flex items-center gap-8">
+                            <span className="uppercase tracking-xs text-xs">avg speed</span>
+                            <button 
+                                onClick={props.onToggleUnit}
+                                className="text-[10px] bg-neutral-800 hover:bg-neutral-700 px-8 py-1 rounded border border-neutral-700 transition-colors uppercase tracking-widest text-neutral-400 hover:text-white"
+                            >
+                                {isMph ? "To KPH" : "To MPH"}
+                            </button>
                         </div>
-                        <div>
+                        <div className="mt-4">
                             <span className="font-display">
-                                {selectedDriverRaceData?.FastestLap?.AverageSpeed?.speed || "N/A"}
+                                {(() => {
+                                    const fl = selectedDriverRaceData?.FastestLap;
+                                    const speedObj = fl?.AverageSpeed || fl?.averageSpeed;
+                                    
+                                    // If we have a speed object, convert it if necessary
+                                    if (speedObj?.speed) {
+                                        const baseSpeed = parseFloat(speedObj.speed);
+                                        const baseUnits = (speedObj.units || "").toLowerCase();
+                                        
+                                        // Assume base is KPH if not specified or "kph"
+                                        if (isMph && (baseUnits === "kph" || baseUnits === "km/h" || !baseUnits)) {
+                                            return (baseSpeed * 0.621371).toFixed(3);
+                                        } else if (!isMph && baseUnits === "mph") {
+                                            return (baseSpeed / 0.621371).toFixed(3);
+                                        }
+                                        return baseSpeed.toFixed(3);
+                                    }
+                                    
+                                    // Fallback calculation
+                                    const lapTimeStr = fl?.Time?.time || fl?.time?.time || fl?.Time || fl?.time;
+                                    const length = props.circuitId && trackLengths[props.circuitId];
+                                    
+                                    if (lapTimeStr && length) {
+                                        const parts = lapTimeStr.split(/[:.]/).map(Number);
+                                        let totalSeconds = 0;
+                                        if (parts.length === 3) { // mm:ss.ms
+                                            totalSeconds = parts[0] * 60 + parts[1] + parts[2] / 1000;
+                                        } else if (parts.length === 2) { // ss.ms or mm:ss
+                                            if (lapTimeStr.includes(':')) {
+                                                totalSeconds = parts[0] * 60 + parts[1];
+                                            } else {
+                                                totalSeconds = parts[0] + parts[1] / 1000;
+                                            }
+                                        }
+                                        
+                                        if (totalSeconds > 0) {
+                                            const kph = (length / totalSeconds) * 3600;
+                                            return (kph * conversionFactor).toFixed(3);
+                                        }
+                                    }
+                                    
+                                    return "N/A";
+                                })()}
                             </span>
                             <span className="uppercase tracking-xs text-xs ml-4">
-                                {selectedDriverRaceData?.FastestLap?.AverageSpeed?.units}
+                                {displayUnit}
                             </span>
                         </div>
                     </div>
