@@ -584,10 +584,11 @@ export const getDriverStandings = async (selectedYear) => {
       return standings.map(standing => ({
         driverCode: standing.Driver.code,
         firstName: standing.Driver.givenName,
-        lastName: standing.Driver.familyName,
+        lastName: standing.Driver.familyName || standing.Driver.lastName,
         constructorName: standing.Constructors[0].name,
         constructorId: standing.Constructors[0].constructorId,
         points: standing.points,
+        nationality: standing.Driver.nationality || ""
       }));
     }
   } catch (error) {
@@ -617,10 +618,11 @@ export const getPartialDriverStandings = async (selectedYear, start, end) => {
         return {
           driverCode : end.Driver.code,
           firstName : end.Driver.givenName,
-          lastName : end.Driver.lastName,
+          lastName : end.Driver.familyName || end.Driver.lastName,
           constructorName : end.Constructors[0].name,
           constructorId : end.Constructors[0].constructorId,
-          points : end.points - (start ? start.points : 0)
+          points : end.points - (start ? start.points : 0),
+          nationality: end.Driver.nationality || ""
         }
       });
       // const standings = data['latest'];

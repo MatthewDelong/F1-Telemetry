@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { useInView } from "framer-motion";
 
 import { wildCardDrivers } from "../utils/wildCards";
+import { nationalityToFlag } from "../utils/nationalityToFlag";
 
 export const ConstructorDriver = (props) => {
   const {
@@ -17,6 +18,7 @@ export const ConstructorDriver = (props) => {
     index,
     showStanding,
     championshipLevel,
+    nationality,
   } = props;
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
@@ -76,7 +78,16 @@ export const ConstructorDriver = (props) => {
             </p>
           </div>
           {/* last name */}
-          <p className="heading-2 mb-6">{lastName}</p>
+          <div className="flex justify-between items-end mb-6">
+            <p className="heading-2">{lastName}</p>
+            {(nationality || image) && (
+              <img 
+                src={nationalityToFlag(nationality || image)} 
+                alt="flag" 
+                className="h-20 mb-4 rounded-sm shadow-sm opacity-80 hover:opacity-100 transition-opacity"
+              />
+            )}
+          </div>
           <div className="h-1 w-full border-b-[1px] border-solid border-neutral-600" />
           {/* car / points */}
           <div className="flex items-end">
@@ -101,9 +112,11 @@ export const ConstructorDriver = (props) => {
                 transition: "all 1s cubic-bezier(0.17, 0.55, 0.55, 1)",
               }}
             />
-            <span className="font-display text-[4.8rem] leading-none z-10 gradient-text-light">
-              {points}
-            </span>
+            <div className="flex flex-col items-end z-10">
+              <span className="font-display text-[4.8rem] leading-none gradient-text-light">
+                {points}
+              </span>
+            </div>
           </div>
         </div>
       </div>
