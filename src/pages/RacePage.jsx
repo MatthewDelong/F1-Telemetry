@@ -568,7 +568,7 @@ export function RacePage() {
           filteredStartingGrid = sessionResults.map(r => ({
             driver_number: parseInt(r.number || r.Driver?.number, 10),
             driver_acronym: r.Driver?.code || r.Driver?.driverId,
-            position: r.grid === "PL" ? "PL" : parseInt(r.grid || r.position, 10),
+            position: (r.grid && String(r.grid).includes("PL")) ? "PL" : parseInt(r.grid || r.position || 0, 10),
             date: sStartTime
           })).filter(r => r.position === "PL" || r.position > 0);
         } else {
@@ -736,8 +736,8 @@ export function RacePage() {
             driver={result.Driver}
             stint={drivers}
             driverColor={driversColor[driverCode]}
-            startPosition={parseInt(result.grid, 10)}
-            endPosition={parseInt(result.position, 10)}
+            startPosition={parseInt(result.grid, 10) || 0}
+            endPosition={parseInt(result.position, 10) || 0}
             year={parseInt(year)}
             time={result.Time?.time || result.status}
             fastestLap={result.FastestLap}
@@ -747,6 +747,9 @@ export function RacePage() {
           />
         </button>
       ))}
+      <p className="text-10 text-neutral-500 mt-16 text-center">
+        PL denotes Starting from pitlane
+      </p>
     </ul>
   );
 

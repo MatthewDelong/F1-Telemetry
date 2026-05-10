@@ -24,8 +24,8 @@ export const StartingGrid = (props) => {
       <ul className="flex flex-col w-fit m-auto">
         {startingGrid
           .sort((a, b) => {
-            const posA = a.position === "PL" ? 100 : parseInt(a.position, 10);
-            const posB = b.position === "PL" ? 100 : parseInt(b.position, 10);
+            const posA = a.position === "PL" ? 100 : (parseInt(a.position, 10) || 99);
+            const posB = b.position === "PL" ? 100 : (parseInt(b.position, 10) || 99);
             return posA - posB;
           })
           .map((gridPosition, index) => {
@@ -139,6 +139,9 @@ export const StartingGrid = (props) => {
             );
           })}
       </ul>
+      <p className="text-10 text-neutral-500 mt-16 text-center">
+        PL denotes Starting from pitlane
+      </p>
     </div>
   );
 };
