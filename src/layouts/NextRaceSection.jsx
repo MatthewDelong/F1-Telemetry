@@ -322,6 +322,9 @@ const NextRaceSection = () => {
   const [loadingWeather, setLoadingWeather] = useState(false);
   const [showTrackTime, setShowTrackTime] = useState(true);
 
+  // Translation helper (dummy since i18n is not configured)
+  const t = (key, defaultValue) => defaultValue;
+
   // Find the next upcoming race
   const nowTime = new Date().getTime();
   const sortedRaces = Object.values(RACES_DATA).sort(
@@ -561,11 +564,18 @@ const NextRaceSection = () => {
                     <span className="countdown-label">Mins</span>
                   </div>
                 </div>
-              ) : (
-                <div className="race-status-container mx-auto">
-                  <div className={`indicator-dot ${raceStatus}`}></div>
+              ) : raceStatus === "running" ? (
+                <div className="race-status-container">
+                  <div className="indicator-dot running"></div>
                   <span className="indicator-text">
-                    {raceStatus === "running" ? "Race Running" : "Race Ended"}
+                    {t("f1.status.running", "Race Running")}
+                  </span>
+                </div>
+              ) : (
+                <div className="race-status-container">
+                  <div className="indicator-dot ended"></div>
+                  <span className="indicator-text">
+                    {t("f1.status.ended", "Race Ended")}
                   </span>
                 </div>
               )}

@@ -268,45 +268,75 @@
 }
 
 /* Status Indicators */
+/* Race Status Indicators */
 .race-status-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 20px;
-  border-radius: 12px;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 15px 25px;
+  border-radius: 8px;
   border: 2px solid #00d2be;
+  min-width: 150px;
+  margin-top: 10px;
 }
 
 .indicator-dot {
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .indicator-dot.running {
-  background: #00ff00;
+  background-color: #00ff00;
   box-shadow: 0 0 15px #00ff00;
-  animation: pulse 1.5s infinite;
+  animation: pulse-green 1.5s infinite;
 }
 
-@keyframes pulse {
-  0% {
-    opacity: 0.6;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.6;
-  }
+.indicator-dot.ended {
+  background-color: #ff0000;
+  box-shadow: 0 0 15px #ff0000;
 }
 
 .indicator-text {
-  font-family: "Formula1", sans-serif;
-  font-size: 1rem;
+  font-family: "Formula1", "Titillium Web", sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
   color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@keyframes pulse-green {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 15px rgba(0, 255, 0, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
+  }
+}
+
+@media (max-width: 576px) {
+  .race-status-container {
+    padding: 10px 15px;
+    min-width: 120px;
+  }
+  .indicator-dot {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 8px;
+  }
+  .indicator-text {
+    font-size: 1rem;
+  }
 }
 
 /* Mobile Adjustments */
