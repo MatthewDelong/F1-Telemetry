@@ -1,48 +1,49 @@
-
 REPOSITORIES:
-https://github.com/MatthewDelong/F1-Telemetry       (Main Website Files)
-https://github.com/MatthewDelong/f1nsight-api-2     (F1 Data API)
-https://github.com/MatthewDelong/f1aapi             (F1 Academy API)
-https://github.com/MatthewDelong/f2api              (F2 API)
+https://github.com/MatthewDelong/F1-Telemetry (Main Website Files)
+https://github.com/MatthewDelong/f1nsight-api-2 (F1 Data API)
+https://github.com/MatthewDelong/f1aapi (F1 Academy API)
+https://github.com/MatthewDelong/f2api (F2 API)
 
 ========================================================================
 POST-RACE UPDATE WORKFLOW (2026 SEASON)
 ========================================================================
 
-STEP 1: UPDATE LOCAL JSON FILES
--------------------------------
+## STEP 1: UPDATE LOCAL JSON FILES
+
 Update these files in your local "F1-Telemetry" folder:
-- F1:   src/config/f1/results.json, qualifying.json & sprint.json
-- F2:   src/config/f2/results.json
-- F1A:  src/config/f1a/results.json
 
-*Note: Remember to add Sprint points directly to the 'points' field in results.json!
+- F1: src/config/f1/results.json, qualifying.json & sprint.json
+- F2: src/config/f2/results.json
+- F1A: src/config/f1a/results.json
 
-STEP 2: REBUILD & EXPORT DATA
------------------------------
+\*Note: Remember to add Sprint points directly to the 'points' field in results.json!
+
+## STEP 2: REBUILD & EXPORT DATA
+
 1. Run Rebuild: Visit http://localhost:3000/api/admin/rebuild-2026
-2. Run Export Script: In terminal, run: 
-   node scratch/export_for_github.js
-   
+2. Run Export Script: In terminal, run:
+   node scripts/export_for_github.js
+
 This creates a folder: "export_to_github" containing the new stats.
 
-STEP 3: UPLOAD TO GITHUB
-------------------------
+## STEP 3: UPLOAD TO GITHUB
+
 1. F1-Telemetry Repo: Push your edited config files.
 2. f1nsight-api-2 Repo: Upload files from "export_to_github" folder:
-   - drivers/*.json         -> GitHub drivers/
-   - constructors/2026/*.json -> GitHub constructors/2026/
+   - drivers/\*.json -> GitHub drivers/
+   - constructors/2026/\*.json -> GitHub constructors/2026/
 3. f1aapi Repo: Upload results.json (and drivers.json if needed).
 4. f2api Repo: Upload results.json (and drivers.json if needed).
 
-STEP 4: CLEAR LIVE CACHE
-------------------------
+## STEP 4: CLEAR LIVE CACHE
+
 Visit the live site with ?admin=true and click the "Refresh Data" button:
 https://f1-telemetry.matthews-world.co.uk/teammates-comparison?admin=true
 http://localhost:3006/teammates-comparison?admin=true
 
 Individual Force-Refresh Links:
+
 - F1A Results: https://f1-telemetry.matthews-world.co.uk/api.php?source=f1a&path=races/2026/results.json&refresh=true
 - F1A Drivers: https://f1-telemetry.matthews-world.co.uk/api.php?source=f1a&path=constructors/2026/drivers.json&refresh=true
-- F2 Results:  https://f1-telemetry.matthews-world.co.uk/api.php?source=f2&path=races/2026/results.json&refresh=true
-- F1 Drivers:  https://f1-telemetry.matthews-world.co.uk/api.php?source=f1&path=drivers/antonelli.json&refresh=true
+- F2 Results: https://f1-telemetry.matthews-world.co.uk/api.php?source=f2&path=races/2026/results.json&refresh=true
+- F1 Drivers: https://f1-telemetry.matthews-world.co.uk/api.php?source=f1&path=drivers/antonelli.json&refresh=true
