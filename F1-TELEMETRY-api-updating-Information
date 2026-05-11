@@ -8,15 +8,33 @@ https://github.com/MatthewDelong/f2api (F2 API)
 POST-RACE UPDATE WORKFLOW (2026 SEASON)
 ========================================================================
 
-## STEP 1: UPDATE LOCAL JSON FILES
+## STEP 1: UPDATE F1 DATA (AUTOMATED)
 
-Update these files in your local "F1-Telemetry" folder:
+Run the api_update.py script to automatically fetch and update all F1 data:
 
-- F1: src/config/f1/results.json, qualifying.json & sprint.json
-- F2: src/config/f2/results.json
-- F1A: src/config/f1a/results.json
+    cd src/config/f1
+    py api_update.py
 
-\*Note: Remember to add Sprint points directly to the 'points' field in results.json!
+This will update the following files in src/config/f1/:
+  - results.json        (race results for every completed round)
+  - qualifying.json     (qualifying session results with Q1/Q2/Q3 times)
+  - sprint.json         (sprint race results for sprint weekends only)
+  - races/races.json    (race calendar with meeting keys)
+  - races/2026/driverStandings.json
+  - races/2026/constructorStandings.json
+  - drivers/*.json      (per-driver career statistics)
+  - constructors/       (constructor and driver rosters)
+
+*Note: The script includes rate-limit retry logic. A full run may take a few minutes.
+
+## STEP 1b: UPDATE F2 & F1A DATA (MANUAL)
+
+These still need to be updated manually:
+  - F2:  src/config/f2/results.json
+  - F1A: src/config/f1a/results.json
+
+*Note: For F2/F1A, remember to add Sprint points directly to the 'points' field in results.json!
+       For F1, the API returns combined points (race + sprint + fastest lap) automatically.
 
 ## STEP 2: REBUILD & EXPORT DATA
 
@@ -30,8 +48,8 @@ This creates a folder: "export_to_github" containing the new stats.
 
 1. F1-Telemetry Repo: Push your edited config files.
 2. f1nsight-api-2 Repo: Upload files from "export_to_github" folder:
-   - drivers/\*.json -> GitHub drivers/
-   - constructors/2026/\*.json -> GitHub constructors/2026/
+   - drivers/*.json -> GitHub drivers/
+   - constructors/2026/*.json -> GitHub constructors/2026/
 3. f1aapi Repo: Upload results.json (and drivers.json if needed).
 4. f2api Repo: Upload results.json (and drivers.json if needed).
 
