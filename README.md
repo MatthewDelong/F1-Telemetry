@@ -153,6 +153,46 @@ Uses `@imgly/background-removal-node` for automatic detection.
 Draco and Meshopt decoders are bundled locally in `public/decoders/` to bypass browser Tracking Prevention and ensure 100 % reliability.
 
 </details>
+
+<details>
+<summary><strong>API Data Update Script</strong></summary>
+
+The project includes a Python script (`src/config/f1/api_update.py`) that fetches the latest F1 season data from the [Jolpica API](https://jolpi.ca/) and [OpenF1 API](https://openf1.org) and writes it into the local JSON config files.
+
+**Prerequisites**
+
+- **Python** ≥ 3.8 — on Windows use the `py` launcher (avoids Microsoft Store alias issues)
+- Install the required Python packages (this uses `pip`, Python's own package manager — separate from npm):
+
+```bash
+py -m pip install requests numpy
+```
+
+**Running the script**
+
+The script **must** be run from within its own directory so that relative file paths resolve correctly:
+
+```bash
+cd src/config/f1
+py api_update.py
+```
+
+**What it updates**
+
+| File | Description |
+| --- | --- |
+| `results.json` | Race results for every completed round |
+| `qualifying.json` | Qualifying session results (Q1 / Q2 / Q3 times) |
+| `sprint.json` | Sprint race results (sprint weekends only) |
+| `races/races.json` | Race calendar with meeting keys |
+| `races/{year}/driverStandings.json` | Cumulative driver standings after each round |
+| `races/{year}/constructorStandings.json` | Cumulative constructor standings after each round |
+| `drivers/` | Per-driver career statistics and analytics |
+| `constructors/` | Constructor and driver rosters |
+
+> **Note:** The script includes automatic retry logic with exponential back-off for rate-limited (429) API responses. A full update run may take a few minutes depending on how many rounds have been completed.
+
+</details>
 <details>  
 <summary><strong>Hybrid API Proxy Environment</strong></summary>
 
