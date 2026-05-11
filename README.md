@@ -159,7 +159,10 @@ Draco and Meshopt decoders are bundled locally in `public/decoders/` to bypass b
 F1-Telemetry features a fully decoupled, hybrid API backend to ensure permanent stability even if external bespoke APIs are taken offline:
 
 - **Local Development**: Running `npm run dev` starts both the Vite frontend and a local Node.js Express server (`backend/server.js`) connected to a SQLite caching database.
-- **Production Server**: When built for production, the Vite code automatically switches routing to a native `api.php` file, which seamlessly caches and routes data directly on IONOS Shared Web Hosting via file-based storage (`api_cache/`).
+  - **`backend/database.sqlite`**: The primary development and administrative cache. It stores JSON responses from external APIs (Jolpica, OpenF1) to facilitate local testing and the **data export workflow**. While not used at runtime in production, it is essential for rebuilding the static datasets that the live site relies on.
+  - **`database.sqlite` (root)**: A legacy or baseline cache file. It is not used in the current production runtime and primarily serves as a historical reference or remains from earlier project structures.
+- **Production Server**: When built for production, the Vite code automatically switches routing to a native `api.php` file, which seamlessly caches and routes data directly on IONOS Shared Web Hosting via file-based storage.
+  - **`public/api_cache/`**: The production caching directory. It stores API responses as static files to ensure the live site remains fast and stable even if external data sources are unavailable. This directory is excluded from version control.
 
 </details>
 
