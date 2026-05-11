@@ -82,7 +82,7 @@ async function run() {
     await fs.mkdir(destFolder, { recursive: true });
     
     console.log('Fetching driver list...');
-    const res = await fetch('https://praneeth7781.github.io/f1nsight-api-2/driversList.json');
+    const res = await fetch('https://matthewdelong.github.io/f1-telemetry-api/driversList.json');
     const allDrivers = await res.json();
     
     let driversToProcess;

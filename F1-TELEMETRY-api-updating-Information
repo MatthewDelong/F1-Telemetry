@@ -1,6 +1,6 @@
 REPOSITORIES:
 https://github.com/MatthewDelong/F1-Telemetry (Main Website Files)
-https://github.com/MatthewDelong/f1nsight-api-2 (F1 Data API)
+https://github.com/MatthewDelong/f1-telemetry-api (F1 Data API)
 https://github.com/MatthewDelong/f1aapi (F1 Academy API)
 https://github.com/MatthewDelong/f2api (F2 API)
 
@@ -47,7 +47,7 @@ This creates a folder: "export_to_github" containing the new stats.
 ## STEP 3: UPLOAD TO GITHUB
 
 1. F1-Telemetry Repo: Push your edited config files.
-2. f1nsight-api-2 Repo: Upload files from "export_to_github" folder:
+2. f1-telemetry-api Repo: Upload files from "export_to_github" folder:
    - drivers/*.json -> GitHub drivers/
    - constructors/2026/*.json -> GitHub constructors/2026/
 3. f1aapi Repo: Upload results.json (and drivers.json if needed).

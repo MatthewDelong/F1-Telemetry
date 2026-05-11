@@ -492,7 +492,7 @@ export const getPartialConstructorStandings = async (selectedYear, start, end) =
     //   points: standing.points,
     //   driverCodes: []
     // }));
-    // const baseURL = `https://praneeth7781.github.io/f1nsight-api-2/constructors/${selectedYear}`
+    // const baseURL = `https://matthewdelong.github.io/f1-telemetry-api/constructors/${selectedYear}`
 
     // const driverStandings = driverData['latest'];
     const Keys = Object.keys(driverData).sort();

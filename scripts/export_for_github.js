@@ -62,7 +62,7 @@ async function exportData() {
     }
 
     console.log('\nSUCCESS! All files saved to: ' + EXPORT_DIR);
-    console.log('You can now drag these folders into your "f1nsight-api-2" GitHub repository.');
+    console.log('You can now drag these folders into your "f1-telemetry-api" GitHub repository.');
 
   } catch (err) {
     console.error('Export failed:', err.message);

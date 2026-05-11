@@ -126,7 +126,7 @@ if ($source === 'f1') {
     // Fallback F1 Proxy if not matched or failed to fetch
     if (!$data) {
         $baseUrls = [
-            'https://raw.githubusercontent.com/MatthewDelong/f1nsight-api-2/master/' => 5,
+            'https://raw.githubusercontent.com/MatthewDelong/f1-telemetry-api/main/' => 5,
         ];
         foreach ($baseUrls as $baseUrl => $timeout) {
             $data = fetchUrl($baseUrl . $path, $timeout, $lastError);

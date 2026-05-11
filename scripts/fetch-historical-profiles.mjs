@@ -44,7 +44,7 @@ async function fetchWikipediaImage(wikiUrl) {
 async function run() {
     console.log('Fetching driver list...');
     // We fetch the comprehensive static list
-    const res = await fetch('https://praneeth7781.github.io/f1nsight-api-2/driversList.json');
+    const res = await fetch('https://matthewdelong.github.io/f1-telemetry-api/driversList.json');
     const drivers = await res.json();
     
     // You can also pass args to run specific ones, e.g., node script.mjs senna garrett

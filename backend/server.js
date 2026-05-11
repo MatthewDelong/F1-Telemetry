@@ -6,8 +6,8 @@ const axios = require("axios");
 
 async function tryGitHubFallback(path, cacheKey) {
   const baseUrls = [
-    "https://raw.githubusercontent.com/MatthewDelong/f1nsight-api-2/master/",
-    "https://matthewdelong.github.io/f1nsight-api-2/",
+    "https://raw.githubusercontent.com/MatthewDelong/f1-telemetry-api/main/",
+    "https://matthewdelong.github.io/f1-telemetry-api/",
   ];
   return await getCachedData(
     cacheKey,

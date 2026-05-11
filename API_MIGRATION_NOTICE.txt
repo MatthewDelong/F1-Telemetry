@@ -3,12 +3,12 @@
 ========================================================
 
 Please Note: 
-As of this version, this project has officially completed its full migration and decoupling from external third-party data ecosystems (formerly f1nsight-api-2 by praneeth7781, f2api/f1aapi by ant-dot-comm).
+As of this version, this project has officially completed its full migration and decoupling from external third-party data ecosystems (formerly f1nsight-api-2 by praneeth7781, f2api/f1aapi by ant-dot-comm). The F1 data API has been migrated from the broken fork (f1nsight-api-2) to a clean repository (f1-telemetry-api).
 
 We have transitioned to a strictly authorized data infrastructure:
 
 1. PRIVATE INFRASTRUCTURE: All data fetching is now centralized to our own GitHub repositories and local filesystem configurations. 
-   - F1 Data: MatthewDelong/f1nsight-api-2
+   - F1 Data: MatthewDelong/f1-telemetry-api
    - F2 Data: MatthewDelong/f2api
    - F1A Data: MatthewDelong/f1aapi
 
