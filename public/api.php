@@ -125,12 +125,31 @@ if ($source === 'f1') {
 
     // Fallback F1 Proxy if not matched or failed to fetch
     if (!$data) {
-        $baseUrls = [
-            'https://raw.githubusercontent.com/MatthewDelong/f1-telemetry-api/main/' => 5,
-        ];
-        foreach ($baseUrls as $baseUrl => $timeout) {
-            $data = fetchUrl($baseUrl . $path, $timeout, $lastError);
-            if ($data) break;
+        // 1. Try local file on server first (for "uploaded new build" workflow)
+        $localPath = __DIR__ . '/' . $path;
+        if (file_exists($localPath)) {
+            $data = file_get_contents($localPath);
+        }
+
+        // 2. Try GitHub fallbacks
+        if (!$data) {
+            $baseUrls = [
+                'https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1/' => 5,
+                'https://raw.githubusercontent.com/MatthewDelong/f1-telemetry-api/main/' => 5,
+            ];
+            foreach ($baseUrls as $baseUrl => $timeout) {
+                // If the path starts with 'races/YEAR/', we might need to strip it for F1-Telemetry structure
+                $fetchPath = $path;
+                if (strpos($baseUrl, 'F1-Telemetry') !== false) {
+                    // Map 'races/2026/raceDetails.json' -> 'raceDetails.json' if it's the flat f1 config dir
+                    if (preg_match('/^races\/\d{4}\/(.*\.json)$/', $path, $m)) {
+                        $fetchPath = $m[1];
+                    }
+                }
+                
+                $data = fetchUrl($baseUrl . $fetchPath, $timeout, $lastError);
+                if ($data) break;
+            }
         }
     }
 
