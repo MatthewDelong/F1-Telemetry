@@ -55,17 +55,10 @@ export const SelectedDriverStats = (props) => {
                 <div className="flex items-start justify-between">
                     <div>
                         <div className="uppercase tracking-xs text-xs">
-                            Finished
+                            Started
                         </div>
-                        <div>
-                            <span className="font-display text-[3.2rem]">
-                                {selectedDriverRaceData?.position}
-                            </span>
-                            <span className="uppercase tracking-xs text-xs ml-4">
-                                {selectedDriverRaceData?.status === "Finished"
-                                    ? selectedDriverRaceData?.Time?.time
-                                    : selectedDriverRaceData?.status}
-                            </span>
+                        <div className="font-display text-[3.2rem]">
+                            {selectedDriverRaceData?.grid}
                         </div>
                     </div>
                     <div className="flex flex-col items-center self-center -mt-8">
@@ -79,10 +72,17 @@ export const SelectedDriverStats = (props) => {
                     </div>
                     <div className="text-right">
                         <div className="uppercase tracking-xs text-xs">
-                            Started
+                            Finished
                         </div>
-                        <div className="font-display text-[3.2rem]">
-                            {selectedDriverRaceData?.grid}
+                        <div>
+                            <span className="font-display text-[3.2rem]">
+                                {selectedDriverRaceData?.position}
+                            </span>
+                            <span className="uppercase tracking-xs text-xs ml-4">
+                                {selectedDriverRaceData?.status === "Finished"
+                                    ? selectedDriverRaceData?.Time?.time
+                                    : selectedDriverRaceData?.status}
+                            </span>
                         </div>
                     </div>
                 </div>
