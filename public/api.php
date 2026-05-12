@@ -9,6 +9,23 @@ error_reporting(E_ALL);
 $source = $_GET['source'] ?? '';
 $path = $_GET['path'] ?? '';
 
+// Robust path reconstruction for OpenF1
+// If the path contains its own query parameters, PHP might have split them into separate $_GET entries.
+// We need to rejoin them to ensure they reach the target API.
+if ($source === 'openf1' && strpos($_SERVER['QUERY_STRING'], '&') !== false) {
+    $queryString = $_SERVER['QUERY_STRING'];
+    // Find the 'path=' part and take everything after it
+    $pos = strpos($queryString, 'path=');
+    if ($pos !== false) {
+        $fullPath = substr($queryString, $pos + 5);
+        // Clean up common api.php params from the tail if they exist (rare in OpenF1 calls)
+        $fullPath = preg_replace('/&source=[^&]*/', '', $fullPath);
+        $fullPath = preg_replace('/&flush=[^&]*/', '', $fullPath);
+        $fullPath = preg_replace('/&refresh=[^&]*/', '', $fullPath);
+        $path = urldecode($fullPath);
+    }
+}
+
 if (empty($source) || empty($path)) {
     http_response_code(400);
     echo json_encode(['error' => 'Mission parameters: source and/or path']);
@@ -61,9 +78,10 @@ if (!is_dir($cacheDir)) {
     @mkdir($cacheDir, 0755, true);
 }
 
-// Convert path to a safe filename
-$safePath = str_replace(['/', '\\'], '_', $path);
-$cacheFile = $cacheDir . '/' . $safePath;
+// Convert path to a safe filename for caching. 
+// We use MD5 of the full path to ensure different query parameters get different cache files.
+$cacheKey = md5($path);
+$cacheFile = $cacheDir . '/' . $cacheKey . '.json';
 $cacheTTL = 60 * 30; // 30 minutes
 
 // Check cache - allow bypass with ?flush=1 or ?refresh=true
@@ -80,13 +98,9 @@ if ($flush) {
     exit;
 }
 
-// Clean up path if refresh was passed inside it
-if (strpos($path, '?') !== false) {
-    $path = explode('?', $path)[0];
-}
-if (strpos($path, '&') !== false) {
-    $path = explode('&', $path)[0];
-}
+// For F1 source logic only, we might need a version of the path without query strings
+$pathWithoutQuery = explode('?', $path)[0];
+$pathWithoutQuery = explode('&', $pathWithoutQuery)[0];
 
 $data = null;
 $lastError = "";
@@ -94,7 +108,7 @@ $lastError = "";
 // Determine fetch URL
 if ($source === 'f1') {
     // Attempt native Jolpica transformations
-    if (preg_match('/^races\/(\d{4})\/driverStandings\.json$/', $path, $matches)) {
+    if (preg_match('/^races\/(\d{4})\/driverStandings\.json$/', $pathWithoutQuery, $matches)) {
         $year = $matches[1];
         $raw = fetchUrl("https://api.jolpi.ca/ergast/f1/{$year}/driverStandings.json", 10, $lastError);
         if ($raw) {
@@ -108,7 +122,7 @@ if ($source === 'f1') {
             $data = json_encode($output);
         }
     } 
-    else if (preg_match('/^races\/(\d{4})\/constructorStandings\.json$/', $path, $matches)) {
+    else if (preg_match('/^races\/(\d{4})\/constructorStandings\.json$/', $pathWithoutQuery, $matches)) {
         $year = $matches[1];
         $raw = fetchUrl("https://api.jolpi.ca/ergast/f1/{$year}/constructorStandings.json", 10, $lastError);
         if ($raw) {
@@ -126,7 +140,7 @@ if ($source === 'f1') {
     // Fallback F1 Proxy if not matched or failed to fetch
     if (!$data) {
         // 1. Try local file on server first (for "uploaded new build" workflow)
-        $localPath = __DIR__ . '/' . $path;
+        $localPath = __DIR__ . '/' . $pathWithoutQuery;
         if (file_exists($localPath)) {
             $data = file_get_contents($localPath);
         }
@@ -134,16 +148,24 @@ if ($source === 'f1') {
         // 2. Try GitHub fallbacks
         if (!$data) {
             $baseUrls = [
+                'https://raw.githubusercontent.com/MatthewDelong/f1-telemetry-api/main/' => 10,
                 'https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1/' => 5,
-                'https://raw.githubusercontent.com/MatthewDelong/f1-telemetry-api/main/' => 5,
             ];
             foreach ($baseUrls as $baseUrl => $timeout) {
-                // If the path starts with 'races/YEAR/', we might need to strip it for F1-Telemetry structure
                 $fetchPath = $path;
+                
+                // Special mapping for main repository flat structure (2026)
                 if (strpos($baseUrl, 'F1-Telemetry') !== false) {
-                    // Map 'races/2026/raceDetails.json' -> 'raceDetails.json' if it's the flat f1 config dir
-                    if (preg_match('/^races\/\d{4}\/(.*\.json)$/', $path, $m)) {
+                    // 1. Map 'races/2026/xxx.json' -> 'xxx.json' (current season flat structure)
+                    if (preg_match('/^races\/2026\/(.*\.json)$/', $pathWithoutQuery, $m)) {
                         $fetchPath = $m[1];
+                    }
+                    // 2. Map global files like 'races/races.json' -> 'races.json'
+                    else if ($pathWithoutQuery === 'races/races.json') {
+                        $fetchPath = 'races.json';
+                    }
+                    else if ($pathWithoutQuery === 'races/raceDetails.json') {
+                        $fetchPath = 'raceDetails.json';
                     }
                 }
                 
@@ -153,6 +175,12 @@ if ($source === 'f1') {
         }
     }
 
+} else if ($source === 'openf1') {
+    // Proxy for OpenF1 API to avoid 429 in frontend
+    $baseUrl = "https://api.openf1.org/";
+    // Strip leading slash if present in path
+    $requestPath = ltrim($path, '/');
+    $data = fetchUrl($baseUrl . $requestPath, 15, $lastError);
 } else if ($source === 'f1a' || $source === 'f2') {
     $baseUrls = [];
     if ($source === 'f1a') {
@@ -180,7 +208,7 @@ if ($source === 'f1') {
 }
 
 // Serve Data
-if ($data) {
+if ($data && strlen($data) > 2) { // Ensure we got actual data, not an empty string or just "{}"
     file_put_contents($cacheFile, $data);
     echo $data;
 } else {
@@ -188,10 +216,11 @@ if ($data) {
     if (file_exists($cacheFile)) {
         echo file_get_contents($cacheFile);
     } else {
-        http_response_code(500);
+        http_response_code(404);
         echo json_encode([
             'error' => 'Failed to fetch data and no stale cache available',
             'path' => $path,
+            'attempted_url' => isset($baseUrl) && isset($fetchPath) ? $baseUrl . $fetchPath : 'N/A',
             'curl_error' => $lastError
         ]);
     }

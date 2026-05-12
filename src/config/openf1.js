@@ -15,7 +15,7 @@ const isDevelopment = import.meta.env.DEV ||
 
 export const OPENF1_BACKEND_BASE_URL = isDevelopment 
     ? "/openf1" 
-    : normalizeBackendBaseUrl(import.meta.env.VITE_APP_OPENF1_BACKEND_BASE_URL || "https://api.openf1.org");
+    : "/api.php?source=openf1&path=";
 
 console.log('[DEBUG] Final OPENF1_BACKEND_BASE_URL:', OPENF1_BACKEND_BASE_URL);
 

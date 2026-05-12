@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { fetchRaceResultsByCircuit } from "../utils/api";
 import { trackLengths } from "../utils/trackLengths";
 import { nationalityToFlag } from "../utils/nationalityToFlag";
 
@@ -7,6 +8,30 @@ export const SelectedDriverStats = (props) => {
     const isMph = speedUnit === "mph";
     const displayUnit = isMph ? "mph" : "kph";
     const conversionFactor = isMph ? 0.621371 : 1;
+
+    const [prevYearData, setPrevYearData] = useState(null);
+
+    useEffect(() => {
+        const loadPrevYear = async () => {
+            if (year && props.circuitId && selectedDriverData?.acronym) {
+                const prevYearNum = parseInt(year) - 1;
+                if (prevYearNum >= 2023) {
+                    try {
+                        const results = await fetchRaceResultsByCircuit(prevYearNum, props.circuitId);
+                        const driverMatch = results.find(r => 
+                            (r.Driver?.code === selectedDriverData.acronym) || 
+                            (r.Driver?.driverId === selectedDriverData.driverId) ||
+                            (r.Driver?.familyName === selectedDriverData.last_name)
+                        );
+                        setPrevYearData(driverMatch);
+                    } catch (e) {
+                        console.error("Error fetching previous year data:", e);
+                    }
+                }
+            }
+        };
+        loadPrevYear();
+    }, [year, props.circuitId, selectedDriverData]);
 
     if (!selectedDriverData || !selectedDriverRaceData) {
         return null;
@@ -182,6 +207,30 @@ export const SelectedDriverStats = (props) => {
                     </div>
                 </div>
             </div>
+
+            {prevYearData && (
+                <div className="mt-16 bg-glow bg-glow-large px-24 pt-16 pb-16 rounded-xlarge border border-white/5">
+                    <div className="flex items-center justify-between mb-8">
+                        <span className="uppercase tracking-widest text-[10px] text-neutral-400 font-bold">Previous Year ({parseInt(year) - 1})</span>
+                        <div className="h-1 w-1/2 bg-gradient-to-r from-brand-blue-500/20 to-transparent" />
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <div className="uppercase tracking-xs text-[10px] text-neutral-500">Grid</div>
+                            <div className="font-display text-xl text-neutral-200">{prevYearData.grid || "N/A"}</div>
+                        </div>
+                        <div className="text-right">
+                            <div className="uppercase tracking-xs text-[10px] text-neutral-500">Finish</div>
+                            <div className="font-display text-xl text-neutral-200">
+                                {prevYearData.position}
+                                <span className="text-[10px] ml-4 font-sans text-neutral-400">
+                                    {prevYearData.status === "Finished" ? "" : `(${prevYearData.status})`}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

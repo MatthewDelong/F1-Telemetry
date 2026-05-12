@@ -309,25 +309,26 @@ export const fetchRaceDetails = async (selectedYear) => {
         });
       }
 
-      const raceResultsPromises = races.map((race, index) => {
+      const results = [];
+      for (let i = 0; i < races.length; i++) {
+        const race = races[i];
         if (new Date(race.date) < new Date()) {
-          return fetchRaceResults(selectedYear, race.round)
-            .then(results => ({
-              ...race,
-              results,
-            }));
+          const raceResults = await fetchRaceResults(selectedYear, race.round);
+          results.push({ ...race, results: raceResults });
+          // Add a small delay between requests to avoid rate limiting
+          if (i < races.length - 1) await new Promise(r => setTimeout(r, 100));
         } else {
-          return Promise.resolve({ 
-            raceName: race.raceName, 
+          results.push({
+            raceName: race.raceName,
             date: race.date,
             season: race.season,
             round: race.round,
-            time: race.time, 
+            time: race.time,
           });
         }
-      });
+      }
 
-      return Promise.all(raceResultsPromises);
+      return results;
     } else {
       console.error('Failed to fetch data');
     }
@@ -665,14 +666,23 @@ export const fetchDriversAndTires = async (sessionKey) => {
   }
 }; 
 
-export const fetchRaceResultsByCircuit = async (year, circuitId) => {
+export const fetchRaceResultsByCircuit = async (year, circuitId, raceName = "") => {
   try {
-
     const url = `${BASE_F1_URL}races/${year}/results.json`;
     const data = await fetchWithPersistentCache(url);
     if (!data || !Array.isArray(data)) return [];
     
-    const raceData = data.find(element => element.Circuit && element.Circuit.circuitId === circuitId);
+    // Robust finding: try circuitId, then raceName, then locality
+    const raceData = data.find(element => {
+      const matchId = element.Circuit && element.Circuit.circuitId === circuitId;
+      const matchName = raceName && element.raceName && 
+                        element.raceName.toLowerCase().includes(raceName.toLowerCase());
+      const matchLocality = circuitId && element.Circuit?.Location?.locality && 
+                            element.Circuit.Location.locality.toLowerCase() === circuitId.toLowerCase();
+      
+      return matchId || matchName || matchLocality;
+    });
+
     return raceData?.Results || [];
   } catch (error) {
     console.error("Error fetching race results:", error);
@@ -680,28 +690,46 @@ export const fetchRaceResultsByCircuit = async (year, circuitId) => {
   }
 };
 
-export const fetchQualifyingResultsByCircuit = async(year, circuitId) => {
+export const fetchQualifyingResultsByCircuit = async(year, circuitId, raceName = "") => {
   try {
     const url = `${BASE_F1_URL}races/${year}/qualifying.json`;
     const data = await fetchWithPersistentCache(url);
     if (!data || !Array.isArray(data)) return [];
 
-    const raceData = data.find(element => element.Circuit && element.Circuit.circuitId === circuitId);
+    const raceData = data.find(element => {
+      const matchId = element.Circuit && element.Circuit.circuitId === circuitId;
+      const matchName = raceName && element.raceName && 
+                        element.raceName.toLowerCase().includes(raceName.toLowerCase());
+      const matchLocality = circuitId && element.Circuit?.Location?.locality && 
+                            element.Circuit.Location.locality.toLowerCase() === circuitId.toLowerCase();
+      
+      return matchId || matchName || matchLocality;
+    });
+
     return raceData?.QualifyingResults || [];
   } catch(error){
-    console.error("Error fetching qualifiying results:", error);
+    console.error("Error fetching qualifying results:", error);
     return [];
   }
 };
 
-export const fetchSprintResultsByCircuit = async(year, circuitId) => {
+export const fetchSprintResultsByCircuit = async(year, circuitId, raceName = "") => {
   try {
     const url = `${BASE_F1_URL}races/${year}/sprint.json`;
     const data = await fetchWithPersistentCache(url);
     if (!data || !Array.isArray(data)) return [];
 
-    const raceData = data.find(element => element.Circuit && element.Circuit.circuitId === circuitId);
-    return raceData?.Results || [];
+    const raceData = data.find(element => {
+      const matchId = element.Circuit && element.Circuit.circuitId === circuitId;
+      const matchName = raceName && element.raceName && 
+                        element.raceName.toLowerCase().includes(raceName.toLowerCase());
+      const matchLocality = circuitId && element.Circuit?.Location?.locality && 
+                            element.Circuit.Location.locality.toLowerCase() === circuitId.toLowerCase();
+      
+      return matchId || matchName || matchLocality;
+    });
+
+    return raceData?.SprintResults || [];
   } catch(error){
     console.error("Error fetching sprint results:", error);
     return [];
@@ -778,7 +806,7 @@ export const fetchOpenF1Podium = async (meetingKey) => {
   } catch (e) {}
 
   try {
-    const sessionUrl = `https://api.openf1.org/v1/sessions?meeting_key=${meetingKey}&session_name=Race`;
+    const sessionUrl = `${buildOpenF1Url("/sessions")}?meeting_key=${meetingKey}&session_name=Race`;
     const sessionData = await fetchOpenF1Data(sessionUrl);
     
     if (!sessionData || !Array.isArray(sessionData) || sessionData.length === 0) {
@@ -790,9 +818,9 @@ export const fetchOpenF1Podium = async (meetingKey) => {
     
     const posData = await fetchOpenF1FullSessionData("/position", sk);
     await delay(150);
-    const driversData = await fetchWithPersistentCache(`https://api.openf1.org/v1/drivers?session_key=${sk}`);
+    const driversData = await fetchWithPersistentCache(`${buildOpenF1Url("/drivers")}?session_key=${sk}`);
     await delay(150);
-    const intData = await fetchOpenF1Data(`https://api.openf1.org/v1/intervals?session_key=${sk}`);
+    const intData = await fetchOpenF1Data(`${buildOpenF1Url("/intervals")}?session_key=${sk}`);
     await delay(150);
     const lapsData = await fetchOpenF1FullSessionData("/laps", sk);
     

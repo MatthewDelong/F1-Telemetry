@@ -311,7 +311,7 @@ export function RacePage() {
 
         let sessionResults = [];
         if (circuitId) {
-          sessionResults = await fetchRaceResultsByCircuit(year, circuitId);
+          sessionResults = await fetchRaceResultsByCircuit(year, circuitId, raceName);
           setRaceResults(sessionResults);
           if (sessionResults && sessionResults.length > 0) {
             console.log(`[RacePage] Results for ${sessionResults[0]?.raceName || raceName} Round ${sessionResults[0]?.round || '?'}`);
@@ -436,7 +436,7 @@ export function RacePage() {
 
         let sessionResults = [];
         if (circuitId) {
-          sessionResults = await fetchQualifyingResultsByCircuit(year, circuitId);
+          sessionResults = await fetchQualifyingResultsByCircuit(year, circuitId, raceName);
           setRaceResults(sessionResults);
         }
 
@@ -496,7 +496,7 @@ export function RacePage() {
 
         let sessionResults = [];
         if (circuitId) {
-          sessionResults = await fetchSprintResultsByCircuit(year, circuitId);
+          sessionResults = await fetchSprintResultsByCircuit(year, circuitId, raceName);
           setRaceResults(sessionResults);
         }
 
