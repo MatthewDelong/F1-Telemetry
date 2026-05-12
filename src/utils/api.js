@@ -24,7 +24,7 @@ export function normalizeOpenF1Date(date) {
   }
   const d = new Date(dateStr);
   if (isNaN(d.getTime())) return "";
-  return d.toISOString().replace("Z", "+00:00");
+  return d.toISOString();
 }
 
 const CACHE_PREFIX = "f1_cache_";
@@ -90,8 +90,7 @@ export const fetchOpenF1FullSessionData = async (endpoint, sessionKey, extraPara
                 // Add 1ms to lastDate to skip the record we just got, avoiding duplicates
                 // without needing the potentially unsupported '>=' operator.
                 const d = new Date(lastDate);
-                d.setMilliseconds(d.getMilliseconds() + 1);
-                const incrementedDate = d.toISOString().replace("Z", "+00:00");
+                const incrementedDate = d.toISOString();
                 
                 url += `&${filterName}>${incrementedDate}`;
             }

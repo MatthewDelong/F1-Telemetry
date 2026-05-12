@@ -208,7 +208,7 @@ if ($source === 'f1') {
 }
 
 // Serve Data
-if ($data && strlen($data) > 2) { // Ensure we got actual data, not an empty string or just "{}"
+if ($data && strlen($data) >= 2) { // Allow [] which is a valid but empty response
     file_put_contents($cacheFile, $data);
     echo $data;
 } else {
