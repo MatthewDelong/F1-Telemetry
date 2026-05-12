@@ -714,6 +714,28 @@ def format_sprint_entry(api_race):
         entry["Results"].append(result_entry)
     return entry
 
+def write_compact_race_json(data, filepath, results_key="Results"):
+    """Write race data in compact readable format: one line per driver result"""
+    lines = ["["]
+    for i, race in enumerate(data):
+        lines.append("    {")
+        header = ", ".join(f'"{k}": {json.dumps(race[k], ensure_ascii=False)}' for k in ["season", "round", "url", "raceName"] if k in race)
+        lines.append(f"        {header},")
+        lines.append(f'        "Circuit": {json.dumps(race.get("Circuit", {}), ensure_ascii=False)},')
+        dt_parts = ", ".join(f'"{k}": {json.dumps(race[k], ensure_ascii=False)}' for k in ["date", "time"] if k in race)
+        lines.append(f"        {dt_parts},")
+        results = race.get(results_key, [])
+        lines.append(f'        "{results_key}": [')
+        for j, result in enumerate(results):
+            comma = "," if j < len(results) - 1 else ""
+            lines.append(f"            {json.dumps(result, ensure_ascii=False, cls=NpEncoder)}{comma}")
+        lines.append("        ]")
+        comma = "," if i < len(data) - 1 else ""
+        lines.append(f"    }}{comma}")
+    lines.append("]")
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write("\n".join(lines) + "\n")
+
 def update_raceResults():
     """Fetch race results and write to results.json in compact format"""
     season = current_year
@@ -755,8 +777,7 @@ def update_raceResults():
         else:
             break
 
-    with open('results.json', 'w', encoding='utf-8') as f:
-        json.dump(result, f, ensure_ascii=False, cls=NpEncoder)
+    write_compact_race_json(result, 'results.json', 'Results')
 
     print("Race Results updated successfully!")
 
@@ -801,8 +822,7 @@ def update_qualifying():
         else:
             break
 
-    with open('qualifying.json', 'w', encoding='utf-8') as f:
-        json.dump(result, f, ensure_ascii=False, cls=NpEncoder)
+    write_compact_race_json(result, 'qualifying.json', 'QualifyingResults')
 
     print("Qualifying results updated successfully!")
 
@@ -852,8 +872,7 @@ def update_sprintResults():
             # Don't break - future sprint weekends may exist after non-sprint ones
             continue
 
-    with open('sprint.json', 'w', encoding='utf-8') as f:
-        json.dump(result, f, ensure_ascii=False, cls=NpEncoder)
+    write_compact_race_json(result, 'sprint.json', 'Results')
 
     print("Sprint Results updated successfully!")
 
