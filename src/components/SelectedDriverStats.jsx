@@ -174,10 +174,10 @@ export const SelectedDriverStats = (props) => {
                     </div>
                     <div className="text-right">
                         <div className="uppercase tracking-xs text-xs">
-                            Rank
+                            FL Rank
                         </div>
                         <div>
-                            <span className="font-display">{selectedDriverRaceData?.FastestLap?.rank || "N/A"}</span> <span className="text-xs">/ 20</span>
+                            <span className="font-display">{selectedDriverRaceData?.FastestLap?.rank || "N/A"}</span> <span className="text-xs">/ {parseInt(year) >= 2026 ? 22 : 20}</span>
                         </div>
                     </div>
                 </div>
