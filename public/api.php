@@ -152,25 +152,33 @@ if ($source === 'f1') {
                 'https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1/' => 5,
             ];
             foreach ($baseUrls as $baseUrl => $timeout) {
-                $fetchPath = $path;
+                // Try up to 3 path variations for maximum resilience
+                $pathVariations = [$path];
                 
-                // Special mapping for main repository flat structure (2026)
-                if (strpos($baseUrl, 'F1-Telemetry') !== false) {
-                    // 1. Map 'races/2026/xxx.json' -> 'xxx.json' (current season flat structure)
-                    if (preg_match('/^races\/2026\/(.*\.json)$/', $pathWithoutQuery, $m)) {
-                        $fetchPath = $m[1];
-                    }
-                    // 2. Map global files like 'races/races.json' -> 'races.json'
-                    else if ($pathWithoutQuery === 'races/races.json') {
-                        $fetchPath = 'races.json';
-                    }
-                    else if ($pathWithoutQuery === 'races/raceDetails.json') {
-                        $fetchPath = 'raceDetails.json';
+                // 1. Try stripping 'races/' prefix for historical repos that might be flat
+                if (preg_match('/^races\/(\d{4})\/(.*\.json)$/', $path, $m)) {
+                    $year = $m[1];
+                    $file = $m[2];
+                    $pathVariations[] = "{$year}/{$file}";
+                    
+                    // Special mapping for main repository flat structure (2026)
+                    if (strpos($baseUrl, 'F1-Telemetry') !== false && $year === '2026') {
+                        $pathVariations = [$file]; // Priority for root file in 2026
                     }
                 }
-                
-                $data = fetchUrl($baseUrl . $fetchPath, $timeout, $lastError);
-                if ($data) break;
+                // 2. Map global files like 'races/races.json' -> 'races.json'
+                else if ($path === 'races/races.json') {
+                    $pathVariations[] = 'races.json';
+                }
+                else if ($path === 'races/raceDetails.json') {
+                    $pathVariations[] = 'raceDetails.json';
+                }
+
+                foreach ($pathVariations as $fetchPath) {
+                    $data = fetchUrl($baseUrl . $fetchPath, $timeout, $lastError);
+                    if ($data && strlen($data) > 10) break;
+                }
+                if ($data && strlen($data) > 10) break;
             }
         }
     }

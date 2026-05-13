@@ -166,189 +166,107 @@ app.get('/api/admin/rebuild-2026', async (req, res) => {
 // Generic Proxy Route — cache-first for F1, passthrough for F1A/F2
 app.use("/api/proxy/:source", async (req, res) => {
   const { source } = req.params;
-  const path = req.path.replace(/^\//, ""); // get the rest of the path after /api/proxy/f1/
-
+  const path = req.path.replace(/^\//, "");
   if (!path) return res.status(400).json({ error: "Path required" });
 
   const cacheKey = `${source}:${path}`;
+  const forceRefresh = req.query.refresh === 'true';
 
-  // ─── For F1: check local cache first (populated by updater from Jolpica) ───
   if (source === "f1") {
-    // Override: For F1 data, check local src/config/f1 files first to respect manual edits
     const fileName = pathMod.basename(path);
-    // Priority: 1. src/config/f1/{file}, 2. src/config/{file}
-    const yearMatch = path.match(/(\d{4})/);
+    const yearMatch = path.match(/races\/(\d{4})\//);
     const year = yearMatch ? yearMatch[1] : null;
 
+    // 1. Try local file first
     let localConfigPath = null;
     if (year) {
-      localConfigPath = pathMod.join(
-        __dirname,
-        "..",
-        "src",
-        "config",
-        "f1",
-        year,
-        fileName,
-      );
+      localConfigPath = pathMod.join(__dirname, "..", "src", "config", "f1", year, fileName);
     }
-
     if (!localConfigPath || !fs.existsSync(localConfigPath)) {
-      localConfigPath = pathMod.join(
-        __dirname,
-        "..",
-        "src",
-        "config",
-        "f1",
-        fileName,
-      );
-    }
-    if (!fs.existsSync(localConfigPath)) {
-      localConfigPath = pathMod.join(
-        __dirname,
-        "..",
-        "src",
-        "config",
-        fileName,
-      );
+      localConfigPath = pathMod.join(__dirname, "..", "src", "config", "f1", fileName);
     }
 
     if (fs.existsSync(localConfigPath)) {
-      const isGlobal =
-        fileName === "races.json" || fileName === "raceDetails.json";
-      const isYearSpecificMatch =
-        year && localConfigPath.includes(pathMod.join(year, fileName));
-      const isRootAnd2026 =
-        (!year || year === "2026") &&
-        localConfigPath.endsWith(pathMod.join("f1", fileName));
+      const isGlobal = fileName === "races.json" || fileName === "raceDetails.json";
+      const isYearSpecificMatch = year && localConfigPath.includes(pathMod.join(year, fileName));
+      const isRootAnd2026 = (!year || year === "2026") && localConfigPath.endsWith(pathMod.join("f1", fileName));
 
-      if (
-        isGlobal ||
-        isYearSpecificMatch ||
-        isRootAnd2026 ||
-        path.includes("2026")
-      ) {
+      if (isGlobal || isYearSpecificMatch || isRootAnd2026 || path.includes("2026")) {
+        console.log(`[Proxy] Serving local file: ${localConfigPath}`);
         try {
-          console.log(
-            `[Local Override] Serving F1 data from: ${localConfigPath}`,
-          );
-          const localData = JSON.parse(
-            fs.readFileSync(localConfigPath, "utf8"),
-          );
-          return res.json(localData);
+          const content = fs.readFileSync(localConfigPath, 'utf8');
+          return res.json(JSON.parse(content));
         } catch (e) {
-          console.error(
-            `[Local Override] Error reading ${localConfigPath}:`,
-            e.message,
-          );
+          console.error(`[Proxy] Error reading local file: ${e.message}`);
         }
       }
     }
 
-    try {
-      const forceRefresh = req.query.refresh === 'true';
-      const driverMatch = path.match(/^drivers\/([^/]+)\.json$/);
-
-      // Check if we already have this data cached
-      const cached = await Cache.findOne({ where: { key: cacheKey } });
-
-      if (cached && !forceRefresh) {
-        // For driver stats, check if it's older than 24 hours
-        if (driverMatch) {
-          const now = new Date();
-          const ageHours = (now - cached.lastUpdated) / (1000 * 60 * 60);
-          if (ageHours < 24) {
-            const data = JSON.parse(cached.value);
-            data.lastUpdate = cached.lastUpdated; // Standardize field name
-            return res.json(data);
-          }
-          console.log(
-            `[Cache Stale] Rebuilding stats for ${driverMatch[1]} (Age: ${ageHours.toFixed(1)}h)`,
-          );
-        } else {
-          const data = JSON.parse(cached.value);
-          data.lastUpdate = cached.lastUpdated;
-          return res.json(data);
-        }
-      }
-
-      // ─── NEW: Try GitHub Fallback BEFORE building (to avoid Jolpica 429s) ───
-      // If forceRefresh is NOT true, try to get from GitHub first
-      if (driverMatch && !forceRefresh) {
-        console.log(`[Proxy] Checking GitHub for pre-built stats: ${cacheKey}`);
-        try {
-          const data = await tryGitHubFallback(path, cacheKey);
-          if (data) return res.json(data);
-        } catch (e) {
-          console.log(`[Proxy] Not found on GitHub, will attempt local build: ${e.message}`);
-        }
-      }
-
-      // On-demand: driver stats (drivers/{driverId}.json)
-      if (driverMatch) {
+    // 2. Specialized Handler: Driver Stats Building (on-demand)
+    const driverMatch = path.match(/^drivers\/([^/]+)\.json$/);
+    if (driverMatch) {
         const driverId = driverMatch[1];
-        console.log(`[On-Demand] Building stats from Jolpica for: ${driverId}`);
         try {
-          const stats = await buildDriverStats(driverId);
-          if (stats) {
-            if (cached) {
-              cached.value = JSON.stringify(stats);
-              cached.lastUpdated = new Date();
-              await cached.save();
-            } else {
-              await Cache.create({
-                key: cacheKey,
-                value: JSON.stringify(stats),
-                lastUpdated: new Date(),
-              });
+            // Check cache first
+            const cached = await Cache.findOne({ where: { key: cacheKey } });
+            if (cached && !forceRefresh) {
+                const now = new Date();
+                const ageHours = (now - cached.lastUpdated) / (1000 * 60 * 60);
+                if (ageHours < 24) return res.json(JSON.parse(cached.value));
             }
-            return res.json(stats);
-          }
-        } catch (buildErr) {
-          console.warn(`[Builder Error] ${driverId} build failed: ${buildErr.message}. Falling back to GitHub.`);
-          // If building fails (likely 429), try GitHub even if it's a refresh
-          try {
-            let githubData = await tryGitHubFallback(path, cacheKey);
-            if (githubData) {
-              // IMPORTANT: Merge local 2026 data into GitHub data if applicable
-              if (driverId) {
-                console.log(`[Proxy] Merging local 2026 data into GitHub data for ${driverId}`);
-                const stats2026 = await getLocal2026Stats(driverId);
-                if (stats2026) {
-                  const y = "2026";
-                  githubData.finalStandings[y] = stats2026.finalStanding;
-                  githubData.seasonWins[y] = stats2026.seasonWins;
-                  githubData.seasonPodiums[y] = stats2026.seasonPodiums;
-                  githubData.seasonPoles[y] = stats2026.seasonPoles;
-                  githubData.seasonDNFs[y] = stats2026.seasonDNFs;
-                  githubData.poles[y] = stats2026.poles;
-                  githubData.podiums[y] = stats2026.podiums;
-                  githubData.DNFs[y] = stats2026.DNFs;
-                  githubData.fastLaps[y] = stats2026.fastLaps;
-                  githubData.racePosition[y] = stats2026.racePosition;
-                  githubData.qualiPosition[y] = stats2026.qualiPosition;
-                  githubData.positionsGainLost[y] = stats2026.positionsGainLost;
-                  githubData.driverQualifyingTimes[y] = stats2026.driverQualifyingTimes;
-                  githubData.avgRacePositions[y] = stats2026.avgRacePosition;
-                  githubData.avgQualiPositions[y] = stats2026.avgQualiPosition;
-                }
-              }
-              return res.json(githubData);
+
+            // Try GitHub first to avoid Jolpica 429s
+            if (!forceRefresh) {
+                try {
+                    const githubData = await tryGitHubFallback(path, cacheKey);
+                    if (githubData) return res.json(githubData);
+                } catch (e) {}
             }
-          } catch (githubErr) {
-            console.error(`[Proxy Error] Both builder and GitHub failed for ${driverId}`);
-          }
-          return res.status(503).json({ error: "Stats building failed due to rate limits. Please try again later." });
+
+            // Build fresh from Jolpica
+            console.log(`[Proxy] Building stats from Jolpica for: ${driverId}`);
+            const stats = await buildDriverStats(driverId);
+            if (stats) {
+                await Cache.upsert({ key: cacheKey, value: JSON.stringify(stats), lastUpdated: new Date() });
+                return res.json(stats);
+            }
+        } catch (err) {
+            console.error(`[Proxy] Builder failed for ${driverId}: ${err.message}`);
+            // Last fallback to whatever we have in cache
+            const cached = await Cache.findOne({ where: { key: cacheKey } });
+            if (cached) return res.json(JSON.parse(cached.value));
         }
-      }
-      // No data found anywhere
-      console.log(`[Proxy] Data not found for: ${cacheKey}`);
-      return res.status(404).json({ error: "Data not found" });
-    } catch (err) {
-      console.error(`[Proxy Error] Path: ${path}`, err);
-      return res.status(500).json({ error: "Failed to fetch data", message: err.message });
     }
 
+    // 3. GitHub fallback for general F1 data
+    const baseUrls = [
+      "https://raw.githubusercontent.com/MatthewDelong/f1-telemetry-api/main/",
+      "https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1/",
+    ];
+
+    const pathVariations = [path];
+    if (year) pathVariations.push(`${year}/${fileName}`);
+    if (path === "races/races.json") pathVariations.push("races.json");
+
+    for (const baseUrl of baseUrls) {
+      for (const fetchPath of pathVariations) {
+        try {
+          const url = baseUrl + fetchPath;
+          const response = await axios.get(url, { timeout: 10000 });
+          if (response.data) {
+            console.log(`[Proxy] Found on GitHub: ${url}`);
+            await Cache.upsert({ key: cacheKey, value: JSON.stringify(response.data), lastUpdated: new Date() });
+            return res.json(response.data);
+          }
+        } catch (e) {}
+      }
+    }
+
+    // 4. Last resort: database cache
+    const finalCached = await Cache.findOne({ where: { key: cacheKey } });
+    if (finalCached) return res.json(JSON.parse(finalCached.value));
+
+    return res.status(404).json({ error: "Data not found" });
   }
 
   // ─── F1A / F2: passthrough to GitHub Pages ───

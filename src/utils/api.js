@@ -312,7 +312,7 @@ export const fetchRaceDetails = async (selectedYear) => {
       for (let i = 0; i < races.length; i++) {
         const race = races[i];
         if (new Date(race.date) < new Date()) {
-          const raceResults = await fetchRaceResults(selectedYear, race.round);
+          const raceResults = await fetchRaceResults(selectedYear, race.round, race.raceName, race.Circuit?.circuitId, race.date);
           results.push({ ...race, results: raceResults });
           // Add a small delay between requests to avoid rate limiting
           if (i < races.length - 1) await new Promise(r => setTimeout(r, 100));
@@ -337,7 +337,7 @@ export const fetchRaceDetails = async (selectedYear) => {
   return [];
 };
   
-const fetchRaceResults = async (selectedYear, raceId) => {
+const fetchRaceResults = async (selectedYear, raceId, fallbackRaceName = "", fallbackCircuitId = "", fallbackDate = "") => {
   const cacheKey = `${CACHE_PREFIX}results_${selectedYear}_${raceId}`;
   
   // 1. Try browser cache
@@ -352,18 +352,43 @@ const fetchRaceResults = async (selectedYear, raceId) => {
   const resultsUrl = `${BASE_F1_URL}races/${selectedYear}/results.json`;
   try {
     const tempdata = await fetchWithPersistentCache(resultsUrl);
-    if (tempdata) {
+    if (tempdata && Array.isArray(tempdata)) {
       const raceIdNum = parseInt(raceId, 10);
-      const raceData = tempdata.find(element => parseInt(element.round, 10) === raceIdNum);
+      
+      // 1. Primary search: by round
+      let raceData = tempdata.find(element => parseInt(element.round, 10) === raceIdNum);
+      
+      // 2. Fallback: search by Circuit ID (Most reliable for historical mismatches)
+      if (!raceData && fallbackCircuitId) {
+        raceData = tempdata.find(element => 
+          (element.Circuit?.circuitId === fallbackCircuitId) || 
+          (element.circuitId === fallbackCircuitId)
+        );
+      }
+
+      // 3. Fallback: search by Date
+      if (!raceData && fallbackDate) {
+        const targetDate = fallbackDate.split('T')[0];
+        raceData = tempdata.find(element => element.date === targetDate);
+      }
+
+      // 4. Fallback: search by Name (Flexible property check)
+      if (!raceData && fallbackRaceName) {
+        const searchName = fallbackRaceName.toLowerCase().replace(" grand prix", "");
+        raceData = tempdata.find(element => {
+          const name = (element.raceName || element.RaceName || "").toLowerCase();
+          return name.includes(searchName);
+        });
+      }
+
       if (!raceData || !raceData.Results) {
         // Fallback to OpenF1 if this is a past race
         console.log(`[API] Results empty for round ${raceId}, checking OpenF1 fallback...`);
         const meetingKeys = await fetchRaceMeetingKeys(selectedYear);
-        const raceDetails = await fetchWithPersistentCache(`${BASE_F1_URL}races/${selectedYear}/raceDetails.json`);
-        const raceInfo = raceDetails.find(r => parseInt(r.round, 10) === parseInt(raceId, 10));
         
-        if (raceInfo && meetingKeys[raceInfo.raceName]) {
-          const meetingKey = meetingKeys[raceInfo.raceName].meeting_key;
+        // Try to find meeting key by fallback name
+        if (fallbackRaceName && meetingKeys[fallbackRaceName]) {
+          const meetingKey = meetingKeys[fallbackRaceName].meeting_key;
           return await fetchOpenF1Podium(meetingKey);
         }
         return [];
@@ -374,20 +399,21 @@ const fetchRaceResults = async (selectedYear, raceId) => {
       // console.log(data.slice(0,3));
       console.log(`[API Debug] Results for ${selectedYear} Round ${raceId}:`, data.length, "results");
       const results = data.map(result => {
-        console.log(`[API Debug] Driver ${result.Driver?.code} object:`, result.Driver);
+        const drv = result.Driver || result.driver;
+        const con = result.Constructor || result.constructor;
         return {
           driver: {
-            ...result.Driver,
-            nationality: result.Driver?.nationality || result.Driver?.country_code || result.Driver?.country || ""
+            ...drv,
+            nationality: drv?.nationality || drv?.country_code || drv?.country || ""
           },
-          fastestLap: result.FastestLap,
-          bestLapTime: result.FastestLap?.Time?.time || '—',
+          fastestLap: result.FastestLap || result.fastestLap,
+          bestLapTime: (result.FastestLap || result.fastestLap)?.Time?.time || result.bestLapTime || '—',
           grid: result.grid,
           position: result.position,
-          time: result.Time?.time || 'N/A',
+          time: (result.Time || result.time)?.time || result.time || 'N/A',
           status: result.status,
           number: result.number,
-          constructor: result.Constructor,
+          constructor: con,
         };
       });
       
@@ -827,11 +853,11 @@ export const fetchOpenF1Podium = async (meetingKey) => {
 
     const driverPositions = {};
     posData.sort((a, b) => new Date(a.date) - new Date(b.date));
-    posData.forEach((p) => (driverPositions[p.driver_number] = p.position));
+    posData.forEach((p) => (driverPositions[p.driver_number] = parseInt(p.position, 10)));
 
     const top3Drivers = Object.entries(driverPositions)
-      .filter(([_, pos]) => pos >= 1 && pos <= 3)
       .map(([num, pos]) => ({ driver_number: parseInt(num, 10), pos }))
+      .filter((d) => d.pos >= 1 && d.pos <= 3)
       .sort((a, b) => a.pos - b.pos);
 
     const driverGaps = {};
@@ -881,12 +907,12 @@ export const fetchOpenF1Podium = async (meetingKey) => {
 
       return {
         position: td.pos,
-        driver: {
+        Driver: {
           code: drv.name_acronym || drv.last_name?.substring(0, 3).toUpperCase() || `NO${td.driver_number}`,
           familyName: drv.last_name,
           nationality: drv.country_code
         },
-        constructor: {
+        Constructor: {
           constructorId: (drv.team_name || "").toLowerCase().replace(/\s+/g, '_'),
           name: drv.team_name || "Unknown Team"
         },
@@ -963,7 +989,7 @@ export const fetchMostRecentRace = async (selectedYear, specificRound = null, sp
     const meetingKey = meetingKeys[mostRecentRace.raceName]?.meeting_key || 'unknown';
     
     // Fetch race results for the most recent race
-    let raceResults = await fetchRaceResults(selectedYear, mostRecentRace.round);
+    let raceResults = await fetchRaceResults(selectedYear, mostRecentRace.round, mostRecentRace.raceName);
 
     // OpenF1 Fallback for Podium (if Jolpica/GitHub is missing data)
     if ((!raceResults || raceResults.length === 0) && meetingKey !== 'unknown') {

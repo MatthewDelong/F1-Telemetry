@@ -83,6 +83,19 @@ export const StartingGrid = (props) => {
 
               if (!constructorOrTeam) return "f1";
 
+              // Map 2023 team IDs to 2024 asset names
+              if (parseInt(year, 10) === 2023) {
+                const teamMap2023to2024 = {
+                  "alfa": "sauber",
+                  "alphatauri": "rb",
+                  "alfa_romeo": "sauber",
+                  "alpha_tauri": "rb"
+                };
+                if (teamMap2023to2024[constructorOrTeam]) {
+                  return teamMap2023to2024[constructorOrTeam];
+                }
+              }
+
               if (constructorOrTeam.includes(" ")) {
                 return getConstructorIdFromTeam(constructorOrTeam);
               }
@@ -108,19 +121,16 @@ export const StartingGrid = (props) => {
                   alt=""
                   className="-mt-32 drop-shadow-[0_0_14px_rgba(0,0,0,0.75)]"
                   src={
-                    year > 2023
-                      ? `${
-                          "/images/" +
-                          year +
-                          "/carTopView/" +
-                          getCarTopView(
-                            currentDriverAcronym,
-                            gridPosition.driver_number,
-                          ) +
-                          ".png"
-                        }`
-                      : `${"/images/f1nsight-topview.png"}`
+                    parseInt(year, 10) >= 2023
+                      ? `/images/${parseInt(year, 10) === 2023 ? "2024" : year}/carTopView/${getCarTopView(currentDriverAcronym, gridPosition.driver_number)}.png`
+                      : "/images/f1nsight-topview.png"
                   }
+                  onError={(e) => {
+                    // Final fallback if the specific car image is missing
+                    if (e.target.src.indexOf('f1nsight-topview.png') === -1) {
+                        e.target.src = "/images/2024/carTopView/VER.png";
+                    }
+                  }}
                   width={56}
                 />
 
