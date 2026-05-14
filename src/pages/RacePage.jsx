@@ -689,7 +689,7 @@ export function RacePage() {
               <Accordion title="Playback Speed" contentClasses="flex flex-col gap-8 items-start">
                 <button className={classNames("tracking-sm uppercase block", { "text-brand-blue-300": speedFactor !== 4 })} onClick={() => { setSpeedFactor(4); setIsDrawerOpen(false); }}>Normal</button>
                 <button className={classNames("tracking-sm uppercase block", { "text-brand-blue-300": speedFactor !== 1.5 })} onClick={() => { setSpeedFactor(1.5); setIsDrawerOpen(false); }}>Push Push</button>
-                <button className={classNames("tracking-sm uppercase block", { "text-brand-blue-300": speedFactor !== 0.2 })} onClick={() => { setSpeedFactor(0.2); setIsDrawerOpen(false); }}>DRS</button>
+                <button className={classNames("tracking-sm uppercase block", { "text-brand-blue-300": speedFactor !== 0.2 })} onClick={() => { setSpeedFactor(0.2); setIsDrawerOpen(false); }}>{parseInt(year) >= 2026 ? "ERS Boost" : "DRS"}</button>
               </Accordion>
               <Accordion title="Camera Angle" contentClasses="flex flex-col gap-8 items-start">
                 <button className={classNames("tracking-sm uppercase block", { "text-brand-blue-300": !haloView && !topFollowView })} onClick={() => { setHaloView(false); setTopFollowView(false); setIsDrawerOpen(false); }}>Sky View</button>

@@ -2,11 +2,24 @@ import React from "react";
 import classNames from "classnames";
 import { nationalityToFlag } from "../utils/nationalityToFlag";
 
-const DriverCarDetails = ({ driverDetails, speedUnit, selectedDriverData, onToggleUnit }) => {
+const DriverCarDetails = ({ driverDetails, speedUnit, selectedDriverData, onToggleUnit, year }) => {
+    const isModern = parseInt(year) >= 2026;
     const isMph = speedUnit === "mph";
     const displayUnit = isMph ? "mph" : "kph";
 
-    const drsActiveNumbers = [10, 12, 14];
+    const ersActiveNumbers = [10, 12, 14];
+    // Simulated battery state (in a real app this would come from telemetry)
+    const [battery, setBattery] = React.useState(85);
+
+    React.useEffect(() => {
+        if (ersActiveNumbers.includes(driverDetails.drs)) {
+            setBattery(prev => Math.max(0, prev - 0.5));
+        } else if (driverDetails.brake > 10) {
+            setBattery(prev => Math.min(100, prev + 0.3));
+        } else {
+            setBattery(prev => Math.min(100, prev + 0.05)); // Slight trickle charge
+        }
+    }, [driverDetails.drs, driverDetails.brake]);
 
     return (
         <div className="px-16 py-10 shadow-xl bg-neutral-800/90 backdrop-blur-sm rounded-l-md min-w-[200px]">
@@ -70,13 +83,18 @@ const DriverCarDetails = ({ driverDetails, speedUnit, selectedDriverData, onTogg
                     </div>
                     <p
                         className={classNames(
-                            "max-sm:text-[1rem] border-solid px-16 mt-8 text-center",
-                            drsActiveNumbers.includes(driverDetails.drs)
-                                ? "bg-emerald-900 text-emerald-500"
-                                : "bg-neutral-900 text-neutral-700"
+                            "max-sm:text-[1rem] border-solid px-16 mt-8 text-center uppercase font-bold transition-all duration-300",
+                            ersActiveNumbers.includes(driverDetails.drs)
+                                ? (isModern ? "bg-yellow-500/20 text-yellow-400 border border-yellow-500/50 shadow-[0_0_15px_rgba(234,179,8,0.3)]" : "bg-emerald-900 text-emerald-500")
+                                : (isModern && battery >= 100)
+                                    ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.3)]"
+                                    : "bg-neutral-900 text-neutral-400 border border-white/5"
                         )}
                     >
-                        DRS Enabled
+                        {isModern 
+                            ? (ersActiveNumbers.includes(driverDetails.drs) ? "ERS Deploying" : (battery >= 100 ? "ERS Charged" : "ERS Ready"))
+                            : (ersActiveNumbers.includes(driverDetails.drs) ? "DRS Enabled" : "DRS Disabled")
+                        }
                     </p>
                 </div>
             </div>
@@ -102,6 +120,26 @@ const DriverCarDetails = ({ driverDetails, speedUnit, selectedDriverData, onTogg
                     />
                 </div>
                 <p className="gradient-text-light uppercase text-[1rem] tracking-sm">Brake</p>
+                
+                {isModern && (
+                    <div className="mt-12 pt-8 border-t border-white/5">
+                        <div className="flex justify-between items-center mb-4">
+                            <p className={classNames("text-[10px] uppercase tracking-widest font-bold transition-colors duration-500", battery >= 100 ? "text-emerald-500" : "text-yellow-500/80")}>ERS Battery</p>
+                            <p className={classNames("text-[10px] font-mono transition-colors duration-500", battery >= 100 ? "text-emerald-500" : "text-yellow-500/80")}>{Math.round(battery)}%</p>
+                        </div>
+                        <div className="h-6 bg-neutral-900 rounded-full overflow-hidden border border-white/5">
+                            <div 
+                                className={classNames(
+                                    "h-full transition-all duration-500",
+                                    battery >= 100 
+                                        ? "bg-gradient-to-r from-emerald-600 to-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.6)] animate-pulse" 
+                                        : "bg-gradient-to-r from-yellow-600 to-yellow-300 shadow-[0_0_10px_rgba(234,179,8,0.5)]"
+                                )}
+                                style={{ width: `${battery}%` }}
+                            />
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

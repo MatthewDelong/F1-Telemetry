@@ -404,6 +404,7 @@ export const ThreeCanvas = ({
                   speedUnit={speedUnit} 
                   selectedDriverData={selectedDriverData}
                   onToggleUnit={onToggleUnit}
+                  year={year}
                 />
               ) : (
                 <Loading message="Syncing telemetry..." />
