@@ -131,7 +131,8 @@ export const ThreeCanvas = ({
       currentMount.clientWidth / (currentMount.clientHeight || 700),
       0.5,
       30000,
-    1);
+      1,
+    );
     cameraRef.current.up.set(0, 0, 1);
 
     // Car Cameras
@@ -139,7 +140,7 @@ export const ThreeCanvas = ({
       currentMount.clientWidth / (currentMount.clientHeight || 700);
 
     haloCameraRef.current = new THREE.PerspectiveCamera(75, aspect, 0.01, 5000);
-    haloCameraRef.current.position.set(0, 0.59, 0.4); // Y is Height, Z is Depth
+    haloCameraRef.current.position.set(0, 0.58, 0.4); // Y is Height, Z is Depth
     haloCameraRef.current.rotation.set(Math.PI / 10, Math.PI, 0);
 
     topFollowCameraRef.current = new THREE.PerspectiveCamera(
@@ -148,7 +149,7 @@ export const ThreeCanvas = ({
       0.1,
       5000,
     );
-    topFollowCameraRef.current.position.set(0, 5, -15); // Y is Height, Z is Depth
+    topFollowCameraRef.current.position.set(0, 2, -2); // Y is Height, Z is Depth
     topFollowCameraRef.current.rotation.set(Math.PI / 8, Math.PI, 0);
 
     // Progressive Trail
@@ -399,9 +400,9 @@ export const ThreeCanvas = ({
           {showCarDetails && (
             <div className="telemetry-panel shadow-2xl">
               {driverDetails ? (
-                <DriverCarDetails 
-                  driverDetails={driverDetails} 
-                  speedUnit={speedUnit} 
+                <DriverCarDetails
+                  driverDetails={driverDetails}
+                  speedUnit={speedUnit}
                   selectedDriverData={selectedDriverData}
                   onToggleUnit={onToggleUnit}
                   year={year}
