@@ -30,6 +30,7 @@ def update_constructors():
         #     "nationality": "American"
         # }
         # constructors.append(apx)
+        os.makedirs('constructors', exist_ok=True)
         with open(f'constructors/{season}.json', 'w', encoding='utf-8') as file:
             json.dump(constructors, file, ensure_ascii=False, indent=4)
         print("Constructors updated successfully!")
@@ -499,7 +500,7 @@ class NpEncoder(json.JSONEncoder):
 
 def ensure_directory_exists(directory_path):
     """Create directory if it doesn't exist"""
-    if not os.path.exists(directory_path):
+    if directory_path and not os.path.exists(directory_path):
         os.makedirs(directory_path)
         print(f"Created directory: {directory_path}")
 

@@ -179,13 +179,16 @@ export function LandingPage2025() {
     .sort((a, b) => parseInt(a.position, 10) - parseInt(b.position, 10))
     .map((r) => {
       const pos = parseInt(r.position, 10);
+      const drv = r.driver || r.Driver || {};
+      const con = r.constructor || r.Constructor || {};
+
       const driverCode =
-        r.driver?.code ||
-        r.driver?.familyName?.substring(0, 3).toUpperCase() ||
+        drv.code ||
+        drv.familyName?.substring(0, 3).toUpperCase() ||
         "???";
-      // api.js maps result.Constructor → r.constructor (lowercase)
-      const constructorId = r.constructor?.constructorId || "";
-      const teamName = r.constructor?.name || "";
+      
+      const constructorId = con.constructorId || "";
+      const teamName = con.name || "";
       // P1 has race time, P2/P3 time is gap string like "+13.722" or null
       const gap =
         pos === 1

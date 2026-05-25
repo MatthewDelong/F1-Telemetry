@@ -43,7 +43,7 @@ F1-Telemetry is a fork of the original [f1nsight](https://github.com/adityakotha
 | **Driver Comparisons**  | Head-to-head telemetry overlays for any two drivers in a session                                         |
 | **3D Telemetry Viewer** | Follow drivers around the circuit in a synchronised 3D scene with multiple broadcast-style camera angles |
 | **AR Car Viewer**       | High-fidelity 3D car models with Draco / Meshopt compression (90 MB → 23 MB)                             |
-| **2026 Race Calendar**  | Up-to-date schedule covering F1                                                     |
+| **2026 Race Calendar**  | Up-to-date schedule covering F1                                                                          |
 
 ---
 
@@ -174,21 +174,21 @@ The script **must** be run from within its own directory so that relative file p
 
 ```bash
 cd src/config/f1
-py api_update.py
+python api_update.py
 ```
 
 **What it updates**
 
-| File | Description |
-| --- | --- |
-| `results.json` | Race results for every completed round |
-| `qualifying.json` | Qualifying session results (Q1 / Q2 / Q3 times) |
-| `sprint.json` | Sprint race results (sprint weekends only) |
-| `races/races.json` | Race calendar with meeting keys |
-| `races/{year}/driverStandings.json` | Cumulative driver standings after each round |
+| File                                     | Description                                       |
+| ---------------------------------------- | ------------------------------------------------- |
+| `results.json`                           | Race results for every completed round            |
+| `qualifying.json`                        | Qualifying session results (Q1 / Q2 / Q3 times)   |
+| `sprint.json`                            | Sprint race results (sprint weekends only)        |
+| `races/races.json`                       | Race calendar with meeting keys                   |
+| `races/{year}/driverStandings.json`      | Cumulative driver standings after each round      |
 | `races/{year}/constructorStandings.json` | Cumulative constructor standings after each round |
-| `drivers/` | Per-driver career statistics and analytics |
-| `constructors/` | Constructor and driver rosters |
+| `drivers/`                               | Per-driver career statistics and analytics        |
+| `constructors/`                          | Constructor and driver rosters                    |
 
 > **Note:** The script includes automatic retry logic with exponential back-off for rate-limited (429) API responses. A full update run may take a few minutes depending on how many rounds have been completed.
 
@@ -224,7 +224,7 @@ This project pulls data from four sources:
 
 - **[OpenF1 API](https://openf1.org)** — Real-time and historical telemetry, track positioning, and stint data.
 - **[Jolpica API](https://jolpi.ca/)** — Custom local backend parser fetches F1 historical Race results, Driver Standings, and Constructor Standings directly from the reliable Jolpica API framework.
-- **[OpenWeather API](https://openweathermap.org/)** —  Weather data.
+- **[OpenWeather API](https://openweathermap.org/)** — Weather data.
 - **Internal Gateway (`api.php`)** — A custom auto-caching proxy ensures that Formula 2 and F1 Academy data remains completely decoupled and safe from disappearing online, using internal fallbacks over volatile GitHub Pages databases.
 
 ---
@@ -241,7 +241,7 @@ Contributions are welcome! Whether it's improving the codebase, adding features,
 - Special thanks to data providers and API service [OpenF1](https://openf1.org/) that enable access to current and historical F1 data.
 - [Flagpedia](https://flagpedia.net/) — High-quality country flag WebP images used for race locations and driver nationalities.
 - This work is based on "basic Lowpoly F1 Car V1" by arthihalder, available under a Creative Commons Attribution 4.0 International license. [View the model on Sketchfab](https://sketchfab.com/3d-models/basic-lowpoly-f1-car-v1-b4c6a1cfe0154f4d86b39ff3b7f955a1). License details can be found at [CC-BY-4.0](http://creativecommons.org/licenses/by/4.0/).
-  
+
 ---
 
 ## License
