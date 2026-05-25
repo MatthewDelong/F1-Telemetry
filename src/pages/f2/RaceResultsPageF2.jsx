@@ -8,7 +8,7 @@ import { RaceResultItem, Loading, Button } from "../../components";
 import { NavLink } from "react-router-dom";
 import classNames from "classnames";
 
-const Top3Drivers = ({ year, circuitId, index, championshipLevel }) => {
+const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel }) => {
   const [raceName, setRaceName] = useState("");
   const [top3RaceResults, setTop3RaceResults] = useState([]);
   const [top3RaceResults2, setTop3RaceResults2] = useState([]);
@@ -38,7 +38,7 @@ const Top3Drivers = ({ year, circuitId, index, championshipLevel }) => {
   return (
     <div className="relative group w-fit m-auto">
       <NavLink
-        to={`/race-${championshipLevel === "F1A" ? "f1a" : "f2"}/${year}${index}`}
+        to={`/race-${championshipLevel === "F1A" ? "f1a" : "f2"}/${meetingKey}`}
         className={classNames(
           "bg-glow-dark rounded-[2.4rem] p-32 block mt-32 w-fit m-auto",
           "bg-gradient-to-br from-neutral-950/50 via-neutral-800/50 to-neutral-900/50",
@@ -152,9 +152,9 @@ export function RaceResultsPageF2({ selectedYear, championshipLevel }) {
       setIsLoading(true);
       const data = await fetchCircuitData(championshipLevel);
       setFilteredCircuits(
-        Object.values(data).filter(
-          (circuit) => circuit.year === selectedYear.toString(),
-        ),
+        Object.entries(data)
+          .filter(([key, circuit]) => circuit.year === selectedYear.toString())
+          .map(([key, circuit]) => ({ ...circuit, meetingKey: key }))
       );
       setIsLoading(false);
     };
@@ -177,7 +177,7 @@ export function RaceResultsPageF2({ selectedYear, championshipLevel }) {
             <Top3Drivers
               key={circuit.circuitId}
               year={selectedYear}
-              index={index + 1}
+              meetingKey={circuit.meetingKey}
               circuitId={circuit.circuitId}
               championshipLevel={championshipLevel}
             />

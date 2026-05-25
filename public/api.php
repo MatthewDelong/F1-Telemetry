@@ -190,26 +190,29 @@ if ($source === 'f1') {
     $requestPath = ltrim($path, '/');
     $data = fetchUrl($baseUrl . $requestPath, 15, $lastError);
 } else if ($source === 'f1a' || $source === 'f2') {
-    $baseUrls = [];
+    $fileName = basename($pathWithoutQuery);
+    $urlsToTry = [];
     if ($source === 'f1a') {
-        $baseUrls = [
-            'https://raw.githubusercontent.com/MatthewDelong/f1aapi/main/' => 5,
+        $urlsToTry = [
+            'https://raw.githubusercontent.com/MatthewDelong/f1aapi/main/' . $path => 5,
+            'https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1a/' . $fileName => 5,
         ];
     } else {
-        $baseUrls = [
-            'https://raw.githubusercontent.com/MatthewDelong/f2api/main/' => 5,
+        $urlsToTry = [
+            'https://raw.githubusercontent.com/MatthewDelong/f2api/main/' . $path => 5,
+            'https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f2/' . $fileName => 5,
         ];
     }
 
-    foreach ($baseUrls as $baseUrl => $timeout) {
+    foreach ($urlsToTry as $url => $timeout) {
         // Try original path
-        $data = fetchUrl($baseUrl . $path, $timeout, $lastError);
+        $data = fetchUrl($url, $timeout, $lastError);
         if ($data) break;
 
         // Try typo path if applicable
-        if (strpos($path, 'results.json') !== false) {
-            $typoPath = str_replace('results.json', 'resullts.json', $path);
-            $data = fetchUrl($baseUrl . $typoPath, $timeout, $lastError);
+        if (strpos($url, 'results.json') !== false) {
+            $typoUrl = str_replace('results.json', 'resullts.json', $url);
+            $data = fetchUrl($typoUrl, $timeout, $lastError);
             if ($data) break;
         }
     }
