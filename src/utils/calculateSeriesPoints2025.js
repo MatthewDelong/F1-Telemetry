@@ -40,10 +40,15 @@ export const calculateSeriesPoints2025 = (allRaceResults, championshipLevel) => 
     const raceSeason = Number(race?.season);
     const wildcardCodesForSeason = wildCardDrivers[raceSeason] || [];
 
+    // If a round only has race1 results, treat it as a feature race
+    const hasRace1 = Array.isArray(race[config.sprintKey]) && race[config.sprintKey].length > 0;
+    const hasRace2 = Array.isArray(race[config.featureKey]) && race[config.featureKey].length > 0;
+    const isSingleRaceEvent = hasRace1 && !hasRace2;
+
     const raceMap = {
       [config.sprintKey]: {
-        points: config.sprintPoints,
-        fastestLapLimit: config.fastestLapEligibility[config.sprintKey]
+        points: isSingleRaceEvent ? config.featurePoints : config.sprintPoints,
+        fastestLapLimit: isSingleRaceEvent ? config.fastestLapEligibility[config.featureKey] : config.fastestLapEligibility[config.sprintKey]
       },
       [config.featureKey]: {
         points: config.featurePoints,
@@ -123,17 +128,21 @@ export const calculateSeriesPoints2025 = (allRaceResults, championshipLevel) => 
           };
         }
 
-        teamData.scores.forEach(score => {
+        // Sort scores descending by points and take top 2 for constructors (F1A top 2 rule)
+        teamData.scores.sort((a, b) => b.points - a.points);
+        const eligibleScores = championshipLevel === "F1A" ? teamData.scores.slice(0, 2) : teamData.scores;
+
+        eligibleScores.forEach(score => {
           constructorPoints[constructorId].points += score.points;
           constructorPoints[constructorId].driverCodes.add(score.code);
         });
       });
     });
 
-    // Pole bonus for Feature Race (Race 2)
-    const race2Results = race[config.featureKey];
-    if (Array.isArray(race2Results)) {
-      const poleDriver = race2Results.find(d => parseInt(d.grid, 10) === 1);
+    // Pole bonus for Feature Race
+    const poleBonusResults = isSingleRaceEvent ? race[config.sprintKey] : race[config.featureKey];
+    if (Array.isArray(poleBonusResults)) {
+      const poleDriver = poleBonusResults.find(d => parseInt(d.grid, 10) === 1);
       if (poleDriver) {
         const resolvedPoleDriver = poleDriver?.Driver;
         const resolvedPoleConstructor = poleDriver?.Constructor;

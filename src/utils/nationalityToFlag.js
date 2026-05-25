@@ -374,6 +374,7 @@ export const nationalityToFlag = (nationality) => {
   };
 
   const driverCodeMapping = {
+    // F1 Drivers
     "VER": "nl",
     "HAM": "gb",
     "NOR": "gb",
@@ -400,7 +401,45 @@ export const nationalityToFlag = (nationality) => {
     "HAD": "fr",
     "ANT": "it",
     "BOR": "br",
-    "DOO": "au"
+    "DOO": "au",
+    // F1 Academy Drivers
+    "GAD": "nl",
+    "BRU": "gb",
+    "FEL": "at",
+    "PAA": "de",
+    "WES": "us",
+    "LAR": "dk",
+    "BIL": "fr",
+    "FER": "br",
+    "GRA": "es",
+    "LLO": "gb",
+    "PAL": "gb",
+    "SHI": "cn",
+    "STE": "us",
+    "KOS": "nl",
+    "DOB": "us",
+    "ROB": "gb",
+    "FIS": "us",
+    "COU": "us",
+    "JAC": "fr",
+    "PIN": "fr",
+    "PUL": "gb",
+    "WEU": "es",
+    "CHA": "us",
+    "MAR": "es",
+    "BUS": "ph",
+    "BLO": "us",
+    "ALQ": "ae",
+    "SCH": "de",
+    "DEH": "nl",
+    "NOB": "br",
+    "HAU": "ch",
+    "EDG": "gb",
+    "LOV": "fr",
+    "VIL": "se",
+    "CIC": "au",
+    "CHO": "gb",
+    "JUF": "sa"
   };
 
   const key = normalized.toLowerCase();
