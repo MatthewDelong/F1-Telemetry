@@ -388,6 +388,12 @@ app.get("/openf1/*", async (req, res) => {
       timeout: 10000,
     });
 
+    // Intercept 404s from OpenF1 to prevent browser console spam.
+    // OpenF1 uses 404 to indicate empty search results instead of an empty array.
+    if (response.status === 404) {
+      return res.status(200).json([]);
+    }
+
     res.status(response.status).json(response.data);
   } catch (error) {
     console.error("[OpenF1 Proxy] Proxy Error:", error.message);
