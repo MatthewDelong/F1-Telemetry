@@ -399,8 +399,8 @@ const fetchRaceResults = async (selectedYear, raceId, fallbackRaceName = "", fal
       // console.log(data.slice(0,3));
       console.log(`[API Debug] Results for ${selectedYear} Round ${raceId}:`, data.length, "results");
       const results = data.map(result => {
-        const drv = result.Driver || result.driver;
-        const con = result.Constructor || result.constructor;
+        const drv = result.Driver || (result.driver && typeof result.driver !== 'function' ? result.driver : undefined) || {};
+        const con = result.Constructor || (result.constructor && typeof result.constructor !== 'function' ? result.constructor : undefined) || {};
         return {
           driver: {
             ...drv,

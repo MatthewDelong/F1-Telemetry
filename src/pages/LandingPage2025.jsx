@@ -179,8 +179,8 @@ export function LandingPage2025() {
     .sort((a, b) => parseInt(a.position, 10) - parseInt(b.position, 10))
     .map((r) => {
       const pos = parseInt(r.position, 10);
-      const drv = r.driver || r.Driver || {};
-      const con = r.constructor || r.Constructor || {};
+      const drv = r.Driver || (r.driver && typeof r.driver !== 'function' ? r.driver : {}) || {};
+      const con = r.Constructor || (r.constructor && typeof r.constructor !== 'function' ? r.constructor : {}) || {};
 
       const driverCode =
         drv.code ||
