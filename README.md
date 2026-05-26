@@ -193,6 +193,17 @@ python api_update.py
 > **Note:** The script includes automatic retry logic with exponential back-off for rate-limited (429) API responses. A full update run may take a few minutes depending on how many rounds have been completed.
 
 </details>
+
+<details>
+<summary><strong>OpenF1 API Rate Limiting (429) Mitigation</strong></summary>
+
+To ensure uninterrupted telemetry viewing during periods of high OpenF1 API traffic, several client-side strategies have been implemented to reduce and handle `429 Too Many Requests` errors:
+
+- **Exponential Backoff Retries**: Core API calls utilize an automatic retry queue starting with a 1500ms delay, doubling on each subsequent 429 response (up to 7 retries).
+- **Stale Cache Fallback**: The persistent `localStorage` cache handles API outages gracefully. If a network request fails (including terminal 429s), the application will fall back to expired cache data instead of breaking the UI.
+- **Paced Pagination**: Bulk data fetches bypass standard 500-record limits by paginating via timestamps, explicitly injecting a 300ms delay between batch requests to prevent rate limit spikes on the OpenF1 servers.
+
+</details>
 <details>  
 <summary><strong>Hybrid API Proxy Environment</strong></summary>
 
