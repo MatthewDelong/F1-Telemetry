@@ -1,90 +1,310 @@
 {
     "1": {
-        "Driver": { "driverId": "camara", "permanentNumber": "1", "code": "CAM", "givenName": "Rafael", "familyName": "Câmara" },
-        "Constructor": { "constructorId": "invicta", "name": "Invicta Racing" }
+        "Driver": {
+            "driverId": "camara",
+            "permanentNumber": "1",
+            "code": "CAM",
+            "givenName": "Rafael",
+            "familyName": "Câmara",
+            "nationality": "brazilian"
+        },
+        "Constructor": {
+            "constructorId": "invicta",
+            "name": "Invicta Racing"
+        }
     },
     "2": {
-        "Driver": { "driverId": "duerksen", "permanentNumber": "2", "code": "DUR", "givenName": "Joshua", "familyName": "Duerksen" },
-        "Constructor": { "constructorId": "invicta", "name": "Invicta Racing" }
+        "Driver": {
+            "driverId": "duerksen",
+            "permanentNumber": "2",
+            "code": "DUR",
+            "givenName": "Joshua",
+            "familyName": "Duerksen",
+            "nationality": "paraguayan"
+        },
+        "Constructor": {
+            "constructorId": "invicta",
+            "name": "Invicta Racing"
+        }
     },
     "3": {
-        "Driver": { "driverId": "miyata", "permanentNumber": "3", "code": "MIY", "givenName": "Ritomo", "familyName": "Miyata" },
-        "Constructor": { "constructorId": "hitech", "name": "Hitech TGR" }
+        "Driver": {
+            "driverId": "miyata",
+            "permanentNumber": "3",
+            "code": "MIY",
+            "givenName": "Ritomo",
+            "familyName": "Miyata",
+            "nationality": "japanese"
+        },
+        "Constructor": {
+            "constructorId": "hitech",
+            "name": "Hitech TGR"
+        }
     },
     "4": {
-        "Driver": { "driverId": "herta", "permanentNumber": "4", "code": "HER", "givenName": "Colton", "familyName": "Herta" },
-        "Constructor": { "constructorId": "hitech", "name": "Hitech TGR" }
+        "Driver": {
+            "driverId": "herta",
+            "permanentNumber": "4",
+            "code": "HER",
+            "givenName": "Colton",
+            "familyName": "Herta",
+            "nationality": "american"
+        },
+        "Constructor": {
+            "constructorId": "hitech",
+            "name": "Hitech TGR"
+        }
     },
     "5": {
-        "Driver": { "driverId": "leon", "permanentNumber": "5", "code": "LEO", "givenName": "Noel", "familyName": "León" },
-        "Constructor": { "constructorId": "campos", "name": "Campos Racing" }
+        "Driver": {
+            "driverId": "leon",
+            "permanentNumber": "5",
+            "code": "LEO",
+            "givenName": "Noel",
+            "familyName": "León",
+            "nationality": "mexican"
+        },
+        "Constructor": {
+            "constructorId": "campos",
+            "name": "Campos Racing"
+        }
     },
     "6": {
-        "Driver": { "driverId": "tsolov", "permanentNumber": "6", "code": "TSO", "givenName": "Nikola", "familyName": "Tsolov" },
-        "Constructor": { "constructorId": "campos", "name": "Campos Racing" }
+        "Driver": {
+            "driverId": "tsolov",
+            "permanentNumber": "6",
+            "code": "TSO",
+            "givenName": "Nikola",
+            "familyName": "Tsolov",
+            "nationality": "bulgarian"
+        },
+        "Constructor": {
+            "constructorId": "campos",
+            "name": "Campos Racing"
+        }
     },
     "7": {
-        "Driver": { "driverId": "beganovic", "permanentNumber": "7", "code": "BEG", "givenName": "Dino", "familyName": "Beganovic" },
-        "Constructor": { "constructorId": "dams", "name": "DAMS Lucas Oil" }
+        "Driver": {
+            "driverId": "beganovic",
+            "permanentNumber": "7",
+            "code": "BEG",
+            "givenName": "Dino",
+            "familyName": "Beganovic",
+            "nationality": "swedish"
+        },
+        "Constructor": {
+            "constructorId": "dams",
+            "name": "DAMS Lucas Oil"
+        }
     },
     "8": {
-        "Driver": { "driverId": "bilinski", "permanentNumber": "8", "code": "BIL", "givenName": "Roman", "familyName": "Bilinski" },
-        "Constructor": { "constructorId": "dams", "name": "DAMS Lucas Oil" }
+        "Driver": {
+            "driverId": "bilinski",
+            "permanentNumber": "8",
+            "code": "BIL",
+            "givenName": "Roman",
+            "familyName": "Bilinski",
+            "nationality": "polish"
+        },
+        "Constructor": {
+            "constructorId": "dams",
+            "name": "DAMS Lucas Oil"
+        }
     },
     "9": {
-        "Driver": { "driverId": "mini", "permanentNumber": "9", "code": "MIN", "givenName": "Gabriele", "familyName": "Minì" },
-        "Constructor": { "constructorId": "mp", "name": "MP Motorsport" }
+        "Driver": {
+            "driverId": "mini",
+            "permanentNumber": "9",
+            "code": "MIN",
+            "givenName": "Gabriele",
+            "familyName": "Minì",
+            "nationality": "italian"
+        },
+        "Constructor": {
+            "constructorId": "mp",
+            "name": "MP Motorsport"
+        }
     },
     "10": {
-        "Driver": { "driverId": "goethe", "permanentNumber": "10", "code": "GOE", "givenName": "Oliver", "familyName": "Goethe" },
-        "Constructor": { "constructorId": "mp", "name": "MP Motorsport" }
+        "Driver": {
+            "driverId": "goethe",
+            "permanentNumber": "10",
+            "code": "GOE",
+            "givenName": "Oliver",
+            "familyName": "Goethe",
+            "nationality": "german"
+        },
+        "Constructor": {
+            "constructorId": "mp",
+            "name": "MP Motorsport"
+        }
     },
     "11": {
-        "Driver": { "driverId": "montoya", "permanentNumber": "11", "code": "MON", "givenName": "Sebastián", "familyName": "Montoya" },
-        "Constructor": { "constructorId": "prema", "name": "PREMA Racing" }
+        "Driver": {
+            "driverId": "montoya",
+            "permanentNumber": "11",
+            "code": "MON",
+            "givenName": "Sebastián",
+            "familyName": "Montoya",
+            "nationality": "colombian"
+        },
+        "Constructor": {
+            "constructorId": "prema",
+            "name": "PREMA Racing"
+        }
     },
     "12": {
-        "Driver": { "driverId": "boya", "permanentNumber": "12", "code": "BOY", "givenName": "Mari", "familyName": "Boya" },
-        "Constructor": { "constructorId": "prema", "name": "PREMA Racing" }
+        "Driver": {
+            "driverId": "boya",
+            "permanentNumber": "12",
+            "code": "BOY",
+            "givenName": "Mari",
+            "familyName": "Boya",
+            "nationality": "spanish"
+        },
+        "Constructor": {
+            "constructorId": "prema",
+            "name": "PREMA Racing"
+        }
     },
     "14": {
-        "Driver": { "driverId": "stenshorne", "permanentNumber": "14", "code": "STE", "givenName": "Martinius", "familyName": "Stenshorne" },
-        "Constructor": { "constructorId": "rodin", "name": "Rodin Motorsport" }
+        "Driver": {
+            "driverId": "stenshorne",
+            "permanentNumber": "14",
+            "code": "STE",
+            "givenName": "Martinius",
+            "familyName": "Stenshorne",
+            "nationality": "norwegian"
+        },
+        "Constructor": {
+            "constructorId": "rodin",
+            "name": "Rodin Motorsport"
+        }
     },
     "15": {
-        "Driver": { "driverId": "dunne", "permanentNumber": "15", "code": "DUN", "givenName": "Alexander", "familyName": "Dunne" },
-        "Constructor": { "constructorId": "rodin", "name": "Rodin Motorsport" }
+        "Driver": {
+            "driverId": "dunne",
+            "permanentNumber": "15",
+            "code": "DUN",
+            "givenName": "Alexander",
+            "familyName": "Dunne",
+            "nationality": "irish"
+        },
+        "Constructor": {
+            "constructorId": "rodin",
+            "name": "Rodin Motorsport"
+        }
     },
     "16": {
-        "Driver": { "driverId": "maini", "permanentNumber": "16", "code": "MAI", "givenName": "Kush", "familyName": "Maini" },
-        "Constructor": { "constructorId": "art", "name": "ART Grand Prix" }
+        "Driver": {
+            "driverId": "maini",
+            "permanentNumber": "16",
+            "code": "MAI",
+            "givenName": "Kush",
+            "familyName": "Maini",
+            "nationality": "indian"
+        },
+        "Constructor": {
+            "constructorId": "art",
+            "name": "ART Grand Prix"
+        }
     },
     "17": {
-        "Driver": { "driverId": "inthraphuvasak", "permanentNumber": "17", "code": "TIN", "givenName": "Tasanapol", "familyName": "Inthraphuvasak" },
-        "Constructor": { "constructorId": "art", "name": "ART Grand Prix" }
+        "Driver": {
+            "driverId": "inthraphuvasak",
+            "permanentNumber": "17",
+            "code": "TIN",
+            "givenName": "Tasanapol",
+            "familyName": "Inthraphuvasak",
+            "nationality": "thai"
+        },
+        "Constructor": {
+            "constructorId": "art",
+            "name": "ART Grand Prix"
+        }
     },
     "20": {
-        "Driver": { "driverId": "fittipaldi_jr", "permanentNumber": "20", "code": "FIT", "givenName": "Emerson", "familyName": "Fittipaldi Jr." },
-        "Constructor": { "constructorId": "aix", "name": "AIX Racing" }
+        "Driver": {
+            "driverId": "fittipaldi_jr",
+            "permanentNumber": "20",
+            "code": "FIT",
+            "givenName": "Emerson",
+            "familyName": "Fittipaldi Jr.",
+            "nationality": "brazilian"
+        },
+        "Constructor": {
+            "constructorId": "aix",
+            "name": "AIX Racing"
+        }
     },
     "21": {
-        "Driver": { "driverId": "shields", "permanentNumber": "21", "code": "SHI", "givenName": "Cian", "familyName": "Shields" },
-        "Constructor": { "constructorId": "aix", "name": "AIX Racing" }
+        "Driver": {
+            "driverId": "shields",
+            "permanentNumber": "21",
+            "code": "SHI",
+            "givenName": "Cian",
+            "familyName": "Shields",
+            "nationality": "british"
+        },
+        "Constructor": {
+            "constructorId": "aix",
+            "name": "AIX Racing"
+        }
     },
     "22": {
-        "Driver": { "driverId": "varrone", "permanentNumber": "22", "code": "VAR", "givenName": "Nicolás", "familyName": "Varrone" },
-        "Constructor": { "constructorId": "van_amersfoort", "name": "Van Amersfoort Racing" }
+        "Driver": {
+            "driverId": "varrone",
+            "permanentNumber": "22",
+            "code": "VAR",
+            "givenName": "Nicolás",
+            "familyName": "Varrone",
+            "nationality": "argentine"
+        },
+        "Constructor": {
+            "constructorId": "van_amersfoort",
+            "name": "Van Amersfoort Racing"
+        }
     },
     "23": {
-        "Driver": { "driverId": "villagomez", "permanentNumber": "23", "code": "VIL", "givenName": "Rafael", "familyName": "Villagómez" },
-        "Constructor": { "constructorId": "van_amersfoort", "name": "Van Amersfoort Racing" }
+        "Driver": {
+            "driverId": "villagomez",
+            "permanentNumber": "23",
+            "code": "VIL",
+            "givenName": "Rafael",
+            "familyName": "Villagómez",
+            "nationality": "mexican"
+        },
+        "Constructor": {
+            "constructorId": "van_amersfoort",
+            "name": "Van Amersfoort Racing"
+        }
     },
     "24": {
-        "Driver": { "driverId": "van_hoepen", "permanentNumber": "24", "code": "VHO", "givenName": "Laurens", "familyName": "van Hoepen" },
-        "Constructor": { "constructorId": "trident", "name": "Trident" }
+        "Driver": {
+            "driverId": "van_hoepen",
+            "permanentNumber": "24",
+            "code": "VHO",
+            "givenName": "Laurens",
+            "familyName": "van Hoepen",
+            "nationality": "dutch"
+        },
+        "Constructor": {
+            "constructorId": "trident",
+            "name": "Trident"
+        }
     },
     "25": {
-        "Driver": { "driverId": "bennett", "permanentNumber": "25", "code": "BEN", "givenName": "John", "familyName": "Bennett" },
-        "Constructor": { "constructorId": "trident", "name": "Trident" }
+        "Driver": {
+            "driverId": "bennett",
+            "permanentNumber": "25",
+            "code": "BEN",
+            "givenName": "John",
+            "familyName": "Bennett",
+            "nationality": "british"
+        },
+        "Constructor": {
+            "constructorId": "trident",
+            "name": "Trident"
+        }
     }
 }

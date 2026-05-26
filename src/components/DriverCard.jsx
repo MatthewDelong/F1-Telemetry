@@ -248,8 +248,8 @@ export const DriverCard = (props) => {
         </div>
         {driverImage}
         <div className="grow py-1 pl-[10px] pr-12 text-right flex flex-col justify-center relative">
-          <div className="flex items-center justify-end gap-12">
-            <span className="heading-4 max-sm:pl-32 sm:pl-60 uppercase font-black italic tracking-tighter text-[18px]">
+          <div className="flex items-center justify-end gap-12 relative z-10">
+            <span className="heading-4 max-sm:pl-32 sm:pl-32 uppercase font-black italic tracking-tighter text-[18px] drop-shadow-md">
               {driver.code}
             </span>
             <div className="status-icons-wrapper flex flex-col items-center justify-center gap-[1px] min-w-[20px]">

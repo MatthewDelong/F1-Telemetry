@@ -241,13 +241,13 @@ export function AboutPage2025() {
             Stay Updated with the Latest <br /> F1 Academy and Formula 2 Results
           </h2>
         </motion.div>
-        <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-center max-md:gap-32">
-          <div className="w-full md:w-1/2 flex flex-col items-center mb-24">
+        <div className="w-full max-w-[1600px] mx-auto flex flex-col xl:flex-row items-center justify-center gap-16 xl:gap-32 px-4 sm:px-8 xl:px-16">
+          <div className="w-full xl:w-1/2 flex flex-col items-center mb-24">
             <F1ALogo height={48} className="mx-auto mb-20" />
             {leagueHeader("F1A", f1aRaceData?.raceName)}
-            <div className="relative w-fit flex flex-col items-center mb-32">
-              <div className="absolute inset-y-0 left-8 right-8 bg-gradient-to-br from-fuchsia-600 via-blue-600 to-blue-400 rounded-lg z-0" />
-              <div className="relative z-10">
+            <div className="relative w-[85%] max-w-[400px] sm:max-w-none sm:w-fit flex flex-col items-center mb-32">
+              <div className="absolute inset-y-0 left-0 right-0 sm:left-8 sm:right-8 bg-gradient-to-br from-fuchsia-600 via-blue-600 to-blue-400 rounded-lg z-0" />
+              <div className="relative z-10 w-full px-4 sm:px-16">
                 <motion.img
                   className="w-[300px] absolute -left-32 z-0 max-sm:hidden pointer-events-none"
                   src="/images/plusPatternsPurple.png"
@@ -262,12 +262,12 @@ export function AboutPage2025() {
             </div>
             {leagueButtons("F1A")}
           </div>
-          <div className="w-full md:w-1/2 flex flex-col items-center mb-24">
+          <div className="w-full xl:w-1/2 flex flex-col items-center mb-24">
             <F2Logo height={48} className="mx-auto mb-20" />
             {leagueHeader("F2", f2RaceData?.raceName)}
-            <div className="relative w-fit flex flex-col items-center mb-32">
-              <div className="absolute inset-y-0 left-8 right-8 bg-gradient-to-br from-blue-700 to-blue-900 rounded-lg z-0" />
-              <div className="relative z-10">
+            <div className="relative w-[85%] max-w-[400px] sm:max-w-none sm:w-fit flex flex-col items-center mb-32">
+              <div className="absolute inset-y-0 left-0 right-0 sm:left-8 sm:right-8 bg-gradient-to-br from-blue-700 to-blue-900 rounded-lg z-0" />
+              <div className="relative z-10 w-full px-4 sm:px-16">
                 <motion.img
                   className="w-[300px] absolute -left-32 z-0 max-sm:hidden pointer-events-none"
                   src="/images/plusPatterns.png"

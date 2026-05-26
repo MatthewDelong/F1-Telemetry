@@ -82,6 +82,7 @@ export function DriverStandingsF1a({ selectedYear, championshipLevel }) {
                   firstName={standing.givenName}
                   lastName={standing.familyName}
                   year={selectedYear}
+                  nationality={standing.nationality}
                   showDivider
                   index={index}
                   showStanding
