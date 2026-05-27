@@ -56,7 +56,7 @@ export const Footer2025 = ({ className }) => {
 
         {/* Right side: Page path links */}
         <div className="flex flex-col md:flex-row md:items-start gap-16 uppercase">
-          <div className="flex flex-col gap-8 p-16 rounded-lg glass-dark min-w-[200px]">
+          <div className="flex flex-col gap-8 p-16 rounded-lg glass-dark min-w-[250px]">
             <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
               Formula 1
             </p>
@@ -65,7 +65,7 @@ export const Footer2025 = ({ className }) => {
               href="https://www.formula1.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-brand-red-700 hover:translate-x-2 transition-all duration-300 block text-sm"
+              className="hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block text-sm"
             >
               Official Website
             </a>
@@ -83,7 +83,7 @@ export const Footer2025 = ({ className }) => {
             </a>
           </div>
 
-          <div className="flex flex-col gap-8 p-16 rounded-lg glass-dark min-w-[200px]">
+          <div className="flex flex-col gap-8 p-16 rounded-lg glass-dark min-w-[250px]">
             <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
               Formula 2
             </p>
@@ -110,7 +110,7 @@ export const Footer2025 = ({ className }) => {
             </a>
           </div>
 
-          <div className="flex flex-col gap-8 p-16 rounded-lg glass-dark min-w-[200px]">
+          <div className="flex flex-col gap-8 p-16 rounded-lg glass-dark min-w-[250px]">
             <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
               F1 Academy
             </p>
@@ -119,7 +119,7 @@ export const Footer2025 = ({ className }) => {
               href="https://www.f1academy.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-brand-red-700 hover:translate-x-2 transition-all duration-300 block text-sm"
+              className="hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block text-sm"
             >
               Official Website
             </a>
@@ -138,7 +138,16 @@ export const Footer2025 = ({ className }) => {
           </div>
 
           <div className="flex flex-col gap-8 p-16 rounded-lg glass-dark min-w-[200px]">
-            <LegalLinks />
+            <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
+              Legal
+            </p>
+            <div className="divider-glow-dark border-t border-neutral-700/50" />
+            <Link
+              to="/privacy-policy"
+              className="hover:text-brand-yellow-500 hover:translate-x-2 transition-all duration-300 block text-sm"
+            >
+              Privacy Policy
+            </Link>
           </div>
         </div>
       </div>

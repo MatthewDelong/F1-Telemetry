@@ -10,42 +10,42 @@ export const F1Links = ({ accordion = false, onClick }) => {
     <>
       <Link
         to="/race-results"
-        className="hover:text-brand-blue-400 hover:translate-x-4 transition-all duration-200 max-md:text-lg text-xl block py-2"
+        className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
         onClick={onClick}
       >
         {currentYear} Race Results
       </Link>
       <Link
         to="/constructor-standings"
-        className="hover:text-brand-blue-400 hover:translate-x-4 transition-all duration-200 max-md:text-lg text-xl block py-2"
+        className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
         onClick={onClick}
       >
         Constructor Standings
       </Link>
       <Link
         to="/driver-standings"
-        className="hover:text-brand-blue-400 hover:translate-x-4 transition-all duration-200 max-md:text-lg text-xl block py-2"
+        className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
         onClick={onClick}
       >
         Driver Standings
       </Link>
       <Link
         to="/driver-comparison"
-        className="hover:text-brand-blue-400 hover:translate-x-4 transition-all duration-200 max-md:text-lg text-xl block py-2"
+        className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
         onClick={onClick}
       >
         Driver Comparisons
       </Link>
       <Link
         to="/teammates-comparison"
-        className="hover:text-brand-blue-400 hover:translate-x-4 transition-all duration-200 max-md:text-lg text-xl block py-2"
+        className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
         onClick={onClick}
       >
         Teammate Comparisons
       </Link>
       <Link
         to="/ar-viewer"
-        className="hover:text-brand-blue-400 hover:translate-x-4 transition-all duration-200 max-md:text-lg text-xl block py-2"
+        className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
         onClick={onClick}
       >
         Team History
@@ -67,7 +67,7 @@ export const F1Links = ({ accordion = false, onClick }) => {
         <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
           Formula 1
         </p>
-        <div className="divider-glow-dark mt-8 border-t border-neutral-700" />
+        <div className="divider-glow-dark mt-8 mb-12 border-t border-neutral-700/50" />
       </div>
       {links}
     </>
@@ -79,21 +79,21 @@ export const F1ALinks = ({ accordion = false, onClick }) => {
     <>
       <Link
         to="/f1a/race-results"
-        className="hover:text-brand-blue-400 hover:translate-x-4 transition-all duration-200 max-md:text-lg text-xl block py-2"
+        className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
         onClick={onClick}
       >
         {currentYear} Race Results
       </Link>
       <Link
         to="/f1a/constructor-standings"
-        className="hover:text-brand-blue-400 hover:translate-x-4 transition-all duration-200 max-md:text-lg text-xl block py-2"
+        className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
         onClick={onClick}
       >
         Constructor Standings
       </Link>
       <Link
         to="/f1a/driver-standings"
-        className="hover:text-brand-blue-400 hover:translate-x-4 transition-all duration-200 max-md:text-lg text-xl block py-2"
+        className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
         onClick={onClick}
       >
         Driver Standings
@@ -115,7 +115,7 @@ export const F1ALinks = ({ accordion = false, onClick }) => {
         <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
           F1 Academy
         </p>
-        <div className="divider-glow-dark mt-8 border-t border-neutral-700" />
+        <div className="divider-glow-dark mt-8 mb-12 border-t border-neutral-700/50" />
       </div>
       {links}
     </>
@@ -127,21 +127,21 @@ export const F2Links = ({ accordion = false, onClick }) => {
     <>
       <Link
         to="/f2/race-results"
-        className="hover:text-brand-blue-400 hover:translate-x-4 transition-all duration-200 max-md:text-lg text-xl block py-2"
+        className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
         onClick={onClick}
       >
         {currentYear} Race Results
       </Link>
       <Link
         to="/f2/constructor-standings"
-        className="hover:text-brand-blue-400 hover:translate-x-4 transition-all duration-200 max-md:text-lg text-xl block py-2"
+        className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
         onClick={onClick}
       >
         Constructor Standings
       </Link>
       <Link
         to="/f2/driver-standings"
-        className="hover:text-brand-blue-400 hover:translate-x-4 transition-all duration-200 max-md:text-lg text-xl block py-2"
+        className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
         onClick={onClick}
       >
         Driver Standings
@@ -163,7 +163,7 @@ export const F2Links = ({ accordion = false, onClick }) => {
         <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
           Formula 2
         </p>
-        <div className="divider-glow-dark mt-8 border-t border-neutral-700" />
+        <div className="divider-glow-dark mt-8 mb-12 border-t border-neutral-700/50" />
       </div>
       {links}
     </>
@@ -174,7 +174,7 @@ export const LegalLinks = ({ accordion = false, onClick }) => {
     <>
       <Link
         to="/privacy-policy"
-        className="hover:text-brand-yellow-500 hover:translate-x-4 transition-all duration-200 max-md:text-lg text-xl block py-2"
+        className="text-m leading-relaxed text-neutral-400 hover:text-brand-yellow-500 hover:translate-x-2 transition-all duration-300 block"
         onClick={onClick}
       >
         Privacy Policy
@@ -195,7 +195,7 @@ export const LegalLinks = ({ accordion = false, onClick }) => {
         <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
           Legal
         </p>
-        <div className="divider-glow-dark mt-8 border-t border-neutral-700" />
+        <div className="divider-glow-dark mt-8 mb-12 border-t border-neutral-700/50" />
       </div>
       {links}
     </>

@@ -167,7 +167,7 @@ export const Header = () => {
                 About
               </Link>
             </div>
-            <div className="relative w-max uppercase text-lg" ref={resultsRef}>
+            <div className="relative w-max text-lg" ref={resultsRef}>
               <button
                 className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs"
                 onClick={() => {
@@ -219,10 +219,7 @@ export const Header = () => {
                 </div>
               </div>
             </div>
-            <div
-              className="relative w-max text-lg"
-              ref={comparisonsRef}
-            >
+            <div className="relative w-max text-lg" ref={comparisonsRef}>
               <button
                 className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs"
                 onClick={() => {
@@ -254,7 +251,7 @@ export const Header = () => {
                     <div className="divider-glow-dark mt-8 mb-12 border-t border-neutral-700/50" />
                     <NavLink
                       to="/teammates-comparison"
-                      className="text-sm leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
+                      className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
                       onClick={() => {
                         setComparisonsDropdownOpen(false);
                         isOpen && setIsOpen(false);
@@ -271,7 +268,7 @@ export const Header = () => {
                     <div className="divider-glow-dark mt-8 mb-12 border-t border-neutral-700/50" />
                     <NavLink
                       to="/driver-comparison"
-                      className="text-sm leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
+                      className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
                       onClick={() => {
                         setComparisonsDropdownOpen(false);
                         isOpen && setIsOpen(false);
