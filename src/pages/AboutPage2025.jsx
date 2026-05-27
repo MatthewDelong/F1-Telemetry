@@ -206,7 +206,7 @@ export function AboutPage2025() {
     <div className="text-center drop-shadow-[0_2px_6px_rgba(0,0,0,0.75)]">
       <p className="text-lg tracking-xs uppercase gradient-text-light">
         Latest {championshipLevel}{" "}
-        {championshipLevel === "F1A" ? "Academy " : ""}Race Results
+        {championshipLevel === "F1" ? "Academy " : ""}Race Results
       </p>
       <p className="font-display text-3xl leading-none mb-24 mt-4">
         {selectedYear} {raceName}
@@ -244,7 +244,7 @@ export function AboutPage2025() {
         <div className="w-full max-w-[1600px] mx-auto flex flex-col xl:flex-row items-center justify-center gap-16 xl:gap-32 px-4 sm:px-8 xl:px-16">
           <div className="w-full xl:w-1/2 flex flex-col items-center mb-24">
             <F1ALogo height={48} className="mx-auto mb-20" />
-            {leagueHeader("F1A", f1aRaceData?.raceName)}
+            {leagueHeader("F1", f1aRaceData?.raceName)}
             <div className="relative w-[85%] max-w-[400px] sm:max-w-none sm:w-fit flex flex-col items-center mb-32">
               <div className="absolute inset-y-0 left-0 right-0 sm:left-8 sm:right-8 bg-gradient-to-br from-fuchsia-600 via-blue-600 to-blue-400 rounded-lg z-0" />
               <div className="relative z-10 w-full px-4 sm:px-16">
