@@ -169,7 +169,7 @@ export function AboutPage2025() {
           as="button"
           onClick={() => navigateToF1aRaceResult(championshipLevel, data)}
           size="md"
-          className="mx-16 sm:mx-auto mb-32"
+          className="mx-auto mb-32"
         >
           View Full Results
         </Button>
