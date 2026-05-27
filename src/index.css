@@ -13,6 +13,10 @@
   --color-brand-blue-400: #3b82f6;
   --color-brand-blue-500: #2563eb;
   --color-brand-blue-600: #1d4ed8;
+  --color-brand-yellow-500: #fffb05ff;
+  --color-brand-red-400: #f87171;
+  --color-brand-red-500: #ef4444;
+  --color-brand-red-700: #dc2626;
   --color-deep-blue-500: #1a1b41;
   --color-fastest-lap-plum: #5f0b84;
 
@@ -202,7 +206,11 @@ button:hover {
 }
 
 .primary-button:hover {
-  background-image: linear-gradient(to bottom right, var(--color-brand-blue-500), var(--color-brand-blue-300));
+  background-image: linear-gradient(
+    to bottom right,
+    var(--color-brand-blue-500),
+    var(--color-brand-blue-300)
+  );
 }
 
 /* backgrounds */

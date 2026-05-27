@@ -174,7 +174,7 @@ export const LegalLinks = ({ accordion = false, onClick }) => {
     <>
       <Link
         to="/privacy-policy"
-        className="hover:text-brand-blue-400 hover:translate-x-4 transition-all duration-200 max-md:text-lg text-xl block py-2"
+        className="hover:text-brand-yellow-500 hover:translate-x-4 transition-all duration-200 max-md:text-lg text-xl block py-2"
         onClick={onClick}
       >
         Privacy Policy
