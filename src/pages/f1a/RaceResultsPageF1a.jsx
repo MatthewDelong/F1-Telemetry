@@ -51,7 +51,7 @@ const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel }) => {
         <div className="flex flex-col md:flex-row items-center md:justify-center gap-16">
           <div>
             <p className="uppercase text-sm text-center text-neutral-400 tracking-sm leading-none mb-24">
-              Race 1 Results
+              Reverse Grid Race
             </p>
             {hasResults ? (
               <ul className="bg-glow-dark rounded-[2.4rem] race-results__list">
@@ -83,7 +83,7 @@ const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel }) => {
           {hasResults && top3RaceResults2.length > 1 && (
             <div>
               <p className="uppercase text-sm text-center text-neutral-400 tracking-sm leading-none mb-24">
-                Race 2 Results
+                Feature Race
               </p>
               <ul className="bg-glow-dark rounded-[2.4rem] race-results__list">
                 {top3RaceResults2.map((result, index) => (
@@ -155,7 +155,7 @@ export function RaceResultsPageF1a({ selectedYear, championshipLevel }) {
       setFilteredCircuits(
         Object.entries(data)
           .filter(([key, circuit]) => circuit.year === selectedYear.toString())
-          .map(([key, circuit]) => ({ ...circuit, meetingKey: key }))
+          .map(([key, circuit]) => ({ ...circuit, meetingKey: key })),
       );
       setIsLoading(false);
     };

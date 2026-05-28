@@ -114,8 +114,9 @@ export function AboutPage2025() {
   const f1aH3Classes = " text-sm tracking-xs uppercase text-center mb-8";
 
   const latestF1aResultsLayout = (championshipLevel, data) => {
-    const race1Label = championshipLevel === "F2" ? "Sprint Race" : "Race 1";
-    const race2Label = championshipLevel === "F2" ? "Race" : "Race 2";
+    const race1Label =
+      championshipLevel === "F2" ? "Sprint Race" : "Reverse Grid Race";
+    const race2Label = championshipLevel === "F2" ? "Race" : "Feature Race";
 
     return (
       <div className="relative w-full max-w-[700px]">
