@@ -3,7 +3,7 @@ import React, { useRef, useEffect } from "react";
 /**
  * LumaKeyVideo component
  * Renders a "matted" video (RGB on left, Alpha Matte on right) with transparency using Canvas.
- * 
+ *
  * @param {string} src - Path to the matted MP4 file.
  * @param {string} poster - Path to the poster image.
  * @param {string} className - Additional CSS classes.
@@ -35,10 +35,13 @@ export const LumaKeyVideo = ({
     if (!video || !canvas) return;
 
     const ctx = canvas.getContext("2d", { alpha: true });
-    
+
     // Hidden buffer canvas for processing
     const buffer = document.createElement("canvas");
-    const bctx = buffer.getContext("2d", { alpha: false, willReadFrequently: true });
+    const bctx = buffer.getContext("2d", {
+      alpha: false,
+      willReadFrequently: true,
+    });
 
     // Pre-load poster image for fallback
     let posterImg = null;
@@ -49,10 +52,10 @@ export const LumaKeyVideo = ({
 
     const render = () => {
       if (!video) return;
-      
+
       // If video is not ready, paused, or ended, determine if we should draw the poster
       const isNotPlaying = video.paused || video.ended || video.readyState < 2;
-      
+
       if (isNotPlaying) {
         // Only draw poster if we haven't rendered a frame yet
         if (!hasRenderedRef.current && posterImg && posterImg.complete) {
@@ -89,7 +92,7 @@ export const LumaKeyVideo = ({
         // 2. Get pixel data from buffer
         const imageData = bctx.getImageData(0, 0, fullWidth, h);
         const fullData = imageData.data;
-        
+
         // 3. Create output image data (left half size)
         const output = ctx.createImageData(w, h);
         const outData = output.data;
@@ -101,15 +104,15 @@ export const LumaKeyVideo = ({
           const srcRowStart = i * fullWidth * 4;
           const outRowStart = i * w * 4;
           const alphaOffset = w * 4;
-          
+
           for (let j = 0; j < w; j++) {
-            const outPixelStart = outRowStart + (j * 4);
-            const srcPixelStart = srcRowStart + (j * 4);
-            
+            const outPixelStart = outRowStart + j * 4;
+            const srcPixelStart = srcRowStart + j * 4;
+
             outData[outPixelStart] = fullData[srcPixelStart];
-            outData[outPixelStart+1] = fullData[srcPixelStart+1];
-            outData[outPixelStart+2] = fullData[srcPixelStart+2];
-            outData[outPixelStart+3] = fullData[srcPixelStart + alphaOffset];
+            outData[outPixelStart + 1] = fullData[srcPixelStart + 1];
+            outData[outPixelStart + 2] = fullData[srcPixelStart + 2];
+            outData[outPixelStart + 3] = fullData[srcPixelStart + alphaOffset];
           }
         }
 
@@ -128,7 +131,7 @@ export const LumaKeyVideo = ({
 
     video.addEventListener("play", handlePlay);
     video.addEventListener("playing", handlePlay);
-    
+
     if (!video.paused || video.readyState >= 2) {
       handlePlay();
     }
@@ -146,12 +149,15 @@ export const LumaKeyVideo = ({
   // Handle src change manually if it ever changes
   useEffect(() => {
     if (videoRef.current && videoRef.current.src !== src) {
-        videoRef.current.src = src;
+      videoRef.current.src = src;
     }
   }, [src]);
 
   return (
-    <div className={`relative ${className}`} style={{ lineHeight: 0, ...style }}>
+    <div
+      className={`relative ${className}`}
+      style={{ lineHeight: 0, ...style }}
+    >
       <video
         ref={videoRef}
         src={src}
@@ -161,15 +167,15 @@ export const LumaKeyVideo = ({
         muted={muted}
         playsInline={playsInline}
         crossOrigin="anonymous"
-        style={{ position: 'absolute', opacity: 0, pointerEvents: 'none', width: '1px', height: '1px' }}
+        style={{
+          position: "absolute",
+          opacity: 0,
+          pointerEvents: "none",
+          width: "1px",
+          height: "1px",
+        }}
       />
-      <canvas
-        ref={canvasRef}
-        className="w-full h-auto"
-        {...props}
-      />
+      <canvas ref={canvasRef} className="w-full h-auto" {...props} />
     </div>
   );
 };
-
-

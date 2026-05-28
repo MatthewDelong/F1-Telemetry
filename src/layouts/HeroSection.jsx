@@ -4,7 +4,6 @@ import { LumaKeyVideo } from "../components";
 
 const HeroSection = ({ layoutMobile, container }) => {
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-20% 0px" });
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -24,7 +23,7 @@ const HeroSection = ({ layoutMobile, container }) => {
   return (
     <section
       ref={sectionRef}
-      className="bg-black relative h-[100dvh] snap-start mb-[-1px] flex items-center justify-center z-10"
+      className="bg-black relative h-[100dvh] snap-start flex items-center justify-center z-10"
     >
       {/* Background Video */}
       <video
@@ -47,7 +46,8 @@ const HeroSection = ({ layoutMobile, container }) => {
       {/* Animated Title (Triggers when in view, moves on scroll) */}
       <motion.h1
         initial={{ opacity: 0, y: 50 }}
-        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-20% 0px" }}
         style={{ y: yTitle }}
         transition={{ duration: 1, ease: "easeOut" }}
         className="text-center heading-1 absolute top-[14%] sm:top-[18%] mx-auto w-3/4 z-10"
@@ -58,7 +58,8 @@ const HeroSection = ({ layoutMobile, container }) => {
       {/* Left Decoration (Triggers when in view, moves on scroll) */}
       <motion.img
         initial={{ opacity: 0, scale: 0.8 }}
-        animate={isInView ? { opacity: 1, scale: 1 } : {}}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true, margin: "-20% 0px" }}
         style={{ y: yDecorLeft }}
         transition={{ duration: 1, ease: "easeOut" }}
         className="w-[300px] absolute right-32 top-1/2 -translate-y-1/2 z-0"
@@ -69,7 +70,8 @@ const HeroSection = ({ layoutMobile, container }) => {
       {/* Right Decoration (Triggers when in view, moves on scroll) */}
       <motion.img
         initial={{ opacity: 0, scale: 0.8 }}
-        animate={isInView ? { opacity: 1, scale: 1 } : {}}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true, margin: "-20% 0px" }}
         style={{ y: yDecorRight }}
         transition={{ duration: 1, ease: "easeOut" }}
         className="w-[300px] absolute left-32 top-1/2 -translate-y-1/2 z-0 max-sm:hidden"

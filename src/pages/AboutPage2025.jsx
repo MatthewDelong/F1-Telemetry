@@ -24,10 +24,10 @@ export function AboutPage2025() {
   const selectedYear = currentYear;
 
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
+    container: snapContainerRef,
   });
   const yDecoration2 = useTransform(scrollYProgress, [0, 1], [150, -50]);
 
@@ -235,7 +235,8 @@ export function AboutPage2025() {
         <motion.div
           className="max-w-none mx-auto text-center mb-64"
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <h2 className="heading-3 mb-16">
@@ -254,7 +255,8 @@ export function AboutPage2025() {
                   src="/images/plusPatternsPurple.png"
                   alt=""
                   initial={{ opacity: 0, scale: 0.8 }}
-                  animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
                   transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
                   style={{ y: yDecoration2 }}
                 />
@@ -274,7 +276,8 @@ export function AboutPage2025() {
                   src="/images/plusPatterns.png"
                   alt=""
                   initial={{ opacity: 0, scale: 0.8 }}
-                  animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
                   transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
                   style={{ y: yDecoration2 }}
                 />

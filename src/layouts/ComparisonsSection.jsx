@@ -7,7 +7,6 @@ import classNames from "classnames";
 const ComparisonsSection = ({ layoutMobile, container }) => {
   const navigate = useNavigate();
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   // Get scroll progress for smooth parallax effect
   const { scrollYProgress } = useScroll({
@@ -79,7 +78,8 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
       <motion.div
         className="max-w-screen-xl mx-auto text-center"
         initial={{ opacity: 0, scale: 0.8 }}
-        animate={isInView ? { opacity: 1, scale: 1 } : {}}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         // style={{ y: yHeading }}
       >
@@ -99,9 +99,8 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
           <motion.div
             className="flex flex-row items-center justify-center relative"
             initial={{ opacity: 0, scale: 0.8 }}
-            animate={
-              isInView ? { opacity: 1, scale: layoutMobile ? 1.0 : 1 } : {}
-            }
+            whileInView={{ opacity: 1, scale: layoutMobile ? 1.0 : 1 }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: "easeOut" }}
             style={{ y: computerImages }}
           >
@@ -137,7 +136,8 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
           src="/images/arrowsBGthin.png"
           alt=""
           initial={{ opacity: 0, scale: 1.5 }}
-          animate={isInView ? { opacity: 1, scale: 1.1 } : {}}
+          whileInView={{ opacity: 1, scale: 1.1 }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1.2, ease: "easeOut" }}
           style={{ y: yDecorationBG }}
         />
@@ -146,7 +146,8 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
           src="/images/plusPatterns.png"
           alt=""
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
           style={{ y: yDecoration1 }}
         />
@@ -155,7 +156,8 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
           src="/images/plusPatterns.png"
           alt=""
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
           style={{ y: yDecoration2 }}
         />
@@ -164,7 +166,8 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
           src="/images/plusPatterns.png"
           alt=""
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
           style={{ y: yDecoration3 }}
         />

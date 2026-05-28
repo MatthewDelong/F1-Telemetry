@@ -7,7 +7,6 @@ import classNames from "classnames";
 
 const TelemetrySection = ({ layoutMobile, onClick, container }) => {
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -38,7 +37,8 @@ const TelemetrySection = ({ layoutMobile, onClick, container }) => {
               "md:bg-gradient-to-b md:from-neutral-900 md:to-neutral-900/10",
             )}
             initial={{ opacity: 0, scale: 0.8 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             style={{ y: yTextContent }}
           >
@@ -68,7 +68,8 @@ const TelemetrySection = ({ layoutMobile, onClick, container }) => {
           <motion.div
             className="w-full sm:w-2/3 ar-experience-section__phone z-10 md:ml-[-40px]"
             initial={{ opacity: 0, scale: 1.2 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <LumaKeyVideo
@@ -84,7 +85,8 @@ const TelemetrySection = ({ layoutMobile, onClick, container }) => {
             src={`${"/images/plusPatterns.png"}`}
             alt=""
             initial={{ opacity: 0, scale: 0.8 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             style={{ y: yTextContent }}
           />

@@ -6,7 +6,6 @@ import { Button, LumaKeyVideo } from "../components";
 const ArSection = ({ layoutMobile, container }) => {
   const navigate = useNavigate();
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -33,7 +32,8 @@ const ArSection = ({ layoutMobile, container }) => {
           <motion.div
             className="w-full sm:w-3/4 flex flex-col max-sm:items-center gap-16 relative z-10 sm:bg-gradient-to-b sm:from-neutral-900 sm:to-neutral-900/10 p-32 sm:py-24 sm:pl-32 sm:pr-64 sm:mr-[-40px] sm:rounded-xlarge max-sm:text-center"
             initial={{ opacity: 0, scale: 0.8 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             style={{ y: yTextContent }}
           >
@@ -83,7 +83,8 @@ const ArSection = ({ layoutMobile, container }) => {
           <motion.div
             className="w-2/3 sm:w-1/4 ar-experience-section__phone z-10"
             initial={{ opacity: 0, scale: 1.2 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <LumaKeyVideo

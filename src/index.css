@@ -148,7 +148,6 @@ body::-webkit-scrollbar {
   overflow-y: auto;
   overflow-x: hidden;
   scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable;
 }
