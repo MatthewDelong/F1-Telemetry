@@ -114,13 +114,20 @@ export function AboutPage2025() {
   const f1aH3Classes = " text-sm tracking-xs uppercase text-center mb-8";
 
   const latestF1aResultsLayout = (championshipLevel, data) => {
-    const race1Label =
-      championshipLevel === "F2" ? "Sprint Race" : "Reverse Grid Race";
-    const race2Label = championshipLevel === "F2" ? "Race" : "Feature Race";
+    const hasRace3 = data?.race3?.length > 0;
+    let race1Label = championshipLevel === "F2" ? "Sprint Race" : "Reverse Grid Race";
+    let race2Label = championshipLevel === "F2" ? "Feature Race" : "Feature Race";
+    let race3Label = "Feature Race";
+
+    if (hasRace3) {
+      race1Label = "Opening Race";
+      race2Label = championshipLevel === "F2" ? "Sprint Race" : "Reverse Grid Race";
+      race3Label = "Feature Race";
+    }
 
     return (
-      <div className="relative w-full max-w-[700px]">
-        <div className="flex flex-col sm:flex-row gap-8 items-center py-[26px]">
+      <div className={`relative w-full ${hasRace3 ? "max-w-[1050px]" : "max-w-[700px]"}`}>
+        <div className="flex flex-col sm:flex-row gap-8 items-center sm:items-start py-[26px]">
           {data?.race1?.length > 0 && (
             <div className={f1aWrapperClasses}>
               <h3 className={f1aH3Classes}>{race1Label}</h3>
@@ -148,6 +155,28 @@ export function AboutPage2025() {
               <h3 className={f1aH3Classes}>{race2Label}</h3>
               <ul className={f1aListClasses}>
                 {data.race2.map((result, resultIndex) => (
+                  <DriverCard
+                    key={resultIndex}
+                    championshipLevel={championshipLevel}
+                    darkBG
+                    index={resultIndex}
+                    driver={result.Driver}
+                    startPosition={parseInt(result.grid, 10)}
+                    endPosition={parseInt(result.position, 10)}
+                    year={selectedYear}
+                    time={result.Time?.time || result.status}
+                    fastestLap={result.FastestLap}
+                    layoutSmall={layoutSmall}
+                  />
+                ))}
+              </ul>
+            </div>
+          )}
+          {hasRace3 && (
+            <div className={f1aWrapperClasses}>
+              <h3 className={f1aH3Classes}>{race3Label}</h3>
+              <ul className={f1aListClasses}>
+                {data.race3.map((result, resultIndex) => (
                   <DriverCard
                     key={resultIndex}
                     championshipLevel={championshipLevel}

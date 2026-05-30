@@ -144,7 +144,7 @@ export function RacePageF1a({ championshipLevel }) {
       <div className="flex flex-col md:flex-row">
         {/* race 0 rescheduled race */}
         {raceResults0.length > 0 && (
-          <div className="flex flex-col items-center md:w-1/2 bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10 p-32">
+          <div className="flex flex-col items-center flex-1 bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10 p-32">
             <p className="heading-2 mb-32">Rescheduled Race</p>
 
             <div className="bg-glow-large p-24 rounded-lg w-[25rem] mb-32">
@@ -182,8 +182,8 @@ export function RacePageF1a({ championshipLevel }) {
         )}
 
         {/* race 1 */}
-        <div className="flex flex-col items-center md:w-1/2 bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10 p-32">
-          <p className="heading-2 mb-32">Reverse Grid Race</p>
+        <div className="flex flex-col items-center flex-1 bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10 p-32">
+          <p className="heading-2 mb-32">{raceResults3.length > 0 ? "Opening Race" : "Reverse Grid Race"}</p>
 
           <div className="bg-glow-large p-24 rounded-lg w-[25rem] mb-32">
             {raceResults.map((result, index) => (
@@ -220,8 +220,8 @@ export function RacePageF1a({ championshipLevel }) {
 
         {/* Race 2 */}
         {raceResults2.length > 0 && (
-          <div className="flex flex-col items-center md:w-1/2 bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-indigo-500/10 p-32">
-            <p className="heading-2 mb-32">Feature Race</p>
+          <div className="flex flex-col items-center flex-1 bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-indigo-500/10 p-32">
+            <p className="heading-2 mb-32">{raceResults3.length > 0 ? "Reverse Grid Race" : "Feature Race"}</p>
             <div className="bg-glow-large p-24 rounded-lg w-[25rem] mb-32">
               {raceResults2.map((result, index) => (
                 <DriverCard
@@ -258,8 +258,8 @@ export function RacePageF1a({ championshipLevel }) {
 
         {/* Race 3 */}
         {raceResults3.length > 0 && (
-          <div className="flex flex-col items-center md:w-1/2 bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-indigo-500/10 p-32">
-            <p className="heading-2 mb-32">Race 3</p>
+          <div className="flex flex-col items-center flex-1 bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-indigo-500/10 p-32">
+            <p className="heading-2 mb-32">Feature Race</p>
             <div className="bg-glow-large p-24 rounded-lg w-[25rem] mb-32">
               {raceResults3.map((result, index) => (
                 <DriverCard
@@ -286,7 +286,7 @@ export function RacePageF1a({ championshipLevel }) {
               ))}
             </div>
 
-            <StartingGridF1A raceResults={raceResults3} year={year} />
+            {/* <StartingGridF1A raceResults={raceResults3} year={year} /> */}
 
             <div className="page-container-centered">
               <FastestLapsF1A raceResults={raceResults3} drivers={drivers} />

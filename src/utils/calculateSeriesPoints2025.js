@@ -43,22 +43,39 @@ export const calculateSeriesPoints2025 = (allRaceResults, championshipLevel) => 
     // If a round only has race1 results, treat it as a feature race
     const hasRace1 = Array.isArray(race[config.sprintKey]) && race[config.sprintKey].length > 0;
     const hasRace2 = Array.isArray(race[config.featureKey]) && race[config.featureKey].length > 0;
+    const hasRace3 = Array.isArray(race.race3) && race.race3.length > 0;
     const isSingleRaceEvent = hasRace1 && !hasRace2;
 
-    const raceMap = {
-      [config.sprintKey]: {
-        points: isSingleRaceEvent ? config.featurePoints : config.sprintPoints,
-        fastestLapLimit: isSingleRaceEvent ? config.fastestLapEligibility[config.featureKey] : config.fastestLapEligibility[config.sprintKey]
-      },
-      [config.featureKey]: {
+    let raceMap = {};
+    if (hasRace3) {
+      raceMap['race1'] = {
         points: config.featurePoints,
         fastestLapLimit: config.fastestLapEligibility[config.featureKey]
-      },
-      [config.rescheduledFeatureKey]: {
+      };
+      raceMap['race2'] = {
+        points: config.sprintPoints,
+        fastestLapLimit: config.fastestLapEligibility[config.sprintKey]
+      };
+      raceMap['race3'] = {
         points: config.featurePoints,
         fastestLapLimit: config.fastestLapEligibility[config.featureKey]
-      }
-    };
+      };
+    } else {
+      raceMap = {
+        [config.sprintKey]: {
+          points: isSingleRaceEvent ? config.featurePoints : config.sprintPoints,
+          fastestLapLimit: isSingleRaceEvent ? config.fastestLapEligibility[config.featureKey] : config.fastestLapEligibility[config.sprintKey]
+        },
+        [config.featureKey]: {
+          points: config.featurePoints,
+          fastestLapLimit: config.fastestLapEligibility[config.featureKey]
+        },
+        [config.rescheduledFeatureKey]: {
+          points: config.featurePoints,
+          fastestLapLimit: config.fastestLapEligibility[config.featureKey]
+        }
+      };
+    }
 
     Object.entries(raceMap).forEach(([raceKey, { points, fastestLapLimit }]) => {
       const results = race[raceKey];
@@ -140,39 +157,42 @@ export const calculateSeriesPoints2025 = (allRaceResults, championshipLevel) => 
     });
 
     // Pole bonus for Feature Race
-    const poleBonusResults = isSingleRaceEvent ? race[config.sprintKey] : race[config.featureKey];
-    if (Array.isArray(poleBonusResults)) {
-      const poleDriver = poleBonusResults.find(d => parseInt(d.grid, 10) === 1);
-      if (poleDriver) {
-        const resolvedPoleDriver = poleDriver?.Driver;
-        const resolvedPoleConstructor = poleDriver?.Constructor;
-        const driverId = resolvedPoleDriver?.driverId;
-        const constructorId = resolvedPoleConstructor?.constructorId;
-        const code = resolvedPoleDriver?.code;
-        
-        if (driverId) {
-          if (!driverPoints[driverId]) {
-            driverPoints[driverId] = { ...resolvedPoleDriver, points: 0 };
-          }
-          driverPoints[driverId].points += 2;
-
-          // Pole points for constructors
-          if (championshipLevel === "F1A" && wildcardCodesForSeason.includes(code)) {
-             // Wildcards don't score pole points for team
-          } else if (constructorId) {
-            if (!constructorPoints[constructorId]) {
-              constructorPoints[constructorId] = {
-                ...resolvedPoleConstructor,
-                points: 0,
-                driverCodes: new Set()
-              };
+    const poleBonusRaces = hasRace3 ? [race.race3] : [isSingleRaceEvent ? race[config.sprintKey] : race[config.featureKey]];
+    
+    poleBonusRaces.forEach(poleBonusResults => {
+      if (Array.isArray(poleBonusResults)) {
+        const poleDriver = poleBonusResults.find(d => parseInt(d.grid, 10) === 1);
+        if (poleDriver) {
+          const resolvedPoleDriver = poleDriver?.Driver;
+          const resolvedPoleConstructor = poleDriver?.Constructor;
+          const driverId = resolvedPoleDriver?.driverId;
+          const constructorId = resolvedPoleConstructor?.constructorId;
+          const code = resolvedPoleDriver?.code;
+          
+          if (driverId) {
+            if (!driverPoints[driverId]) {
+              driverPoints[driverId] = { ...resolvedPoleDriver, points: 0 };
             }
-            constructorPoints[constructorId].points += 2;
-            if (code) constructorPoints[constructorId].driverCodes.add(code);
+            driverPoints[driverId].points += 2;
+
+            // Pole points for constructors
+            if (championshipLevel === "F1A" && wildcardCodesForSeason.includes(code)) {
+               // Wildcards don't score pole points for team
+            } else if (constructorId) {
+              if (!constructorPoints[constructorId]) {
+                constructorPoints[constructorId] = {
+                  ...resolvedPoleConstructor,
+                  points: 0,
+                  driverCodes: new Set()
+                };
+              }
+              constructorPoints[constructorId].points += 2;
+              if (code) constructorPoints[constructorId].driverCodes.add(code);
+            }
           }
         }
       }
-    }
+    });
   });
 
   const formattedDrivers = Object.values(driverPoints).sort((a, b) => b.points - a.points);
