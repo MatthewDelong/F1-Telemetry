@@ -1,5 +1,5 @@
-import { calculateFastestLapDriver } from "./calculateFastestLapDriver";
-import { wildCardDrivers } from "./wildCards";
+import { calculateFastestLapDriver } from "./calculateFastestLapDriver.js";
+import { wildCardDrivers } from "./wildCards.js";
 
 const scoringConfigs = {
   F1A: {
@@ -145,9 +145,9 @@ export const calculateSeriesPoints2025 = (allRaceResults, championshipLevel) => 
           };
         }
 
-        // Sort scores descending by points and take top 2 for constructors (F1A top 2 rule)
+        // Sort scores descending by points and sum all non-wildcard drivers for constructors
         teamData.scores.sort((a, b) => b.points - a.points);
-        const eligibleScores = championshipLevel === "F1A" ? teamData.scores.slice(0, 2) : teamData.scores;
+        const eligibleScores = teamData.scores;
 
         eligibleScores.forEach(score => {
           constructorPoints[constructorId].points += score.points;
