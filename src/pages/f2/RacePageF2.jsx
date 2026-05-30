@@ -139,6 +139,8 @@ export function RacePageF2({ championshipLevel }) {
           <div className="bg-glow-large p-24 rounded-lg w-[25rem] mb-32">
             {raceResults.map((result, index) => (
               <DriverCard
+                hidePositionMovement={true}
+                isRace={true}
                 f1a={true}
                 hasHover
                 isActive={activeButtonIndex === index}
@@ -177,6 +179,8 @@ export function RacePageF2({ championshipLevel }) {
             <div className="bg-glow-large p-24 rounded-lg w-[25rem] mb-32">
               {raceResults2.map((result, index) => (
                 <DriverCard
+                  hidePositionMovement={true}
+                  isRace={true}
                   hasHover
                   isActive={activeButtonIndex === index}
                   index={index}
@@ -216,6 +220,8 @@ export function RacePageF2({ championshipLevel }) {
                         <div className="bg-glow-large p-24 rounded-lg w-[25rem] mb-32">
                             {raceResults3.map((result, index) => (
                                 <DriverCard
+                                    hidePositionMovement={true}
+                                    isRace={true}
                                     hasHover
                                     isActive={activeButtonIndex === index}
                                     index={index}

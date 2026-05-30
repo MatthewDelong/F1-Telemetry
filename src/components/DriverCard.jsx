@@ -25,6 +25,7 @@ export const DriverCard = (props) => {
     mobileSmall,
     isRace,
     darkBG,
+    hidePositionMovement,
   } = props;
 
   const cardRef = useRef(null);
@@ -43,7 +44,7 @@ export const DriverCard = (props) => {
   };
 
   const positionMovement = () => {
-    if (startPosition !== endPosition) {
+    if (!Number.isNaN(startPosition) && startPosition !== endPosition) {
       return (
         <Popover
           aria-labelledby="default-popover"
@@ -227,7 +228,7 @@ export const DriverCard = (props) => {
                 </span>
               </Popover>
             )}
-            {isRace && positionMovement()}
+            {isRace && !hidePositionMovement && positionMovement()}
           </div>
         </div>
       </div>
@@ -278,7 +279,7 @@ export const DriverCard = (props) => {
                   </span>
                 </Popover>
               )}
-              {isRace && positionMovement()}
+              {isRace && !hidePositionMovement && positionMovement()}
             </div>
           </div>
           <div className="divider-glow w-full my-4" />

@@ -4,6 +4,7 @@ import { LumaKeyVideo } from "../components";
 
 const HeroSection = ({ layoutMobile, container }) => {
   const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-20% 0px" });
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
