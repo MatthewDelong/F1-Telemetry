@@ -51,7 +51,7 @@ const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel }) => {
         <div className="flex flex-col md:flex-row items-center md:justify-center gap-16">
           <div>
             <p className="uppercase text-sm text-center text-neutral-400 tracking-sm leading-none mb-24">
-              Reverse Grid Race
+              {hasResults && top3RaceResults3.length > 0 ? "Opening Race" : "Reverse Grid Race"}
             </p>
             {hasResults ? (
               <ul className="bg-glow-dark rounded-[2.4rem] race-results__list">
@@ -83,7 +83,7 @@ const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel }) => {
           {hasResults && top3RaceResults2.length > 1 && (
             <div>
               <p className="uppercase text-sm text-center text-neutral-400 tracking-sm leading-none mb-24">
-                Feature Race
+                {hasResults && top3RaceResults3.length > 0 ? "Reverse Grid Race" : "Feature Race"}
               </p>
               <ul className="bg-glow-dark rounded-[2.4rem] race-results__list">
                 {top3RaceResults2.map((result, index) => (
@@ -109,7 +109,7 @@ const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel }) => {
           {hasResults && top3RaceResults3.length > 0 && (
             <div>
               <p className="uppercase text-sm text-center text-neutral-400 tracking-sm leading-none mb-24">
-                Race 3 Results
+                Feature Race
               </p>
               <ul className="bg-glow-dark rounded-[2.4rem] race-results__list">
                 {top3RaceResults3.map((result, index) => (
