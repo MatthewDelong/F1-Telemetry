@@ -133,13 +133,8 @@ export const Footer2025 = ({ className }) => {
                 className="h-[20px] lg:h-[28px] object-contain mb-1"
               />
               <div className="flex items-center gap-3">
-                <img
-                  src="/logos/fia.svg"
-                  alt="FIA"
-                  className="h-[24px] w-[24px] lg:h-[32px] lg:w-[32px] object-contain"
-                />
                 <div className="flex flex-col text-[11px] leading-tight font-bold text-neutral-300 tracking-wider text-left">
-                  <span>FIA F1 ACADEMY</span>
+                  <span>F1 ACADEMY</span>
                   <span>CHAMPIONSHIP&trade;</span>
                 </div>
               </div>
