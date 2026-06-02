@@ -217,6 +217,19 @@ F1-Telemetry features a fully decoupled, hybrid API backend to ensure permanent 
 
 </details>
 
+<details>
+<summary><strong>Content Security Policy (CSP)</strong></summary>
+
+To enhance application security and mitigate Cross-Site Scripting (XSS) attacks, a strict Content Security Policy (CSP) is implemented.
+
+Key aspects of our CSP configuration:
+- **API Endpoints**: Explicitly whitelists connections to authorized data sources including the OpenF1 API (`api.openf1.org`), Jolpica API (`api.jolpi.ca`), OpenWeather API, and GitHub Raw Content.
+- **Assets & Media**: Restricts image and media loading to the application origin and verified third-party providers (e.g., Flagpedia for driver flags).
+- **Scripts**: Restricts script execution to the application origin, preventing unauthorized external scripts from running while allowing trusted analytics providers.
+- **Enforcement**: Depending on the hosting environment (e.g., IONOS or Cloudflare), the CSP headers are actively enforced at the proxy/edge layer to ensure all browsers securely enforce the policy without manual intervention.
+
+</details>
+
 ---
 
 ## Deployment
