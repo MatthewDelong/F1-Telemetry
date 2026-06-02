@@ -55,9 +55,9 @@ export const Footer2025 = ({ className }) => {
         </div>
 
         {/* Right side: Page path links */}
-        <div className="flex flex-col md:flex-row md:items-start gap-16 uppercase">
+        <div className="flex flex-col md:flex-row md:items-start gap-16 uppercase mt-16 md:mt-0">
           <div className="flex flex-col gap-8 p-16 rounded-lg glass-dark min-w-[250px]">
-            <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
+            <p className="uppercase tracking-xs gradient-text-light text-lg font-bold text-center">
               Formula 1
             </p>
             <div className="divider-glow-dark border-t border-neutral-700/50" />
@@ -65,26 +65,29 @@ export const Footer2025 = ({ className }) => {
               href="https://www.formula1.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block text-sm"
-            >
-              Official Website
-            </a>
-            <a
-              href="https://www.formula1.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 block"
+              className="flex flex-col items-center gap-4 hover:scale-105 transition-all duration-300 mt-2 mb-4"
             >
               <img
                 src="/logos/f1.svg"
                 alt="Formula 1 Logo"
-                className="h-16 object-contain"
+                className="h-[20px] lg:h-[28px] object-contain mb-1"
               />
+              <div className="flex items-center gap-3">
+                <img
+                  src="/logos/fia.svg"
+                  alt="FIA"
+                  className="h-[24px] w-[24px] lg:h-[32px] lg:w-[32px] object-contain"
+                />
+                <div className="flex flex-col text-[11px] leading-tight font-bold text-neutral-300 tracking-wider text-left">
+                  <span>FIA FORMULA ONE</span>
+                  <span>CHAMPIONSHIP&trade;</span>
+                </div>
+              </div>
             </a>
           </div>
 
           <div className="flex flex-col gap-8 p-16 rounded-lg glass-dark min-w-[250px]">
-            <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
+            <p className="uppercase tracking-xs gradient-text-light text-lg font-bold text-center">
               Formula 2
             </p>
             <div className="divider-glow-dark border-t border-neutral-700/50" />
@@ -92,26 +95,29 @@ export const Footer2025 = ({ className }) => {
               href="https://www.fiaformula2.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block text-sm"
-            >
-              Official Website
-            </a>
-            <a
-              href="https://www.fiaformula2.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 block"
+              className="flex flex-col items-center gap-4 hover:scale-105 transition-all duration-300 mt-2 mb-4"
             >
               <img
                 src="/logos/f2.svg"
                 alt="Formula 2 Logo"
-                className="h-18 object-contain"
+                className="h-[20px] lg:h-[28px] object-contain mb-1"
               />
+              <div className="flex items-center gap-3">
+                <img
+                  src="/logos/fia.svg"
+                  alt="FIA"
+                  className="h-[24px] w-[24px] lg:h-[32px] lg:w-[32px] object-contain"
+                />
+                <div className="flex flex-col text-[11px] leading-tight font-bold text-neutral-300 tracking-wider text-left">
+                  <span>FIA FORMULA 2</span>
+                  <span>CHAMPIONSHIP&trade;</span>
+                </div>
+              </div>
             </a>
           </div>
 
           <div className="flex flex-col gap-8 p-16 rounded-lg glass-dark min-w-[250px]">
-            <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
+            <p className="uppercase tracking-xs gradient-text-light text-lg font-bold text-center">
               F1 Academy
             </p>
             <div className="divider-glow-dark border-t border-neutral-700/50" />
@@ -119,32 +125,35 @@ export const Footer2025 = ({ className }) => {
               href="https://www.f1academy.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block text-sm"
-            >
-              Official Website
-            </a>
-            <a
-              href="https://www.f1academy.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 block"
+              className="flex flex-col items-center gap-4 hover:scale-105 transition-all duration-300 mt-2 mb-4"
             >
               <img
                 src="/logos/f1a.svg"
                 alt="F1 Academy Logo"
-                className="h-16 object-contain"
+                className="h-[20px] lg:h-[28px] object-contain mb-1"
               />
+              <div className="flex items-center gap-3">
+                <img
+                  src="/logos/fia.svg"
+                  alt="FIA"
+                  className="h-[24px] w-[24px] lg:h-[32px] lg:w-[32px] object-contain"
+                />
+                <div className="flex flex-col text-[11px] leading-tight font-bold text-neutral-300 tracking-wider text-left">
+                  <span>FIA F1 ACADEMY</span>
+                  <span>CHAMPIONSHIP&trade;</span>
+                </div>
+              </div>
             </a>
           </div>
 
           <div className="flex flex-col gap-8 p-16 rounded-lg glass-dark min-w-[200px]">
-            <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
+            <p className="uppercase tracking-xs gradient-text-light text-lg font-bold text-center">
               Legal
             </p>
             <div className="divider-glow-dark border-t border-neutral-700/50" />
             <Link
               to="/privacy-policy"
-              className="hover:text-brand-yellow-500 hover:translate-x-2 transition-all duration-300 block text-sm"
+              className="hover:text-brand-yellow-500 hover:scale-105 transition-all duration-300 block text-sm text-center"
             >
               Privacy Policy
             </Link>
