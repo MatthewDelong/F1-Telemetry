@@ -56,11 +56,11 @@ export const Footer2025 = ({ className }) => {
 
         {/* Right side: Page path links */}
         <div className="flex flex-col md:flex-row md:items-start gap-16 uppercase mt-16 md:mt-0">
-          <div className="flex flex-col gap-8 p-16 rounded-lg glass-dark min-w-[250px]">
-            <p className="uppercase tracking-xs gradient-text-light text-lg font-bold text-center">
-              Formula 1
-            </p>
-            <div className="divider-glow-dark border-t border-neutral-700/50" />
+          <div
+            className="flex flex-col gap-8 p-16 rounded-lg glass-dark shadow-xl min-w-[250px]"
+            style={{ border: "1px solid #737373" }}
+          >
+
             <a
               href="https://www.formula1.com/"
               target="_blank"
@@ -86,11 +86,11 @@ export const Footer2025 = ({ className }) => {
             </a>
           </div>
 
-          <div className="flex flex-col gap-8 p-16 rounded-lg glass-dark min-w-[250px]">
-            <p className="uppercase tracking-xs gradient-text-light text-lg font-bold text-center">
-              Formula 2
-            </p>
-            <div className="divider-glow-dark border-t border-neutral-700/50" />
+          <div
+            className="flex flex-col gap-8 p-16 rounded-lg glass-dark shadow-xl min-w-[250px]"
+            style={{ border: "1px solid #737373" }}
+          >
+
             <a
               href="https://www.fiaformula2.com/"
               target="_blank"
@@ -116,11 +116,11 @@ export const Footer2025 = ({ className }) => {
             </a>
           </div>
 
-          <div className="flex flex-col gap-8 p-16 rounded-lg glass-dark min-w-[250px]">
-            <p className="uppercase tracking-xs gradient-text-light text-lg font-bold text-center">
-              F1 Academy
-            </p>
-            <div className="divider-glow-dark border-t border-neutral-700/50" />
+          <div
+            className="flex flex-col gap-8 p-16 rounded-lg glass-dark shadow-xl min-w-[250px]"
+            style={{ border: "1px solid #737373" }}
+          >
+
             <a
               href="https://www.f1academy.com/"
               target="_blank"
@@ -146,7 +146,10 @@ export const Footer2025 = ({ className }) => {
             </a>
           </div>
 
-          <div className="flex flex-col gap-8 p-16 rounded-lg glass-dark min-w-[200px]">
+          <div
+            className="flex flex-col gap-8 p-16 rounded-lg glass-dark shadow-xl min-w-[200px]"
+            style={{ border: "1px solid #737373" }}
+          >
             <p className="uppercase tracking-xs gradient-text-light text-lg font-bold text-center">
               Legal
             </p>
