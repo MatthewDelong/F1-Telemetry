@@ -133,6 +133,11 @@ export const Footer2025 = ({ className }) => {
                 className="h-[20px] lg:h-[28px] object-contain mb-1"
               />
               <div className="flex items-center gap-3">
+                <img
+                  src="/logos/f1_logo.svg"
+                  alt="F1 Logo"
+                  className="h-[24px] w-[34px] lg:h-[32px] lg:w-[40px] object-contain"
+                />
                 <div className="flex flex-col text-[11px] leading-tight font-bold text-neutral-300 tracking-wider text-left">
                   <span>F1 ACADEMY</span>
                   <span>CHAMPIONSHIP&trade;</span>
@@ -161,9 +166,10 @@ export const Footer2025 = ({ className }) => {
         <div className="divider-glow-dark mb-16 opacity-30" />
         <p className="max-w-[900px] mx-auto mb-8 font-light">
           This website is not associated in any way with the Formula 1
-          companies. F1, FORMULA ONE, FORMULA 1, F2, FORMULA 2, FIA FORMULA 2
-          CHAMPIONSHIP, F1 ACADEMY, FIA FORMULA ONE WORLD CHAMPIONSHIP, GRAND
-          PRIX and related marks are trade marks of Formula One Licensing B.V.
+          companies. F1, FORMULA ONE, FORMULA 1, F2, FORMULA 2, FIA, FIA FORMULA
+          2 CHAMPIONSHIP, FIA FORMULA 2, F1 ACADEMY, FIA FORMULA ONE WORLD
+          CHAMPIONSHIP, GRAND PRIX and related marks are trade marks of Formula
+          One Licensing B.V.
         </p>
         <p className="text-neutral-400 font-medium tracking-normal lowercase first-letter:uppercase">
           &copy; {currentYear} F1-Telemetry
