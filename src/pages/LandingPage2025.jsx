@@ -5,7 +5,7 @@ import {
   Button,
   TeammateComparisonButton,
   ViewLatestRaceButton,
-  Footer2025,
+  Footer,
 } from "../components";
 import { fetchMostRecentRace } from "../utils/api";
 import { nationalityToFlag } from "../utils/nationalityToFlag";
@@ -492,9 +492,8 @@ export function LandingPage2025() {
 
       <DatesSection />
       <NextRaceSection />
-
       <section className="snap-start bg-black">
-        <Footer2025 />
+        <Footer />
       </section>
     </div>
   );

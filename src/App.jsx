@@ -6,14 +6,14 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 
-import { Header, Footer2025, ResultsSelector, ReloadPrompt, CookieBanner } from './components';
+import { Header, Footer, ResultsSelector, ReloadPrompt, CookieBanner } from './components';
 import { F1ALogo } from './components/F1ALogo';
 import { F2Logo } from './components/F2Logo';
 import { 
   DriverComparison,
   TeammatesComparison, 
   LandingPage2025, 
-  AboutPage2025,
+  AboutPage,
   ARViewer, 
   RaceResultsPage, 
   RacePage, 
@@ -144,7 +144,7 @@ function MainContent({ setSelectedYear, selectedYear, resultPage, resultPagePath
 
         <Routes>
           <Route path="/" element={<LandingPage2025 setResultPagePath={setResultPagePath} />} />
-          <Route path="/about-us" element={<AboutPage2025 />} />
+          <Route path="/about-us" element={<AboutPage />} />
           <Route path="/race-results" element={<RaceResultsPage selectedYear={selectedYear} />} />
           <Route path="/constructor-standings" element={<ConstructorStandings selectedYear={selectedYear} />} />
           <Route path="/driver-standings" element={<DriverStandings selectedYear={selectedYear} />} />
@@ -167,7 +167,7 @@ function MainContent({ setSelectedYear, selectedYear, resultPage, resultPagePath
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         </Routes>
       </div>
-      {location !== "/" && location !== "/about-us" && <Footer2025 />}
+      {location !== "/" && location !== "/about-us" && <Footer />}
     </>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { Button, DriverCard, Footer2025 } from "../components";
+import { Button, DriverCard, Footer } from "../components";
 import { fetchMostRecentRace } from "../utils/api";
 import { fetchMostRecentRaceWeekend } from "../utils/apiF1a";
 import { F1ALogo } from "../components/F1ALogo";
@@ -14,7 +14,7 @@ import { getCurrentYear } from "../utils/currentYear";
 
 const currentYear = getCurrentYear();
 
-export function AboutPage2025() {
+export function AboutPage() {
   const [raceData, setRaceData] = useState(null);
   const [f1aRaceData, setF1aRaceData] = useState(null);
   const [f2RaceData, setF2RaceData] = useState(null);
@@ -321,7 +321,7 @@ export function AboutPage2025() {
         className="snap-start bg-black"
         style={{ scrollSnapAlign: "start" }}
       >
-        <Footer2025 />
+        <Footer />
       </section>
     </div>
   );
