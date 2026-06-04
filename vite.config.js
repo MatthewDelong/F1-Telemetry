@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import { VitePWA } from "vite-plugin-pwa";
 import tailwindcss from "@tailwindcss/vite";
+import Sitemap from "vite-plugin-sitemap";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,6 +11,26 @@ export default defineConfig({
     react(),
     tailwindcss(),
     svgr(),
+    Sitemap({
+      hostname: "https://f1-telemetry.matthews-world.co.uk",
+      outDir: "build",
+      dynamicRoutes: [
+        "/about-us",
+        "/race-results",
+        "/constructor-standings",
+        "/driver-standings",
+        "/teammates-comparison",
+        "/driver-comparison",
+        "/ar-viewer",
+        "/f1a/race-results",
+        "/f1a/driver-standings",
+        "/f1a/constructor-standings",
+        "/f2/race-results",
+        "/f2/driver-standings",
+        "/f2/constructor-standings",
+        "/privacy-policy"
+      ]
+    }),
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: [
