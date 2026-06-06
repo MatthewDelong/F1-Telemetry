@@ -1,6 +1,24 @@
 @import "tailwindcss";
 @source "../node_modules/flowbite-react/dist/esm/**/*.js";
 
+@font-face {
+  font-family: 'Formula1';
+  src: url('/fonts/Formula1-Regular.woff2') format('woff2'),
+       url('/fonts/Formula1-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Formula1';
+  src: url('/fonts/Formula1-Bold.woff2') format('woff2'),
+       url('/fonts/Formula1-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --color-accent: #3b82f6;
   --color-accent-hover: #2563eb;
@@ -21,7 +39,8 @@
   --color-fastest-lap-plum: #5f0b84;
 
   /* Typography */
-  --font-display: "Bungee", ui-serif;
+  --font-display: "Formula1", ui-serif;
+  --font-sans: "Formula1", sans-serif;
 
   --font-size-xs: 1rem;
   --font-size-sm: 1.2rem;
@@ -129,7 +148,7 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   color: #f1f1f1;
-  font-family: "Lato", sans-serif;
+  font-family: "Formula1", sans-serif;
   font-size: 1.6rem;
   font-weight: 400;
   letter-spacing: 0.4px;
