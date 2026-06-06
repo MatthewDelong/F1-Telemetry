@@ -2,11 +2,11 @@
     "driverId": "bearman",
     "driverCode": "BEA",
     "driverNumber": "87",
-    "lastUpdate": "2026-05-25T06:41:19.429776",
+    "lastUpdate": "2026-06-06T13:20:34.256296",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
-    "totalDNFs": 1,
+    "totalDNFs": 4,
     "seasonWins": {
         "2026": 0
     },
@@ -17,7 +17,7 @@
         "2026": 0
     },
     "seasonDNFs": {
-        "2026": 1
+        "2026": 4
     },
     "poles": {
         "2026": []
@@ -27,12 +27,19 @@
     },
     "DNFs": {
         "2026": {
-            "Canadian Grand Prix": "Lapped"
+            "Canadian Grand Prix": "Lapped",
+            "Australian Grand Prix": "Lapped",
+            "Japanese Grand Prix": "Retired",
+            "Miami Grand Prix": "Lapped"
         }
     },
     "fastLaps": {
         "2026": {
-            "Canadian Grand Prix": "1:16.002"
+            "Canadian Grand Prix": "1:16.002",
+            "Australian Grand Prix": "1:24.020",
+            "Chinese Grand Prix": "1:36.429",
+            "Japanese Grand Prix": "1:35.604",
+            "Miami Grand Prix": "1:33.744"
         }
     },
     "finalStandings": {
@@ -48,6 +55,18 @@
             "pos": {
                 "Canadian Grand Prix": {
                     "points": 18
+                },
+                "Australian Grand Prix": {
+                    "points": 18
+                },
+                "Chinese Grand Prix": {
+                    "points": 18
+                },
+                "Japanese Grand Prix": {
+                    "points": 18
+                },
+                "Miami Grand Prix": {
+                    "points": 18
                 }
             }
         }
@@ -56,7 +75,11 @@
         "2026": {
             "year": "2026",
             "positions": {
-                "Canadian Grand Prix": "10"
+                "Canadian Grand Prix": "10",
+                "Australian Grand Prix": "7",
+                "Chinese Grand Prix": "5",
+                "Japanese Grand Prix": "22",
+                "Miami Grand Prix": "11"
             }
         }
     },
@@ -64,7 +87,11 @@
         "2026": {
             "year": "2026",
             "positions": {
-                "Canadian Grand Prix": "16"
+                "Canadian Grand Prix": "16",
+                "Australian Grand Prix": "12",
+                "Chinese Grand Prix": "10",
+                "Japanese Grand Prix": "18",
+                "Miami Grand Prix": "12"
             }
         }
     },
@@ -75,6 +102,26 @@
                 "Canadian Grand Prix": [
                     "1:14.449",
                     "1:14.416",
+                    "N/A"
+                ],
+                "Australian Grand Prix": [
+                    "1:21.247",
+                    "1:20.311",
+                    "N/A"
+                ],
+                "Chinese Grand Prix": [
+                    "1:33.687",
+                    "1:33.197",
+                    "1:33.292"
+                ],
+                "Japanese Grand Prix": [
+                    "1:31.090",
+                    "N/A",
+                    "N/A"
+                ],
+                "Miami Grand Prix": [
+                    "1:29.340",
+                    "1:29.567",
                     "N/A"
                 ]
             }
@@ -115,10 +162,10 @@
         }
     },
     "avgRacePositions": {
-        "2026": 10.0
+        "2026": 11.0
     },
     "avgQualiPositions": {
-        "2026": 16.0
+        "2026": 13.6
     },
     "rates": {
         "wins": {
@@ -131,19 +178,23 @@
             "2026": 0.0
         },
         "DNFs": {
-            "2026": 1.0
+            "2026": 0.8
         }
     },
     "winRate": 0.0,
     "podiumRate": 0.0,
     "poleRate": 0.0,
-    "dnfRate": 1.0,
+    "dnfRate": 0.8,
     "ptwConRate": {
         "2026": -1
     },
     "positionsGainLost": {
         "2026": {
-            "Canadian Grand Prix": 6
+            "Canadian Grand Prix": 6,
+            "Australian Grand Prix": 5,
+            "Chinese Grand Prix": 5,
+            "Japanese Grand Prix": -4,
+            "Miami Grand Prix": 1
         }
     }
 }

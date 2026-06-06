@@ -48,10 +48,15 @@ async function upsertCache(key, data) {
 const matchesDriver = (driver, id) => {
   if (!driver) return false;
   const lowerId = id.toLowerCase();
+  const givenName = (driver.givenName || '').toLowerCase();
+  const familyName = (driver.familyName || '').toLowerCase();
+  
   return (
     (driver.driverId && driver.driverId.toLowerCase() === lowerId) ||
     (driver.code && driver.code.toLowerCase() === lowerId) ||
-    (driver.familyName && driver.familyName.toLowerCase() === lowerId)
+    (familyName === lowerId) ||
+    (`${givenName}_${familyName}` === lowerId) ||
+    (lowerId.includes(familyName) && familyName.length > 2)
   );
 };
 

@@ -182,24 +182,41 @@ export const TeammatesComparison = () => {
   };
 
   const handleRefreshAll = async () => {
-    if (!drivers || drivers.length === 0) return;
+    if (!year) return;
     setIsLoading(true);
     setError(null);
     let successCount = 0;
     
     try {
-      console.log(`[Admin] Starting batch refresh for ${drivers.length} drivers...`);
-      for (const driver of drivers) {
+      if (year === "2026") {
+        console.log(`[Admin] Starting batch rebuild for all 2026 drivers via API...`);
+        const res = await fetch("http://localhost:3000/api/admin/rebuild-2026");
+        if (!res.ok) throw new Error("Batch rebuild failed on server");
+        const data = await res.json();
+        successCount = data.results ? data.results.length : 20;
+      } else {
+        let driversToRefresh = drivers; // Fallback
         try {
-          const url = `${BASE_F1_URL}drivers/${driver.driverId}.json?refresh=true&t=${Date.now()}`;
-          await fetch(url);
-          successCount++;
-          console.log(`[Admin] Refreshed ${driver.driverId} (${successCount}/${drivers.length})`);
+          const res = await axios.get(`${BASE_F1_URL}${year}/drivers.json`);
+          if (res.data?.MRData?.DriverTable?.Drivers) {
+            driversToRefresh = res.data.MRData.DriverTable.Drivers;
+          }
         } catch (e) {
-          console.error(`[Admin] Failed to refresh ${driver.driverId}:`, e);
+          console.warn("Failed to fetch full driver list, falling back to team roster");
         }
-        // Small delay to prevent browser freezing
-        await new Promise(r => setTimeout(r, 100));
+
+        console.log(`[Admin] Starting batch refresh for ${driversToRefresh.length} drivers...`);
+        for (const driver of driversToRefresh) {
+          try {
+            const url = `${BASE_F1_URL}drivers/${driver.driverId}.json?refresh=true&t=${Date.now()}`;
+            await fetch(url);
+            successCount++;
+            console.log(`[Admin] Refreshed ${driver.driverId} (${successCount}/${driversToRefresh.length})`);
+          } catch (e) {
+            console.error(`[Admin] Failed to refresh ${driver.driverId}:`, e);
+          }
+          await new Promise(r => setTimeout(r, 100));
+        }
       }
       
       // Finally, refresh the current view to show new data
