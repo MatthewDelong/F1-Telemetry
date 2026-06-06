@@ -148,8 +148,8 @@ if ($source === 'f1') {
         // 2. Try GitHub fallbacks
         if (!$data) {
             $baseUrls = [
-                'https://raw.githubusercontent.com/MatthewDelong/f1-telemetry-api/main/' => 10,
-                'https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1/' => 5,
+                'https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1/' => 10,
+                'https://raw.githubusercontent.com/MatthewDelong/f1-telemetry-api/main/' => 5,
             ];
             foreach ($baseUrls as $baseUrl => $timeout) {
                 // Try up to 3 path variations for maximum resilience

@@ -24,11 +24,14 @@ function ReloadPrompt() {
   // Handle periodic checks and visibility changes
   useEffect(() => {
     const checkUpdate = () => {
-      if (registrationRef.current) {
+      const r = registrationRef.current;
+      if (r && (r.active || r.installing || r.waiting)) {
         console.log("Checking for PWA updates...");
-        registrationRef.current
-          .update()
-          .catch((err) => console.error("Periodic SW update error:", err));
+        r.update().catch((err) => {
+          if (err.name !== "InvalidStateError") {
+            console.error("Periodic SW update error:", err);
+          }
+        });
       }
     };
 

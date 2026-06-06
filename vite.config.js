@@ -32,7 +32,7 @@ export default defineConfig({
       ]
     }),
     VitePWA({
-      registerType: "autoUpdate",
+      registerType: "prompt",
       includeAssets: [
         "favicon.ico",
         "apple-touch-icon.png",
@@ -85,8 +85,8 @@ export default defineConfig({
       workbox: {
         maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
         cleanupOutdatedCaches: true,
-        skipWaiting: true,
-        clientsClaim: true,
+        skipWaiting: false,
+        clientsClaim: false,
         inlineWorkboxRuntime: true,
         navigateFallbackDenylist: [
           /^\/openf1/,

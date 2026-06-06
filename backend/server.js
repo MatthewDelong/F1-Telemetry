@@ -6,6 +6,7 @@ const axios = require("axios");
 
 async function tryGitHubFallback(path, cacheKey) {
   const baseUrls = [
+    "https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1/",
     "https://raw.githubusercontent.com/MatthewDelong/f1-telemetry-api/main/",
     "https://matthewdelong.github.io/f1-telemetry-api/",
   ];
@@ -240,8 +241,8 @@ app.use("/api/proxy/:source", async (req, res) => {
 
     // 3. GitHub fallback for general F1 data
     const baseUrls = [
-      "https://raw.githubusercontent.com/MatthewDelong/f1-telemetry-api/main/",
       "https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1/",
+      "https://raw.githubusercontent.com/MatthewDelong/f1-telemetry-api/main/",
     ];
 
     const pathVariations = [path];
