@@ -33,10 +33,10 @@ export const Footer = ({ className }) => {
             <Logo height={48} />
           </a>
           <div>
-            <p className="text-xl uppercase tracking-1xs leading-none gradient-text-light">
+            <p className="text-xl uppercase tracking-1xs leading-none gradient-text-electric-blue">
               Your Ultimate Destination
             </p>
-            <p className="text-xl uppercase tracking-1xs leading-none gradient-text-light">
+            <p className="text-xl uppercase tracking-1xs leading-none gradient-text-electric-blue">
               for F1 Data and Analysis
             </p>
           </div>
@@ -150,7 +150,7 @@ export const Footer = ({ className }) => {
             className="flex flex-col gap-8 p-16 rounded-lg glass-dark shadow-xl min-w-[200px]"
             style={{ border: "1px solid #737373" }}
           >
-            <p className="uppercase tracking-xs gradient-text-light text-lg font-bold text-center">
+            <p className="uppercase tracking-xs gradient-text-electric-blue text-lg font-bold text-center">
               Legal
             </p>
             <div className="divider-glow-dark border-t border-neutral-700/50" />

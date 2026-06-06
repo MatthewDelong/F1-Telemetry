@@ -42,17 +42,17 @@ const TelemetrySection = ({ layoutMobile, onClick, container }) => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             style={{ y: yTextContent }}
           >
-            <p className="uppercase font-semibold tracking-xs gradient-text-light">
+            <p className="uppercase font-semibold tracking-xs gradient-text-electric-blue">
               Select a Driver
             </p>
             <p className="mb-12">Monitor their race progress lap by lap.</p>
-            <p className="uppercase tracking-xs gradient-text-light">
+            <p className="uppercase tracking-xs gradient-text-electric-blue">
               Multiple Camera Views
             </p>
             <p className="mb-12">
               Get closer to the action with various perspectives.
             </p>
-            <p className="uppercase tracking-xs gradient-text-light">
+            <p className="uppercase tracking-xs gradient-text-electric-blue">
               Detailed Telemetry Data
             </p>
             <p className="mb-12">Analyze every aspect of driver performance.</p>

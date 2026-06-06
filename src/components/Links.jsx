@@ -64,7 +64,7 @@ export const F1Links = ({ accordion = false, onClick }) => {
   ) : (
     <>
       <div>
-        <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
+        <p className="uppercase tracking-xs gradient-text-electric-blue text-lg font-bold">
           Formula 1
         </p>
         <div className="divider-glow-dark mt-8 mb-12 border-t border-neutral-700/50" />
@@ -112,7 +112,7 @@ export const F1ALinks = ({ accordion = false, onClick }) => {
   ) : (
     <>
       <div>
-        <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
+        <p className="uppercase tracking-xs gradient-text-electric-blue text-lg font-bold">
           F1 Academy
         </p>
         <div className="divider-glow-dark mt-8 mb-12 border-t border-neutral-700/50" />
@@ -160,7 +160,7 @@ export const F2Links = ({ accordion = false, onClick }) => {
   ) : (
     <>
       <div>
-        <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
+        <p className="uppercase tracking-xs gradient-text-electric-blue text-lg font-bold">
           Formula 2
         </p>
         <div className="divider-glow-dark mt-8 mb-12 border-t border-neutral-700/50" />
@@ -192,7 +192,7 @@ export const LegalLinks = ({ accordion = false, onClick }) => {
   ) : (
     <>
       <div>
-        <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
+        <p className="uppercase tracking-xs gradient-text-electric-blue text-lg font-bold">
           Legal
         </p>
         <div className="divider-glow-dark mt-8 mb-12 border-t border-neutral-700/50" />

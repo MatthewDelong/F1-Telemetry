@@ -12,7 +12,7 @@ export const F2Logo = ({ height = 48, className = "" }) => {
         }}
         className="drop-shadow-md object-contain"
       />
-      <span className="font-display text-[1.8rem] sm:text-[2.2rem] font-bold uppercase tracking-widest gradient-text-white italic pr-6 group-hover:gradient-text-light transition-all text-nowrap">
+      <span className="font-display text-[1.8rem] sm:text-[2.2rem] font-bold uppercase tracking-widest gradient-text-electric-blue italic pr-6 transition-all text-nowrap">
         F2 RESULTS
       </span>
     </div>

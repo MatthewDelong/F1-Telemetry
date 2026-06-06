@@ -12,7 +12,10 @@ export const F1TelemetryLogo = ({ height = 48, className = "" }) => {
         }}
         className="drop-shadow-md object-contain"
       />
-      <span className="font-display text-[1.8rem] sm:text-[2.2rem] font-bold uppercase tracking-widest gradient-text-white italic pr-6 text-nowrap">
+      <span
+        className="font-display text-[1.8rem] sm:text-[2.2rem] font-bold uppercase tracking-widest gradient-text-electric-blue italic pr-6 text-nowrap"
+        style={{ WebkitTextStroke: "0.1px white" }}
+      >
         F1 TELEMETRY
       </span>
     </div>

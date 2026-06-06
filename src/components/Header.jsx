@@ -245,7 +245,7 @@ export const Header = () => {
               >
                 <div className="flex flex-col gap-12 p-16 rounded-xl glass shadow-2xl">
                   <div className="w-[320px] glass-dark border border-white/5 py-16 px-20 rounded-lg">
-                    <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
+                    <p className="uppercase tracking-xs gradient-text-electric-blue text-lg font-bold">
                       Teammate Comparisons
                     </p>
                     <div className="divider-glow-dark mt-8 mb-12 border-t border-neutral-700/50" />
@@ -262,7 +262,7 @@ export const Header = () => {
                     </NavLink>
                   </div>
                   <div className="w-[320px] glass-dark border border-white/5 py-16 px-20 rounded-lg">
-                    <p className="uppercase tracking-xs gradient-text-light text-lg font-bold">
+                    <p className="uppercase tracking-xs gradient-text-electric-blue text-lg font-bold">
                       Driver Comparisons
                     </p>
                     <div className="divider-glow-dark mt-8 mb-12 border-t border-neutral-700/50" />
@@ -311,7 +311,7 @@ export const Header = () => {
               >
                 <div className="flex flex-col p-16 rounded-xl glass shadow-2xl min-w-[300px]">
                   <div className="glass-dark border border-white/5 p-20 rounded-lg">
-                    <p className="uppercase tracking-xs gradient-text-light text-lg font-bold mb-12">
+                    <p className="uppercase tracking-xs gradient-text-electric-blue text-lg font-bold mb-12">
                       Session Selection
                     </p>
                     <div className="divider-glow-dark mb-16 border-t border-neutral-700/50" />

@@ -373,6 +373,19 @@ button:hover {
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.gradient-text-electric-blue {
+  background: linear-gradient(
+    var(--color-brand-blue-300),
+    var(--color-brand-blue-600)
+  );
+  background: -webkit-linear-gradient(
+    var(--color-brand-blue-300),
+    var(--color-brand-blue-600)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 /* border */
 .gradient-border {
