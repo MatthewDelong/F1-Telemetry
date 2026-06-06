@@ -212,7 +212,9 @@ app.use("/api/proxy/:source", async (req, res) => {
             const cached = await Cache.findOne({ where: { key: cacheKey } });
             if (cached && !forceRefresh) {
                 const now = new Date();
-                const ageHours = (now - cached.lastUpdated) / (1000 * 60 * 60);
+                const diff = now - cached.lastUpdated;
+                const ageHours = diff / (1000 * 60 * 60);
+                console.log(`[Debug Cache] driver=${driverId}, lastUpdated=${cached.lastUpdated}, typeof=${typeof cached.lastUpdated}, now=${now}, diff=${diff}, ageHours=${ageHours}`);
                 if (ageHours < 24) return res.json(JSON.parse(cached.value));
             }
 

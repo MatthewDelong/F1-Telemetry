@@ -21,8 +21,8 @@
     },
     "poles": {
         "2026": [
-            "Canadian Grand Prix",
-            "Australian Grand Prix"
+            "Australian Grand Prix",
+            "Canadian Grand Prix"
         ]
     },
     "podiums": {
@@ -38,11 +38,11 @@
     },
     "fastLaps": {
         "2026": {
-            "Canadian Grand Prix": "1:15.477",
             "Australian Grand Prix": "1:22.670",
             "Chinese Grand Prix": "1:35.400",
             "Japanese Grand Prix": "1:32.549",
-            "Miami Grand Prix": "1:32.446"
+            "Miami Grand Prix": "1:32.446",
+            "Canadian Grand Prix": "1:15.477"
         }
     },
     "finalStandings": {
@@ -56,9 +56,6 @@
         "2026": {
             "year": "2026",
             "pos": {
-                "Canadian Grand Prix": {
-                    "points": 88
-                },
                 "Australian Grand Prix": {
                     "points": 88
                 },
@@ -70,6 +67,9 @@
                 },
                 "Miami Grand Prix": {
                     "points": 88
+                },
+                "Canadian Grand Prix": {
+                    "points": 88
                 }
             }
         }
@@ -78,11 +78,11 @@
         "2026": {
             "year": "2026",
             "positions": {
-                "Canadian Grand Prix": "19",
                 "Australian Grand Prix": "1",
                 "Chinese Grand Prix": "2",
                 "Japanese Grand Prix": "4",
-                "Miami Grand Prix": "4"
+                "Miami Grand Prix": "4",
+                "Canadian Grand Prix": "19"
             }
         }
     },
@@ -90,11 +90,11 @@
         "2026": {
             "year": "2026",
             "positions": {
-                "Canadian Grand Prix": "1",
                 "Australian Grand Prix": "1",
                 "Chinese Grand Prix": "2",
                 "Japanese Grand Prix": "2",
-                "Miami Grand Prix": "5"
+                "Miami Grand Prix": "5",
+                "Canadian Grand Prix": "1"
             }
         }
     },
@@ -102,11 +102,6 @@
         "2026": {
             "year": "2026",
             "QualiTimes": {
-                "Canadian Grand Prix": [
-                    "1:13.953",
-                    "1:13.079",
-                    "1:12.578"
-                ],
                 "Australian Grand Prix": [
                     "1:19.507",
                     "1:18.934",
@@ -126,28 +121,33 @@
                     "1:29.492",
                     "1:28.477",
                     "1:28.197"
+                ],
+                "Canadian Grand Prix": [
+                    "1:13.953",
+                    "1:13.079",
+                    "1:12.578"
                 ]
             }
         }
     },
     "consistency": {
         "mean": {
-            "wins": 1.0,
-            "podiums": 2.0,
-            "poles": 2.0,
-            "points": 88.0
+            "wins": 1,
+            "podiums": 2,
+            "poles": 2,
+            "points": 88
         },
         "std": {
-            "wins": 0.0,
-            "podiums": 0.0,
-            "poles": 0.0,
-            "points": 0.0
+            "wins": 0,
+            "podiums": 0,
+            "poles": 0,
+            "points": 0
         },
         "cv": {
-            "wins": 0.0,
-            "podiums": 0.0,
-            "poles": 0.0,
-            "points": 0.0
+            "wins": 0,
+            "podiums": 0,
+            "poles": 0,
+            "points": 0
         }
     },
     "peakSeason": {
@@ -165,7 +165,7 @@
         }
     },
     "avgRacePositions": {
-        "2026": 6.0
+        "2026": 6
     },
     "avgQualiPositions": {
         "2026": 2.2
@@ -193,11 +193,11 @@
     },
     "positionsGainLost": {
         "2026": {
-            "Canadian Grand Prix": -18,
             "Australian Grand Prix": 0,
             "Chinese Grand Prix": 0,
             "Japanese Grand Prix": -2,
-            "Miami Grand Prix": 1
+            "Miami Grand Prix": 1,
+            "Canadian Grand Prix": -18
         }
     }
 }

@@ -24,8 +24,8 @@
     },
     "podiums": {
         "2026": {
-            "Canadian Grand Prix": "2",
-            "Chinese Grand Prix": "3"
+            "Chinese Grand Prix": "3",
+            "Canadian Grand Prix": "2"
         }
     },
     "DNFs": {
@@ -33,11 +33,11 @@
     },
     "fastLaps": {
         "2026": {
-            "Canadian Grand Prix": "1:14.573",
             "Australian Grand Prix": "1:22.423",
             "Chinese Grand Prix": "1:36.092",
             "Japanese Grand Prix": "1:32.777",
-            "Miami Grand Prix": "1:32.676"
+            "Miami Grand Prix": "1:32.676",
+            "Canadian Grand Prix": "1:14.573"
         }
     },
     "finalStandings": {
@@ -51,9 +51,6 @@
         "2026": {
             "year": "2026",
             "pos": {
-                "Canadian Grand Prix": {
-                    "points": 72
-                },
                 "Australian Grand Prix": {
                     "points": 72
                 },
@@ -65,6 +62,9 @@
                 },
                 "Miami Grand Prix": {
                     "points": 72
+                },
+                "Canadian Grand Prix": {
+                    "points": 72
                 }
             }
         }
@@ -73,11 +73,11 @@
         "2026": {
             "year": "2026",
             "positions": {
-                "Canadian Grand Prix": "2",
                 "Australian Grand Prix": "4",
                 "Chinese Grand Prix": "3",
                 "Japanese Grand Prix": "6",
-                "Miami Grand Prix": "6"
+                "Miami Grand Prix": "6",
+                "Canadian Grand Prix": "2"
             }
         }
     },
@@ -85,11 +85,11 @@
         "2026": {
             "year": "2026",
             "positions": {
-                "Canadian Grand Prix": "5",
                 "Australian Grand Prix": "7",
                 "Chinese Grand Prix": "3",
                 "Japanese Grand Prix": "6",
-                "Miami Grand Prix": "6"
+                "Miami Grand Prix": "6",
+                "Canadian Grand Prix": "5"
             }
         }
     },
@@ -97,11 +97,6 @@
         "2026": {
             "year": "2026",
             "QualiTimes": {
-                "Canadian Grand Prix": [
-                    "1:13.767",
-                    "1:13.041",
-                    "1:12.868"
-                ],
                 "Australian Grand Prix": [
                     "1:19.811",
                     "1:19.921",
@@ -121,28 +116,33 @@
                     "1:29.483",
                     "1:28.477",
                     "1:28.319"
+                ],
+                "Canadian Grand Prix": [
+                    "1:13.767",
+                    "1:13.041",
+                    "1:12.868"
                 ]
             }
         }
     },
     "consistency": {
         "mean": {
-            "wins": 0.0,
-            "podiums": 2.0,
-            "poles": 0.0,
-            "points": 72.0
+            "wins": 0,
+            "podiums": 2,
+            "poles": 0,
+            "points": 72
         },
         "std": {
-            "wins": 0.0,
-            "podiums": 0.0,
-            "poles": 0.0,
-            "points": 0.0
+            "wins": 0,
+            "podiums": 0,
+            "poles": 0,
+            "points": 0
         },
         "cv": {
             "wins": 0,
-            "podiums": 0.0,
+            "podiums": 0,
             "poles": 0,
-            "points": 0.0
+            "points": 0
         }
     },
     "peakSeason": {
@@ -167,32 +167,32 @@
     },
     "rates": {
         "wins": {
-            "2026": 0.0
+            "2026": 0
         },
         "podiums": {
             "2026": 0.4
         },
         "poles": {
-            "2026": 0.0
+            "2026": 0
         },
         "DNFs": {
-            "2026": 0.0
+            "2026": 0
         }
     },
-    "winRate": 0.0,
+    "winRate": 0,
     "podiumRate": 0.4,
-    "poleRate": 0.0,
-    "dnfRate": 0.0,
+    "poleRate": 0,
+    "dnfRate": 0,
     "ptwConRate": {
         "2026": -1
     },
     "positionsGainLost": {
         "2026": {
-            "Canadian Grand Prix": 3,
             "Australian Grand Prix": 3,
             "Chinese Grand Prix": 0,
             "Japanese Grand Prix": 0,
-            "Miami Grand Prix": 0
+            "Miami Grand Prix": 0,
+            "Canadian Grand Prix": 3
         }
     }
 }

@@ -34,11 +34,11 @@
     },
     "fastLaps": {
         "2026": {
-            "Canadian Grand Prix": "1:14.398",
             "Australian Grand Prix": "1:22.091",
             "Chinese Grand Prix": "1:37.046",
             "Japanese Grand Prix": "1:33.552",
-            "Miami Grand Prix": "1:33.110"
+            "Miami Grand Prix": "1:33.110",
+            "Canadian Grand Prix": "1:14.398"
         }
     },
     "finalStandings": {
@@ -52,9 +52,6 @@
         "2026": {
             "year": "2026",
             "pos": {
-                "Canadian Grand Prix": {
-                    "points": 43
-                },
                 "Australian Grand Prix": {
                     "points": 43
                 },
@@ -66,6 +63,9 @@
                 },
                 "Miami Grand Prix": {
                     "points": 43
+                },
+                "Canadian Grand Prix": {
+                    "points": 43
                 }
             }
         }
@@ -74,11 +74,11 @@
         "2026": {
             "year": "2026",
             "positions": {
-                "Canadian Grand Prix": "3",
                 "Australian Grand Prix": "6",
                 "Chinese Grand Prix": "16",
                 "Japanese Grand Prix": "8",
-                "Miami Grand Prix": "5"
+                "Miami Grand Prix": "5",
+                "Canadian Grand Prix": "3"
             }
         }
     },
@@ -86,11 +86,11 @@
         "2026": {
             "year": "2026",
             "positions": {
-                "Canadian Grand Prix": "6",
                 "Australian Grand Prix": "20",
                 "Chinese Grand Prix": "8",
                 "Japanese Grand Prix": "11",
-                "Miami Grand Prix": "2"
+                "Miami Grand Prix": "2",
+                "Canadian Grand Prix": "6"
             }
         }
     },
@@ -98,11 +98,6 @@
         "2026": {
             "year": "2026",
             "QualiTimes": {
-                "Canadian Grand Prix": [
-                    "1:14.067",
-                    "1:13.479",
-                    "1:12.907"
-                ],
                 "Chinese Grand Prix": [
                     "1:33.417",
                     "1:33.098",
@@ -117,28 +112,33 @@
                     "1:29.099",
                     "1:28.116",
                     "1:27.964"
+                ],
+                "Canadian Grand Prix": [
+                    "1:14.067",
+                    "1:13.479",
+                    "1:12.907"
                 ]
             }
         }
     },
     "consistency": {
         "mean": {
-            "wins": 0.0,
-            "podiums": 1.0,
-            "poles": 0.0,
-            "points": 43.0
+            "wins": 0,
+            "podiums": 1,
+            "poles": 0,
+            "points": 43
         },
         "std": {
-            "wins": 0.0,
-            "podiums": 0.0,
-            "poles": 0.0,
-            "points": 0.0
+            "wins": 0,
+            "podiums": 0,
+            "poles": 0,
+            "points": 0
         },
         "cv": {
             "wins": 0,
-            "podiums": 0.0,
+            "podiums": 0,
             "poles": 0,
-            "points": 0.0
+            "points": 0
         }
     },
     "peakSeason": {
@@ -163,32 +163,32 @@
     },
     "rates": {
         "wins": {
-            "2026": 0.0
+            "2026": 0
         },
         "podiums": {
             "2026": 0.2
         },
         "poles": {
-            "2026": 0.0
+            "2026": 0
         },
         "DNFs": {
             "2026": 0.2
         }
     },
-    "winRate": 0.0,
+    "winRate": 0,
     "podiumRate": 0.2,
-    "poleRate": 0.0,
+    "poleRate": 0,
     "dnfRate": 0.2,
     "ptwConRate": {
         "2026": -1
     },
     "positionsGainLost": {
         "2026": {
-            "Canadian Grand Prix": 3,
             "Australian Grand Prix": 14,
             "Chinese Grand Prix": -8,
             "Japanese Grand Prix": 3,
-            "Miami Grand Prix": -3
+            "Miami Grand Prix": -3,
+            "Canadian Grand Prix": 3
         }
     }
 }
