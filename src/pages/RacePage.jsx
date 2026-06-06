@@ -84,6 +84,13 @@ export function RacePage() {
   const [raceControlMessages, setRaceControlMessages] = useState([]);
   const [isSessionLive, setIsSessionLive] = useState(false);
   const [speedUnit, setSpeedUnit] = useState("kph");
+  const [apiRestricted, setApiRestricted] = useState(false);
+
+  useEffect(() => {
+    const handleRestricted = () => setApiRestricted(true);
+    window.addEventListener("openf1-restricted", handleRestricted);
+    return () => window.removeEventListener("openf1-restricted", handleRestricted);
+  }, []);
 
   useEffect(() => {
     const setBaseData = async () => {
@@ -1173,12 +1180,16 @@ export function RacePage() {
 
         {(selectedSession === "Race" || selectedSession === "Sprint") && (
           <>
-            {!driverSelected && (
+            {apiRestricted ? (
+              <div className="bg-red-900/80 border border-red-500/50 text-white text-center py-12 px-16 mb-16 rounded-md">
+                Live F1 session in progress. Telemetry data is restricted globally by OpenF1 until the session ends.
+              </div>
+            ) : !driverSelected ? (
               <div className="bg-glow-dark text-center py-8 max-sm:hidden">
                 Select a driver from the leaderboard to activate telemetry
                 viewer
               </div>
-            )}
+            ) : null}
             <div className="race-page__track-view__display relative">
               {driverSelectedShowTrack || (!animatedMap && MapPath) ? (
                 <ThreeCanvas

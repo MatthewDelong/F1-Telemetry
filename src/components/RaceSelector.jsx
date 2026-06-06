@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { ReactSelectComponent } from './Select';
 
-export const RaceSelector = ({ races, selectedYear, onChange }) => {
+export const RaceSelector = ({ races = [], selectedYear, onChange }) => {
   const navigate = useNavigate();
 
   const [selectValue, setSelectValue] = useState('');
@@ -28,7 +28,7 @@ export const RaceSelector = ({ races, selectedYear, onChange }) => {
       onChange()
   };
 
-  const raceOptions = races.map(race => ({
+  const raceOptions = (races || []).map(race => ({
     value: race.meeting_name,
     label: race.meeting_name,
   }));
@@ -39,9 +39,10 @@ export const RaceSelector = ({ races, selectedYear, onChange }) => {
       options={raceOptions}
       onChange={handleRaceChange}
       value={raceOptions.find(option => option.value === selectValue)}
-      isDisabled={!races.length}
+      isDisabled={!races || races.length === 0}
       className="w-full"
       isSearchable={false}
     />
   );
 };
+

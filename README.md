@@ -223,6 +223,7 @@ F1-Telemetry features a fully decoupled, hybrid API backend to ensure permanent 
 To enhance application security and mitigate Cross-Site Scripting (XSS) attacks, a strict Content Security Policy (CSP) is implemented.
 
 Key aspects of our CSP configuration:
+
 - **API Endpoints**: Explicitly whitelists connections to authorized data sources including the OpenF1 API (`api.openf1.org`), Jolpica API (`api.jolpi.ca`), OpenWeather API, and GitHub Raw Content.
 - **Assets & Media**: Restricts image and media loading to the application origin and verified third-party providers (e.g., Flagpedia for driver flags).
 - **Scripts**: Restricts script execution to the application origin, preventing unauthorized external scripts from running while allowing trusted analytics providers.
@@ -276,4 +277,4 @@ This project is available under a [custom open-source license](LICENSE.md) — f
 
 ## Disclaimer
 
-F1-Telemetry is an **unofficial** fan project and is not associated with Formula One companies. _F1, FORMULA ONE, FORMULA 1, F2, FORMULA 2,FIA, FIA FORMULA 2 CHAMPIONSHIP, F1 ACADEMY, FIA FORMULA ONE WORLD CHAMPIONSHIP, GRAND PRIX_, and related marks are trademarks of Formula One Licensing B.V.
+F1-Telemetry is an **unofficial** fan project and is not associated with Formula One companies. _F1, FORMULA ONE, FORMULA 1, F2, FORMULA 2, FIA, FIA FORMULA 2 CHAMPIONSHIP, F1 ACADEMY, FIA FORMULA ONE WORLD CHAMPIONSHIP, GRAND PRIX_, and related marks are trademarks of Formula One Licensing B.V.
