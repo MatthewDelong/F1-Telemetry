@@ -155,9 +155,16 @@ Draco and Meshopt decoders are bundled locally in `public/decoders/` to bypass b
 </details>
 
 <details>
-<summary><strong>API Data Update Script</strong></summary>
+<summary><strong>API Data Update Scripts (F1, F2 & F1 Academy)</strong></summary>
 
-The project includes a Python script (`src/config/f1/api_update.py`) that fetches the latest F1 season data from the [Jolpica API](https://jolpi.ca/) and [OpenF1 API](https://openf1.org) and writes it into the local JSON config files.
+The project includes Python scripts that fetch the latest season data and format it into the local JSON config files:
+
+- **F1:** `src/config/f1/api_update.py` — Fetches data from the [Jolpica API](https://jolpi.ca/) and [OpenF1 API](https://openf1.org).
+- **F2:** `src/config/f2/api_update.py` — Scrapes F2 results directly from the official FIA Formula 2 website.
+- **F1 Academy:** `src/config/f1a/api_update.py` — Scrapes F1 Academy results directly from the official F1 Academy website.
+
+**Formatting Tool**
+- `src/config/f2/format.py` — A helper script that specifically formats the `results.json` files to keep the structure compact with a single line per driver result.
 
 **Prerequisites**
 
@@ -168,13 +175,20 @@ The project includes a Python script (`src/config/f1/api_update.py`) that fetche
 py -m pip install requests numpy
 ```
 
-**Running the script**
+**Running the scripts**
 
-The script **must** be run from within its own directory so that relative file paths resolve correctly:
+The F1 script **must** be run from within its own directory so that relative file paths resolve correctly:
 
 ```bash
 cd src/config/f1
 python api_update.py
+```
+
+For F2 and F1 Academy, you can run them directly from the root directory. You can optionally pass the results URL as an argument, or paste it inside the file:
+
+```bash
+python src/config/f2/api_update.py [URL]
+python src/config/f1a/api_update.py [URL]
 ```
 
 **What it updates**
