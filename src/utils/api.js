@@ -27,7 +27,7 @@ export function normalizeOpenF1Date(date) {
   return d.toISOString();
 }
 
-const CACHE_PREFIX = "f1_cache_";
+const CACHE_PREFIX = "f1_cache_v2_";
 const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -871,7 +871,11 @@ export const fetchOpenF1Podium = async (meetingKey) => {
     
     const posData = await fetchOpenF1FullSessionData("/position", sk);
     await delay(150);
-    const driversData = await fetchWithPersistentCache(`${buildOpenF1Url("/drivers")}?session_key=${sk}`);
+    let driversData = await fetchWithPersistentCache(`${buildOpenF1Url("/drivers")}?session_key=${sk}`);
+    // If cached driversData is empty, try fetching fresh data to avoid 6-hour empty cache
+    if (!driversData || driversData.length === 0) {
+      driversData = await fetchOpenF1Data(`${buildOpenF1Url("/drivers")}?session_key=${sk}`);
+    }
     await delay(150);
     const intData = await fetchOpenF1Data(`${buildOpenF1Url("/intervals")}?session_key=${sk}`);
     await delay(150);
@@ -913,7 +917,7 @@ export const fetchOpenF1Podium = async (meetingKey) => {
       return mins > 0 ? `${mins}:${secs.padStart(6, '0')}` : secs;
     };
 
-    return top3Drivers.map(td => {
+    const results = top3Drivers.map(td => {
       const drv = driversData.find(d => parseInt(d.driver_number, 10) === td.driver_number) || {};
       const bestLapSec = driverBestLaps[td.driver_number];
       const isFastest = bestLapSec > 0 && bestLapSec === overallBestLap;
@@ -957,7 +961,9 @@ export const fetchOpenF1Podium = async (meetingKey) => {
 
     // 2. Cache successful results
     try {
-      localStorage.setItem(cacheKey, JSON.stringify({ data: results, timestamp: Date.now() }));
+      if (results && results.length > 0) {
+        localStorage.setItem(cacheKey, JSON.stringify({ data: results, timestamp: Date.now() }));
+      }
     } catch (e) {}
 
     return results;
