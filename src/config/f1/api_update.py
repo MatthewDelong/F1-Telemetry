@@ -6,6 +6,17 @@ api_url = 'https://api.jolpi.ca/ergast/f1'
 # api_url = 'http://ergast.com/api/f1'
 current_year = datetime.date.today().year
 
+def safe_get(url, timeout=10, **kwargs):
+    try:
+        return requests.get(url, timeout=timeout, **kwargs)
+    except requests.exceptions.RequestException as e:
+        print(f"API Request failed: {e}")
+        class DummyResponse:
+            status_code = 500
+            headers = {}
+            def json(self): return {}
+        return DummyResponse()
+
 class NpEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.integer):
@@ -18,7 +29,7 @@ class NpEncoder(json.JSONEncoder):
 
 def update_constructors():
     season = current_year
-    response = requests.get(f'{api_url}/{season}/constructors.json')
+    response = safe_get(f'{api_url}/{season}/constructors.json')
     if response.status_code==200:
         responsedata = response.json()
         constructors = responsedata["MRData"]["ConstructorTable"]["Constructors"]
@@ -45,7 +56,7 @@ def update_constructor_drivers():
 
     def fetchDrivers(team):
         print(team)
-        response = requests.get(f'{api_url}/{season}/constructors/{team}/drivers.json')
+        response = safe_get(f'{api_url}/{season}/constructors/{team}/drivers.json')
         if response.status_code == 200:
             responsedata = response.json()
             drivers = responsedata["MRData"]["DriverTable"]["Drivers"]
@@ -79,7 +90,7 @@ def update_driverData():
 
     # 1. Fetch all races results
     url_results = f'{api_url}/current/results.json?limit=1000'
-    resp_results = requests.get(url_results)
+    resp_results = safe_get(url_results)
     if resp_results.status_code != 200:
         print("Failed to fetch results")
         return
@@ -87,14 +98,14 @@ def update_driverData():
 
     # 2. Fetch all qualifying results
     url_quali = f'{api_url}/current/qualifying.json?limit=1000'
-    resp_quali = requests.get(url_quali)
+    resp_quali = safe_get(url_quali)
     quali_races = []
     if resp_quali.status_code == 200:
         quali_races = resp_quali.json()["MRData"]["RaceTable"]["Races"]
 
     # 3. Fetch driver standings
     url_standings = f'{api_url}/current/driverStandings.json?limit=1000'
-    resp_standings = requests.get(url_standings)
+    resp_standings = safe_get(url_standings)
     standings_list = []
     if resp_standings.status_code == 200:
         standings_list = resp_standings.json()["MRData"]["StandingsTable"]["StandingsLists"][0]["DriverStandings"]
@@ -518,7 +529,7 @@ def update_races():
     races_by_mk_file = 'races/racesbyMK.json'
     ensure_file_exists(races_by_mk_file, {})
     
-    response = requests.get(f'https://api.openf1.org/v1/meetings?year={season}')
+    response = safe_get(f'https://api.openf1.org/v1/meetings?year={season}')
     if response.status_code == 200:
         responsedata = response.json()
         
@@ -746,7 +757,7 @@ def update_raceResults():
             max_retries = 5
             wait_time = 10
             for attempt in range(1, max_retries + 1):
-                response = requests.get(url)
+                response = safe_get(url)
                 if response.status_code == 200:
                     responsedata = response.json()
                     api_races = responsedata.get('MRData', {}).get('RaceTable', {}).get('Races', [])
@@ -791,7 +802,7 @@ def update_qualifying():
             max_retries = 5
             wait_time = 10
             for attempt in range(1, max_retries + 1):
-                response = requests.get(url)
+                response = safe_get(url)
                 if response.status_code == 200:
                     responsedata = response.json()
                     api_races = responsedata.get('MRData', {}).get('RaceTable', {}).get('Races', [])
@@ -840,7 +851,7 @@ def update_sprintResults():
             max_retries = 5
             wait_time = 10
             for attempt in range(1, max_retries + 1):
-                response = requests.get(url)
+                response = safe_get(url)
                 if response.status_code == 200:
                     responsedata = response.json()
                     api_races = responsedata.get('MRData', {}).get('RaceTable', {}).get('Races', [])
@@ -892,7 +903,7 @@ def update_driverStandings():
                 max_retries = 5
                 wait_time = 10  # start with 10 second
                 for attempt in range(1, max_retries + 1):
-                    response = requests.get(url)
+                    response = safe_get(url)
                     if response.status_code == 200:
                         data = response.json()
                         mt = data.get('MRData', {}).get('StandingsTable', {}) \
@@ -953,7 +964,7 @@ def update_constructorStandings():
                 max_retries = 5
                 wait_time = 10  # start with 10 second
                 for attempt in range(1, max_retries + 1):
-                    response = requests.get(url)
+                    response = safe_get(url)
                     if response.status_code == 200:
                         data = response.json()
                         standings_lists = (
@@ -1014,7 +1025,7 @@ def initialize_race_details():
 def fetch_race_calendar(season):
     """Fetch race calendar from API for given season, excluding Pre-Season Testing"""
     url = f'{api_url}/{season}.json'
-    response = requests.get(url)
+    response = safe_get(url)
     
     if response.status_code == 200:
         responsedata = response.json()

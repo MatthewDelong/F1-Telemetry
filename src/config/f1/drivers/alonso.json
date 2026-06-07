@@ -2,7 +2,7 @@
     "driverId": "alonso",
     "driverCode": "ALO",
     "driverNumber": "14",
-    "lastUpdate": "2026-06-06T13:20:34.256187",
+    "lastUpdate": "2026-06-07T19:37:44.493866",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -46,7 +46,7 @@
     "finalStandings": {
         "2026": {
             "year": "2026",
-            "position": "22",
+            "position": "20",
             "points": "0"
         }
     },
@@ -130,16 +130,16 @@
     },
     "consistency": {
         "mean": {
-            "wins": 0,
-            "podiums": 0,
-            "poles": 0,
-            "points": 0
+            "wins": 0.0,
+            "podiums": 0.0,
+            "poles": 0.0,
+            "points": 0.0
         },
         "std": {
-            "wins": 0,
-            "podiums": 0,
-            "poles": 0,
-            "points": 0
+            "wins": 0.0,
+            "podiums": 0.0,
+            "poles": 0.0,
+            "points": 0.0
         },
         "cv": {
             "wins": 0,
@@ -170,22 +170,22 @@
     },
     "rates": {
         "wins": {
-            "2026": 0
+            "2026": 0.0
         },
         "podiums": {
-            "2026": 0
+            "2026": 0.0
         },
         "poles": {
-            "2026": 0
+            "2026": 0.0
         },
         "DNFs": {
-            "2026": 1
+            "2026": 1.0
         }
     },
-    "winRate": 0,
-    "podiumRate": 0,
-    "poleRate": 0,
-    "dnfRate": 1,
+    "winRate": 0.0,
+    "podiumRate": 0.0,
+    "poleRate": 0.0,
+    "dnfRate": 1.0,
     "ptwConRate": {
         "2026": -1
     },

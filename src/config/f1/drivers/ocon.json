@@ -2,7 +2,7 @@
     "driverId": "ocon",
     "driverCode": "OCO",
     "driverNumber": "31",
-    "lastUpdate": "2026-06-06T13:20:34.256174",
+    "lastUpdate": "2026-06-07T19:37:44.493830",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -46,7 +46,7 @@
         "2026": {
             "year": "2026",
             "position": "16",
-            "points": "1"
+            "points": "3"
         }
     },
     "posAfterRace": {
@@ -54,16 +54,16 @@
             "year": "2026",
             "pos": {
                 "Australian Grand Prix": {
-                    "points": 1
+                    "points": 3
                 },
                 "Chinese Grand Prix": {
-                    "points": 1
+                    "points": 3
                 },
                 "Japanese Grand Prix": {
-                    "points": 1
+                    "points": 3
                 },
                 "Miami Grand Prix": {
-                    "points": 1
+                    "points": 3
                 },
                 "Canadian Grand Prix": {
                     "points": 1
@@ -129,22 +129,22 @@
     },
     "consistency": {
         "mean": {
-            "wins": 0,
-            "podiums": 0,
-            "poles": 0,
-            "points": 1
+            "wins": 0.0,
+            "podiums": 0.0,
+            "poles": 0.0,
+            "points": 3.0
         },
         "std": {
-            "wins": 0,
-            "podiums": 0,
-            "poles": 0,
-            "points": 0
+            "wins": 0.0,
+            "podiums": 0.0,
+            "poles": 0.0,
+            "points": 0.0
         },
         "cv": {
             "wins": 0,
             "podiums": 0,
             "poles": 0,
-            "points": 0
+            "points": 0.0
         }
     },
     "peakSeason": {
@@ -169,21 +169,21 @@
     },
     "rates": {
         "wins": {
-            "2026": 0
+            "2026": 0.0
         },
         "podiums": {
-            "2026": 0
+            "2026": 0.0
         },
         "poles": {
-            "2026": 0
+            "2026": 0.0
         },
         "DNFs": {
             "2026": 0.8
         }
     },
-    "winRate": 0,
-    "podiumRate": 0,
-    "poleRate": 0,
+    "winRate": 0.0,
+    "podiumRate": 0.0,
+    "poleRate": 0.0,
     "dnfRate": 0.8,
     "ptwConRate": {
         "2026": -1

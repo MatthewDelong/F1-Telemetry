@@ -2,7 +2,7 @@
     "driverId": "russell",
     "driverCode": "RUS",
     "driverNumber": "63",
-    "lastUpdate": "2026-06-06T13:20:34.256111",
+    "lastUpdate": "2026-06-07T19:37:44.493683",
     "totalWins": 1,
     "totalPodiums": 2,
     "totalPoles": 2,
@@ -48,7 +48,7 @@
     "finalStandings": {
         "2026": {
             "year": "2026",
-            "position": "2",
+            "position": "3",
             "points": "88"
         }
     },
@@ -132,22 +132,22 @@
     },
     "consistency": {
         "mean": {
-            "wins": 1,
-            "podiums": 2,
-            "poles": 2,
-            "points": 88
+            "wins": 1.0,
+            "podiums": 2.0,
+            "poles": 2.0,
+            "points": 88.0
         },
         "std": {
-            "wins": 0,
-            "podiums": 0,
-            "poles": 0,
-            "points": 0
+            "wins": 0.0,
+            "podiums": 0.0,
+            "poles": 0.0,
+            "points": 0.0
         },
         "cv": {
-            "wins": 0,
-            "podiums": 0,
-            "poles": 0,
-            "points": 0
+            "wins": 0.0,
+            "podiums": 0.0,
+            "poles": 0.0,
+            "points": 0.0
         }
     },
     "peakSeason": {
@@ -165,7 +165,7 @@
         }
     },
     "avgRacePositions": {
-        "2026": 6
+        "2026": 6.0
     },
     "avgQualiPositions": {
         "2026": 2.2

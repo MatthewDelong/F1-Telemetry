@@ -2,7 +2,7 @@
     "driverId": "hadjar",
     "driverCode": "HAD",
     "driverNumber": "6",
-    "lastUpdate": "2026-06-06T13:20:34.256263",
+    "lastUpdate": "2026-06-07T19:37:44.494108",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -44,8 +44,8 @@
     "finalStandings": {
         "2026": {
             "year": "2026",
-            "position": "12",
-            "points": "14"
+            "position": "8",
+            "points": "29"
         }
     },
     "posAfterRace": {
@@ -53,19 +53,19 @@
             "year": "2026",
             "pos": {
                 "Australian Grand Prix": {
-                    "points": 14
+                    "points": 29
                 },
                 "Chinese Grand Prix": {
-                    "points": 14
+                    "points": 29
                 },
                 "Japanese Grand Prix": {
-                    "points": 14
+                    "points": 29
                 },
                 "Miami Grand Prix": {
-                    "points": 14
+                    "points": 29
                 },
                 "Canadian Grand Prix": {
-                    "points": 14
+                    "points": 29
                 }
             }
         }
@@ -128,22 +128,22 @@
     },
     "consistency": {
         "mean": {
-            "wins": 0,
-            "podiums": 0,
-            "poles": 0,
-            "points": 14
+            "wins": 0.0,
+            "podiums": 0.0,
+            "poles": 0.0,
+            "points": 29.0
         },
         "std": {
-            "wins": 0,
-            "podiums": 0,
-            "poles": 0,
-            "points": 0
+            "wins": 0.0,
+            "podiums": 0.0,
+            "poles": 0.0,
+            "points": 0.0
         },
         "cv": {
             "wins": 0,
             "podiums": 0,
             "poles": 0,
-            "points": 0
+            "points": 0.0
         }
     },
     "peakSeason": {
@@ -168,21 +168,21 @@
     },
     "rates": {
         "wins": {
-            "2026": 0
+            "2026": 0.0
         },
         "podiums": {
-            "2026": 0
+            "2026": 0.0
         },
         "poles": {
-            "2026": 0
+            "2026": 0.0
         },
         "DNFs": {
             "2026": 0.6
         }
     },
-    "winRate": 0,
-    "podiumRate": 0,
-    "poleRate": 0,
+    "winRate": 0.0,
+    "podiumRate": 0.0,
+    "poleRate": 0.0,
     "dnfRate": 0.6,
     "ptwConRate": {
         "2026": -1

@@ -2,7 +2,7 @@
     "driverId": "max_verstappen",
     "driverCode": "VER",
     "driverNumber": "3",
-    "lastUpdate": "2026-06-06T13:20:34.256251",
+    "lastUpdate": "2026-06-07T19:37:44.494077",
     "totalWins": 0,
     "totalPodiums": 1,
     "totalPoles": 0,
@@ -123,22 +123,22 @@
     },
     "consistency": {
         "mean": {
-            "wins": 0,
-            "podiums": 1,
-            "poles": 0,
-            "points": 43
+            "wins": 0.0,
+            "podiums": 1.0,
+            "poles": 0.0,
+            "points": 43.0
         },
         "std": {
-            "wins": 0,
-            "podiums": 0,
-            "poles": 0,
-            "points": 0
+            "wins": 0.0,
+            "podiums": 0.0,
+            "poles": 0.0,
+            "points": 0.0
         },
         "cv": {
             "wins": 0,
-            "podiums": 0,
+            "podiums": 0.0,
             "poles": 0,
-            "points": 0
+            "points": 0.0
         }
     },
     "peakSeason": {
@@ -163,21 +163,21 @@
     },
     "rates": {
         "wins": {
-            "2026": 0
+            "2026": 0.0
         },
         "podiums": {
             "2026": 0.2
         },
         "poles": {
-            "2026": 0
+            "2026": 0.0
         },
         "DNFs": {
             "2026": 0.2
         }
     },
-    "winRate": 0,
+    "winRate": 0.0,
     "podiumRate": 0.2,
-    "poleRate": 0,
+    "poleRate": 0.0,
     "dnfRate": 0.2,
     "ptwConRate": {
         "2026": -1
