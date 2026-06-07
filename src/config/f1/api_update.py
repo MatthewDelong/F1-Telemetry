@@ -237,7 +237,17 @@ def update_driverData():
             data["seasonWins"][season] = list(data["racePosition"][season]["positions"].values()).count("1")
             data["totalWins"] = sum(data["seasonWins"].values())
 
-            data["qualiPosition"][season]["positions"][raceName] = result["grid"]
+            # Qualifying & Grid Fallback
+            qualifying = None
+            if quali_race:
+                qr_list = quali_race.get("QualifyingResults", [])
+                qualifying = next((q for q in qr_list if get_driver_id(q.get("Driver", {})) == driverId), None)
+            
+            grid_pos = result.get("grid")
+            if (grid_pos is None or grid_pos == "null" or grid_pos == "") and qualifying:
+                grid_pos = qualifying.get("position")
+
+            data["qualiPosition"][season]["positions"][raceName] = grid_pos
 
             # Driver Standing
             driverStanding = next((s for s in standings_list if get_driver_id(s.get("Driver", {})) == driverId), None)
@@ -246,20 +256,17 @@ def update_driverData():
                 data["finalStandings"][season]["points"] = driverStanding["points"]
                 data["posAfterRace"][season]["pos"][raceName] = {"points": int(driverStanding["points"])}
 
-            # Qualifying
-            if quali_race:
-                qr_list = quali_race.get("QualifyingResults", [])
-                qualifying = next((q for q in qr_list if get_driver_id(q.get("Driver", {})) == driverId), None)
-                if qualifying:
-                    if qualifying["position"] == "1":
-                        if raceName not in data["poles"][season]:
-                            data["poles"][season].append(raceName)
-                    data["seasonPoles"][season] = len(data["poles"][season])
-                    data["totalPoles"] = sum(data["seasonPoles"].values())
-                    val1 = qualifying.get("Q1", "N/A")
-                    val2 = qualifying.get("Q2", "N/A")
-                    val3 = qualifying.get("Q3", "N/A")
-                    data["driverQualifyingTimes"][season]["QualiTimes"][raceName] = [val1, val2, val3]
+            # Process remaining Qualifying data
+            if qualifying:
+                if qualifying["position"] == "1":
+                    if raceName not in data["poles"][season]:
+                        data["poles"][season].append(raceName)
+                data["seasonPoles"][season] = len(data["poles"][season])
+                data["totalPoles"] = sum(data["seasonPoles"].values())
+                val1 = qualifying.get("Q1", "N/A")
+                val2 = qualifying.get("Q2", "N/A")
+                val3 = qualifying.get("Q3", "N/A")
+                data["driverQualifyingTimes"][season]["QualiTimes"][raceName] = [val1, val2, val3]
 
     # Save all updated data
     for driverId, data in drivers_data.items():
@@ -811,6 +818,23 @@ def update_raceResults():
                 print(f"Exceeded max retries for {race['raceName']}, skipping.")
         else:
             break
+
+    # Patch missing grid positions from qualifying.json
+    try:
+        with open('qualifying.json', 'r', encoding='utf-8') as qf:
+            quali_races = json.load(qf)
+            for race in result:
+                qrace = next((qr for qr in quali_races if qr.get("round") == race.get("round")), None)
+                if qrace:
+                    for res in race.get("Results", []):
+                        if res.get("grid") is None or res.get("grid") == "" or str(res.get("grid")).lower() == "null":
+                            code = res.get("Driver", {}).get("code")
+                            if code:
+                                q_driver = next((q for q in qrace.get("QualifyingResults", []) if q.get("Driver", {}).get("code") == code), None)
+                                if q_driver and q_driver.get("position"):
+                                    res["grid"] = str(q_driver.get("position"))
+    except Exception as e:
+        print("Could not patch grid from qualifying:", e)
 
     write_compact_race_json(result, 'results.json', 'Results')
 

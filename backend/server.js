@@ -97,7 +97,21 @@ app.get('/api/admin/rebuild-2026', async (req, res) => {
     resultsData.forEach(race => {
       race.Results.forEach(r => {
         if (r.Driver.driverId) driverIds.add(r.Driver.driverId);
-        else if (r.Driver.code) driverIds.add(r.Driver.code.toLowerCase());
+        else {
+          let code = r.Driver.code || "";
+          if (code === "VER") driverIds.add("max_verstappen");
+          else if (code === "LIN") driverIds.add("arvid_lindblad");
+          else if (code === "BEA") driverIds.add("bearman");
+          else if (code === "ANT") driverIds.add("antonelli");
+          else if (code === "BOR") driverIds.add("bortoleto");
+          else if (code === "HAD") driverIds.add("hadjar");
+          else if (code === "COL") driverIds.add("colapinto");
+          else if (code === "LAW") driverIds.add("lawson");
+          else if (code === "PER") driverIds.add("perez");
+          else if (code === "HUL") driverIds.add("hulkenberg");
+          else if (r.Driver.familyName) driverIds.add(r.Driver.familyName.toLowerCase().replace(' ', '_'));
+          else if (code) driverIds.add(code.toLowerCase());
+        }
       });
     });
 
