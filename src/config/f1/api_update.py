@@ -89,26 +89,41 @@ def update_driverData():
         os.makedirs(output_directory)
 
     # 1. Fetch all races results
-    url_results = f'{api_url}/current/results.json?limit=1000'
-    resp_results = safe_get(url_results)
-    if resp_results.status_code != 200:
-        print("Failed to fetch results")
-        return
-    races = resp_results.json()["MRData"]["RaceTable"]["Races"]
+    try:
+        with open('results.json', 'r', encoding='utf-8') as f:
+            races = json.load(f)
+    except Exception:
+        url_results = f'{api_url}/current/results.json?limit=1000'
+        resp_results = safe_get(url_results)
+        if resp_results.status_code != 200:
+            print("Failed to fetch results")
+            return
+        races = resp_results.json()["MRData"]["RaceTable"]["Races"]
 
     # 2. Fetch all qualifying results
-    url_quali = f'{api_url}/current/qualifying.json?limit=1000'
-    resp_quali = safe_get(url_quali)
-    quali_races = []
-    if resp_quali.status_code == 200:
-        quali_races = resp_quali.json()["MRData"]["RaceTable"]["Races"]
+    try:
+        with open('qualifying.json', 'r', encoding='utf-8') as f:
+            quali_races = json.load(f)
+    except Exception:
+        url_quali = f'{api_url}/current/qualifying.json?limit=1000'
+        resp_quali = safe_get(url_quali)
+        quali_races = []
+        if resp_quali.status_code == 200:
+            quali_races = resp_quali.json()["MRData"]["RaceTable"]["Races"]
 
     # 3. Fetch driver standings
-    url_standings = f'{api_url}/current/driverStandings.json?limit=1000'
-    resp_standings = safe_get(url_standings)
-    standings_list = []
-    if resp_standings.status_code == 200:
-        standings_list = resp_standings.json()["MRData"]["StandingsTable"]["StandingsLists"][0]["DriverStandings"]
+    try:
+        with open(f'races/{current_year}/driverStandings.json', 'r', encoding='utf-8') as f:
+            standings_data = json.load(f)
+            # Find the latest round in the driver standings
+            latest_round_data = standings_data[str(len(standings_data))]
+            standings_list = latest_round_data
+    except Exception:
+        url_standings = f'{api_url}/current/driverStandings.json?limit=1000'
+        resp_standings = safe_get(url_standings)
+        standings_list = []
+        if resp_standings.status_code == 200:
+            standings_list = resp_standings.json()["MRData"]["StandingsTable"]["StandingsLists"][0]["DriverStandings"]
 
     drivers_data = {}
 
@@ -118,11 +133,29 @@ def update_driverData():
         round = race["round"]
         results = race["Results"]
 
-        # Find corresponding qualifying race
         quali_race = next((r for r in quali_races if r["round"] == round), None)
 
+        def get_driver_id(driver_obj):
+            driver_id = driver_obj.get("driverId")
+            if not driver_id:
+                code = driver_obj.get("code", "")
+                if code == "VER": return "max_verstappen"
+                elif code == "LIN": return "arvid_lindblad"
+                elif code == "BEA": return "bearman"
+                elif code == "ANT": return "antonelli"
+                elif code == "BOR": return "bortoleto"
+                elif code == "HAD": return "hadjar"
+                elif code == "COL": return "colapinto"
+                elif code == "LAW": return "lawson"
+                elif code == "PER": return "perez"
+                elif code == "HUL": return "hulkenberg"
+                else: return driver_obj.get("familyName", "").lower().replace(' ', '_')
+            return driver_id
+
         for result in results:
-            driverId = result["Driver"]["driverId"]
+            driver_obj = result.get("Driver", {})
+            driverId = get_driver_id(driver_obj)
+
 
             if driverId not in drivers_data:
                 input_file = os.path.join(input_directory, f'{driverId}.json')
@@ -184,8 +217,8 @@ def update_driverData():
             if season not in data["poles"]: data["poles"][season] = []
 
             # Update DNF, Podium, and Win Data
-            if not (result["status"] == "Finished" or '+' in result["status"]):
-                data["DNFs"][season][raceName] = result["status"]
+            if not (result.get("status", "Finished") == "Finished" or '+' in result.get("status", "Finished")):
+                data["DNFs"][season][raceName] = result.get("status", "Finished")
             data["seasonDNFs"][season] = len(data["DNFs"][season].keys())
             data["totalDNFs"] = sum(data["seasonDNFs"].values())
 
@@ -207,7 +240,7 @@ def update_driverData():
             data["qualiPosition"][season]["positions"][raceName] = result["grid"]
 
             # Driver Standing
-            driverStanding = next((s for s in standings_list if s["Driver"]["driverId"] == driverId), None)
+            driverStanding = next((s for s in standings_list if get_driver_id(s.get("Driver", {})) == driverId), None)
             if driverStanding:
                 data["finalStandings"][season]["position"] = driverStanding.get("position", "40")
                 data["finalStandings"][season]["points"] = driverStanding["points"]
@@ -216,7 +249,7 @@ def update_driverData():
             # Qualifying
             if quali_race:
                 qr_list = quali_race.get("QualifyingResults", [])
-                qualifying = next((q for q in qr_list if q["Driver"]["driverId"] == driverId), None)
+                qualifying = next((q for q in qr_list if get_driver_id(q.get("Driver", {})) == driverId), None)
                 if qualifying:
                     if qualifying["position"] == "1":
                         if raceName not in data["poles"][season]:
@@ -267,7 +300,8 @@ def analyse_driverData():
                 if race in quali_positions[season]['positions']:
                     race_pos = race_positions[season]['positions'][race]
                     quali_pos = quali_positions[season]['positions'][race]
-                    positions_gained_lost[season][race] = int(quali_pos) - int(race_pos)
+                    if quali_pos is not None and race_pos is not None:
+                        positions_gained_lost[season][race] = int(quali_pos) - int(race_pos)
         return positions_gained_lost
 
     def average_positions_gained_lost(seasons, positions_gained_lost):
@@ -323,8 +357,8 @@ def analyse_driverData():
             peak_season_podiums, peak_podiums = find_peak_season(podiums_per_season, seasons)
             peak_season_poles, peak_poles = find_peak_season(poles_per_season, seasons)
 
-            race_positions_per_season = {season: [int(data['racePosition'][season]['positions'][race]) for race in data['racePosition'][season]['positions']] for season in seasons}
-            quali_positions_per_season = {season: [int(data['qualiPosition'][season]['positions'][race]) for race in data['qualiPosition'][season]['positions']] for season in seasons}
+            race_positions_per_season = {season: [int(data['racePosition'][season]['positions'][race]) for race in data['racePosition'][season]['positions'] if data['racePosition'][season]['positions'][race] is not None] for season in seasons}
+            quali_positions_per_season = {season: [int(data['qualiPosition'][season]['positions'][race]) for race in data['qualiPosition'][season]['positions'] if data['qualiPosition'][season]['positions'][race] is not None] for season in seasons}
             avg_race_positions = [np.mean(race_positions_per_season[season]) for season in seasons]
             avg_quali_positions = [np.mean(quali_positions_per_season[season]) for season in seasons]
 

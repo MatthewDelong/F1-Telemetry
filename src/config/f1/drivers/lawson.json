@@ -2,7 +2,7 @@
     "driverId": "lawson",
     "driverCode": "LAW",
     "driverNumber": "30",
-    "lastUpdate": "2026-06-07T19:37:44.494142",
+    "lastUpdate": "2026-06-07T20:37:18.117969",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -38,7 +38,8 @@
             "Chinese Grand Prix": "1:37.096",
             "Japanese Grand Prix": "1:34.230",
             "Miami Grand Prix": "1:34.814",
-            "Canadian Grand Prix": "1:15.604"
+            "Canadian Grand Prix": "1:15.604",
+            "Monaco Grand Prix": -1
         }
     },
     "finalStandings": {
@@ -66,6 +67,9 @@
                 },
                 "Canadian Grand Prix": {
                     "points": 26
+                },
+                "Monaco Grand Prix": {
+                    "points": 26
                 }
             }
         }
@@ -78,7 +82,8 @@
                 "Chinese Grand Prix": "7",
                 "Japanese Grand Prix": "9",
                 "Miami Grand Prix": "20",
-                "Canadian Grand Prix": "7"
+                "Canadian Grand Prix": "7",
+                "Monaco Grand Prix": "5"
             }
         }
     },
@@ -90,7 +95,8 @@
                 "Chinese Grand Prix": "14",
                 "Japanese Grand Prix": "14",
                 "Miami Grand Prix": "11",
-                "Canadian Grand Prix": "12"
+                "Canadian Grand Prix": "12",
+                "Monaco Grand Prix": null
             }
         }
     },
@@ -122,6 +128,11 @@
                     "1:14.346",
                     "1:13.897",
                     "N/A"
+                ],
+                "Monaco Grand Prix": [
+                    "1:14.498",
+                    "1:13.471",
+                    "1:13.412"
                 ]
             }
         }
@@ -161,7 +172,7 @@
         }
     },
     "avgRacePositions": {
-        "2026": 11.2
+        "2026": 10.166666666666666
     },
     "avgQualiPositions": {
         "2026": 11.8
@@ -177,13 +188,13 @@
             "2026": 0.0
         },
         "DNFs": {
-            "2026": 0.6
+            "2026": 0.5
         }
     },
     "winRate": 0.0,
     "podiumRate": 0.0,
     "poleRate": 0.0,
-    "dnfRate": 0.6,
+    "dnfRate": 0.5,
     "ptwConRate": {
         "2026": -1
     },

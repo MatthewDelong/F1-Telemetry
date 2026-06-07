@@ -2,16 +2,16 @@
     "driverId": "hamilton",
     "driverCode": "HAM",
     "driverNumber": "44",
-    "lastUpdate": "2026-06-07T19:37:44.494061",
+    "lastUpdate": "2026-06-07T20:37:18.117937",
     "totalWins": 0,
-    "totalPodiums": 2,
+    "totalPodiums": 3,
     "totalPoles": 0,
     "totalDNFs": 0,
     "seasonWins": {
         "2026": 0
     },
     "seasonPodiums": {
-        "2026": 2
+        "2026": 3
     },
     "seasonPoles": {
         "2026": 0
@@ -25,7 +25,8 @@
     "podiums": {
         "2026": {
             "Chinese Grand Prix": "3",
-            "Canadian Grand Prix": "2"
+            "Canadian Grand Prix": "2",
+            "Monaco Grand Prix": "2"
         }
     },
     "DNFs": {
@@ -37,7 +38,8 @@
             "Chinese Grand Prix": "1:36.092",
             "Japanese Grand Prix": "1:32.777",
             "Miami Grand Prix": "1:32.676",
-            "Canadian Grand Prix": "1:14.573"
+            "Canadian Grand Prix": "1:14.573",
+            "Monaco Grand Prix": -1
         }
     },
     "finalStandings": {
@@ -65,6 +67,9 @@
                 },
                 "Canadian Grand Prix": {
                     "points": 90
+                },
+                "Monaco Grand Prix": {
+                    "points": 90
                 }
             }
         }
@@ -77,7 +82,8 @@
                 "Chinese Grand Prix": "3",
                 "Japanese Grand Prix": "6",
                 "Miami Grand Prix": "6",
-                "Canadian Grand Prix": "2"
+                "Canadian Grand Prix": "2",
+                "Monaco Grand Prix": "2"
             }
         }
     },
@@ -89,7 +95,8 @@
                 "Chinese Grand Prix": "3",
                 "Japanese Grand Prix": "6",
                 "Miami Grand Prix": "6",
-                "Canadian Grand Prix": "5"
+                "Canadian Grand Prix": "5",
+                "Monaco Grand Prix": null
             }
         }
     },
@@ -121,6 +128,11 @@
                     "1:13.767",
                     "1:13.041",
                     "1:12.868"
+                ],
+                "Monaco Grand Prix": [
+                    "1:13.777",
+                    "1:12.934",
+                    "1:12.279"
                 ]
             }
         }
@@ -128,7 +140,7 @@
     "consistency": {
         "mean": {
             "wins": 0.0,
-            "podiums": 2.0,
+            "podiums": 3.0,
             "poles": 0.0,
             "points": 90.0
         },
@@ -152,7 +164,7 @@
         },
         "podiums": {
             "season": "2026",
-            "podiums": 2
+            "podiums": 3
         },
         "poles": {
             "season": "No peak season",
@@ -160,7 +172,7 @@
         }
     },
     "avgRacePositions": {
-        "2026": 4.2
+        "2026": 3.8333333333333335
     },
     "avgQualiPositions": {
         "2026": 5.4
@@ -170,7 +182,7 @@
             "2026": 0.0
         },
         "podiums": {
-            "2026": 0.4
+            "2026": 0.5
         },
         "poles": {
             "2026": 0.0
@@ -180,7 +192,7 @@
         }
     },
     "winRate": 0.0,
-    "podiumRate": 0.4,
+    "podiumRate": 0.5,
     "poleRate": 0.0,
     "dnfRate": 0.0,
     "ptwConRate": {

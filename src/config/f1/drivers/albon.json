@@ -2,7 +2,7 @@
     "driverId": "albon",
     "driverCode": "ALB",
     "driverNumber": "23",
-    "lastUpdate": "2026-06-07T19:37:44.493774",
+    "lastUpdate": "2026-06-07T20:37:18.118008",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -39,7 +39,8 @@
             "Chinese Grand Prix": -1,
             "Japanese Grand Prix": "1:33.427",
             "Miami Grand Prix": "1:33.784",
-            "Canadian Grand Prix": "1:17.221"
+            "Canadian Grand Prix": "1:17.221",
+            "Monaco Grand Prix": -1
         }
     },
     "finalStandings": {
@@ -66,7 +67,10 @@
                     "points": 5
                 },
                 "Canadian Grand Prix": {
-                    "points": 1
+                    "points": 5
+                },
+                "Monaco Grand Prix": {
+                    "points": 5
                 }
             }
         }
@@ -79,7 +83,8 @@
                 "Chinese Grand Prix": "22",
                 "Japanese Grand Prix": "20",
                 "Miami Grand Prix": "10",
-                "Canadian Grand Prix": "21"
+                "Canadian Grand Prix": "21",
+                "Monaco Grand Prix": "8"
             }
         }
     },
@@ -91,7 +96,8 @@
                 "Chinese Grand Prix": "22",
                 "Japanese Grand Prix": "17",
                 "Miami Grand Prix": "15",
-                "Canadian Grand Prix": "18"
+                "Canadian Grand Prix": "18",
+                "Monaco Grand Prix": null
             }
         }
     },
@@ -122,6 +128,11 @@
                 "Canadian Grand Prix": [
                     "1:14.851",
                     "N/A",
+                    "N/A"
+                ],
+                "Monaco Grand Prix": [
+                    "1:14.321",
+                    "1:13.787",
                     "N/A"
                 ]
             }
@@ -162,7 +173,7 @@
         }
     },
     "avgRacePositions": {
-        "2026": 17.0
+        "2026": 15.5
     },
     "avgQualiPositions": {
         "2026": 17.4
@@ -178,13 +189,13 @@
             "2026": 0.0
         },
         "DNFs": {
-            "2026": 0.8
+            "2026": 0.6666666666666666
         }
     },
     "winRate": 0.0,
     "podiumRate": 0.0,
     "poleRate": 0.0,
-    "dnfRate": 0.8,
+    "dnfRate": 0.6666666666666666,
     "ptwConRate": {
         "2026": -1
     },

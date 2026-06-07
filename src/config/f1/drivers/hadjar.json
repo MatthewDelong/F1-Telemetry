@@ -2,16 +2,16 @@
     "driverId": "hadjar",
     "driverCode": "HAD",
     "driverNumber": "6",
-    "lastUpdate": "2026-06-07T19:37:44.494108",
+    "lastUpdate": "2026-06-07T20:37:18.117947",
     "totalWins": 0,
-    "totalPodiums": 0,
+    "totalPodiums": 1,
     "totalPoles": 0,
     "totalDNFs": 3,
     "seasonWins": {
         "2026": 0
     },
     "seasonPodiums": {
-        "2026": 0
+        "2026": 1
     },
     "seasonPoles": {
         "2026": 0
@@ -23,7 +23,9 @@
         "2026": []
     },
     "podiums": {
-        "2026": {}
+        "2026": {
+            "Monaco Grand Prix": "3"
+        }
     },
     "DNFs": {
         "2026": {
@@ -38,7 +40,8 @@
             "Chinese Grand Prix": "1:37.311",
             "Japanese Grand Prix": "1:33.837",
             "Miami Grand Prix": "1:34.833",
-            "Canadian Grand Prix": "1:14.578"
+            "Canadian Grand Prix": "1:14.578",
+            "Monaco Grand Prix": -1
         }
     },
     "finalStandings": {
@@ -66,6 +69,9 @@
                 },
                 "Canadian Grand Prix": {
                     "points": 29
+                },
+                "Monaco Grand Prix": {
+                    "points": 29
                 }
             }
         }
@@ -78,7 +84,8 @@
                 "Chinese Grand Prix": "8",
                 "Japanese Grand Prix": "12",
                 "Miami Grand Prix": "22",
-                "Canadian Grand Prix": "5"
+                "Canadian Grand Prix": "5",
+                "Monaco Grand Prix": "3"
             }
         }
     },
@@ -90,7 +97,8 @@
                 "Chinese Grand Prix": "9",
                 "Japanese Grand Prix": "8",
                 "Miami Grand Prix": "22",
-                "Canadian Grand Prix": "7"
+                "Canadian Grand Prix": "7",
+                "Monaco Grand Prix": null
             }
         }
     },
@@ -122,6 +130,11 @@
                     "1:13.654",
                     "1:12.975",
                     "1:12.935"
+                ],
+                "Monaco Grand Prix": [
+                    "1:14.408",
+                    "1:12.722",
+                    "1:12.434"
                 ]
             }
         }
@@ -129,7 +142,7 @@
     "consistency": {
         "mean": {
             "wins": 0.0,
-            "podiums": 0.0,
+            "podiums": 1.0,
             "poles": 0.0,
             "points": 29.0
         },
@@ -141,7 +154,7 @@
         },
         "cv": {
             "wins": 0,
-            "podiums": 0,
+            "podiums": 0.0,
             "poles": 0,
             "points": 0.0
         }
@@ -152,8 +165,8 @@
             "wins": 0
         },
         "podiums": {
-            "season": "No peak season",
-            "podiums": 0
+            "season": "2026",
+            "podiums": 1
         },
         "poles": {
             "season": "No peak season",
@@ -161,7 +174,7 @@
         }
     },
     "avgRacePositions": {
-        "2026": 13.4
+        "2026": 11.666666666666666
     },
     "avgQualiPositions": {
         "2026": 9.8
@@ -171,19 +184,19 @@
             "2026": 0.0
         },
         "podiums": {
-            "2026": 0.0
+            "2026": 0.16666666666666666
         },
         "poles": {
             "2026": 0.0
         },
         "DNFs": {
-            "2026": 0.6
+            "2026": 0.5
         }
     },
     "winRate": 0.0,
-    "podiumRate": 0.0,
+    "podiumRate": 0.16666666666666666,
     "poleRate": 0.0,
-    "dnfRate": 0.6,
+    "dnfRate": 0.5,
     "ptwConRate": {
         "2026": -1
     },

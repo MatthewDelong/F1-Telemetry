@@ -2,7 +2,7 @@
     "driverId": "leclerc",
     "driverCode": "LEC",
     "driverNumber": "16",
-    "lastUpdate": "2026-06-07T19:37:44.494093",
+    "lastUpdate": "2026-06-07T20:37:18.118157",
     "totalWins": 0,
     "totalPodiums": 2,
     "totalPoles": 0,
@@ -37,7 +37,8 @@
             "Chinese Grand Prix": "1:36.011",
             "Japanese Grand Prix": "1:32.634",
             "Miami Grand Prix": "1:32.515",
-            "Canadian Grand Prix": "1:15.297"
+            "Canadian Grand Prix": "1:15.297",
+            "Monaco Grand Prix": -1
         }
     },
     "finalStandings": {
@@ -65,6 +66,9 @@
                 },
                 "Canadian Grand Prix": {
                     "points": 75
+                },
+                "Monaco Grand Prix": {
+                    "points": 75
                 }
             }
         }
@@ -77,7 +81,8 @@
                 "Chinese Grand Prix": "4",
                 "Japanese Grand Prix": "3",
                 "Miami Grand Prix": "8",
-                "Canadian Grand Prix": "4"
+                "Canadian Grand Prix": "4",
+                "Monaco Grand Prix": "17"
             }
         }
     },
@@ -89,7 +94,8 @@
                 "Chinese Grand Prix": "4",
                 "Japanese Grand Prix": "4",
                 "Miami Grand Prix": "3",
-                "Canadian Grand Prix": "8"
+                "Canadian Grand Prix": "8",
+                "Monaco Grand Prix": null
             }
         }
     },
@@ -121,6 +127,11 @@
                     "1:13.825",
                     "1:13.496",
                     "1:12.976"
+                ],
+                "Monaco Grand Prix": [
+                    "1:13.293",
+                    "1:12.774",
+                    "1:12.351"
                 ]
             }
         }
@@ -160,7 +171,7 @@
         }
     },
     "avgRacePositions": {
-        "2026": 4.4
+        "2026": 6.5
     },
     "avgQualiPositions": {
         "2026": 4.6
@@ -170,7 +181,7 @@
             "2026": 0.0
         },
         "podiums": {
-            "2026": 0.4
+            "2026": 0.3333333333333333
         },
         "poles": {
             "2026": 0.0
@@ -180,7 +191,7 @@
         }
     },
     "winRate": 0.0,
-    "podiumRate": 0.4,
+    "podiumRate": 0.3333333333333333,
     "poleRate": 0.0,
     "dnfRate": 0.0,
     "ptwConRate": {
