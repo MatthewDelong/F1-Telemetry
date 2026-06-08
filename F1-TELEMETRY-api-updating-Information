@@ -1,67 +1,55 @@
 REPOSITORIES:
-https://github.com/MatthewDelong/F1-Telemetry (Main Website Files)
-https://github.com/MatthewDelong/f1-telemetry-api (F1 Data API)
-https://github.com/MatthewDelong/f1aapi (F1 Academy API)
-https://github.com/MatthewDelong/f2api (F2 API)
+https://github.com/MatthewDelong/F1-Telemetry (The ONLY Repository Needed)
 
 ========================================================================
 POST-RACE UPDATE WORKFLOW (2026 SEASON)
 ========================================================================
 
-## STEP 1: UPDATE F1 DATA (AUTOMATED)
+## STEP 1: UPDATE DATA (AUTOMATED)
 
-Run the api_update.py script to automatically fetch and update all F1 data:
+### For Formula 1:
+
+Run the F1 api_update.py script to automatically fetch and update all F1 data:
 
     cd src/config/f1
     py api_update.py
+    cd ../../../
 
-This will update the following files in src/config/f1/:
-  - results.json        (race results for every completed round)
-  - qualifying.json     (qualifying session results with Q1/Q2/Q3 times)
-  - sprint.json         (sprint race results for sprint weekends only)
-  - races/races.json    (race calendar with meeting keys)
-  - races/2026/driverStandings.json
-  - races/2026/constructorStandings.json
-  - drivers/*.json      (per-driver career statistics)
-  - constructors/       (constructor and driver rosters)
+### For Formula 2:
 
-*Note: The script includes rate-limit retry logic. A full run may take a few minutes.
+Run the F2 api_update.py script from the root directory (you can paste the results URL if needed):
 
-## STEP 1b: UPDATE F2 & F1A DATA (MANUAL)
+    py src/config/f2/api_update.py
 
-These still need to be updated manually:
-  - F2:  src/config/f2/results.json
-  - F1A: src/config/f1a/results.json
+### For F1 Academy:
 
-*Note: For F2/F1A, remember to add Sprint points directly to the 'points' field in results.json!
-       For F1, the API returns combined points (race + sprint + fastest lap) automatically.
+Run the F1A api_update.py script from the root directory (you can paste the results URL if needed):
 
-## STEP 2: REBUILD & EXPORT DATA
+    py src/config/f1a/api_update.py
 
-1. Run Rebuild: Visit http://localhost:3000/api/admin/rebuild-2026
-2. Run Export Script: In terminal, run:
-   node scripts/export_for_github.js
+\*Note: The F1 script includes automated data cleaners (like the Kimi Antonelli and Jak Crawford fixes). A full run may take a few minutes depending on rate limits.
 
-This creates a folder: "export_to_github" containing the new stats.
+## STEP 2: BUILD & PUSH TO GITHUB
 
-## STEP 3: UPLOAD TO GITHUB
+1. Generate a new build (this ensures your build folder is perfectly synced):
+   npm run build
 
-1. F1-Telemetry Repo: Push your edited config files.
-2. f1-telemetry-api Repo: Upload files from "export_to_github" folder:
-   - drivers/*.json -> GitHub drivers/
-   - constructors/2026/*.json -> GitHub constructors/2026/
-3. f1aapi Repo: Upload results.json (and drivers.json if needed).
-4. f2api Repo: Upload results.json (and drivers.json if needed).
+2. Commit and push ALL changes directly to the main F1-Telemetry repository:
+   git add .
+   git commit -m "Update race data"
+   git push
 
-## STEP 4: CLEAR LIVE CACHE
+_Note: You no longer need to run any export scripts or manually upload files to external repositories like f1-telemetry-api, f1aapi, or f2api! The architecture is now 100% self-contained._
 
-Visit the live site with ?admin=true and click the "Refresh Data" button:
-https://f1-telemetry.matthews-world.co.uk/teammates-comparison?admin=true
-http://localhost:3006/teammates-comparison?admin=true
+## STEP 3: CLEAR LIVE CACHE
 
-Individual Force-Refresh Links:
+By default, your live server caches API data for 30 minutes. If you want your new GitHub pushes to appear instantly, you must clear the cache.
 
-- F1A Results: https://f1-telemetry.matthews-world.co.uk/api.php?source=f1a&path=races/2026/results.json&refresh=true
-- F1A Drivers: https://f1-telemetry.matthews-world.co.uk/api.php?source=f1a&path=constructors/2026/drivers.json&refresh=true
-- F2 Results: https://f1-telemetry.matthews-world.co.uk/api.php?source=f2&path=races/2026/results.json&refresh=true
-- F1 Drivers: https://f1-telemetry.matthews-world.co.uk/api.php?source=f1&path=drivers/antonelli.json&refresh=true
+**Option A: The "Nuclear" Option (Recommended for full updates)**
+Log into your web hosting panel (IONOS/cPanel) and simply delete the `api_cache/` folder entirely. This forces the server to re-download all files from GitHub on the next page load.
+
+**Option B: Single-File Force Refresh**
+If you only need to quickly flush a specific file, visit its API URL with the `?flush=1` parameter appended:
+- F1 Standings: https://f1-telemetry.matthews-world.co.uk/api.php?source=f1&path=races/2026/driverStandings.json&flush=1
+- F2 Results:   https://f1-telemetry.matthews-world.co.uk/api.php?source=f2&path=races/2026/results.json&flush=1
+- F1A Results:  https://f1-telemetry.matthews-world.co.uk/api.php?source=f1a&path=races/2026/results.json&flush=1
