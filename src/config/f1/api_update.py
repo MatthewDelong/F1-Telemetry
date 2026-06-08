@@ -1279,6 +1279,22 @@ def pre_checks():
     
     return True
 
+def fix_antonelli_name():
+    import os
+    for root, dirs, files in os.walk('.'):
+        for f in files:
+            if f.endswith('.json'):
+                path = os.path.join(root, f)
+                try:
+                    with open(path, 'r', encoding='utf-8') as file:
+                        content = file.read()
+                    if '"Andrea Kimi"' in content:
+                        content = content.replace('"Andrea Kimi"', '"Kimi"')
+                        with open(path, 'w', encoding='utf-8') as file:
+                            file.write(content)
+                except Exception as e:
+                    pass
+
 def update():
     print("==========Updating constructors==========")
     update_constructors()
@@ -1304,5 +1320,7 @@ def update():
     update_driverStandings()
     print("==========Updating Constructor Standings==========")
     update_constructorStandings()
+    print("==========Fixing Antonelli Name==========")
+    fix_antonelli_name()
 
 update()
