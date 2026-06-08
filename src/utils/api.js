@@ -27,14 +27,20 @@ export function normalizeOpenF1Date(date) {
   return d.toISOString();
 }
 
-const CACHE_PREFIX = "f1_cache_v2_";
+const CACHE_PREFIX = "f1_cache_v3_";
 const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const fetchOpenF1Data = async (url, retries = 7, backoff = 1500) => {
     try {
-        const response = await fetch(url);
+        // Use headers to bypass cache instead of query param which breaks OpenF1 filters
+        const response = await fetch(url, {
+            headers: {
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache'
+            }
+        });
         
         if (response.status === 429 && retries > 0) {
             console.warn(`[API] Rate limited (429) on ${url}. Retrying in ${backoff}ms... (${retries} retries left)`);
@@ -154,10 +160,15 @@ export const fetchWithPersistentCache = async (url) => {
         if (cachedItem) {
             const { data, timestamp } = JSON.parse(cachedItem);
             const isExpired = Date.now() - timestamp > CACHE_TTL;
-            if (!isExpired) {
+            const isEmptyArray = Array.isArray(data) && data.length === 0;
+            
+            if (!isExpired && !isEmptyArray) {
                 return data;
             }
-            cachedData = data; // Keep for fallback if network fails
+            // Keep for fallback if network fails, but only if it's not an empty array
+            if (!isEmptyArray) {
+                cachedData = data; 
+            }
         }
     } catch (e) {
         console.warn("[Cache] Error reading from localStorage", e);
@@ -167,8 +178,8 @@ export const fetchWithPersistentCache = async (url) => {
     try {
         const data = await fetchOpenF1Data(url);
         
-        // 3. Save to localStorage if successful
-        if (data && !data.error) {
+        // 3. Save to localStorage if successful AND not an empty array
+        if (data && !data.error && !(Array.isArray(data) && data.length === 0)) {
             try {
                 const cacheEntry = JSON.stringify({
                     data,
@@ -697,9 +708,19 @@ export const fetchDriversAndTires = async (sessionKey) => {
   };
 
   try {
-    const driversData = await fetchWithPersistentCache(urls.driversUrl);
+    let driversData = await fetchWithPersistentCache(urls.driversUrl);
+    // If cached driversData is empty, try fetching fresh data to avoid 6-hour empty cache
+    if (!driversData || driversData.length === 0) {
+      driversData = await fetchOpenF1Data(urls.driversUrl);
+    }
+    
     await delay(150);
-    const stintsData = await fetchWithPersistentCache(urls.stintsUrl);
+    
+    let stintsData = await fetchWithPersistentCache(urls.stintsUrl);
+    // Force fresh fetch if cache returned empty to avoid missing tyre info
+    if (!stintsData || stintsData.length === 0) {
+      stintsData = await fetchOpenF1Data(urls.stintsUrl);
+    }
 
     const stintsByDriver = stintsData.reduce((acc, { driver_number, lap_end, compound }) => {
       acc[driver_number] = acc[driver_number] || [];
@@ -1029,6 +1050,25 @@ export const fetchMostRecentRace = async (selectedYear, specificRound = null, sp
     if ((!raceResults || raceResults.length === 0) && meetingKey !== 'unknown') {
       console.log(`[API] Results empty for ${mostRecentRace.raceName}, falling back to OpenF1...`);
       raceResults = await fetchOpenF1Podium(meetingKey);
+    } else if (raceResults && raceResults.length > 0 && meetingKey !== 'unknown') {
+      const hasFastestLap = raceResults.some(r => r.fastestLap?.rank === "1" || r.FastestLap?.rank === "1");
+      if (!hasFastestLap) {
+        try {
+          console.log(`[API] FastestLap missing for ${mostRecentRace.raceName}, augmenting from OpenF1...`);
+          const oF1Results = await fetchOpenF1Podium(meetingKey);
+          if (oF1Results && oF1Results.length > 0) {
+            raceResults = raceResults.map(r => {
+              const of1Driver = oF1Results.find(o => parseInt(o.position, 10) === parseInt(r.position, 10));
+              if (of1Driver && of1Driver.fastestLap) {
+                return { ...r, fastestLap: of1Driver.fastestLap };
+              }
+              return r;
+            });
+          }
+        } catch (e) {
+          console.error("Error augmenting fastest lap:", e);
+        }
+      }
     }
 
     const raceWithDetails = {

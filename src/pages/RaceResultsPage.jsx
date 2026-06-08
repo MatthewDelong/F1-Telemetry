@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { fetchRaceDetails, fetchRaceMeetingKeys, BASE_F1_URL } from "../utils/api";
+import { fetchRaceDetails, fetchRaceMeetingKeys, fetchOpenF1Podium, BASE_F1_URL } from "../utils/api";
 import classNames from "classnames";
 
 import { RaceResultItem, Loading, Button } from "../components";
@@ -24,11 +24,12 @@ export function RaceResultsPage({ selectedYear }) {
       }
 
       // Merge results into details
-      const enrichedDetails = details.map(race => {
+      const enrichedDetails = await Promise.all(details.map(async race => {
         const raceResult = allResults.find(r => parseInt(r.round, 10) === parseInt(race.round, 10));
-        return {
-          ...race,
-          results: raceResult ? raceResult.Results.slice(0, 3).map(res => ({
+        let resultsForRace = [];
+
+        if (raceResult && raceResult.Results) {
+          resultsForRace = raceResult.Results.slice(0, 3).map(res => ({
             number: res.number,
             driver: res.Driver,
             fastestLap: res.FastestLap || res.fastestLap,
@@ -36,9 +37,36 @@ export function RaceResultsPage({ selectedYear }) {
             position: res.position,
             status: res.status,
             time: res.Time?.time
-          })) : []
+          }));
+
+          // Augment fastest lap if missing
+          const hasFastestLap = resultsForRace.some(r => r.fastestLap?.rank === "1" || r.fastestLap?.rank === 1 || r.FastestLap?.rank === "1");
+          const meetingKey = racesMK[race.raceName]?.["meeting_key"];
+          
+          if (!hasFastestLap && meetingKey) {
+            try {
+              console.log(`[RaceResultsPage] FastestLap missing for ${race.raceName}, augmenting from OpenF1...`);
+              const oF1Results = await fetchOpenF1Podium(meetingKey);
+              if (oF1Results && oF1Results.length > 0) {
+                resultsForRace = resultsForRace.map(r => {
+                  const of1Driver = oF1Results.find(o => parseInt(o.position, 10) === parseInt(r.position, 10));
+                  if (of1Driver && of1Driver.fastestLap) {
+                    return { ...r, fastestLap: of1Driver.fastestLap };
+                  }
+                  return r;
+                });
+              }
+            } catch (e) {
+              console.error("Error augmenting fastest lap:", e);
+            }
+          }
+        }
+
+        return {
+          ...race,
+          results: resultsForRace
         };
-      });
+      }));
 
       console.log(`[RaceResultsPage] Enriched Details for ${selectedYear}:`, enrichedDetails);
       setRaceDetails(enrichedDetails);

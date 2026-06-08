@@ -207,11 +207,15 @@ export function LandingPage2025() {
         constructorId,
         gap,
         bestLapTime: r.bestLapTime || r.fastestLap?.Time?.time || "—",
-        fastestLap: parseInt(r.fastestLap?.rank || r.FastestLap?.rank, 10) === 1,
+        fastestLap: parseInt(r.fastestLap?.rank || r.FastestLap?.rank, 10) === 1 || r.fastestLap?.rank === "1" || r.FastestLap?.rank === "1",
+        _debug_fastestLap: r.fastestLap,
+        _debug_FastestLap: r.FastestLap,
         headshot: `/images/${selectedYear}/drivers/${driverCode}.png`,
         nationality: r.driver?.nationality || r.driver?.country_code || r.Driver?.nationality || r.Driver?.country_code || "",
       };
     });
+
+  console.log("Podium Drivers:", podiumDrivers);
   
   const p1 = podiumDrivers.find((d) => d.position === 1);
   const p2 = podiumDrivers.find((d) => d.position === 2);
