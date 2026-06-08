@@ -990,6 +990,39 @@ def update_driverStandings():
                     result['latest'] = prev
                 break
         
+        # Patch driverStandings with correct points from results.json and sprint.json
+        try:
+            with open('results.json', 'r', encoding='utf-8') as rf:
+                race_results = json.load(rf)
+            
+            driver_points = {}
+            for race in race_results:
+                for res in race.get("Results", []):
+                    code = res.get("Driver", {}).get("code")
+                    if code:
+                        driver_points[code] = driver_points.get(code, 0) + float(res.get("points", 0))
+            
+            try:
+                with open('sprint.json', 'r', encoding='utf-8') as sf:
+                    sprint_results = json.load(sf)
+                for race in sprint_results:
+                    for res in race.get("SprintResults", []):
+                        code = res.get("Driver", {}).get("code")
+                        if code:
+                            driver_points[code] = driver_points.get(code, 0) + float(res.get("points", 0))
+            except Exception:
+                pass
+            
+            # Now update the latest round in result
+            for round_num, standings in result.items():
+                for standing in standings:
+                    code = standing.get("Driver", {}).get("code")
+                    if code in driver_points:
+                        pts = driver_points[code]
+                        standing["points"] = str(int(pts)) if pts.is_integer() else str(pts)
+        except Exception as e:
+            print("Could not patch driverStandings points:", e)
+
         driver_standings_file = f'{season_dir}/driverStandings.json'
         with open(driver_standings_file, 'w', encoding='utf-8') as file:
             json.dump(result, file, indent=4, ensure_ascii=False, cls=NpEncoder)
@@ -1054,6 +1087,39 @@ def update_constructorStandings():
                     result['latest'] = prev
                 break
         
+        # Patch constructorStandings with correct points from results.json and sprint.json
+        try:
+            with open('results.json', 'r', encoding='utf-8') as rf:
+                race_results = json.load(rf)
+            
+            constructor_points = {}
+            for race in race_results:
+                for res in race.get("Results", []):
+                    code = res.get("Constructor", {}).get("constructorId")
+                    if code:
+                        constructor_points[code] = constructor_points.get(code, 0) + float(res.get("points", 0))
+            
+            try:
+                with open('sprint.json', 'r', encoding='utf-8') as sf:
+                    sprint_results = json.load(sf)
+                for race in sprint_results:
+                    for res in race.get("SprintResults", []):
+                        code = res.get("Constructor", {}).get("constructorId")
+                        if code:
+                            constructor_points[code] = constructor_points.get(code, 0) + float(res.get("points", 0))
+            except Exception:
+                pass
+            
+            # Now update the latest round in result
+            for round_num, standings in result.items():
+                for standing in standings:
+                    code = standing.get("Constructor", {}).get("constructorId")
+                    if code in constructor_points:
+                        pts = constructor_points[code]
+                        standing["points"] = str(int(pts)) if pts.is_integer() else str(pts)
+        except Exception as e:
+            print("Could not patch constructorStandings points:", e)
+
         constructor_standings_file = f'{season_dir}/constructorStandings.json'
         with open(constructor_standings_file, 'w', encoding='utf-8') as file:
             json.dump(result, file, indent=4, ensure_ascii=False, cls=NpEncoder)
