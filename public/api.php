@@ -107,43 +107,14 @@ $lastError = "";
 
 // Determine fetch URL
 if ($source === 'f1') {
-    // Attempt native Jolpica transformations
-    if (preg_match('/^races\/(\d{4})\/driverStandings\.json$/', $pathWithoutQuery, $matches)) {
-        $year = $matches[1];
-        $raw = fetchUrl("https://api.jolpi.ca/ergast/f1/{$year}/driverStandings.json", 10, $lastError);
-        if ($raw) {
-            $parsed = json_decode($raw, true);
-            $lists = $parsed['MRData']['StandingsTable']['StandingsLists'] ?? [];
-            $output = [];
-            foreach ($lists as $list) {
-                $output[$list['round']] = $list['DriverStandings'];
-                $output['latest'] = $list['DriverStandings'];
-            }
-            $data = json_encode($output);
-        }
-    } 
-    else if (preg_match('/^races\/(\d{4})\/constructorStandings\.json$/', $pathWithoutQuery, $matches)) {
-        $year = $matches[1];
-        $raw = fetchUrl("https://api.jolpi.ca/ergast/f1/{$year}/constructorStandings.json", 10, $lastError);
-        if ($raw) {
-            $parsed = json_decode($raw, true);
-            $lists = $parsed['MRData']['StandingsTable']['StandingsLists'] ?? [];
-            $output = [];
-            foreach ($lists as $list) {
-                $output[$list['round']] = $list['ConstructorStandings'];
-                $output['latest'] = $list['ConstructorStandings'];
-            }
-            $data = json_encode($output);
-        }
+    // 1. Try local file on server first (for "uploaded new build" workflow)
+    $localPath = __DIR__ . '/' . $pathWithoutQuery;
+    if (file_exists($localPath)) {
+        $data = file_get_contents($localPath);
     }
 
-    // Fallback F1 Proxy if not matched or failed to fetch
+    // 2. Try GitHub fallbacks
     if (!$data) {
-        // 1. Try local file on server first (for "uploaded new build" workflow)
-        $localPath = __DIR__ . '/' . $pathWithoutQuery;
-        if (file_exists($localPath)) {
-            $data = file_get_contents($localPath);
-        }
 
         // 2. Try GitHub fallbacks
         if (!$data) {

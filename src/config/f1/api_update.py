@@ -1279,6 +1279,27 @@ def pre_checks():
     
     return True
 
+
+def remove_jak_crawford():
+    import json
+    import os
+    print("==========Removing Jak Crawford==========")
+    path = os.path.join(os.path.dirname(__file__), 'constructors', '2026', 'aston_martin.json')
+    try:
+        if os.path.exists(path):
+            with open(path, 'r', encoding='utf-8') as file:
+                data = json.load(file)
+            
+            if isinstance(data, list):
+                data = [d for d in data if d.get('driverId') != 'jak_crawford']
+            elif 'Drivers' in data:
+                data['Drivers'] = [d for d in data['Drivers'] if d.get('driverId') != 'jak_crawford']
+                
+            with open(path, 'w', encoding='utf-8') as file:
+                json.dump(data, file, indent=4)
+    except Exception as e:
+        pass
+
 def fix_antonelli_name():
     import os
     for root, dirs, files in os.walk('.'):
@@ -1320,6 +1341,8 @@ def update():
     update_driverStandings()
     print("==========Updating Constructor Standings==========")
     update_constructorStandings()
+    print("==========Removing Jak Crawford==========")
+    remove_jak_crawford()
     print("==========Fixing Antonelli Name==========")
     fix_antonelli_name()
 
