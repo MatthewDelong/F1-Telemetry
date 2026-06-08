@@ -362,6 +362,8 @@ export const fetchRaceDetails = async (selectedYear) => {
             season: race.season,
             round: race.round,
             time: race.time,
+            Circuit: race.Circuit,
+            circuitId: race.circuitId || race.Circuit?.circuitId,
           });
         }
       }
