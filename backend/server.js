@@ -198,15 +198,16 @@ app.use("/api/proxy/:source", async (req, res) => {
       localConfigPath = pathMod.join(__dirname, "..", "src", "config", "f1", year, fileName);
     }
     if (!localConfigPath || !fs.existsSync(localConfigPath)) {
-      localConfigPath = pathMod.join(__dirname, "..", "src", "config", "f1", fileName);
+      // Use 'path' instead of 'fileName' so we preserve subdirectories like 'drivers/'
+      localConfigPath = pathMod.join(__dirname, "..", "src", "config", "f1", path);
     }
 
     if (fs.existsSync(localConfigPath)) {
       const isGlobal = fileName === "races.json" || fileName === "raceDetails.json";
       const isYearSpecificMatch = year && localConfigPath.includes(pathMod.join(year, fileName));
-      const isRootAnd2026 = (!year || year === "2026") && localConfigPath.endsWith(pathMod.join("f1", fileName));
+      const isRootAnd2026 = (!year || year === "2026") && localConfigPath.endsWith(pathMod.join("f1", path));
 
-      if (isGlobal || isYearSpecificMatch || isRootAnd2026 || path.includes("2026")) {
+      if (isGlobal || isYearSpecificMatch || isRootAnd2026 || path.includes("2026") || path.startsWith("drivers/")) {
         console.log(`[Proxy] Serving local file: ${localConfigPath}`);
         try {
           const content = fs.readFileSync(localConfigPath, 'utf8');

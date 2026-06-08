@@ -54,12 +54,32 @@ def update_constructor_drivers():
     with open(f'constructors/{current_year}.json', 'r', encoding='utf-8') as file:
         data = json.load(file)
 
+    active_drivers = set()
+    for filename in ['results.json', 'qualifying.json', 'sprint.json']:
+        try:
+            with open(filename, 'r', encoding='utf-8') as f:
+                r_data = json.load(f)
+                for race in r_data:
+                    results_list = race.get("Results", []) + race.get("QualifyingResults", []) + race.get("SprintResults", [])
+                    for res in results_list:
+                        driver_id = res.get("Driver", {}).get("driverId")
+                        if driver_id:
+                            active_drivers.add(driver_id)
+        except Exception:
+            pass
+
     def fetchDrivers(team):
         print(team)
         response = safe_get(f'{api_url}/{season}/constructors/{team}/drivers.json')
         if response.status_code == 200:
             responsedata = response.json()
             drivers = responsedata["MRData"]["DriverTable"]["Drivers"]
+            
+            if active_drivers:
+                filtered = [d for d in drivers if d.get("driverId") in active_drivers]
+                if filtered:
+                    drivers = filtered
+
             # Ensure the directory exists
             folder_path = f'constructors/{season}'
             if not os.path.exists(folder_path):
@@ -69,7 +89,6 @@ def update_constructor_drivers():
                 json.dump(drivers, file, ensure_ascii=False, indent=4)
         else:
             print(response.status_code)
-
 
     for team in data:
         if team["constructorId"]!="apx":
@@ -995,31 +1014,56 @@ def update_driverStandings():
             with open('results.json', 'r', encoding='utf-8') as rf:
                 race_results = json.load(rf)
             
-            driver_points = {}
-            for race in race_results:
-                for res in race.get("Results", []):
-                    code = res.get("Driver", {}).get("code")
-                    if code:
-                        driver_points[code] = driver_points.get(code, 0) + float(res.get("points", 0))
-            
+            sprint_results = []
             try:
                 with open('sprint.json', 'r', encoding='utf-8') as sf:
                     sprint_results = json.load(sf)
-                for race in sprint_results:
-                    for res in race.get("SprintResults", []):
-                        code = res.get("Driver", {}).get("code")
-                        if code:
-                            driver_points[code] = driver_points.get(code, 0) + float(res.get("points", 0))
             except Exception:
                 pass
             
-            # Now update the latest round in result
+            driver_points_by_round = {}
+            current_points = {}
+            
+            for race in race_results:
+                rnd = race.get("round")
+                for res in race.get("Results", []):
+                    code = res.get("Driver", {}).get("code")
+                    if code:
+                        pts = float(res.get("points", 0))
+                        current_points[code] = current_points.get(code, 0) + pts
+                
+                # Add sprint points for this round if any
+                for spr_race in sprint_results:
+                    if spr_race.get("round") == rnd:
+                        # Sometimes Jolpica returns Sprint data under "Results" instead of "SprintResults"
+                        spr_list = spr_race.get("SprintResults") or spr_race.get("Results", [])
+                        for res in spr_list:
+                            code = res.get("Driver", {}).get("code")
+                            if code:
+                                current_points[code] = current_points.get(code, 0) + float(res.get("points", 0))
+                
+                driver_points_by_round[rnd] = current_points.copy()
+            
+            # Now update the standings in result
             for round_num, standings in result.items():
+                if round_num == 'latest':
+                    valid_rounds = [int(k) for k in result.keys() if k.isdigit()]
+                    round_key = str(max(valid_rounds)) if valid_rounds else None
+                else:
+                    round_key = str(round_num)
+                
+                points_for_round = driver_points_by_round.get(round_key, {})
                 for standing in standings:
                     code = standing.get("Driver", {}).get("code")
-                    if code in driver_points:
-                        pts = driver_points[code]
+                    if code in points_for_round:
+                        pts = points_for_round[code]
                         standing["points"] = str(int(pts)) if pts.is_integer() else str(pts)
+                
+                # Re-sort standings by points (descending) and update position field
+                standings.sort(key=lambda x: float(x.get("points", 0)), reverse=True)
+                for i, standing in enumerate(standings):
+                    standing["position"] = str(i + 1)
+                    standing["positionText"] = str(i + 1)
         except Exception as e:
             print("Could not patch driverStandings points:", e)
 
@@ -1092,31 +1136,55 @@ def update_constructorStandings():
             with open('results.json', 'r', encoding='utf-8') as rf:
                 race_results = json.load(rf)
             
-            constructor_points = {}
-            for race in race_results:
-                for res in race.get("Results", []):
-                    code = res.get("Constructor", {}).get("constructorId")
-                    if code:
-                        constructor_points[code] = constructor_points.get(code, 0) + float(res.get("points", 0))
-            
+            sprint_results = []
             try:
                 with open('sprint.json', 'r', encoding='utf-8') as sf:
                     sprint_results = json.load(sf)
-                for race in sprint_results:
-                    for res in race.get("SprintResults", []):
-                        code = res.get("Constructor", {}).get("constructorId")
-                        if code:
-                            constructor_points[code] = constructor_points.get(code, 0) + float(res.get("points", 0))
             except Exception:
                 pass
             
+            constructor_points_by_round = {}
+            current_points = {}
+            
+            for race in race_results:
+                rnd = race.get("round")
+                for res in race.get("Results", []):
+                    code = res.get("Constructor", {}).get("constructorId")
+                    if code:
+                        pts = float(res.get("points", 0))
+                        current_points[code] = current_points.get(code, 0) + pts
+                
+                # Add sprint points for this round if any
+                for spr_race in sprint_results:
+                    if spr_race.get("round") == rnd:
+                        spr_list = spr_race.get("SprintResults") or spr_race.get("Results", [])
+                        for res in spr_list:
+                            code = res.get("Constructor", {}).get("constructorId")
+                            if code:
+                                current_points[code] = current_points.get(code, 0) + float(res.get("points", 0))
+                
+                constructor_points_by_round[rnd] = current_points.copy()
+            
             # Now update the latest round in result
             for round_num, standings in result.items():
+                if round_num == 'latest':
+                    valid_rounds = [int(k) for k in result.keys() if k.isdigit()]
+                    round_key = str(max(valid_rounds)) if valid_rounds else None
+                else:
+                    round_key = str(round_num)
+                
+                points_for_round = constructor_points_by_round.get(round_key, {})
                 for standing in standings:
                     code = standing.get("Constructor", {}).get("constructorId")
-                    if code in constructor_points:
-                        pts = constructor_points[code]
+                    if code in points_for_round:
+                        pts = points_for_round[code]
                         standing["points"] = str(int(pts)) if pts.is_integer() else str(pts)
+                
+                # Re-sort standings by points (descending) and update position field
+                standings.sort(key=lambda x: float(x.get("points", 0)), reverse=True)
+                for i, standing in enumerate(standings):
+                    standing["position"] = str(i + 1)
+                    standing["positionText"] = str(i + 1)
         except Exception as e:
             print("Could not patch constructorStandings points:", e)
 
