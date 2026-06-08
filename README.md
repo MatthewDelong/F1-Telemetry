@@ -157,6 +157,9 @@ Draco and Meshopt decoders are bundled locally in `public/decoders/` to bypass b
 <details>
 <summary><strong>API Data Update Scripts (F1, F2 & F1 Academy)</strong></summary>
 
+**Self-Contained Data Architecture**
+All generated JSON configuration and data files are stored directly inside this repository under `src/config/`. The production API seamlessly serves these files directly from this repository, meaning the project is entirely self-contained and no longer requires separate external data repositories (such as `f1-telemetry-api`, `f1aapi`, or `f2api`).
+
 The project includes Python scripts that fetch the latest season data and format it into the local JSON config files:
 
 - **F1:** `src/config/f1/api_update.py` — Fetches data from the [Jolpica API](https://jolpi.ca/) and [OpenF1 API](https://openf1.org).
@@ -264,7 +267,7 @@ This project pulls data from four sources:
 - **[OpenF1 API](https://openf1.org)** — Real-time and historical telemetry, track positioning, and stint data.
 - **[Jolpica API](https://jolpi.ca/)** — Custom local backend parser fetches F1 historical Race results, Driver Standings, and Constructor Standings directly from the reliable Jolpica API framework.
 - **[OpenWeather API](https://openweathermap.org/)** — Weather data.
-- **Internal Gateway (`api.php`)** — A custom auto-caching proxy ensures that Formula 2 and F1 Academy data remains completely decoupled and safe from disappearing online, using internal fallbacks over volatile GitHub Pages databases.
+- **Internal Gateway (`api.php`)** — A custom auto-caching proxy that seamlessly fetches all configuration and data files for F1, F2, and F1 Academy directly from this self-contained `F1-Telemetry` repository, fully eliminating the need for external data repositories.
 
 ---
 
