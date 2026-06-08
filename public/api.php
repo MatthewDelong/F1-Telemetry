@@ -165,13 +165,13 @@ if ($source === 'f1') {
     $urlsToTry = [];
     if ($source === 'f1a') {
         $urlsToTry = [
-            'https://raw.githubusercontent.com/MatthewDelong/f1aapi/main/' . $path => 5,
             'https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1a/' . $fileName => 5,
+            'https://raw.githubusercontent.com/MatthewDelong/f1aapi/main/' . $path => 5,
         ];
     } else {
         $urlsToTry = [
-            'https://raw.githubusercontent.com/MatthewDelong/f2api/main/' . $path => 5,
             'https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f2/' . $fileName => 5,
+            'https://raw.githubusercontent.com/MatthewDelong/f2api/main/' . $path => 5,
         ];
     }
 
