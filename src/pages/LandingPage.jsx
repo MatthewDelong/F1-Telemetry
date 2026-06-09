@@ -514,11 +514,14 @@ export function LandingPage() {
 
         <div className="mx-auto text-center px-16 relative z-10">
           <h1 className="heading-1 mb-16 leading-none">
-            Go Beyond the Race Results
+            Read the Race. <br />
+            Not Just the Results.
           </h1>
           <p className="text-neutral-300 text-3xl mb-24 mx-auto leading-none">
-            Explore telemetry, compare drivers, and understand every race in
-            depth.
+            Telemetry, driver battles, and full race breakdowns for F1
+            <br />
+            <br />
+            plus complete results for F2 and F1 Academy
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-12 mt-48 sm:mt-96">
             <ViewLatestRaceButton
