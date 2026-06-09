@@ -17,12 +17,14 @@ Run the F1 api_update.py script to automatically fetch and update all F1 data:
 
 ### For Formula 2:
 
+Change line 8 to the race results page URL in api_update.py
 Run the F2 api_update.py script from the root directory (you can paste the results URL if needed):
 
     py src/config/f2/api_update.py
 
 ### For F1 Academy:
 
+Change line 8 to the race results page URL in api_update.py
 Run the F1A api_update.py script from the root directory (you can paste the results URL if needed):
 
     py src/config/f1a/api_update.py
@@ -50,6 +52,7 @@ Log into your web hosting panel (IONOS/cPanel) and simply delete the `api_cache/
 
 **Option B: Single-File Force Refresh**
 If you only need to quickly flush a specific file, visit its API URL with the `?flush=1` parameter appended:
+
 - F1 Standings: https://f1-telemetry.matthews-world.co.uk/api.php?source=f1&path=races/2026/driverStandings.json&flush=1
-- F2 Results:   https://f1-telemetry.matthews-world.co.uk/api.php?source=f2&path=races/2026/results.json&flush=1
-- F1A Results:  https://f1-telemetry.matthews-world.co.uk/api.php?source=f1a&path=races/2026/results.json&flush=1
+- F2 Results: https://f1-telemetry.matthews-world.co.uk/api.php?source=f2&path=races/2026/results.json&flush=1
+- F1A Results: https://f1-telemetry.matthews-world.co.uk/api.php?source=f1a&path=races/2026/results.json&flush=1
