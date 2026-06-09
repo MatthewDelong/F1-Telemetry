@@ -27,7 +27,7 @@ const LARGE_BREAKPOINT_PX = 1024;
 const HERO_HOLD_MS = 9000;
 const HERO_FADE_MS = 1200;
 
-export function LandingPage2025() {
+export function LandingPage() {
   const [raceData, setRaceData] = useState(null);
   const snapContainerRef = useRef(null);
   const [heroBgIndex, setHeroBgIndex] = useState(0);
@@ -46,9 +46,15 @@ export function LandingPage2025() {
       // Get all past races sorted newest first
       const pastRaces = raceDetails
         .filter((r) => new Date(`${r.date}T${r.time}`) < now)
-        .sort((a, b) => new Date(`${b.date}T${b.time}`) - new Date(`${a.date}T${a.time}`));
+        .sort(
+          (a, b) =>
+            new Date(`${b.date}T${b.time}`) - new Date(`${a.date}T${a.time}`),
+        );
 
-      console.log("[Podium] Past races to try:", pastRaces.map(r => `${r.raceName} (round ${r.round})`));
+      console.log(
+        "[Podium] Past races to try:",
+        pastRaces.map((r) => `${r.raceName} (round ${r.round})`),
+      );
 
       // Try only the last 3 past races newest first until we find one with podium data
       // This prevents the page from hanging for too long on first load
@@ -57,15 +63,25 @@ export function LandingPage2025() {
         const round = parseInt(race.round, 10);
         const season = parseInt(race.season, 10);
         try {
-          console.log(`[Podium] Trying ${race.raceName} season=${season} round=${round}`);
+          console.log(
+            `[Podium] Trying ${race.raceName} season=${season} round=${round}`,
+          );
           const data = await fetchMostRecentRace(season, round, race.raceName);
-          console.log(`[Podium] Results for ${race.raceName}:`, data?.raceResults?.length, "results");
-          const hasPodium = data?.raceResults?.some(
-            (r) => [1, 2, 3].includes(parseInt(r.position, 10))
+          console.log(
+            `[Podium] Results for ${race.raceName}:`,
+            data?.raceResults?.length,
+            "results",
+          );
+          const hasPodium = data?.raceResults?.some((r) =>
+            [1, 2, 3].includes(parseInt(r.position, 10)),
           );
           console.log(`[Podium] hasPodium:`, hasPodium);
           if (hasPodium) {
-            console.log("[Podium] Found data for", race.raceName, data.raceResults[0]);
+            console.log(
+              "[Podium] Found data for",
+              race.raceName,
+              data.raceResults[0],
+            );
             setRaceData(data);
             return;
           }
@@ -179,14 +195,20 @@ export function LandingPage2025() {
     .sort((a, b) => parseInt(a.position, 10) - parseInt(b.position, 10))
     .map((r) => {
       const pos = parseInt(r.position, 10);
-      const drv = r.Driver || (r.driver && typeof r.driver !== 'function' ? r.driver : {}) || {};
-      const con = r.Constructor || (r.constructor && typeof r.constructor !== 'function' ? r.constructor : {}) || {};
+      const drv =
+        r.Driver ||
+        (r.driver && typeof r.driver !== "function" ? r.driver : {}) ||
+        {};
+      const con =
+        r.Constructor ||
+        (r.constructor && typeof r.constructor !== "function"
+          ? r.constructor
+          : {}) ||
+        {};
 
       const driverCode =
-        drv.code ||
-        drv.familyName?.substring(0, 3).toUpperCase() ||
-        "???";
-      
+        drv.code || drv.familyName?.substring(0, 3).toUpperCase() || "???";
+
       const constructorId = con.constructorId || "";
       const teamName = con.name || "";
       // P1 has race time, P2/P3 time is gap string like "+13.722" or null
@@ -207,16 +229,24 @@ export function LandingPage2025() {
         constructorId,
         gap,
         bestLapTime: r.bestLapTime || r.fastestLap?.Time?.time || "—",
-        fastestLap: parseInt(r.fastestLap?.rank || r.FastestLap?.rank, 10) === 1 || r.fastestLap?.rank === "1" || r.FastestLap?.rank === "1",
+        fastestLap:
+          parseInt(r.fastestLap?.rank || r.FastestLap?.rank, 10) === 1 ||
+          r.fastestLap?.rank === "1" ||
+          r.FastestLap?.rank === "1",
         _debug_fastestLap: r.fastestLap,
         _debug_FastestLap: r.FastestLap,
         headshot: `/images/${selectedYear}/drivers/${driverCode}.png`,
-        nationality: r.driver?.nationality || r.driver?.country_code || r.Driver?.nationality || r.Driver?.country_code || "",
+        nationality:
+          r.driver?.nationality ||
+          r.driver?.country_code ||
+          r.Driver?.nationality ||
+          r.Driver?.country_code ||
+          "",
       };
     });
 
   console.log("Podium Drivers:", podiumDrivers);
-  
+
   const p1 = podiumDrivers.find((d) => d.position === 1);
   const p2 = podiumDrivers.find((d) => d.position === 2);
   const p3 = podiumDrivers.find((d) => d.position === 3);
@@ -298,10 +328,12 @@ export function LandingPage2025() {
             >
               {driver.code}
               {(driver.nationality || driver.country_code || driver.code) && (
-                <img 
-                  src={nationalityToFlag(driver.nationality || driver.country_code || driver.code)} 
+                <img
+                  src={nationalityToFlag(
+                    driver.nationality || driver.country_code || driver.code,
+                  )}
                   alt="flag"
-                  style={{ height: '14px', borderRadius: '2px' }}
+                  style={{ height: "14px", borderRadius: "2px" }}
                 />
               )}
             </div>
@@ -333,10 +365,18 @@ export function LandingPage2025() {
           <div
             className="flex flex-col items-center"
             style={{
-              marginTop: "2px"
+              marginTop: "2px",
             }}
           >
-            <span style={{ fontSize: '0.65rem', color: '#888', fontWeight: 700, textTransform: 'uppercase', marginBottom: '-2px' }}>
+            <span
+              style={{
+                fontSize: "0.65rem",
+                color: "#888",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                marginBottom: "-2px",
+              }}
+            >
               {driver.position === 1 ? "TOTAL TIME" : "Gap"}
             </span>
             <div
@@ -354,7 +394,7 @@ export function LandingPage2025() {
                   viewBox="0 0 512 512"
                   width="12"
                   height="12"
-                  style={{ marginLeft: '2px' }}
+                  style={{ marginLeft: "2px" }}
                 >
                   <circle cx="256" cy="256" r="256" fill="#ffffff" />
                   <path
