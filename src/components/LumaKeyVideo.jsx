@@ -154,10 +154,7 @@ export const LumaKeyVideo = ({
   }, [src]);
 
   return (
-    <div
-      className={`relative ${className}`}
-      style={{ lineHeight: 0, ...style }}
-    >
+    <div className="relative" style={{ lineHeight: 0, ...style }}>
       <video
         ref={videoRef}
         src={src}
@@ -175,7 +172,11 @@ export const LumaKeyVideo = ({
           height: "1px",
         }}
       />
-      <canvas ref={canvasRef} className="w-full h-auto" {...props} />
+      <canvas
+        ref={canvasRef}
+        className={`w-full h-auto ${className}`}
+        {...props}
+      />
     </div>
   );
 };

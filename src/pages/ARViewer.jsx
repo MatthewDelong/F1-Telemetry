@@ -107,7 +107,7 @@ export const ARViewer = () => {
     },
     {
       id: "f1nsight2024",
-      label: "F1NSIGHT 2024",
+      label: "F1-TELEMETRY 2024",
       color: "#7500AD",
       glbPath: "/ArFiles/glbs/2024/f1nsight2024.glb?v=v2_ultra",
       imagePath: "/images/2024/cars/F1Nsight.png",
@@ -116,7 +116,7 @@ export const ARViewer = () => {
     },
     {
       id: "f1nsight2025",
-      label: "F1NSIGHT 2025",
+      label: "F1-TELEMETRY 2025",
       color: "#7500AD",
       glbPath: "/ArFiles/glbs/2025/f1nsight2025.glb?v=v2_ultra",
       imagePath: "/images/2025/cars/F1Nsight.png",
@@ -125,7 +125,7 @@ export const ARViewer = () => {
     },
     {
       id: "f1nsight2026",
-      label: "F1NSIGHT 2026",
+      label: "F1-TELEMETRY 2026",
       color: "#7500AD",
       glbPath: "/ArFiles/glbs/2026/f1nsight2026.glb?v=v2_ultra",
       imagePath: "/images/2026/cars/F1Nsight.png",
@@ -466,7 +466,7 @@ export const ARViewer = () => {
         <div className="divider-glow-dark mb-48 mx-auto w-[80%]" />
 
         <h2 className="tracking-wide uppercase  gradient-text-light text-center text-12 mb-32 opacity-80">
-          F1NSIGHT Collection
+          F1-TELEMETRY Collection
         </h2>
 
         <div className="flex flex-row justify-center flex-wrap gap-12 p-32">

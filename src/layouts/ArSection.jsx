@@ -65,9 +65,9 @@ const ArSection = ({ layoutMobile, container }) => {
                 : "360 Team Livery Viewer and History"}
             </Button>
             <p>
-              Scan QR code to go to the full AR Experience on your mbile device
+              Scan QR code to go to the full AR Experience on your mobile device
               <br />
-              Don't forget to tag @f1nsight1! #f1nsight
+              Don't forget to tag @f1telemetry! #f1telemetry
             </p>
             <img
               className="w-[12rem] mt-4"
