@@ -48,6 +48,7 @@ export default defineConfig({
         id: "/",
         name: "F1 TELEMETRY",
         short_name: "F1 TELEMETRY",
+        version: "2.0.0",
         description: "In-depth Formula One Telemetry and Analysis",
         theme_color: "#000000",
         background_color: "#000000",

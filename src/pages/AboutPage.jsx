@@ -274,7 +274,18 @@ export function AboutPage() {
         </motion.div>
         <div className="w-full max-w-[1600px] mx-auto flex flex-col xl:flex-row items-center justify-center gap-16 xl:gap-32 px-4 sm:px-8 xl:px-16">
           <div className="w-full xl:w-1/2 flex flex-col items-center mb-24">
-            <F1ALogo height={48} className="mx-auto mb-20" />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="relative w-full max-w-[600px] px-4 sm:px-0 mb-16 drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500 cursor-pointer"
+            >
+              <div className="rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_40px_rgba(192,38,211,0.15)] bg-black/20 backdrop-blur-sm">
+                <img src="/images/2026/F1A-Dates.png" alt="F1 Academy Dates" className="w-full h-auto object-cover" />
+              </div>
+            </motion.div>
+            <F1ALogo height={48} className="mx-auto mb-16" />
             {leagueHeader("F1", f1aRaceData?.raceName)}
             <div className="relative w-[85%] max-w-[400px] sm:max-w-none sm:w-fit flex flex-col items-center mb-32">
               <div className="absolute inset-y-0 left-0 right-0 sm:left-8 sm:right-8 bg-gradient-to-br from-fuchsia-600 via-blue-600 to-blue-400 rounded-lg z-0" />
@@ -295,7 +306,18 @@ export function AboutPage() {
             {leagueButtons("F1A")}
           </div>
           <div className="w-full xl:w-1/2 flex flex-col items-center mb-24">
-            <F2Logo height={48} className="mx-auto mb-20" />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="relative w-full max-w-[600px] px-4 sm:px-0 mb-16 drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500 cursor-pointer"
+            >
+              <div className="rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_40px_rgba(29,78,216,0.15)] bg-black/20 backdrop-blur-sm">
+                <img src="/images/2026/F2-Dates.png" alt="Formula 2 Dates" className="w-full h-auto object-cover" />
+              </div>
+            </motion.div>
+            <F2Logo height={48} className="mx-auto mb-16" />
             {leagueHeader("F2", f2RaceData?.raceName)}
             <div className="relative w-[85%] max-w-[400px] sm:max-w-none sm:w-fit flex flex-col items-center mb-32">
               <div className="absolute inset-y-0 left-0 right-0 sm:left-8 sm:right-8 bg-gradient-to-br from-blue-700 to-blue-900 rounded-lg z-0" />
