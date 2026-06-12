@@ -114,7 +114,7 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
             </div>
 
             {/* Right - Teammate Comparison */}
-            <div className="w-[70%] shrink-0 relative ml-[-40px] sm:ml-[-100px] lg:ml-[-150px]">
+            <div className="w-[80%] shrink-0 relative ml-[-40px] sm:ml-[-100px] lg:ml-[-150px]">
               <img
                 className="w-full"
                 src="/images/comparisonTeammates.png"
@@ -122,7 +122,7 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
               />
             </div>
             {links(
-              "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] max-w-[100vw] flex flex-row justify-between items-center gap-8 max-sm:hidden",
+              "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[130%] max-w-[100vw] flex flex-row justify-between items-center gap-8 max-sm:hidden px-8",
             )}
           </motion.div>
           {links(
