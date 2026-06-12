@@ -42,6 +42,19 @@ export const AdminPage = () => {
     setLoading(false);
   };
 
+  const clearCache = async () => {
+    if (!window.confirm('Are you sure you want to clear all backend caches?')) return;
+    setLoading(true);
+    addLog('Clearing backend caches...');
+    try {
+      const res = await axios.get('/api/admin/clear-cache');
+      addLog(`Success:\n${res.data.message}`);
+    } catch (e) {
+      addLog(`Error clearing cache:\n${e.response?.data?.error || e.message}`);
+    }
+    setLoading(false);
+  };
+
   const addLog = (msg) => {
     setLogs(prev => [msg, ...prev]);
   };
@@ -53,7 +66,16 @@ export const AdminPage = () => {
 
   return (
     <div className="container mx-auto p-8 text-white mt-12 mb-12">
-      <h1 className="text-4xl font-bold mb-8">Admin Dashboard</h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-4xl font-bold">Admin Dashboard</h1>
+        <button 
+          onClick={clearCache}
+          disabled={loading}
+          className="bg-yellow-600 hover:bg-yellow-700 disabled:bg-gray-600 text-white font-bold py-2 px-6 rounded shadow-lg transition-colors"
+        >
+          Clear Backend Caches
+        </button>
+      </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
         {/* F1 Section */}

@@ -504,6 +504,15 @@ app.post('/api/admin/update/f1a', (req, res) => {
   });
 });
 
+app.get('/api/admin/clear-cache', async (req, res) => {
+  try {
+    const deletedCount = await Cache.destroy({ where: {}, truncate: true });
+    res.json({ message: `Successfully deleted all ${deletedCount} cache entries across F1-Telemetry.` });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.listen(PORT, async () => {
   await connectDB();
   console.log(`F1-Telemetry Backend running on http://localhost:${PORT}`);

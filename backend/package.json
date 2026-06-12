@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "server": "node server.js"
+    "server": "node server.js",
+    "clear-cache": "node clear_all_cache.js",
+    "clear-f2": "node clear_f2_cache.js"
   },
   "keywords": [],
   "author": "",
