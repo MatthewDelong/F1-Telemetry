@@ -47,6 +47,12 @@ F1-Telemetry is a fork of the original [f1nsight](https://github.com/adityakotha
 
 ---
 
+## Coming Soon
+
+- **Admin Dashboard Improvements**: We are continually refining the new internal developer dashboard (`/admin`) for seamlessly updating all telemetry data (F1, F2, F1 Academy) via a UI. Future updates will add automated validation and deeper scraping controls.
+
+---
+
 ## Tech Stack
 
 | Layer             | Technologies                                      |
@@ -167,6 +173,7 @@ The project includes Python scripts that fetch the latest season data and format
 - **F1 Academy:** `src/config/f1a/api_update.py` — Scrapes F1 Academy results directly from the official F1 Academy website.
 
 **Formatting Tool**
+
 - `src/config/f2/format.py` — A helper script that specifically formats the `results.json` files to keep the structure compact with a single line per driver result.
 
 **Prerequisites**
@@ -178,21 +185,14 @@ The project includes Python scripts that fetch the latest season data and format
 py -m pip install requests numpy
 ```
 
-**Running the scripts**
+**Updating Data via Admin Dashboard**
 
-The F1 script **must** be run from within its own directory so that relative file paths resolve correctly:
+All Python data-fetching scripts can now be executed seamlessly through the local Admin Dashboard, eliminating the need to manually run them in the terminal.
 
-```bash
-cd src/config/f1
-python api_update.py
-```
-
-For F2 and F1 Academy, you can run them directly from the root directory. You can optionally pass the results URL as an argument, or paste it inside the file:
-
-```bash
-python src/config/f2/api_update.py [URL]
-python src/config/f1a/api_update.py [URL]
-```
+1. Ensure your local dev server is running (`npm run dev`).
+2. Navigate to the `/admin` route in your browser (e.g., `http://localhost:3006/admin`).
+3. From the dashboard, you can easily execute the F1 updates with a single click.
+4. For F2 and F1 Academy, simply paste the official race URL into the input field and click update. The dashboard handles the argument passing and working directories for you!
 
 **What it updates**
 

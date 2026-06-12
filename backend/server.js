@@ -3,6 +3,7 @@ const cors = require("cors");
 const { connectDB, Cache } = require("./database");
 const cron = require("node-cron");
 const axios = require("axios");
+const { exec } = require("child_process");
 
 async function tryGitHubFallback(path, cacheKey) {
   const baseUrls = [
@@ -433,6 +434,72 @@ const {
   runCurrentSeasonUpdate,
   updateDriversList,
 } = require("./updater");
+
+// ─── Admin API Update Endpoints ───
+app.get('/api/admin/update/status', (req, res) => {
+  const statuses = {};
+  const rootDir = pathMod.join(__dirname, '..');
+  
+  const checkFile = (key, filePath) => {
+    try {
+      if (fs.existsSync(filePath)) {
+        const stats = fs.statSync(filePath);
+        statuses[key] = { lastUpdated: stats.mtime };
+      } else {
+        statuses[key] = { lastUpdated: null };
+      }
+    } catch (e) {
+      statuses[key] = { lastUpdated: null };
+    }
+  };
+
+  checkFile('f1', pathMod.join(rootDir, 'src', 'config', 'f1', 'results.json'));
+  checkFile('f2', pathMod.join(rootDir, 'src', 'config', 'f2', 'results.json'));
+  checkFile('f1a', pathMod.join(rootDir, 'src', 'config', 'f1a', 'results.json'));
+  
+  res.json(statuses);
+});
+
+app.post('/api/admin/update/f1', (req, res) => {
+  const scriptPath = pathMod.join(__dirname, '..', 'src', 'config', 'f1');
+  exec(`py api_update.py`, { cwd: scriptPath }, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`[Admin Update F1] Error: ${error.message}`);
+      return res.status(500).json({ error: error.message, stderr });
+    }
+    res.json({ message: 'F1 Data updated successfully', output: stdout });
+  });
+});
+
+app.post('/api/admin/update/f2', (req, res) => {
+  const url = req.body.url || '';
+  const scriptPath = pathMod.join(__dirname, '..'); 
+  const pyScript = pathMod.join('src', 'config', 'f2', 'api_update.py');
+  const cmd = url ? `py "${pyScript}" "${url}"` : `py "${pyScript}"`;
+  
+  exec(cmd, { cwd: scriptPath }, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`[Admin Update F2] Error: ${error.message}`);
+      return res.status(500).json({ error: error.message, stderr });
+    }
+    res.json({ message: 'F2 Data updated successfully', output: stdout });
+  });
+});
+
+app.post('/api/admin/update/f1a', (req, res) => {
+  const url = req.body.url || '';
+  const scriptPath = pathMod.join(__dirname, '..');
+  const pyScript = pathMod.join('src', 'config', 'f1a', 'api_update.py');
+  const cmd = url ? `py "${pyScript}" "${url}"` : `py "${pyScript}"`;
+  
+  exec(cmd, { cwd: scriptPath }, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`[Admin Update F1A] Error: ${error.message}`);
+      return res.status(500).json({ error: error.message, stderr });
+    }
+    res.json({ message: 'F1A Data updated successfully', output: stdout });
+  });
+});
 
 app.listen(PORT, async () => {
   await connectDB();

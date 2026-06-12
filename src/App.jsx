@@ -34,6 +34,7 @@ import {
   DriverStandingsF2,
   ConstructorStandingsF2,
   PrivacyPolicy,
+  AdminPage,
 } from "./pages";
 import { ScrollToTop } from "./utils/ScrollToTop";
 import { getCurrentYear } from "./utils/currentYear";
@@ -270,6 +271,7 @@ function MainContent({
           {/* Social Media Routes - not publicly available */}
           <Route path="/social-media" element={<SocialMedia />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </div>
       {location !== "/" && location !== "/about-us" && <Footer />}
