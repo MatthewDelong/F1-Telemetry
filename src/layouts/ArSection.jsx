@@ -67,7 +67,7 @@ const ArSection = ({ layoutMobile, container }) => {
             <p>
               Scan QR code to go to the full AR Experience on your mobile device
               <br />
-              Don't forget to tag @f1telemetry! #f1telemetry
+              Don't forget to tag @F1-Telemetry_uk #F1-Telemetry_uk
             </p>
             <img
               className="w-[12rem] mt-4"
