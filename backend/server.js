@@ -202,9 +202,14 @@ app.use("/api/proxy/:source", async (req, res) => {
       // Use 'path' instead of 'fileName' so we preserve subdirectories like 'drivers/'
       localConfigPath = pathMod.join(__dirname, "..", "src", "config", "f1", path);
     }
+    
+    // Fallback for files that the API requests from 'races/2026/' but are actually in the root 'f1/'
+    if (!fs.existsSync(localConfigPath) && ["results.json", "qualifying.json", "sprint.json"].includes(fileName)) {
+      localConfigPath = pathMod.join(__dirname, "..", "src", "config", "f1", fileName);
+    }
 
     if (fs.existsSync(localConfigPath)) {
-      const isGlobal = fileName === "races.json" || fileName === "raceDetails.json";
+      const isGlobal = ["races.json", "raceDetails.json", "results.json", "qualifying.json", "sprint.json"].includes(fileName);
       const isYearSpecificMatch = year && localConfigPath.includes(pathMod.join(year, fileName));
       const isRootAnd2026 = (!year || year === "2026") && localConfigPath.endsWith(pathMod.join("f1", path));
 
