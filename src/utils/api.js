@@ -910,10 +910,30 @@ export const fetchOpenF1Podium = async (meetingKey) => {
     posData.sort((a, b) => new Date(a.date) - new Date(b.date));
     posData.forEach((p) => (driverPositions[p.driver_number] = parseInt(p.position, 10)));
 
-    const top3Drivers = Object.entries(driverPositions)
-      .map(([num, pos]) => ({ driver_number: parseInt(num, 10), pos }))
-      .filter((d) => d.pos >= 1 && d.pos <= 3)
-      .sort((a, b) => a.pos - b.pos);
+    const driverLaps = {};
+    lapsData.forEach(l => {
+      if (!driverLaps[l.driver_number] || l.lap_number > driverLaps[l.driver_number]) {
+        driverLaps[l.driver_number] = l.lap_number;
+      }
+    });
+
+    const allDriversRanked = Object.entries(driverPositions)
+      .map(([num, pos]) => {
+        const driver_number = parseInt(num, 10);
+        const laps = driverLaps[driver_number] || 0;
+        return { driver_number, pos, laps };
+      })
+      .sort((a, b) => {
+        if (b.laps !== a.laps) {
+          return b.laps - a.laps; // Most laps first
+        }
+        return a.pos - b.pos; // Lowest position number first among same lap
+      });
+
+    const top3Drivers = allDriversRanked.slice(0, 3).map((d, index) => ({
+      ...d,
+      pos: index + 1
+    }));
 
     const driverGaps = {};
     intData.sort((a, b) => new Date(a.date) - new Date(b.date));
