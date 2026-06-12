@@ -114,7 +114,7 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
             </div>
 
             {/* Right - Teammate Comparison */}
-            <div className="w-[80%] shrink-0 relative ml-[-40px] sm:ml-[-100px] lg:ml-[-150px]">
+            <div className="w-[80%] shrink-0 relative ml-[-90px] sm:ml-[-100px] lg:ml-[-150px]">
               <img
                 className="w-full"
                 src="/images/comparisonTeammates.png"
