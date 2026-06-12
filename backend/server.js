@@ -473,9 +473,8 @@ app.post('/api/admin/update/f1', (req, res) => {
 
 app.post('/api/admin/update/f2', (req, res) => {
   const url = req.body.url || '';
-  const scriptPath = pathMod.join(__dirname, '..'); 
-  const pyScript = pathMod.join('src', 'config', 'f2', 'api_update.py');
-  const cmd = url ? `py "${pyScript}" "${url}"` : `py "${pyScript}"`;
+  const scriptPath = pathMod.join(__dirname, '..', 'src', 'config', 'f2'); 
+  const cmd = url ? `py api_update.py "${url}" && py format.py` : `py api_update.py && py format.py`;
   
   exec(cmd, { cwd: scriptPath }, (error, stdout, stderr) => {
     if (error) {
@@ -488,9 +487,8 @@ app.post('/api/admin/update/f2', (req, res) => {
 
 app.post('/api/admin/update/f1a', (req, res) => {
   const url = req.body.url || '';
-  const scriptPath = pathMod.join(__dirname, '..');
-  const pyScript = pathMod.join('src', 'config', 'f1a', 'api_update.py');
-  const cmd = url ? `py "${pyScript}" "${url}"` : `py "${pyScript}"`;
+  const scriptPath = pathMod.join(__dirname, '..', 'src', 'config', 'f1a');
+  const cmd = url ? `py api_update.py "${url}" && py format.py` : `py api_update.py && py format.py`;
   
   exec(cmd, { cwd: scriptPath }, (error, stdout, stderr) => {
     if (error) {

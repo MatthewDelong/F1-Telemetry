@@ -172,9 +172,7 @@ The project includes Python scripts that fetch the latest season data and format
 - **F2:** `src/config/f2/api_update.py` — Scrapes F2 results directly from the official FIA Formula 2 website.
 - **F1 Academy:** `src/config/f1a/api_update.py` — Scrapes F1 Academy results directly from the official F1 Academy website.
 
-**Formatting Tool**
 
-- `src/config/f2/format.py` — A helper script that specifically formats the `results.json` files to keep the structure compact with a single line per driver result.
 
 **Prerequisites**
 
@@ -193,6 +191,11 @@ All Python data-fetching scripts can now be executed seamlessly through the loca
 2. Navigate to the `/admin` route in your browser (e.g., `http://localhost:3006/admin`).
 3. From the dashboard, you can easily execute the F1 updates with a single click.
 4. For F2 and F1 Academy, simply paste the official race URL into the input field and click update. The dashboard handles the argument passing and working directories for you!
+
+**Data Formatting**
+All `results.json` files are strictly formatted to maintain a highly compact, readable structure with exactly **one line per driver**. 
+- **F1:** Handled natively using a custom `write_compact_race_json()` function.
+- **F2 & F1 Academy:** Requires a secondary `format.py` script. The Admin Dashboard chains this automatically, but you can also manually run it by navigating to `src/config/f2` or `src/config/f1a` and running `py format.py` in your terminal.
 
 **What it updates**
 
