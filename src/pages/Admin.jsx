@@ -45,12 +45,44 @@ export const AdminPage = () => {
   const clearCache = async () => {
     if (!window.confirm('Are you sure you want to clear all backend caches?')) return;
     setLoading(true);
-    addLog('Clearing backend caches...');
+    addLog('Clearing local backend caches...');
     try {
       const res = await axios.get('/api/admin/clear-cache');
       addLog(`Success:\n${res.data.message}`);
     } catch (e) {
-      addLog(`Error clearing cache:\n${e.response?.data?.error || e.message}`);
+      addLog(`Error clearing local cache:\n${e.response?.data?.error || e.message}`);
+    }
+    setLoading(false);
+  };
+
+  const clearLiveCache = async () => {
+    if (!window.confirm('Are you sure you want to clear the LIVE server cache? This forces the live site to fetch the latest GitHub data.')) return;
+    setLoading(true);
+    addLog('Clearing live cache on f1-telemetry.matthews-world.co.uk...');
+    try {
+      const liveUrls = [
+        'https://f1-telemetry.matthews-world.co.uk/api.php?source=f1&path=races/2026/driverStandings.json&flush=1',
+        'https://f1-telemetry.matthews-world.co.uk/api.php?source=f1&path=races/2026/constructorStandings.json&flush=1',
+        'https://f1-telemetry.matthews-world.co.uk/api.php?source=f1&path=results.json&flush=1',
+        'https://f1-telemetry.matthews-world.co.uk/api.php?source=f1&path=sprint.json&flush=1',
+        'https://f1-telemetry.matthews-world.co.uk/api.php?source=f1&path=qualifying.json&flush=1',
+        'https://f1-telemetry.matthews-world.co.uk/api.php?source=f1&path=races/races.json&flush=1',
+        'https://f1-telemetry.matthews-world.co.uk/api.php?source=f2&path=results.json&flush=1',
+        'https://f1-telemetry.matthews-world.co.uk/api.php?source=f1a&path=results.json&flush=1'
+      ];
+      
+      for (const url of liveUrls) {
+        try {
+          await axios.get(url);
+          const path = url.split('path=')[1].split('&')[0];
+          addLog(`Flushed live cache for: ${path}`);
+        } catch(e) {
+          addLog(`Error flushing ${url}: ${e.message}`);
+        }
+      }
+      addLog('Live cache cleared successfully!');
+    } catch (e) {
+      addLog(`Error clearing live cache:\n${e.message}`);
     }
     setLoading(false);
   };
@@ -68,13 +100,22 @@ export const AdminPage = () => {
     <div className="container mx-auto p-8 text-white mt-12 mb-12">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-4xl font-bold">Admin Dashboard</h1>
-        <button 
-          onClick={clearCache}
-          disabled={loading}
-          className="bg-yellow-600 hover:bg-yellow-700 disabled:bg-gray-600 text-white font-bold py-2 px-6 rounded shadow-lg transition-colors"
-        >
-          Clear Backend Caches
-        </button>
+        <div className="flex gap-4">
+          <button 
+            onClick={clearCache}
+            disabled={loading}
+            className="bg-yellow-600 hover:bg-yellow-700 disabled:bg-gray-600 text-white font-bold py-2 px-6 rounded shadow-lg transition-colors"
+          >
+            Clear Local Cache
+          </button>
+          <button 
+            onClick={clearLiveCache}
+            disabled={loading}
+            className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 text-white font-bold py-2 px-6 rounded shadow-lg transition-colors"
+          >
+            Clear LIVE Cache
+          </button>
+        </div>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
