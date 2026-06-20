@@ -19,7 +19,7 @@ def parse_time(t_str):
     except:
         return float('inf')
 
-def format_race(data):
+def format_race(data, pole_car_number=None):
     if not data:
         return []
     
@@ -64,6 +64,9 @@ def format_race(data):
             "Time": { "time": time_val }
         }
         
+        if pole_car_number and res["number"] == pole_car_number:
+            res["grid"] = "1"
+        
         if pos == "1":
             res["gap"] = "-"
             
@@ -71,11 +74,12 @@ def format_race(data):
             res.pop("laps", None)
             res.pop("gap", None)
             
-        if is_fastest and time_val != "":
+        best_time = d.get('Best', '')
+        if best_time and time_val != "":
             res["FastestLap"] = {
-                "rank": "1",
+                "rank": "1" if is_fastest else "",
                 "lap": str(d.get('BestLap', '1')),
-                "Time": { "time": d.get('Best', '') }
+                "Time": { "time": best_time }
             }
             
         formatted_data.append(res)
@@ -128,12 +132,33 @@ def main():
     sprint_data = []
     feature_data = []
     
+    fastest_quali_time = float('inf')
+    pole_car_number = None
+
+    def time_to_ms(t_str):
+        if not t_str: return float('inf')
+        parts = t_str.split(':')
+        if len(parts) == 2:
+            return float(parts[0]) * 60 * 1000 + float(parts[1]) * 1000
+        try:
+            return float(t_str) * 1000
+        except:
+            return float('inf')
+            
     for session in session_results:
         name = session.get('SessionName', '')
         if name == 'Sprint Race':
             sprint_data = session.get('Results', [])
         elif name == 'Feature Race':
             feature_data = session.get('Results', [])
+        elif 'Qualifying' in name:
+            quali_results = session.get('Results', [])
+            for res in quali_results:
+                if str(res.get('FinishPosition', '')) == '1' or str(res.get('DisplayFinishPosition', '')) == '1':
+                    t = time_to_ms(res.get('Best', ''))
+                    if t < fastest_quali_time:
+                        fastest_quali_time = t
+                        pole_car_number = str(res.get('CarNumber', ''))
             
     if not sprint_data and not feature_data:
         print("No Sprint Race or Feature Race results found in the data.")
@@ -141,23 +166,27 @@ def main():
         
     season = str(page_data.get('SeasonName', '2026'))
     if " " in season:
-        season = season.split()[0]
+        season = season.split()[-1]
         
     round_number = str(page_data.get('RoundNumber', ''))
     country_name = page_data.get('CountryName', '')
     race_name = country_name + " Grand Prix"
     
+    circuit_info = page_data.get('CircuitInformation', '')
+    if isinstance(circuit_info, dict):
+        circuit_info = circuit_info.get('CircuitName', '')
+        
     new_round = {
         "season": season,
         "round": round_number,
         "raceName": race_name,
         "Circuit": {
             "circuitId": country_name.lower().replace(' ', '_'),
-            "circuitName": page_data.get('CircuitInformation', '')
+            "circuitName": circuit_info
         },
         "Results": {
             "race1": format_race(sprint_data),
-            "race2": format_race(feature_data)
+            "race2": format_race(feature_data, pole_car_number=pole_car_number)
         }
     }
     
