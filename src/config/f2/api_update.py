@@ -176,12 +176,33 @@ def main():
     if isinstance(circuit_info, dict):
         circuit_info = circuit_info.get('CircuitName', '')
         
+    raw_circuit_id = country_name.lower().replace(' ', '_')
+    CIRCUIT_MAPPING = {
+        "australia": "albert_park",
+        "miami": "miami",
+        "canada": "villeneuve",
+        "monaco": "monaco",
+        "spain": "catalunya",
+        "austria": "red_bull_ring",
+        "great_britain": "silverstone",
+        "belgium": "spa",
+        "hungary": "hungaroring",
+        "italy": "monza",
+        "azerbaijan": "baku",
+        "qatar": "losail",
+        "abu_dhabi": "yas_marina",
+        "saudi_arabia": "jeddah",
+        "bahrain": "bahrain",
+        "emilia_romagna": "imola"
+    }
+    circuit_id = CIRCUIT_MAPPING.get(raw_circuit_id, raw_circuit_id)
+        
     new_round = {
         "season": season,
         "round": round_number,
         "raceName": race_name,
         "Circuit": {
-            "circuitId": country_name.lower().replace(' ', '_'),
+            "circuitId": circuit_id,
             "circuitName": circuit_info
         },
         "Results": {
