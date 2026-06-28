@@ -211,6 +211,11 @@ def main():
             
     if not replaced:
         results.append(new_round)
+
+    try:
+        results.sort(key=lambda x: (int(x.get('season', '0')), int(x.get('round', '0'))))
+    except Exception:
+        pass
         
     out = custom_stringify(results)
     
