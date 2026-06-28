@@ -2,7 +2,7 @@
     "driverId": "piastri",
     "driverCode": "PIA",
     "driverNumber": "81",
-    "lastUpdate": "2026-06-20T17:31:25.171152",
+    "lastUpdate": "2026-06-28T19:21:17.211798",
     "totalWins": 0,
     "totalPodiums": 2,
     "totalPoles": 0,
@@ -42,14 +42,16 @@
             "Japanese Grand Prix": "1:32.996",
             "Miami Grand Prix": "1:31.949",
             "Canadian Grand Prix": "1:15.456",
-            "Monaco Grand Prix": "1:15.816"
+            "Monaco Grand Prix": "1:15.816",
+            "Barcelona Grand Prix": "1:20.835",
+            "Austrian Grand Prix": "1:10.595"
         }
     },
     "finalStandings": {
         "2026": {
             "year": "2026",
-            "position": "6",
-            "points": "68"
+            "position": "4",
+            "points": "80"
         }
     },
     "posAfterRace": {
@@ -57,22 +59,28 @@
             "year": "2026",
             "pos": {
                 "Australian Grand Prix": {
-                    "points": 68
+                    "points": 80
                 },
                 "Chinese Grand Prix": {
-                    "points": 68
+                    "points": 80
                 },
                 "Japanese Grand Prix": {
-                    "points": 68
+                    "points": 80
                 },
                 "Miami Grand Prix": {
-                    "points": 68
+                    "points": 80
                 },
                 "Canadian Grand Prix": {
-                    "points": 68
+                    "points": 80
                 },
                 "Monaco Grand Prix": {
-                    "points": 68
+                    "points": 80
+                },
+                "Barcelona Grand Prix": {
+                    "points": 80
+                },
+                "Austrian Grand Prix": {
+                    "points": 80
                 }
             }
         }
@@ -86,7 +94,9 @@
                 "Japanese Grand Prix": "2",
                 "Miami Grand Prix": "3",
                 "Canadian Grand Prix": "11",
-                "Monaco Grand Prix": "5"
+                "Monaco Grand Prix": "5",
+                "Barcelona Grand Prix": "5",
+                "Austrian Grand Prix": "4"
             }
         }
     },
@@ -99,7 +109,9 @@
                 "Japanese Grand Prix": "3",
                 "Miami Grand Prix": "7",
                 "Canadian Grand Prix": "4",
-                "Monaco Grand Prix": "7"
+                "Monaco Grand Prix": "7",
+                "Barcelona Grand Prix": "7",
+                "Austrian Grand Prix": "7"
             }
         }
     },
@@ -136,6 +148,16 @@
                     "1:14.159",
                     "1:12.983",
                     "1:12.624"
+                ],
+                "Barcelona Grand Prix": [
+                    "1:16.138",
+                    "1:15.518",
+                    "1:15.090"
+                ],
+                "Austrian Grand Prix": [
+                    "1:07.487",
+                    "1:06.890",
+                    "1:06.511"
                 ]
             }
         }
@@ -145,7 +167,7 @@
             "wins": 0.0,
             "podiums": 2.0,
             "poles": 0.0,
-            "points": 68.0
+            "points": 80.0
         },
         "std": {
             "wins": 0.0,
@@ -175,29 +197,29 @@
         }
     },
     "avgRacePositions": {
-        "2026": 10.166666666666666
+        "2026": 8.75
     },
     "avgQualiPositions": {
-        "2026": 5.166666666666667
+        "2026": 5.625
     },
     "rates": {
         "wins": {
             "2026": 0.0
         },
         "podiums": {
-            "2026": 0.3333333333333333
+            "2026": 0.25
         },
         "poles": {
             "2026": 0.0
         },
         "DNFs": {
-            "2026": 0.5
+            "2026": 0.375
         }
     },
     "winRate": 0.0,
-    "podiumRate": 0.3333333333333333,
+    "podiumRate": 0.25,
     "poleRate": 0.0,
-    "dnfRate": 0.5,
+    "dnfRate": 0.375,
     "ptwConRate": {
         "2026": -1
     },
@@ -208,7 +230,9 @@
             "Japanese Grand Prix": 1,
             "Miami Grand Prix": 4,
             "Canadian Grand Prix": -7,
-            "Monaco Grand Prix": 2
+            "Monaco Grand Prix": 2,
+            "Barcelona Grand Prix": 2,
+            "Austrian Grand Prix": 3
         }
     }
 }

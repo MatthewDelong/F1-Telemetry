@@ -2,16 +2,16 @@
     "driverId": "max_verstappen",
     "driverCode": "VER",
     "driverNumber": "3",
-    "lastUpdate": "2026-06-20T17:31:25.171494",
+    "lastUpdate": "2026-06-28T19:21:17.211692",
     "totalWins": 0,
-    "totalPodiums": 1,
+    "totalPodiums": 2,
     "totalPoles": 0,
     "totalDNFs": 1,
     "seasonWins": {
         "2026": 0
     },
     "seasonPodiums": {
-        "2026": 1
+        "2026": 2
     },
     "seasonPoles": {
         "2026": 0
@@ -24,7 +24,8 @@
     },
     "podiums": {
         "2026": {
-            "Canadian Grand Prix": "3"
+            "Canadian Grand Prix": "3",
+            "Austrian Grand Prix": "2"
         }
     },
     "DNFs": {
@@ -39,14 +40,16 @@
             "Japanese Grand Prix": "1:33.552",
             "Miami Grand Prix": "1:33.110",
             "Canadian Grand Prix": "1:14.398",
-            "Monaco Grand Prix": -1
+            "Monaco Grand Prix": -1,
+            "Barcelona Grand Prix": "1:20.230",
+            "Austrian Grand Prix": "1:10.483"
         }
     },
     "finalStandings": {
         "2026": {
             "year": "2026",
             "position": "7",
-            "points": "55"
+            "points": "73"
         }
     },
     "posAfterRace": {
@@ -54,22 +57,28 @@
             "year": "2026",
             "pos": {
                 "Australian Grand Prix": {
-                    "points": 55
+                    "points": 73
                 },
                 "Chinese Grand Prix": {
-                    "points": 55
+                    "points": 73
                 },
                 "Japanese Grand Prix": {
-                    "points": 55
+                    "points": 73
                 },
                 "Miami Grand Prix": {
-                    "points": 55
+                    "points": 73
                 },
                 "Canadian Grand Prix": {
-                    "points": 55
+                    "points": 73
                 },
                 "Monaco Grand Prix": {
-                    "points": 55
+                    "points": 73
+                },
+                "Barcelona Grand Prix": {
+                    "points": 73
+                },
+                "Austrian Grand Prix": {
+                    "points": 73
                 }
             }
         }
@@ -83,7 +92,9 @@
                 "Japanese Grand Prix": "8",
                 "Miami Grand Prix": "5",
                 "Canadian Grand Prix": "3",
-                "Monaco Grand Prix": "22"
+                "Monaco Grand Prix": "22",
+                "Barcelona Grand Prix": "4",
+                "Austrian Grand Prix": "2"
             }
         }
     },
@@ -96,7 +107,9 @@
                 "Japanese Grand Prix": "11",
                 "Miami Grand Prix": "2",
                 "Canadian Grand Prix": "6",
-                "Monaco Grand Prix": "2"
+                "Monaco Grand Prix": "2",
+                "Barcelona Grand Prix": "5",
+                "Austrian Grand Prix": "5"
             }
         }
     },
@@ -128,6 +141,16 @@
                     "1:13.490",
                     "1:12.499",
                     "1:12.094"
+                ],
+                "Barcelona Grand Prix": [
+                    "1:16.352",
+                    "1:15.484",
+                    "1:15.021"
+                ],
+                "Austrian Grand Prix": [
+                    "1:07.407",
+                    "1:07.183",
+                    "1:06.475"
                 ]
             }
         }
@@ -135,9 +158,9 @@
     "consistency": {
         "mean": {
             "wins": 0.0,
-            "podiums": 1.0,
+            "podiums": 2.0,
             "poles": 0.0,
-            "points": 55.0
+            "points": 73.0
         },
         "std": {
             "wins": 0.0,
@@ -159,7 +182,7 @@
         },
         "podiums": {
             "season": "2026",
-            "podiums": 1
+            "podiums": 2
         },
         "poles": {
             "season": "No peak season",
@@ -167,29 +190,29 @@
         }
     },
     "avgRacePositions": {
-        "2026": 10.0
+        "2026": 8.25
     },
     "avgQualiPositions": {
-        "2026": 8.166666666666666
+        "2026": 7.375
     },
     "rates": {
         "wins": {
             "2026": 0.0
         },
         "podiums": {
-            "2026": 0.16666666666666666
+            "2026": 0.25
         },
         "poles": {
             "2026": 0.0
         },
         "DNFs": {
-            "2026": 0.16666666666666666
+            "2026": 0.125
         }
     },
     "winRate": 0.0,
-    "podiumRate": 0.16666666666666666,
+    "podiumRate": 0.25,
     "poleRate": 0.0,
-    "dnfRate": 0.16666666666666666,
+    "dnfRate": 0.125,
     "ptwConRate": {
         "2026": -1
     },
@@ -200,7 +223,9 @@
             "Japanese Grand Prix": 3,
             "Miami Grand Prix": -3,
             "Canadian Grand Prix": 3,
-            "Monaco Grand Prix": -20
+            "Monaco Grand Prix": -20,
+            "Barcelona Grand Prix": 1,
+            "Austrian Grand Prix": 3
         }
     }
 }

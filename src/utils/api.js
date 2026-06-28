@@ -27,7 +27,7 @@ export function normalizeOpenF1Date(date) {
   return d.toISOString();
 }
 
-const CACHE_PREFIX = "f1_cache_v4_";
+const CACHE_PREFIX = "f1_cache_v5_";
 const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -1099,9 +1099,11 @@ export const fetchMostRecentRace = async (selectedYear, specificRound = null, sp
       raceResults,
     };
 
-    // 2. Cache successful results
+    // 2. Cache successful results only if we actually got a podium (prevents caching empty results for 6 hours right after a race)
     try {
-      localStorage.setItem(cacheKey, JSON.stringify({ data: raceWithDetails, timestamp: Date.now() }));
+      if (raceResults && raceResults.length > 0) {
+        localStorage.setItem(cacheKey, JSON.stringify({ data: raceWithDetails, timestamp: Date.now() }));
+      }
     } catch (e) {}
 
     return raceWithDetails;
