@@ -160,6 +160,12 @@ export const Footer = ({ className }) => {
             >
               Privacy Policy
             </Link>
+            <Link
+              to="/trademarks"
+              className="hover:text-brand-yellow-500 hover:scale-105 transition-all duration-300 block text-sm text-center"
+            >
+              Trademarks
+            </Link>
           </div>
         </div>
       </div>
@@ -168,11 +174,9 @@ export const Footer = ({ className }) => {
       <div className="text-center text-neutral-500 mt-6 bg-gradient-to-b from-neutral-950/40 to-neutral-950/10 px-24 pb-24 text-[11px] uppercase tracking-widest leading-relaxed glass-dark">
         <div className="divider-glow-dark mb-16 opacity-30" />
         <p className="max-w-[900px] mx-auto mb-8 font-light">
-          This website is not associated in any way with the Formula 1
-          companies. F1, FORMULA ONE, FORMULA 1, F2, FORMULA 2, FIA, FIA FORMULA
-          2 CHAMPIONSHIP, FIA FORMULA 2, F1 ACADEMY, FIA FORMULA ONE WORLD
-          CHAMPIONSHIP, GRAND PRIX and related marks are trade marks of Formula
-          One Licensing B.V.
+          This website is unofficial and not associated with Formula One companies.
+          All trademarks are property of their respective owners.{" "}
+          <Link to="/trademarks" className="underline hover:text-brand-yellow-500 transition-colors duration-300">Full trademark notice</Link>.
         </p>
         <p className="text-neutral-400 font-medium tracking-normal lowercase first-letter:uppercase">
           &copy; {currentYear} F1-Telemetry

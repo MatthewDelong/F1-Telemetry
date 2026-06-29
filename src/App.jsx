@@ -34,6 +34,7 @@ import {
   DriverStandingsF2,
   ConstructorStandingsF2,
   PrivacyPolicy,
+  Trademarks,
   AdminPage,
 } from "./pages";
 import { ScrollToTop } from "./utils/ScrollToTop";
@@ -271,6 +272,7 @@ function MainContent({
           {/* Social Media Routes - not publicly available */}
           <Route path="/social-media" element={<SocialMedia />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/trademarks" element={<Trademarks />} />
           <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </div>

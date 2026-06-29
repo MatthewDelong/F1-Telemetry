@@ -16,4 +16,5 @@ export * from "./f2/RaceResultsPageF2";
 export * from "./TeammatesComparison";
 export * from "./ARViewer";
 export * from "./PrivacyPolicy";
+export * from "./Trademarks";
 export * from "./Admin";
