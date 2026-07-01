@@ -263,7 +263,12 @@ export function LandingPage() {
         {/* Headshot */}
         <div
           className="flex justify-center pointer-events-none"
-          style={{ position: "absolute", bottom: "calc(100% - 12px)", width: "100%", zIndex: 10 }}
+          style={{
+            position: "absolute",
+            bottom: "calc(100% - 12px)",
+            width: "100%",
+            zIndex: 10,
+          }}
         >
           <img
             src={driver.headshot}
@@ -450,7 +455,7 @@ export function LandingPage() {
             </div>
           </div>
 
-          <p className="text-center mb-24 md:mb-32 w-[90%] md:w-2/3 text-sm md:text-base">
+          <p className="text-center mb-24 md:mb-32 w-[90%] md:w-2/3 md:text-md">
             Get detailed stats, strategic insights, and experience the
             interactive telemetry map of the race.
           </p>
