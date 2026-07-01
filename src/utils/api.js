@@ -27,7 +27,7 @@ export function normalizeOpenF1Date(date) {
   return d.toISOString();
 }
 
-const CACHE_PREFIX = "f1_cache_v5_";
+const CACHE_PREFIX = "f1_cache_v6_";
 const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -81,6 +81,19 @@ export const fetchOpenF1Data = async (url, retries = 7, backoff = 1500) => {
  * This bypasses the default 500-record limit.
  */
 export const fetchOpenF1FullSessionData = async (endpoint, sessionKey, extraParams = "") => {
+    const cacheKey = `${CACHE_PREFIX}full_${endpoint}_${sessionKey}_${extraParams}`;
+    
+    try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) {
+            const { data, timestamp } = JSON.parse(cached);
+            if (Date.now() - timestamp < CACHE_TTL && data && data.length > 0) {
+                console.log(`[API] Loaded full session data from cache for ${endpoint}`);
+                return data;
+            }
+        }
+    } catch (e) {}
+
     let allData = [];
     let lastDate = null;
     let hasMore = true;
@@ -135,9 +148,21 @@ export const fetchOpenF1FullSessionData = async (endpoint, sessionKey, extraPara
                 if (allData.length > 500000) hasMore = false; 
                 
                 // Delay to avoid 429
-                await delay(300);
+                await new Promise(r => setTimeout(r, 400));
             }
         }
+        
+        if (allData.length > 0) {
+            try {
+                localStorage.setItem(cacheKey, JSON.stringify({
+                    timestamp: Date.now(),
+                    data: allData
+                }));
+            } catch (e) {
+                console.warn("[API] Failed to cache full session data (might be too large)");
+            }
+        }
+        
         return allData;
     } catch (err) {
         console.error(`[API] Error in paginated fetch for ${endpoint}:`, err);
@@ -811,6 +836,166 @@ export const fetchSprintResultsByCircuit = async(year, circuitId, raceName = "")
     return [];
   }
 };
+
+/**
+ * Fetch raw GPS reference data for procedural track generation.
+ * Gets location data for the first available driver to extract the track shape.
+ * Returns raw {x, y} points (NOT scaled) suitable for TrackBuilder.
+ */
+export async function fetchTrackReferenceData(sessionKey, circuitId = null) {
+  if (!sessionKey) return [];
+
+  // 0. Check for local static track shape to bypass OpenF1 completely
+  if (circuitId) {
+    try {
+      const localUrl = `/trackdata/${circuitId.toLowerCase()}.json`;
+      const res = await fetch(localUrl);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.length > 0) {
+          console.log(`[API] Track reference loaded from local static file for ${circuitId}`);
+          return data;
+        }
+      }
+    } catch (e) {}
+  }
+
+  const cacheKey = `${CACHE_PREFIX}trackref_${sessionKey}`;
+
+  // 1. Check localStorage cache
+  try {
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      const { data, timestamp } = JSON.parse(cached);
+      if (Date.now() - timestamp < CACHE_TTL && data && data.length > 0) {
+        console.log(`[API] Track reference loaded from cache (${data.length} points)`);
+        return data;
+      }
+    }
+  } catch (e) {}
+
+  try {
+    // 2. Get laps to find a perfect single lap
+    const lapsUrl = `${buildOpenF1Url("/laps")}?session_key=${sessionKey}`;
+    let lapsData = await fetchWithPersistentCache(lapsUrl).catch(() => []);
+    
+    // FALLBACK: If there's no lap data (upcoming race), fetch track shape from 2024
+    if (!lapsData || lapsData.length === 0) {
+      console.log(`[API] No laps for session ${sessionKey}. Attempting 2024 fallback...`);
+      try {
+        const sessionInfo = await fetchWithPersistentCache(`${buildOpenF1Url("/sessions")}?session_key=${sessionKey}`);
+        if (sessionInfo && sessionInfo.length > 0) {
+          const circuitKey = sessionInfo[0].circuit_key;
+          const pastSessions = await fetchWithPersistentCache(`${buildOpenF1Url("/sessions")}?circuit_key=${circuitKey}&year=2024`);
+          const pastRace = pastSessions.find(s => s.session_name === 'Race');
+          if (pastRace && pastRace.session_key !== sessionKey) {
+            console.log(`[API] Found 2024 fallback session ${pastRace.session_key} for circuit ${circuitKey}`);
+            return await fetchTrackReferenceData(pastRace.session_key);
+          }
+        }
+      } catch (e) {
+        console.warn("[API] Fallback failed:", e);
+      }
+      return [];
+    }
+
+    // Filter out pit laps and find a fast clean lap
+    const validLaps = lapsData.filter(l => 
+        l.lap_duration > 50 && 
+        l.is_pit_out_lap === false && 
+        l.duration_sector_1 && l.duration_sector_2 && l.duration_sector_3
+    );
+    
+    const bestLap = validLaps.length > 0 
+      ? validLaps.sort((a, b) => a.lap_duration - b.lap_duration)[0] 
+      : lapsData[0]; // fallback to any lap
+
+    const { driver_number, date_start } = bestLap;
+    
+    // Ensure date_end exists by calculating it from date_start + lap_duration if missing
+    let date_end = bestLap.date_end;
+    if (!date_end && date_start && bestLap.lap_duration) {
+      const startMs = new Date(date_start).getTime();
+      date_end = new Date(startMs + bestLap.lap_duration * 1000).toISOString();
+    }
+
+    // 3. Fetch location data EXACTLY for this single lap
+    // We paginate manually to ensure we get the full lap (since 1 page = ~100 points, 1 lap = ~300 points)
+    // We avoid passing 3 date parameters to prevent OpenF1 API 500 errors.
+    console.log(`[API] Fetching 1 precise lap for track ref: Driver ${driver_number} from ${date_start} to ${date_end}`);
+    const endMs = new Date(date_end).getTime();
+    
+    let rawLocationData = [];
+    let currentDate = date_start;
+    let hasMore = true;
+    let safetyCounter = 0;
+
+    while (hasMore && safetyCounter < 10) {
+      safetyCounter++;
+      // Format: date>=[current] AND date<=[end] (Exactly 2 bounds, which OpenF1 handles perfectly)
+      const locationUrl = `${buildOpenF1Url("/location")}?session_key=${sessionKey}&driver_number=${driver_number}&date>=${currentDate}&date<=${date_end}`;
+      const batch = await fetchOpenF1Data(locationUrl);
+      
+      if (!batch || batch.length === 0) {
+        break;
+      }
+      
+      // Deduplicate the overlap (the first item might match the last item of previous batch due to >=)
+      const newItems = rawLocationData.length > 0 && batch[0].date === rawLocationData[rawLocationData.length - 1].date 
+        ? batch.slice(1) 
+        : batch;
+        
+      rawLocationData = [...rawLocationData, ...newItems];
+
+      const lastItemDate = batch[batch.length - 1].date;
+      if (!lastItemDate || new Date(lastItemDate).getTime() >= endMs) {
+        break; // Reached or passed the end of the lap
+      }
+      
+      // To avoid infinite loops, if the API didn't advance time, we break
+      if (currentDate === normalizeOpenF1Date(lastItemDate)) {
+        break;
+      }
+      
+      // Next batch should start slightly after this batch's last point
+      // We add 1 millisecond so we don't fetch the exact same record again, 
+      // but if we use date> instead of date>=, we might lose the 2nd bound if OpenF1 parses it wrong. 
+      // So we stick to date>= and add 1ms.
+      const nextDateMs = new Date(lastItemDate).getTime() + 1;
+      currentDate = new Date(nextDateMs).toISOString();
+      
+      await new Promise(r => setTimeout(r, 200)); // Rate limit pause
+    }
+
+    if (!rawLocationData || rawLocationData.length === 0) return [];
+
+    // Filter locally just in case to ensure we stop exactly at date_end
+    const locationData = rawLocationData.filter(p => new Date(p.date).getTime() <= endMs);
+
+    // Ensure strict chronological order so the track spline doesn't criss-cross
+    locationData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+    // 4. Extract raw x,y points
+    const trackPoints = locationData
+      .filter(p => p.x != null && p.y != null && p.x !== 0 && p.y !== 0)
+      .map(p => ({ x: p.x, y: p.y }));
+
+    console.log(`[API] Track reference: ${trackPoints.length} points for exact lap`);
+
+    // 5. Cache it
+    try {
+      localStorage.setItem(cacheKey, JSON.stringify({
+        data: trackPoints,
+        timestamp: Date.now(),
+      }));
+    } catch (e) {}
+
+    return trackPoints;
+  } catch (error) {
+    console.error("[API] Error fetching track reference data:", error);
+    return [];
+  }
+}
 
 function scaleCoordinates(x, y, scale_factor) {
   return [x / scale_factor, y / scale_factor];

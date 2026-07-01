@@ -12,6 +12,7 @@ import {
   fetchQualifyingResultsByCircuit,
   fetchSprintResultsByCircuit,
   fetchLocationData,
+  fetchTrackReferenceData,
   fetchRaceDetails,
   fetchRaceMeetingKeys,
   fetchRaceControl,
@@ -59,8 +60,9 @@ export function RacePage() {
   const [driversColor, setDriversColor] = useState({});
   const [driverTeamMap, setDriverTeamMap] = useState({});
   const [startingGrid, setStartingGrid] = useState([]);
-  const [animatedMap, setAnimatedMap] = useState(null);
   const [MapPath, setMapPath] = useState(null);
+  const [trackReferenceData, setTrackReferenceData] = useState(null);
+  const [trackLoadError, setTrackLoadError] = useState(false);
   const [raceResults, setRaceResults] = useState([]);
   const [locData, setLocData] = useState([]);
   const [activeButtonIndex, setActiveButtonIndex] = useState(null);
@@ -307,6 +309,8 @@ export function RacePage() {
       setDriverSelected(false);
       setActiveButtonIndex(null);
       setIsLoading(true);
+      setTrackReferenceData([]); // CLEAR OLD TRACK
+      setTrackLoadError(false);
 
       const sessionsData = await fetchWithPersistentCache(
         `${buildOpenF1Url("/sessions")}?meeting_key=${meetingKey}`,
@@ -344,20 +348,6 @@ export function RacePage() {
         if (circuitId) {
           const mapUrl = `/map/${circuitId}.gltf`;
           setMapPath(mapUrl);
-
-          if (supportedAnimatedMaps.includes(circuitId)) {
-            const animatedMapUrl = `/mapsAnimated/${circuitId}Animated.mp4`;
-            console.log(`[RacePage] Setting Race map paths for ${circuitId}:`, {
-              mapUrl,
-              animatedMapUrl,
-            });
-            setAnimatedMap(animatedMapUrl);
-          } else {
-            console.log(
-              `[RacePage] No animated map available for ${circuitId}`,
-            );
-            setAnimatedMap(null);
-          }
         }
 
         let sessionResults = [];
@@ -382,6 +372,7 @@ export function RacePage() {
         const sessionKey = raceSession.session_key;
         setSelectedSessionKey(sessionKey);
 
+
         // Fetch data sequentially with small stagger to avoid 429 rate limiting
         const driverDetailsData = await fetchWithPersistentCache(
           `${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`,
@@ -394,10 +385,9 @@ export function RacePage() {
         setRaceControlMessages(raceControlData);
 
         await new Promise((r) => setTimeout(r, 250));
-        const startingGridData = await fetchOpenF1FullSessionData(
-          "/position",
-          sessionKey,
-        );
+        const startingGridData = await fetchWithPersistentCache(
+          `${buildOpenF1Url("/position")}?session_key=${sessionKey}`,
+        ).catch(() => []);
         setPos(startingGridData);
 
         await new Promise((r) => setTimeout(r, 250));
@@ -511,6 +501,18 @@ export function RacePage() {
         setIsSessionLive(
           !raceSession.date_end || new Date() < new Date(raceSession.date_end),
         );
+        
+        // Fetch track reference GPS data non-blockingly at the end
+        fetchTrackReferenceData(sessionKey, circuitId).then(refData => {
+          if (refData && refData.length > 0) {
+            setTrackReferenceData(refData);
+            setTrackLoadError(false);
+          } else {
+            setTrackLoadError(true);
+          }
+        }).catch(() => {
+          setTrackLoadError(true);
+        });
       } else if (selectedSession === "Qualifying") {
         setIsLoading(true);
         if (circuitId) {
@@ -542,14 +544,14 @@ export function RacePage() {
         const sessionKey = raceSession.session_key;
         setSelectedSessionKey(sessionKey);
 
+
         const driverDetailsData = await fetchWithPersistentCache(
           `${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`,
         ).catch(() => []);
         await new Promise((r) => setTimeout(r, 250));
-        const startingGridData = await fetchOpenF1FullSessionData(
-          "/position",
-          sessionKey,
-        );
+        const startingGridData = await fetchWithPersistentCache(
+          `${buildOpenF1Url("/position")}?session_key=${sessionKey}`,
+        ).catch(() => []);
         await new Promise((r) => setTimeout(r, 250));
         const driversData = await fetchDriversAndTires(sessionKey).catch(
           () => [],
@@ -611,6 +613,11 @@ export function RacePage() {
             driver_acronym: driverDetailsMap[lap.driver_number],
           })),
         );
+        
+        // Fetch track reference GPS data non-blockingly at the end
+        fetchTrackReferenceData(sessionKey, circuitId).then(refData => {
+          if (refData && refData.length > 0) setTrackReferenceData(refData);
+        }).catch(() => {});
       } else if (selectedSession === "Sprint") {
         setIsLoading(true);
         if (circuitId) {
@@ -648,6 +655,7 @@ export function RacePage() {
         const sessionKey = sprintSession.session_key;
         setSelectedSessionKey(sessionKey);
 
+
         const driverDetailsData = await fetchWithPersistentCache(
           `${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`,
         ).catch(() => []);
@@ -658,10 +666,9 @@ export function RacePage() {
         await new Promise((r) => setTimeout(r, 250));
         const lapsData = await fetchOpenF1FullSessionData("/laps", sessionKey);
         await new Promise((r) => setTimeout(r, 250));
-        const positionData = await fetchOpenF1FullSessionData(
-          "/position",
-          sessionKey,
-        );
+        const positionData = await fetchWithPersistentCache(
+          `${buildOpenF1Url("/position")}?session_key=${sessionKey}`,
+        ).catch(() => []);
 
         const raceControlData = await fetchRaceControl(sessionKey).catch(
           () => [],
@@ -727,6 +734,11 @@ export function RacePage() {
           !sprintSession.date_end ||
             new Date() < new Date(sprintSession.date_end),
         );
+        
+        // Fetch track reference GPS data non-blockingly at the end
+        fetchTrackReferenceData(sessionKey, circuitId).then(refData => {
+          if (refData && refData.length > 0) setTrackReferenceData(refData);
+        }).catch(() => {});
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -799,6 +811,9 @@ export function RacePage() {
           if (!raceSession) throw new Error("Race session not found");
           const sessionKey = raceSession.session_key;
 
+          const positionData = await fetchWithPersistentCache(
+            `${buildOpenF1Url("/position")}?session_key=${sessionKey}`,
+          ).catch(() => []);
           const locationData = await fetchLocationData(
             sessionKey,
             raceResults[index].number,
@@ -824,11 +839,10 @@ export function RacePage() {
   );
 
   const circuitIdCanonical = location && locationMaps[location.toLowerCase()];
-  const isAnimatedLocation =
-    circuitIdCanonical && animatedLocations.includes(circuitIdCanonical);
   const hasMap = !!circuitIdCanonical;
+  const hasTrackData = trackReferenceData && trackReferenceData.length > 10;
   const driverSelectedShowTrack =
-    driverSelected && isAnimatedLocation && hasMap;
+    driverSelected && (hasTrackData || hasMap);
 
   const driverButtons = (layoutSmall) => (
     <ul className="flex flex-col max-sm:p-8 sm:p-16">
@@ -1191,10 +1205,11 @@ export function RacePage() {
               </div>
             ) : null}
             <div className="race-page__track-view__display relative">
-              {driverSelectedShowTrack || (!animatedMap && MapPath) ? (
+              {hasTrackData ? (
                 <ThreeCanvas
                   className="race-page__track-view__display__canvas"
-                  MapFile={MapPath}
+                  trackReferenceData={trackReferenceData}
+                  circuitId={circuitIdCanonical}
                   locData={locData}
                   driverSelected={driverSelected}
                   constructorId={
@@ -1214,16 +1229,14 @@ export function RacePage() {
                   onToggleUnit={handleUnitToggle}
                 />
               ) : (
-                <div className="race-page__track-view__display__preview">
-                  {animatedMap && (
-                    <video
-                      src={animatedMap}
-                      loop
-                      autoPlay
-                      muted
-                      playsInline
-                      className="w-full h-full object-cover"
-                    />
+                <div className="race-page__track-view__display__preview flex flex-col gap-4 items-center justify-center bg-[#0a0a0a]">
+                  {trackLoadError ? (
+                    <>
+                      <div className="text-red-500 font-display font-bold">TRACK UNAVAILABLE</div>
+                      <div className="text-white/50 font-display text-sm">OpenF1 API Rate Limited (429)</div>
+                    </>
+                  ) : (
+                    <div className="text-white/50 font-display">Loading track data...</div>
                   )}
                 </div>
               )}

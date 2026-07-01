@@ -37,5 +37,4 @@ export { default as RaceControl } from './RaceControl'
 export * from './LumaKeyVideo'
 export * from './PitStopTimes'
 export { default as CookieBanner } from './CookieBanner'
-
-
+export * from './MiniTrackViewer'

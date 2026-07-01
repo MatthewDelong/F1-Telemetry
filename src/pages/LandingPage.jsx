@@ -6,6 +6,7 @@ import {
   TeammateComparisonButton,
   ViewLatestRaceButton,
   Footer,
+  MiniTrackViewer,
 } from "../components";
 import { fetchMostRecentRace } from "../utils/api";
 import { nationalityToFlag } from "../utils/nationalityToFlag";
@@ -261,8 +262,8 @@ export function LandingPage() {
       >
         {/* Headshot */}
         <div
-          className="flex justify-center"
-          style={{ position: "absolute", bottom: "100%", width: "100%" }}
+          className="flex justify-center pointer-events-none"
+          style={{ position: "absolute", bottom: "calc(100% - 12px)", width: "100%", zIndex: 10 }}
         >
           <img
             src={driver.headshot}
@@ -272,9 +273,10 @@ export function LandingPage() {
             }}
             style={{
               height: driver.position === 1 ? "170px" : "140px",
+              width: driver.position === 1 ? "170px" : "140px",
               objectFit: "contain",
               objectPosition: "bottom",
-              filter: "drop-shadow(0 10px 15px rgba(0,0,0,0.6))",
+              filter: "drop-shadow(0 -10px 15px rgba(0,0,0,0.6))",
             }}
           />
         </div>
@@ -296,7 +298,6 @@ export function LandingPage() {
             width: "100%",
             minHeight: driver.position === 1 ? "115px" : "95px",
             background: "linear-gradient(180deg, #2a2a2a 0%, #0a0a0a 100%)",
-            boxShadow: "0 15px 30px rgba(0,0,0,0.8)",
             borderLeft: "1px solid rgba(255,255,255,0.05)",
             borderRight: "1px solid rgba(255,255,255,0.05)",
             padding: "8px 4px",
@@ -412,6 +413,7 @@ export function LandingPage() {
   };
 
   const latestResultsLayout = () => {
+    const circuitIdToUse = raceData?.circuitId || raceData?.Circuit?.circuitId;
     return (
       <>
         <div className="flex flex-col items-center z-10 w-full">
@@ -424,8 +426,8 @@ export function LandingPage() {
 
           {/* Podium */}
           <div
-            className="flex items-end justify-center mt-8 w-full scale-90 sm:scale-100"
-            style={{ paddingTop: "180px", paddingBottom: "30px", gap: 0 }}
+            className="flex items-end justify-center mt-4 md:mt-8 w-full scale-[0.8] sm:scale-100"
+            style={{ paddingTop: "140px", paddingBottom: "30px", gap: 0 }}
           >
             {/* P2 */}
             <div style={{ width: "120px", zIndex: 1, position: "relative" }}>
@@ -448,8 +450,7 @@ export function LandingPage() {
             </div>
           </div>
 
-          <div className="divider-glow-dark mb-16 mt-4" />
-          <p className="text-center mb-56 w-2/3">
+          <p className="text-center mb-24 md:mb-32 w-[90%] md:w-2/3 text-sm md:text-base">
             Get detailed stats, strategic insights, and experience the
             interactive telemetry map of the race.
           </p>
@@ -463,19 +464,8 @@ export function LandingPage() {
           </Button>
         </div>
 
-        <div className="bg-neutral-950/40 absolute w-full h-full overflow-hidden">
-          <video
-            src={
-              raceData && raceData.Circuit && raceData.Circuit.circuitId
-                ? `${"/mapsAnimated/" + raceData.Circuit.circuitId + "Animated.mp4"}`
-                : null
-            }
-            loop
-            autoPlay
-            muted
-            playsInline
-            className="object-cover opacity-15 h-full w-full"
-          />
+        <div className="bg-neutral-950/40 absolute inset-0 w-full h-full overflow-hidden">
+          {circuitIdToUse && <MiniTrackViewer circuitId={circuitIdToUse} />}
         </div>
       </>
     );

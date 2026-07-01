@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import TWEEN from "@tweenjs/tween.js";
 
+import { buildTrackFromGPS, telemetryToScene } from "../utils/TrackBuilder";
 import { Loading } from "./Loading";
 import DriverCarDetails from "./DriverCarDetails";
 import RangeSlider from "./RangeSlider";
@@ -14,10 +15,11 @@ import RangeSlider from "./RangeSlider";
  * Features:
  * - Ref-Based Synchronization: Thread-safe data management for 3D loops.
  * - Dynamic Framing: Automatic viewport fitting for any circuit.
- * - Origin-Sync: Precise overlay of telemetry on GLTF geometry.
+ * - Procedural Track: Built from GPS data via TrackBuilder (no Blender required).
  */
 export const ThreeCanvas = ({
-  MapFile,
+  trackReferenceData,
+  circuitId,
   locData,
   driverColor,
   driverSelected,
@@ -51,6 +53,9 @@ export const ThreeCanvas = ({
   const locDataRef = useRef([]);
   const currentLoadRequestRef = useRef(0);
 
+  // Procedural track calibration ref
+  const trackCalibrationRef = useRef(null);
+
   // Unified Sync Ref for props & calibration
   const syncRef = useRef({
     isPaused,
@@ -64,8 +69,8 @@ export const ThreeCanvas = ({
     telemetryScale: 1.0,
     mapDimension: 0,
     theta: (-131 * Math.PI) / 180,
-    cameraHeight: 10,
-    radius: 9,
+    cameraHeight: 15,
+    radius: 20,
   });
 
   // 3. UI State
@@ -73,8 +78,8 @@ export const ThreeCanvas = ({
   const [isCalibrated, setIsCalibrated] = useState(true);
   const [driverDetails, setDriverDetails] = useState(null);
   const [theta, setTheta] = useState((-131 * Math.PI) / 180);
-  const [cameraHeight, setCameraHeight] = useState(10);
-  const [radius, setRadius] = useState(9);
+  const [cameraHeight, setCameraHeight] = useState(15);
+  const [radius, setRadius] = useState(20);
 
   // Dynamic Prop Sync
   useEffect(() => {
@@ -192,13 +197,26 @@ export const ThreeCanvas = ({
             carModelRef.current.userData.tweenActive = true;
             const oldPos = carModelRef.current.position.clone();
 
-            const targetX =
-              (next.x - sync.telemetryCenter.x) * sync.telemetryScale;
-            const targetY =
-              (next.y - sync.telemetryCenter.y) * sync.telemetryScale;
+            // Use TrackBuilder calibration if available, otherwise fallback
+            let targetX, targetY;
+            if (trackCalibrationRef.current) {
+              const scenePos = telemetryToScene(
+                next.x * 1500, // Reverse the /1500 scaling applied in fetchLocationData
+                next.y * 1500,
+                trackCalibrationRef.current.center,
+                trackCalibrationRef.current.scale,
+              );
+              targetX = scenePos.x;
+              targetY = scenePos.y;
+            } else {
+              targetX =
+                (next.x - sync.telemetryCenter.x) * sync.telemetryScale;
+              targetY =
+                (next.y - sync.telemetryCenter.y) * sync.telemetryScale;
+            }
 
             new TWEEN.Tween(carModelRef.current.position)
-              .to({ x: targetX, y: targetY, z: 0.06 }, 12)
+              .to({ x: targetX, y: targetY, z: 0.52 }, 12)
               .onUpdate(() => {
                 if (!carModelRef.current) return;
                 const dx = targetX - oldPos.x;
@@ -238,7 +256,7 @@ export const ThreeCanvas = ({
             const p = pts[i];
             posArr[i * 3] = p.x;
             posArr[i * 3 + 1] = p.y;
-            posArr[i * 3 + 2] = p.z + 0.05; // Elevation offset for trail visibility
+            posArr[i * 3 + 2] = p.z - 0.01; // Elevation offset for trail visibility (just below car)
             const fade = (i + 1) / pts.length;
             colArr[i * 3] = baseCol.r * fade;
             colArr[i * 3 + 1] = baseCol.g * fade;
@@ -259,6 +277,11 @@ export const ThreeCanvas = ({
 
         if (activeCam && rendererRef.current) {
           if (activeCam === cameraRef.current) {
+            // Phase 2: Auto-orbiting camera for 360 preview mode
+            if (!sync.driverSelected) {
+              sync.theta += 0.002; // Slow, cinematic orbit
+            }
+            
             activeCam.position.set(
               sync.radius * Math.cos(sync.theta),
               sync.radius * Math.sin(sync.theta),
@@ -284,29 +307,37 @@ export const ThreeCanvas = ({
     };
   }, []);
 
-  // 5. Asset Loader & Map Processing
+  // 5. Procedural Track Generation from GPS Reference Data
   useEffect(() => {
-    if (!MapFile) return;
+    if (!trackReferenceData || trackReferenceData.length < 10) return;
+
+    const currentScene = sceneRef.current;
+
+    // Remove previous track
+    if (mapRef.current) {
+      currentScene.remove(mapRef.current);
+      mapRef.current = null;
+    }
 
     setIsCircuitLoaded(false);
-    setDriverDetails(null);
 
-    new GLTFLoader().load(MapFile, (gltf) => {
-      const currentScene = sceneRef.current;
-      if (mapRef.current) currentScene.remove(mapRef.current);
+    const result = buildTrackFromGPS(trackReferenceData, circuitId);
+    if (!result) {
+      console.warn("[ThreeCanvas] Failed to build procedural track");
+      return;
+    }
 
-      const map = gltf.scene;
-      map.scale.set(0.1, 0.1, 0.1);
-      map.rotation.x = Math.PI / 2;
-      map.position.set(0, 0, 0);
+    const { group, center, scale } = result;
 
-      currentScene.add(map);
-      mapRef.current = map;
+    // Store calibration for converting driver telemetry to scene coordinates
+    trackCalibrationRef.current = { center, scale };
 
-      setIsCircuitLoaded(true);
-      console.log("[THREE] Original Map Loaded and Scaled (0.1)");
-    });
-  }, [MapFile]);
+    currentScene.add(group);
+    mapRef.current = group;
+
+    setIsCircuitLoaded(true);
+    console.log("[ThreeCanvas] Procedural track loaded and calibrated");
+  }, [trackReferenceData, circuitId]);
 
   // 6. Telemetry Analysis & Synchronization
   useEffect(() => {
@@ -353,7 +384,7 @@ export const ThreeCanvas = ({
         if (requestId !== currentLoadRequestRef.current) return;
 
         const car = gltf.scene;
-        car.scale.set(0.1, 0.1, 0.1);
+        car.scale.set(0.02, 0.02, 0.02);
         car.rotation.x = Math.PI / 2;
         car.rotation.y = -Math.PI;
 
