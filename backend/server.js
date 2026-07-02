@@ -244,7 +244,9 @@ app.use("/api/proxy/:source", async (req, res) => {
                 try {
                     const githubData = await tryGitHubFallback(path, cacheKey);
                     if (githubData) return res.json(githubData);
-                } catch (e) {}
+                } catch (e) {
+                    console.warn(`[Proxy] GitHub fallback failed for ${path}:`, e.message);
+                }
             }
 
             // Build fresh from Jolpica
@@ -282,7 +284,11 @@ app.use("/api/proxy/:source", async (req, res) => {
             await Cache.upsert({ key: cacheKey, value: JSON.stringify(response.data), lastUpdated: new Date() });
             return res.json(response.data);
           }
-        } catch (e) {}
+        } catch (e) {
+          if (e.response?.status !== 404) {
+            console.warn(`[Proxy] GitHub fetch failed for ${url}:`, e.message);
+          }
+        }
       }
     }
 
