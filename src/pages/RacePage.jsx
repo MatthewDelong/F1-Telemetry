@@ -36,6 +36,7 @@ import {
   RaceControl,
   PitStopTimes,
   WeatherDetails,
+  PenaltiesTrackLimits,
 } from "../components";
 import Drawer from "../components/Drawer";
 import Accordion from "../components/Accordion";
@@ -965,6 +966,17 @@ export function RacePage() {
             />
           ),
         },
+        (selectedSession === "Race" || selectedSession === "Sprint") && {
+          id: "penalties",
+          label: "Penalties",
+          content: (
+            <PenaltiesTrackLimits
+              messages={raceControlMessages}
+              driversColor={driversColor}
+              driversDetails={driversDetails}
+            />
+          ),
+        },
       ].filter(Boolean),
     [
       selectedSession,
@@ -978,6 +990,7 @@ export function RacePage() {
       driverSelected,
       driverCode,
       selectedSessionKey,
+      raceControlMessages,
     ],
   );
 
