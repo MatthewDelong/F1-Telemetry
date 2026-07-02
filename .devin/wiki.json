@@ -1,0 +1,301 @@
+{
+  "repo_notes": [
+    {
+      "content": ""
+    }
+  ],
+  "pages": [
+    {
+      "title": "F1 Telemetry — Project Overview",
+      "purpose": "High-level introduction to the F1 Telemetry platform: what it does, its multi-series scope (F1, F2, F1 Academy), the hybrid architecture (React frontend + Node.js/PHP backend), and key external dependencies. Links to all major child sections.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Getting Started & Development Setup",
+      "purpose": "Step-by-step guide for cloning, installing dependencies, running the dev server (Vite + Node.js backend concurrently), environment variables, and the postinstall script that bootstraps the backend.",
+      "parent": "F1 Telemetry — Project Overview",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Application Routing & Global State",
+      "purpose": "Detailed walkthrough of src/App.jsx: all defined routes (F1, F2, F1A, comparison tools, AR viewer), the selectedYear global state, dynamic body theming (bg-gradient-f1a, bg-gradient-f2), and the conditional header padding strategy.",
+      "parent": "F1 Telemetry — Project Overview",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Build System, PWA & Deployment",
+      "purpose": "Covers Vite configuration, manual chunking strategy for heavy dependencies (Three.js, D3, Recharts), VitePWA service worker setup, NetworkFirst/NetworkOnly caching strategies, IONOS deployment, .htaccess Gzip for GLB files, and the gh-pages deploy script.",
+      "parent": "F1 Telemetry — Project Overview",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Data Architecture & API Layer",
+      "purpose": "Overview of how the application fetches, caches, and normalizes data from OpenF1, Jolpica/Ergast, and GitHub-hosted JSON repositories. Introduces the dual-mode proxy (Node.js dev / PHP production) and links to child pages for each layer.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Frontend API Utilities (src/utils/api.js)",
+      "purpose": "Deep dive into the frontend API layer: fetchOpenF1FullSessionData pagination, fetchWithPersistentCache localStorage TTL, telemetry synchronization (sliding-window merge of /location and /car_data), fetchOpenF1Podium fallback, getDriverStandings/getConstructorStandings, and the normalizeOpenF1Date function.",
+      "parent": "Data Architecture & API Layer",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Backend Express Server & SQLite Cache",
+      "purpose": "Covers backend/server.js proxy endpoints (/api/proxy/:source/*, /openf1/*), the Local Override System (src/config/ priority), getCachedData SQLite utility, the node-cron updater.js data ingestion pipeline, cross-API synchronization between Jolpica and OpenF1, and the clear_f2_cache.js maintenance script.",
+      "parent": "Data Architecture & API Layer",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "PHP Production Proxy (api.php)",
+      "purpose": "Explains the production-mode PHP gateway: source routing (f1/f2/f1a), 30-minute file-based cache in api_cache/, the flush=1 mechanism, Native Jolpica transformation for standings, typo-correction fallback (resullts.json), stale-cache last-resort, and the post-race update workflow.",
+      "parent": "Data Architecture & API Layer",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "F2 & F1A Data API (apiF1a.js)",
+      "purpose": "Documents the junior-series API layer: fetchRaceMeetingKeysF1a, fetchCircuitData, fetchDriverInfo, fetchRaceResultsByCircuit, fetchAllRaceResults, enrichDriverData, and the 2025 scoring engine (calculateSeriesPoints2025) including Sprint/Feature points, pole bonus, fastest lap eligibility, and wildcard driver exclusion.",
+      "parent": "Data Architecture & API Layer",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Static Configuration & Local Overrides",
+      "purpose": "Describes the JSON config files in src/config/: raceDetails.json (season schedule with session timings), races.json (meeting_key mapping), qualifying.json (grid data schema), results.json (race outcomes including 2026 projections), and how the backend Local Override System prioritizes these files over live API data.",
+      "parent": "Data Architecture & API Layer",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Core Pages & User Interface",
+      "purpose": "Overview of the main page components and how they compose the user experience. Covers the landing page, race detail page, results pages, standings, and comparison tools. Links to child pages for each major UI area.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Landing Page & Home Experience",
+      "purpose": "Covers LandingPage2025 and AboutPage2025: snap-container scroll layout, hero image rotation system (HERO_HOLD_MS/HERO_FADE_MS), PodiumBlock visualization, fetchMostRecentRace fallback strategy, animated circuit map video background, keyboard navigation (Home/End), and the DatesSection/NextRaceSection layout blocks.",
+      "parent": "Core Pages & User Interface",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Race Detail Page (RacePage.jsx)",
+      "purpose": "Documents the RacePage lifecycle: session discovery and filtering (Race/Qualifying/Sprint), staggered fetching with delay(250) to avoid 429 errors, live polling via setInterval (60s), state population for ThreeCanvas/LapChart/StartingGrid, and the RacePage.scss responsive grid layout.",
+      "parent": "Core Pages & User Interface",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Race Results Pages (F1, F2, F1A)",
+      "purpose": "Covers RaceResultsPage (F1 client-side data joining), RaceResultsPageF2 and RaceResultsPageF1a (multi-race Top3Drivers component), meeting_key-based navigation, wireframe skeleton states, time formatting/localization, and the differences in routing between series (/race/:id vs /race-f2/:id).",
+      "parent": "Core Pages & User Interface",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Standings Pages (F1, F2, F1A)",
+      "purpose": "Documents DriverStandings and ConstructorStandings for all three series: RangeSelector for partial-season standings, getPartialDriverStandings/getPartialConstructorStandings, ConstructorDriver and ConstructorCar components, PointsByRaceDropdown, and the buildRacePointsMaps utility.",
+      "parent": "Core Pages & User Interface",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Driver & Teammate Comparison Tools",
+      "purpose": "Covers TeammatesComparison (year/team/driver selection, teamCache, ambiguous qualifying/race toggles) and DriverComparison (cross-era driver lookup via fetchDriversList, competingYears calculation). Documents the chart suite: HeadToHeadChart, PositionsGainedLostChart, QualifyingLapTimesChart, QualifyingLapTimesDeltaChart, LineChartByYear, BarChartTotal.",
+      "parent": "Core Pages & User Interface",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Header, Navigation & Footer",
+      "purpose": "Documents the Header component (desktop mega-menu, mobile modal with Accordion, RaceSelector, collapsible behavior on /race/ routes), Links.jsx (F1Links/F2Links/F1ALinks/LegalLinks), Footer2025 (route-based visibility suppression), and the legacy Footer contributor display.",
+      "parent": "Core Pages & User Interface",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Telemetry Visualization Engine",
+      "purpose": "Overview of the real-time and historical data visualization subsystems: the 3D Three.js canvas, lap/position/tire charts, and race analytics components. Links to child pages for each visualization layer.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "3D Track Visualization (ThreeCanvas)",
+      "purpose": "Deep dive into ThreeCanvas: GLTFLoader circuit geometry (scale 0.1, Math.PI/2 rotation), car model loading with team texture mapping (TeamTextureMap), the requestAnimationFrame animation loop (car TWEEN interpolation, progressive trail BufferGeometry with MAX_TRAIL=800, vertex color fade), haloCamera/topFollowCamera rig, syncRef thread-safe pattern, and RangeSlider camera controls.",
+      "parent": "Telemetry Visualization Engine",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Lap Time, Position & Tire Strategy Charts",
+      "purpose": "Covers LapChart (IQR outlier filtering, driver visibility toggles, color conflict resolver for teammates), PositionCharts (position reconstruction from event stream, date_start temporal alignment, reversed Y-axis), TireStrategy (delta calculation, dynamic compound key generation, tireTypeClasses coloring), and the locationMaps normalization utility.",
+      "parent": "Telemetry Visualization Engine",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Race Analytics Components",
+      "purpose": "Documents PitStopTimes (ScatterChart, 15s filter, fastest pit stop highlight, reversed Y-axis), RaceControl (race director messages, DRS/flag events), FastestLaps, SelectedDriverStats, LapSpeedComparison, and the StartingGrid (carTopView asset resolution, staggered CSS layout, getConstructorIdFromTeam normalization).",
+      "parent": "Telemetry Visualization Engine",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "AR Car Viewer & 3D Asset Pipeline",
+      "purpose": "Overview of the Augmented Reality car viewer and the full lifecycle of 3D assets from source to deployment. Links to child pages for the viewer component and the asset optimization pipeline.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "ARViewer Component",
+      "purpose": "Documents the ARViewer page: model-viewer web component integration, AR modes (scene-viewer/webxr/quick-look), GLB asset path construction (getModelTeamNameForYear for rebrands like audi/sauber), state-driven theming with darkenColor radial gradients, prefetching via link rel=prefetch, Draco/Meshopt decoder injection, CarSelectionButton, HistoryBar, and teamHistory.js metadata.",
+      "parent": "AR Car Viewer & 3D Asset Pipeline",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "3D Asset Optimization Pipeline",
+      "purpose": "Covers the full GLB optimization lifecycle: source models in public/ArFiles/glbs/, robust-compress-glbs.ps1 (gltf-transform CLI, --simplify 0.5, --texture-compress webp, --resize 1024), local Draco/Meshopt decoders in public/decoders/, .htaccess Gzip for GLB delivery, and the remove-backgrounds.mjs driver headshot processing script.",
+      "parent": "AR Car Viewer & 3D Asset Pipeline",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "UI Design System & Visual Identity",
+      "purpose": "Overview of the application's design language: F1-branded typography, CSS architecture, Tailwind configuration, animation patterns, and media assets. Links to child pages for typography/CSS and the Luma Key video system.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Typography, CSS & Tailwind Configuration",
+      "purpose": "Documents FormulaOne.css (Formula1-Bold/Regular @font-face, Titillium Web, .f1-next-race card, .countdown-timer, .indicator-dot.running animation), tailwind.config.cjs (62.5% font-size base, custom letterSpacing/fontSize/spacing scales), index.css (CSS variables like --color-brand-blue-500, divider-glow radial gradient), and SCSS modules for pages.",
+      "parent": "UI Design System & Visual Identity",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Luma Key Video & Transparent Video Pipeline",
+      "purpose": "Explains the LumaKeyVideo component: side-by-side MP4 format (RGB left / alpha matte right), buffer canvas frame capture, pixel-level imageData manipulation to assign alpha channel, requestAnimationFrame synchronization, and the FFmpeg-based PNG sequence to MP4 conversion workflow for broadcast-style overlays.",
+      "parent": "UI Design System & Visual Identity",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Static Assets & Image Management",
+      "purpose": "Covers the public/ asset directory structure: driver headshots by year/series (public/images/2023-2026/), flag images (public/images/flags/), circuit map SVGs (public/map/), animated circuit maps (public/mapsAnimated/), PWA icons (maskable_icon, android-chrome, apple-touch-icon), and the naming conventions for asset resolution in components.",
+      "parent": "UI Design System & Visual Identity",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Social Media Dashboard & Internal Tools",
+      "purpose": "Documents the internal /social-media route: SocialMedia.jsx orchestration, getRaceWeekendResults data enrichment pipeline (session filtering, grid fallback logic, team color application, 2026 local override), throttleOpenF1Requests rate limiting, and the StartingGrid/RaceResults/ConstructorStandings/DriverStandings sub-components used for generating shareable graphics.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    },
+    {
+      "title": "Privacy, Analytics & Compliance",
+      "purpose": "Covers the CookieBanner GDPR consent flow, initializeGoogleAnalytics (dynamic gtag.js injection, anonymize_ip, SameSite cookie flags), the Reject state that prevents tracking script loading, PrivacyPolicy page content, and the unofficial fan-project legal disclaimers in Footer2025.",
+      "page_notes": [
+        {
+          "content": ""
+        }
+      ]
+    }
+  ]
+}
