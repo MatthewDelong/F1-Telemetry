@@ -32,6 +32,8 @@
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "eslint src",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
@@ -86,6 +88,7 @@
     "vite": "^8.0.3",
     "vite-plugin-pwa": "^1.2.0",
     "vite-plugin-sitemap": "^0.8.2",
-    "vite-plugin-svgr": "^5.2.0"
+    "vite-plugin-svgr": "^5.2.0",
+    "vitest": "^4.1.9"
   }
 }
