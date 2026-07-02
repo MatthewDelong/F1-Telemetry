@@ -60,7 +60,6 @@ export const Footer = ({ className }) => {
             className="flex flex-col gap-8 p-16 rounded-lg glass-dark shadow-xl min-w-[250px]"
             style={{ border: "1px solid #737373" }}
           >
-
             <a
               href="https://www.formula1.com/"
               target="_blank"
@@ -90,7 +89,6 @@ export const Footer = ({ className }) => {
             className="flex flex-col gap-8 p-16 rounded-lg glass-dark shadow-xl min-w-[250px]"
             style={{ border: "1px solid #737373" }}
           >
-
             <a
               href="https://www.fiaformula2.com/"
               target="_blank"
@@ -120,7 +118,6 @@ export const Footer = ({ className }) => {
             className="flex flex-col gap-8 p-16 rounded-lg glass-dark shadow-xl min-w-[250px]"
             style={{ border: "1px solid #737373" }}
           >
-
             <a
               href="https://www.f1academy.com/"
               target="_blank"
@@ -150,22 +147,33 @@ export const Footer = ({ className }) => {
             className="flex flex-col gap-8 p-16 rounded-lg glass-dark shadow-xl min-w-[200px]"
             style={{ border: "1px solid #737373" }}
           >
-            <p className="uppercase tracking-xs gradient-text-electric-blue text-lg font-bold text-center">
-              Legal
-            </p>
-            <div className="divider-glow-dark border-t border-neutral-700/50" />
-            <Link
-              to="/privacy-policy"
-              className="hover:text-brand-yellow-500 hover:scale-105 transition-all duration-300 block text-sm text-center"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              to="/trademarks"
-              className="hover:text-brand-yellow-500 hover:scale-105 transition-all duration-300 block text-sm text-center"
-            >
-              Trademarks
-            </Link>
+            <div className="flex flex-col items-center gap-4 mt-2 mb-4">
+              <div className="flex items-center justify-center h-[20px] lg:h-[28px] mb-1">
+                <p className="uppercase tracking-xs gradient-text-electric-blue text-lg font-bold">
+                  LEGAL
+                </p>
+              </div>
+              <div className="flex items-center justify-center h-[24px] lg:h-[32px]">
+                <div className="flex flex-col text-[11px] leading-tight font-bold text-neutral-300 tracking-wider text-center">
+                  <Link
+                    to="/privacy-policy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-brand-yellow-500 hover:scale-105 transition-all duration-300"
+                  >
+                    PRIVACY POLICY
+                  </Link>
+                  <Link
+                    to="/trademarks"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-brand-yellow-500 hover:scale-105 transition-all duration-300"
+                  >
+                    TRADEMARKS
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -174,9 +182,15 @@ export const Footer = ({ className }) => {
       <div className="text-center text-neutral-500 mt-6 bg-gradient-to-b from-neutral-950/40 to-neutral-950/10 px-24 pb-24 text-[11px] uppercase tracking-widest leading-relaxed glass-dark">
         <div className="divider-glow-dark mb-16 opacity-30" />
         <p className="max-w-[900px] mx-auto mb-8 font-light">
-          This website is unofficial and not associated with Formula One companies.
-          All trademarks are property of their respective owners.{" "}
-          <Link to="/trademarks" className="underline hover:text-brand-yellow-500 transition-colors duration-300">Full trademark notice</Link>.
+          This website is unofficial and not associated with Formula One
+          companies. All trademarks are property of their respective owners.{" "}
+          <Link
+            to="/trademarks"
+            className="underline hover:text-brand-yellow-500 transition-colors duration-300"
+          >
+            Full trademark notice
+          </Link>
+          .
         </p>
         <p className="text-neutral-400 font-medium tracking-normal lowercase first-letter:uppercase">
           &copy; {currentYear} F1-Telemetry

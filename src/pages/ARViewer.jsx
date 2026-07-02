@@ -466,7 +466,7 @@ export const ARViewer = () => {
         <div className="divider-glow-dark mb-48 mx-auto w-[80%]" />
 
         <h2 className="tracking-wide uppercase  gradient-text-light text-center text-12 mb-32 opacity-80">
-          F1NSIGHT Dedication
+          F1NSIGHT.com Dedication
         </h2>
 
         <div className="flex flex-row justify-center flex-wrap gap-12 p-32">
