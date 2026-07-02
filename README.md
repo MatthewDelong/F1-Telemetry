@@ -5,6 +5,15 @@
 <h1 align="center">F1-Telemetry</h1>
 
 <p align="center">
+  <a href="https://deepwiki.com/MatthewDelong/F1-Telemetry"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki" /></a>
+  <img src="https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB" alt="React" />
+  <img src="https://img.shields.io/badge/Vite-B73BFE?style=flat&logo=vite&logoColor=FFD62E" alt="Vite" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/ThreeJs-black?style=flat&logo=three.js&logoColor=white" alt="Three.js" />
+  <img src="https://img.shields.io/badge/Node.js-43853D?style=flat&logo=node.js&logoColor=white" alt="Node.js" />
+</p>
+
+<p align="center">
   <strong>Interactive Formula 1, F2 &amp; F1 Academy race analytics — powered by real telemetry data.</strong>
 </p>
 
