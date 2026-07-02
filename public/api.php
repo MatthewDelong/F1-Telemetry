@@ -1,13 +1,28 @@
 <?php
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Origin: https://f1-telemetry.matthews-world.co.uk');
+header('Access-Control-Allow-Methods: GET');
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(0);
 
 $source = $_GET['source'] ?? '';
 $path = $_GET['path'] ?? '';
+
+// Validate source against allowed values
+if (!in_array($source, ['f1', 'f2', 'f1a', 'openf1'], true)) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Invalid source parameter']);
+    exit;
+}
+
+// Prevent path traversal attacks
+if (preg_match('/\.\.[\/\\\\]/', $path) || preg_match('/[;\|`\$]/', $path)) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Invalid path parameter']);
+    exit;
+}
 
 // Robust path reconstruction for OpenF1
 // If the path contains its own query parameters, PHP might have split them into separate $_GET entries.
@@ -39,7 +54,7 @@ function fetchUrl($url, $timeout = 10, &$errorMsg = null) {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
     // Use a standard browser User-Agent
     curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
     $response = curl_exec($ch);
@@ -59,8 +74,8 @@ function fetchUrl($url, $timeout = 10, &$errorMsg = null) {
                 "timeout" => $timeout
             ],
             "ssl" => [
-                "verify_peer" => false,
-                "verify_peer_name" => false,
+                "verify_peer" => true,
+                "verify_peer_name" => true,
             ]
         ];
         $context = stream_context_create($options);
@@ -108,9 +123,13 @@ $lastError = "";
 // Determine fetch URL
 if ($source === 'f1') {
     // 1. Try local file on server first (for "uploaded new build" workflow)
+    // Restrict to JSON files within the expected directory to prevent path traversal
     $localPath = __DIR__ . '/' . $pathWithoutQuery;
-    if (file_exists($localPath)) {
-        $data = file_get_contents($localPath);
+    $realLocal = realpath($localPath);
+    $realBase = realpath(__DIR__);
+    if ($realLocal && $realBase && strpos($realLocal, $realBase) === 0 
+        && preg_match('/\.json$/', $realLocal) && file_exists($realLocal)) {
+        $data = file_get_contents($realLocal);
     }
 
     // 2. Try GitHub fallbacks
@@ -200,10 +219,7 @@ if ($data && strlen($data) >= 2) { // Allow [] which is a valid but empty respon
     } else {
         http_response_code(404);
         echo json_encode([
-            'error' => 'Failed to fetch data and no stale cache available',
-            'path' => $path,
-            'attempted_url' => isset($baseUrl) && isset($fetchPath) ? $baseUrl . $fetchPath : 'N/A',
-            'curl_error' => $lastError
+            'error' => 'Failed to fetch data and no stale cache available'
         ]);
     }
 }

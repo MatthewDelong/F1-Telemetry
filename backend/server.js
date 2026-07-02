@@ -3,7 +3,7 @@ const cors = require("cors");
 const { connectDB, Cache } = require("./database");
 const cron = require("node-cron");
 const axios = require("axios");
-const { exec } = require("child_process");
+const { execFile } = require("child_process");
 
 async function tryGitHubFallback(path, cacheKey) {
   const baseUrls = [
@@ -36,7 +36,12 @@ async function tryGitHubFallback(path, cacheKey) {
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production'
+    ? ['https://f1-telemetry.matthews-world.co.uk']
+    : ['http://localhost:3006', 'http://localhost:3000'],
+  methods: ['GET', 'POST'],
+}));
 app.use(express.json());
 
 const fs = require("fs");
@@ -85,8 +90,20 @@ const getCachedData = async (key, fetchCallback, ttlMs = 1000 * 60 * 30) => {
 
 const { buildDriverStats, getLocal2026Stats } = require("./driverStatsBuilder");
 
+// ─── Admin Auth Middleware ───
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN || '';
+function requireAdmin(req, res, next) {
+  if (process.env.NODE_ENV === 'production') {
+    const token = req.headers['x-admin-token'] || req.query.token || '';
+    if (!ADMIN_TOKEN || token !== ADMIN_TOKEN) {
+      return res.status(403).json({ error: 'Forbidden: invalid admin token' });
+    }
+  }
+  next();
+}
+
 // ─── Admin: Rebuild all 2026 drivers ───
-app.get('/api/admin/rebuild-2026', async (req, res) => {
+app.get('/api/admin/rebuild-2026', requireAdmin, async (req, res) => {
   try {
     const resultsPath = pathMod.join(__dirname, '..', 'src', 'config', 'f1', 'results.json');
     if (!fs.existsSync(resultsPath)) {
@@ -182,8 +199,16 @@ app.get('/api/admin/rebuild-2026', async (req, res) => {
 // Generic Proxy Route — cache-first for F1, passthrough for F1A/F2
 app.use("/api/proxy/:source", async (req, res) => {
   const { source } = req.params;
+  const allowedSources = ['f1', 'f2', 'f1a'];
+  if (!allowedSources.includes(source)) {
+    return res.status(400).json({ error: "Invalid source" });
+  }
   const path = req.path.replace(/^\//, "");
   if (!path) return res.status(400).json({ error: "Path required" });
+  // Block path traversal attempts
+  if (path.includes('..') || path.includes('~')) {
+    return res.status(400).json({ error: "Invalid path" });
+  }
 
   const cacheKey = `${source}:${path}`;
   const forceRefresh = req.query.refresh === 'true';
@@ -447,7 +472,7 @@ const {
 } = require("./updater");
 
 // ─── Admin API Update Endpoints ───
-app.get('/api/admin/update/status', (req, res) => {
+app.get('/api/admin/update/status', requireAdmin, (req, res) => {
   const statuses = {};
   const rootDir = pathMod.join(__dirname, '..');
   
@@ -471,9 +496,9 @@ app.get('/api/admin/update/status', (req, res) => {
   res.json(statuses);
 });
 
-app.post('/api/admin/update/f1', (req, res) => {
+app.post('/api/admin/update/f1', requireAdmin, (req, res) => {
   const scriptPath = pathMod.join(__dirname, '..', 'src', 'config', 'f1');
-  exec(`py api_update.py`, { cwd: scriptPath }, (error, stdout, stderr) => {
+  execFile('py', ['api_update.py'], { cwd: scriptPath }, (error, stdout, stderr) => {
     if (error) {
       console.error(`[Admin Update F1] Error: ${error.message}`);
       return res.status(500).json({ error: error.message, stderr });
@@ -482,35 +507,53 @@ app.post('/api/admin/update/f1', (req, res) => {
   });
 });
 
-app.post('/api/admin/update/f2', (req, res) => {
+app.post('/api/admin/update/f2', requireAdmin, (req, res) => {
   const url = req.body.url || '';
-  const scriptPath = pathMod.join(__dirname, '..', 'src', 'config', 'f2'); 
-  const cmd = url ? `py api_update.py "${url}" && py format.py` : `py api_update.py && py format.py`;
-  
-  exec(cmd, { cwd: scriptPath }, (error, stdout, stderr) => {
+  const scriptPath = pathMod.join(__dirname, '..', 'src', 'config', 'f2');
+  // Validate URL to prevent command injection
+  if (url && !/^https?:\/\/[^\s;|&`$]+$/.test(url)) {
+    return res.status(400).json({ error: 'Invalid URL format' });
+  }
+  const args = url ? ['api_update.py', url] : ['api_update.py'];
+  execFile('py', args, { cwd: scriptPath }, (error, stdout, stderr) => {
     if (error) {
       console.error(`[Admin Update F2] Error: ${error.message}`);
       return res.status(500).json({ error: error.message, stderr });
     }
-    res.json({ message: 'F2 Data updated successfully', output: stdout });
+    // Run format.py as a separate step
+    execFile('py', ['format.py'], { cwd: scriptPath }, (fmtError, fmtStdout, fmtStderr) => {
+      if (fmtError) {
+        return res.status(500).json({ error: fmtError.message, stderr: fmtStderr, partialOutput: stdout });
+      }
+      res.json({ message: 'F2 Data updated successfully', output: stdout + '\n' + fmtStdout });
+    });
   });
 });
 
-app.post('/api/admin/update/f1a', (req, res) => {
+app.post('/api/admin/update/f1a', requireAdmin, (req, res) => {
   const url = req.body.url || '';
   const scriptPath = pathMod.join(__dirname, '..', 'src', 'config', 'f1a');
-  const cmd = url ? `py api_update.py "${url}" && py format.py` : `py api_update.py && py format.py`;
-  
-  exec(cmd, { cwd: scriptPath }, (error, stdout, stderr) => {
+  // Validate URL to prevent command injection
+  if (url && !/^https?:\/\/[^\s;|&`$]+$/.test(url)) {
+    return res.status(400).json({ error: 'Invalid URL format' });
+  }
+  const args = url ? ['api_update.py', url] : ['api_update.py'];
+  execFile('py', args, { cwd: scriptPath }, (error, stdout, stderr) => {
     if (error) {
       console.error(`[Admin Update F1A] Error: ${error.message}`);
       return res.status(500).json({ error: error.message, stderr });
     }
-    res.json({ message: 'F1A Data updated successfully', output: stdout });
+    // Run format.py as a separate step
+    execFile('py', ['format.py'], { cwd: scriptPath }, (fmtError, fmtStdout, fmtStderr) => {
+      if (fmtError) {
+        return res.status(500).json({ error: fmtError.message, stderr: fmtStderr, partialOutput: stdout });
+      }
+      res.json({ message: 'F1A Data updated successfully', output: stdout + '\n' + fmtStdout });
+    });
   });
 });
 
-app.get('/api/admin/clear-cache', async (req, res) => {
+app.get('/api/admin/clear-cache', requireAdmin, async (req, res) => {
   try {
     const deletedCount = await Cache.destroy({ where: {}, truncate: true });
     res.json({ message: `Successfully deleted all ${deletedCount} cache entries across F1-Telemetry.` });

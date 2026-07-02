@@ -58,8 +58,7 @@
         Header set Cache-Control "max-age=31536000, public, immutable"
         # Access-Control-Allow-Origin to prevent CORS issues with local decoders
         Header set Access-Control-Allow-Origin "*"
-        # Debug header to verify .htaccess is being read
-        Header set X-F1nsight-Status "Ultra-Optimized-v2"
+        # Removed debug header (was leaking implementation details)
     </FilesMatch>
 </IfModule>
 
