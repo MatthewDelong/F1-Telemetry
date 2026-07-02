@@ -4,6 +4,7 @@ import classNames from "classnames";
 
 import { RaceResultItem, Loading, Button } from "../components";
 import { useNavigate } from "react-router-dom";
+import { formatDateTime } from "../utils/formatDate";
 
 export function RaceResultsPage({ selectedYear }) {
   const [raceDetails, setRaceDetails] = useState([]);
@@ -76,32 +77,6 @@ export function RaceResultsPage({ selectedYear }) {
 
     fetchData();
   }, [selectedYear]);
-
-  const formatTime = (date, time) => {
-    if (!date || !time) return "TBA";
-
-    // Combine date and time to form a full ISO 8601 date-time string
-    const dateTimeString = `${date}T${time}`;
-
-    const dateObject = new Date(dateTimeString);
-    if (isNaN(dateObject.getTime())) {
-      return "Invalid Date";
-    }
-    const optionsDate = { month: "numeric", day: "numeric", year: "numeric" };
-    const optionsTime = {
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-      timeZoneName: "short",
-    };
-    const formattedDate = dateObject.toLocaleDateString(undefined, optionsDate);
-    const formattedTime = dateObject.toLocaleTimeString(undefined, optionsTime);
-
-    const formattedTimeCapitalized = formattedTime
-      .replace("am", "AM")
-      .replace("pm", "PM");
-    return `${formattedDate} ${formattedTimeCapitalized}`;
-  };
 
   let navigate = useNavigate();
   const navigateToRaceResult = (race) => {
@@ -176,7 +151,7 @@ export function RaceResultsPage({ selectedYear }) {
                     {race.raceName}
                   </p>
                   <div className="text-xs text-neutral-400 tracking-sm leading-none">
-                    {formatTime(race.date, race.time)}
+                    {formatDateTime(race.date, race.time)}
                   </div>
                 </div>
                 <Button

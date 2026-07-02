@@ -1,15 +1,14 @@
+import { sortByPosition } from './raceUtils';
+
 export const BASE_F1A_URL = import.meta.env.PROD ? '/api.php?source=f1a&path=' : '/api/proxy/f1a/';
 export const BASE_F2_URL = import.meta.env.PROD ? '/api.php?source=f2&path=' : '/api/proxy/f2/';
 
+export const getSeriesBaseUrl = (championshipLevel) =>
+  championshipLevel === 'F1A' ? BASE_F1A_URL : BASE_F2_URL;
+
 export const fetchRaceMeetingKeysF1a = async (selectedYear, championshipLevel) => {
   try {
-    let raceResponse = '';
-    if (championshipLevel === 'F1A') {
-      raceResponse = await fetch(`${BASE_F1A_URL}races/races.json`);
-    }
-    if (championshipLevel === 'F2') {
-      raceResponse = await fetch(`${BASE_F2_URL}races/races.json`);
-    }
+    const raceResponse = await fetch(`${getSeriesBaseUrl(championshipLevel)}races/races.json`);
     if(!raceResponse.ok) {
       throw new Error('Failed to fetch races');
     }
@@ -22,13 +21,7 @@ export const fetchRaceMeetingKeysF1a = async (selectedYear, championshipLevel) =
 
 export const fetchCircuitData = async (championshipLevel) => {
     try {
-        let url = '';
-        if (championshipLevel === 'F1A') {
-            url = `${BASE_F1A_URL}races/racesbyMK.json`;
-        }
-        if (championshipLevel === 'F2') {
-            url = `${BASE_F2_URL}races/racesbyMK.json`;
-        }
+        const url = `${getSeriesBaseUrl(championshipLevel)}races/racesbyMK.json`;
         const response = await fetch(url);
         const data = await response.json();
         return data;
@@ -40,13 +33,10 @@ export const fetchCircuitData = async (championshipLevel) => {
 
 export const fetchDriverInfo = async (year, championshipLevel) => {
   try {
-    let url = '';
-    if (championshipLevel === 'F1A') {
-      url = `${BASE_F1A_URL}constructors/${year}/drivers.json`;
-    }
-    if (championshipLevel === 'F2') {
-      url = `${BASE_F2_URL}drivers/${year}/drivers.json`;
-    }
+    const base = getSeriesBaseUrl(championshipLevel);
+    const url = championshipLevel === 'F1A'
+      ? `${base}constructors/${year}/drivers.json`
+      : `${base}drivers/${year}/drivers.json`;
     const response = await fetch(url);
     const data = await response.json();
     // console.log('fetchDriverInfo', {data});
@@ -82,20 +72,12 @@ const enrichDriverData = (raceData, driverInfo) => {
 };
 
 const filterTop3 = (raceData) => {
-  // console.log('filterTop3', raceData);
-  return raceData.sort((a, b) => parseInt(a.position, 10) - parseInt(b.position, 10)).slice(0, 3);
+  return raceData.sort(sortByPosition).slice(0, 3);
 };
 
 export const fetchRaceResultsByCircuit = async (year, circuitId, top3 = false, championshipLevel) => {
-  // console.log('fetchRaceResultsByCircuit', year, circuitId, top3, championshipLevel);
   try {
-    let url = '';
-    if (championshipLevel === 'F1A') {
-      url = `${BASE_F1A_URL}races/${year}/results.json`;
-    }
-    if (championshipLevel === 'F2') {
-      url = `${BASE_F2_URL}races/${year}/results.json`;
-    }
+    const url = `${getSeriesBaseUrl(championshipLevel)}races/${year}/results.json`;
     const response = await fetch(url);
     const data = await response.json();
 
@@ -128,16 +110,9 @@ export const fetchRaceResultsByCircuit = async (year, circuitId, top3 = false, c
   }
 };
 
-// New function to get all race results for a specific year
 export const fetchAllRaceResults = async (year, championshipLevel) => {
   try {
-    let url = '';
-    if (championshipLevel === 'F1A') {
-      url = `${BASE_F1A_URL}races/${year}/results.json`;
-    }
-    if (championshipLevel === 'F2') {
-      url = `${BASE_F2_URL}races/${year}/results.json`;
-    }
+    const url = `${getSeriesBaseUrl(championshipLevel)}races/${year}/results.json`;
     const response = await fetch(url);
     const data = await response.json();
 
@@ -172,15 +147,7 @@ export const fetchAllRaceResults = async (year, championshipLevel) => {
 
 export const fetchMostRecentRaceWeekend = async (selectedYear, championshipLevel) => {
   try {
-    // Step 1: Fetch all races for the selected year
-    let raceUrl = '';
-    // console.log('fetchMostRecentRaceWeekend', selectedYear, championshipLevel);
-    if (championshipLevel === 'F1A') {
-      raceUrl = `${BASE_F1A_URL}races/${selectedYear}/results.json`;
-    }
-    if (championshipLevel === 'F2') {
-      raceUrl = `${BASE_F2_URL}races/${selectedYear}/results.json`;
-    }
+    const raceUrl = `${getSeriesBaseUrl(championshipLevel)}races/${selectedYear}/results.json`;
     const response = await fetch(raceUrl);
     if (!response.ok) {
       throw new Error('Failed to fetch race details');

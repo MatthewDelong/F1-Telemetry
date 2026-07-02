@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { fetchDriversAndTires } from "../../utils/api";
 import { fetchRaceResultsByCircuit, BASE_F2_URL } from "../../utils/apiF1a";
+import { getFastestDriverCode, sortByPosition } from "../../utils/raceUtils";
 
 import { DriverCard, StartingGridF1A, FastestLapsF1A } from "../../components";
 
@@ -21,34 +22,6 @@ export function RacePageF2({ championshipLevel }) {
   const [raceResults3, setRaceResults3] = useState([]);
   const [activeButtonIndex, setActiveButtonIndex] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  const lapTimeToMs = (lapTime) => {
-    if (!lapTime || typeof lapTime !== "string")
-      return Number.POSITIVE_INFINITY;
-    const [minutesPart, secondsPart] = lapTime.split(":");
-    const minutes = Number(minutesPart);
-    const seconds = Number(secondsPart);
-    if (Number.isNaN(minutes) || Number.isNaN(seconds)) {
-      return Number.POSITIVE_INFINITY;
-    }
-    return minutes * 60000 + seconds * 1000;
-  };
-
-  const getFastestDriverCode = (results) => {
-    if (!Array.isArray(results) || results.length === 0) return null;
-
-    return results.reduce(
-      (fastestCode, result) => {
-        const lapTime = result?.FastestLap?.Time?.time;
-        const ms = lapTimeToMs(lapTime);
-        if (ms < fastestCode.ms) {
-          return { code: result?.Driver?.code || null, ms };
-        }
-        return fastestCode;
-      },
-      { code: null, ms: Number.POSITIVE_INFINITY },
-    ).code;
-  };
 
   useEffect(() => {
     const setBaseData = async () => {
@@ -110,15 +83,9 @@ export function RacePageF2({ championshipLevel }) {
   }, [year, location, raceName]);
 
   // Sort raceResults by endPosition (ascending order)
-  raceResults.sort(
-    (a, b) => parseInt(a.position, 10) - parseInt(b.position, 10),
-  );
-  raceResults2.sort(
-    (a, b) => parseInt(a.position, 10) - parseInt(b.position, 10),
-  );
-  raceResults3.sort(
-    (a, b) => parseInt(a.position, 10) - parseInt(b.position, 10),
-  );
+  raceResults.sort(sortByPosition);
+  raceResults2.sort(sortByPosition);
+  raceResults3.sort(sortByPosition);
 
   const fastestRace1DriverCode = getFastestDriverCode(raceResults);
   const fastestRace2DriverCode = getFastestDriverCode(raceResults2);
