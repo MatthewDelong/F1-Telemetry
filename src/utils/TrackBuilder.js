@@ -75,6 +75,16 @@ function normalizeGPSPoints(rawPoints, targetSize = 20) {
 }
 
 /**
+ * Safely computes and normalizes a tangent vector to prevent NaN errors
+ * if the points are identical.
+ */
+function safeTangent(next, prev) {
+  const t = new THREE.Vector3().subVectors(next, prev);
+  if (t.lengthSq() < 0.000001) return new THREE.Vector3(1, 0, 0);
+  return t.normalize();
+}
+
+/**
  * Build a closed CatmullRom spline from 2D points.
  * Converts to 3D with z = 0 (track lives on the XY plane matching ThreeCanvas convention).
  */
@@ -94,7 +104,7 @@ function createRibbonGeometry(curve, width, resolution, sectorColors, sectorBoun
   for (let i = 0; i < points.length; i++) {
     const next = points[(i + 1) % points.length];
     const prev = points[(i - 1 + points.length) % points.length];
-    tangents.push(new THREE.Vector3().subVectors(next, prev).normalize());
+    tangents.push(safeTangent(next, prev));
   }
 
   // Build geometry
@@ -188,7 +198,7 @@ function createEdgeLines(curve, width, resolution, sectorBounds = [0.333, 0.666]
   for (let i = 0; i < points.length; i++) {
     const next = points[(i + 1) % points.length];
     const prev = points[(i - 1 + points.length) % points.length];
-    const tangent = new THREE.Vector3().subVectors(next, prev).normalize();
+    const tangent = safeTangent(next, prev);
     const normal = new THREE.Vector3(-tangent.y, tangent.x, 0).normalize();
     const p = points[i];
 
@@ -231,7 +241,7 @@ function createGroundPlane(curve, runoffWidth) {
   for (let i = 0; i < points.length; i++) {
     const next = points[(i + 1) % points.length];
     const prev = points[(i - 1 + points.length) % points.length];
-    tangents.push(new THREE.Vector3().subVectors(next, prev).normalize());
+    tangents.push(safeTangent(next, prev));
   }
 
   const positions = [];
@@ -271,7 +281,10 @@ function createGroundPlane(curve, runoffWidth) {
  */
 function createStartFinishLine(curve, trackWidth) {
   const startPoint = curve.getPointAt(0);
-  const startTangent = curve.getTangentAt(0).normalize();
+  let startTangent = curve.getTangentAt(0);
+  if (startTangent.lengthSq() < 0.000001) startTangent = new THREE.Vector3(1, 0, 0);
+  else startTangent.normalize();
+  
   const normal = new THREE.Vector3(-startTangent.y, startTangent.x, 0);
   const halfW = trackWidth / 2;
 
@@ -315,7 +328,10 @@ function createSectorMarkers(curve, trackWidth) {
 
   sectorPositions.forEach((t, idx) => {
     const point = curve.getPointAt(t);
-    const tangent = curve.getTangentAt(t).normalize();
+    let tangent = curve.getTangentAt(t);
+    if (tangent.lengthSq() < 0.000001) tangent = new THREE.Vector3(1, 0, 0);
+    else tangent.normalize();
+    
     const normal = new THREE.Vector3(-tangent.y, tangent.x, 0);
 
     const pts = [
@@ -379,7 +395,10 @@ function createCornerLabels(curve, numCorners = 0) {
   selectedCorners.sort((a, b) => a.index - b.index);
 
   selectedCorners.forEach((corner, idx) => {
-    const tangent = curve.getTangentAt(corner.index / TRACK_RESOLUTION).normalize();
+    let tangent = curve.getTangentAt(corner.index / TRACK_RESOLUTION);
+    if (tangent.lengthSq() < 0.000001) tangent = new THREE.Vector3(1, 0, 0);
+    else tangent.normalize();
+    
     const normal = new THREE.Vector3(-tangent.y, tangent.x, 0);
     // Standard normal points left of the tangent. For a left turn, this points INSIDE.
     // We want the label/cone on the OUTSIDE of the turn, so we flip it for left turns.
@@ -570,17 +589,57 @@ function createProceduralGrandstands(curve, trackWidth) {
     roughness: 0.6
   });
 
+  const trackPoints = curve.getSpacedPoints(200);
+
   for (let i = 0; i < numBlocks; i++) {
     const u = startU + (i / numBlocks) * (endU - startU);
     const point = curve.getPointAt(u);
-    const tangent = curve.getTangentAt(u).normalize();
+    let tangent = curve.getTangentAt(u);
+    if (tangent.lengthSq() < 0.000001) {
+      tangent = new THREE.Vector3(1, 0, 0);
+    } else {
+      tangent.normalize();
+    }
     
     // Calculate normal (perpendicular to track)
     const normal = new THREE.Vector3(-tangent.y, tangent.x, 0).normalize();
+    const offsetDist = trackWidth + 0.5; 
     
-    // Position on the OUTSIDE of the track
-    const offsetDist = trackWidth + 0.5; // Reduced offset
-    const standCenter = point.clone().add(normal.clone().multiplyScalar(offsetDist));
+    // Check both sides of the track
+    const pos1 = point.clone().add(normal.clone().multiplyScalar(offsetDist));
+    const pos2 = point.clone().add(normal.clone().multiplyScalar(-offsetDist));
+    
+    // Find min distance to track for pos1 and pos2 (excluding the immediate straight)
+    let minD1 = Infinity;
+    let minD2 = Infinity;
+    
+    for (let j = 0; j < trackPoints.length; j++) {
+      const tp = trackPoints[j];
+      const tpU = j / trackPoints.length;
+      // if it's part of the main straight, ignore it for collision
+      if (Math.abs(tpU - u) < 0.15 || Math.abs(tpU - u) > 0.85) continue; 
+      
+      const d1 = pos1.distanceToSquared(tp);
+      if (d1 < minD1) minD1 = d1;
+      
+      const d2 = pos2.distanceToSquared(tp);
+      if (d2 < minD2) minD2 = d2;
+    }
+    
+    // Square of 1.2 clearance is 1.44.
+    let bestPos = null;
+    let bestSide = 1;
+    
+    if (minD1 > 1.44 && minD1 >= minD2) {
+      bestPos = pos1;
+      bestSide = 1;
+    } else if (minD2 > 1.44) {
+      bestPos = pos2;
+      bestSide = -1;
+    }
+    
+    // Skip if no room on either side
+    if (!bestPos) continue; 
     
     // Create tiered seating (3 tiers)
     const standGroup = new THREE.Group();
@@ -593,7 +652,7 @@ function createProceduralGrandstands(curve, trackWidth) {
       const geom = new THREE.BoxGeometry(tierWidth, blockLength, tierHeight);
       const mesh = new THREE.Mesh(geom, t === tiers - 1 ? accentMaterial : standMaterial);
       
-      // Shift back and up for each tier
+      // Shift back and up for each tier (always positive X locally)
       mesh.position.set(t * tierWidth, 0, (t * tierHeight) / 2 + 0.05);
       standGroup.add(mesh);
     }
@@ -606,11 +665,14 @@ function createProceduralGrandstands(curve, trackWidth) {
     roof.rotation.y = 0.1;
     standGroup.add(roof);
 
-    // Position and align the whole stand block
-    standGroup.position.copy(standCenter);
+    // Position the whole stand block
+    standGroup.position.copy(bestPos);
     
     // Rotate to face track
-    const angle = Math.atan2(normal.y, normal.x);
+    let angle = Math.atan2(normal.y, normal.x);
+    if (bestSide === -1) {
+        angle += Math.PI; // Flip 180 degrees so it faces the track from the inside
+    }
     standGroup.rotation.set(0, 0, angle);
 
     group.add(standGroup);
@@ -648,7 +710,12 @@ function createTrees(curve, trackWidth, runoffWidth) {
     attempts++;
     const u = Math.random();
     const point = curve.getPointAt(u);
-    const tangent = curve.getTangentAt(u).normalize();
+    let tangent = curve.getTangentAt(u);
+    if (tangent.lengthSq() < 0.000001) {
+      tangent = new THREE.Vector3(1, 0, 0);
+    } else {
+      tangent.normalize();
+    }
     const normal = new THREE.Vector3(-tangent.y, tangent.x, 0).normalize();
     
     const side = Math.random() > 0.5 ? 1 : -1;

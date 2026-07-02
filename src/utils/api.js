@@ -843,7 +843,7 @@ export const fetchSprintResultsByCircuit = async(year, circuitId, raceName = "")
       return matchId || matchName || matchLocality;
     });
 
-    return raceData?.SprintResults || [];
+    return raceData?.SprintResults || raceData?.Results || [];
   } catch(error){
     console.error("Error fetching sprint results:", error);
     return [];

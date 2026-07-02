@@ -93,7 +93,8 @@ export function MiniTrackViewer({ circuitId }) {
         const maxRange = Math.max(maxX - minX || 1, maxY - minY || 1);
         const scaleFactor = 25 / maxRange;
 
-        const pts3D = deduped.map(
+        // Convert to 3D and deduplicate again just to be safe
+        const rawPts3D = deduped.map(
           (p) =>
             new THREE.Vector3(
               (p.x - cx) * scaleFactor,
@@ -101,6 +102,19 @@ export function MiniTrackViewer({ circuitId }) {
               0,
             ),
         );
+        
+        const pts3D = [rawPts3D[0]];
+        for (let i = 1; i < rawPts3D.length; i++) {
+            if (rawPts3D[i].distanceTo(pts3D[pts3D.length - 1]) > 0.001) {
+                pts3D.push(rawPts3D[i]);
+            }
+        }
+        
+        // CRITICAL FIX: If the track is closed (which it is), the last point 
+        // MUST NOT be identical to the first point, otherwise tangents divide by zero!
+        if (pts3D.length > 2 && pts3D[pts3D.length - 1].distanceTo(pts3D[0]) < 0.001) {
+            pts3D.pop();
+        }
 
         const curve = new THREE.CatmullRomCurve3(
           pts3D,
@@ -108,7 +122,10 @@ export function MiniTrackViewer({ circuitId }) {
           "catmullrom",
           0.3,
         );
-        const tubeGeom = new THREE.TubeGeometry(curve, 300, 0.6, 8, true);
+        
+        // Use fewer segments if track is extremely short to prevent NaNs
+        const segments = Math.max(50, Math.min(300, pts3D.length * 2));
+        const tubeGeom = new THREE.TubeGeometry(curve, segments, 0.6, 8, true);
         
         // Add sector colors (Red, Blue, Gold) using vertex colors
         const count = tubeGeom.attributes.position.count;

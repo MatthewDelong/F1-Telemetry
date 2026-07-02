@@ -427,6 +427,17 @@ export function RacePage() {
           {},
         );
 
+        // Fallback: If OpenF1 /drivers is empty or missing drivers, use the session results
+        if (sessionResults && sessionResults.length > 0) {
+          sessionResults.forEach((r) => {
+            const num = parseInt(r.number || r.Driver?.number, 10);
+            const code = r.Driver?.code || r.Driver?.driverId;
+            if (num && code && !driverDetailsMap[num]) {
+              driverDetailsMap[num] = code;
+            }
+          });
+        }
+
         setDriversDetails(driverDetailsMap);
 
         const driverColorMap = (driverDetailsData || []).reduce(
@@ -453,7 +464,6 @@ export function RacePage() {
         // ALWAYS use official race results for the starting grid if available
         let filteredStartingGrid = [];
         if (
-          (year === "2026" || year === 2026) &&
           sessionResults &&
           sessionResults.length > 0
         ) {
@@ -518,15 +528,7 @@ export function RacePage() {
       } else if (selectedSession === "Qualifying") {
         setIsLoading(true);
         if (circuitId) {
-          const mapUrl = `/map/${circuitId}.gltf`;
-          setMapPath(mapUrl);
-
-          if (supportedAnimatedMaps.includes(circuitId)) {
-            const animatedMapUrl = `/mapsAnimated/${circuitId}Animated.mp4`;
-            setAnimatedMap(animatedMapUrl);
-          } else {
-            setAnimatedMap(null);
-          }
+          // Legacy map loading removed
         }
 
         let sessionResults = [];
@@ -568,6 +570,18 @@ export function RacePage() {
           }),
           {},
         );
+        
+        // Fallback: If OpenF1 /drivers is empty or missing drivers, use the session results
+        if (sessionResults && sessionResults.length > 0) {
+          sessionResults.forEach((r) => {
+            const num = parseInt(r.number || r.Driver?.number, 10);
+            const code = r.Driver?.code || r.Driver?.driverId;
+            if (num && code && !driverDetailsMap[num]) {
+              driverDetailsMap[num] = code;
+            }
+          });
+        }
+        
         setDriversDetails(driverDetailsMap);
         const driverColorMap = driverDetailsData.reduce(
           (acc, driver) => ({
@@ -587,7 +601,6 @@ export function RacePage() {
 
         let filteredStartingGrid = [];
         if (
-          (year === "2026" || year === 2026) &&
           sessionResults &&
           sessionResults.length > 0
         ) {
@@ -599,7 +612,7 @@ export function RacePage() {
               date: startTime,
             }))
             .filter((r) => r.position > 0);
-        } else {
+        } else if (startingGridData && startingGridData.length > 0) {
           const earliestDateTime = startingGridData[0]?.date;
           filteredStartingGrid = startingGridData.filter(
             (item) => item.date === earliestDateTime,
@@ -625,22 +638,15 @@ export function RacePage() {
       } else if (selectedSession === "Sprint") {
         setIsLoading(true);
         if (circuitId) {
-          const mapUrl = `/map/${circuitId}.gltf`;
-          setMapPath(mapUrl);
-
-          if (supportedAnimatedMaps.includes(circuitId)) {
-            const animatedMapUrl = `/mapsAnimated/${circuitId}Animated.mp4`;
-            setAnimatedMap(animatedMapUrl);
-          } else {
-            setAnimatedMap(null);
-          }
+          // Legacy map loading removed
         }
 
-        const sprintSession = sessionsData.find((session) =>
-          ["Sprint", "Sprint Qualifying", "Sprint Shootout"].includes(
-            session.session_name,
-          ),
-        );
+        // Prioritize the actual Sprint race over Sprint Qualifying
+        const sprintSession = sessionsData.find((session) => session.session_name === "Sprint") || 
+                              sessionsData.find((session) =>
+                                ["Sprint Qualifying", "Sprint Shootout"].includes(session.session_name)
+                              );
+        
         if (!sprintSession) {
           setIsLoading(false);
           return;
@@ -686,6 +692,18 @@ export function RacePage() {
           }),
           {},
         );
+        
+        // Fallback: If OpenF1 /drivers is empty or missing drivers, use the session results
+        if (sessionResults && sessionResults.length > 0) {
+          sessionResults.forEach((r) => {
+            const num = parseInt(r.number || r.Driver?.number, 10);
+            const code = r.Driver?.code || r.Driver?.driverId;
+            if (num && code && !driverDetailsMap[num]) {
+              driverDetailsMap[num] = code;
+            }
+          });
+        }
+        
         setDriversDetails(driverDetailsMap);
         const driverColorMap = (driverDetailsData || []).reduce(
           (acc, driver) => ({
@@ -703,7 +721,6 @@ export function RacePage() {
 
         let filteredStartingGrid = [];
         if (
-          (year === "2026" || year === 2026) &&
           sessionResults &&
           sessionResults.length > 0
         ) {
@@ -718,7 +735,7 @@ export function RacePage() {
               date: sStartTime,
             }))
             .filter((r) => r.position === "PL" || r.position > 0);
-        } else {
+        } else if (positionData && positionData.length > 0) {
           const earliestDateTime = positionData[0]?.date;
           filteredStartingGrid = positionData.filter(
             (item) => item.date === earliestDateTime,
@@ -794,16 +811,8 @@ export function RacePage() {
         try {
           const currentCircuitId =
             location && locationMaps[location.toLowerCase()];
-          if (currentCircuitId && !MapPath) {
-            const mapUrl = `/map/${currentCircuitId}.gltf`;
-            setMapPath(mapUrl);
-
-            if (supportedAnimatedMaps.includes(currentCircuitId)) {
-              const animatedMapUrl = `/mapsAnimated/${currentCircuitId}Animated.mp4`;
-              setAnimatedMap(animatedMapUrl);
-            } else {
-              setAnimatedMap(null);
-            }
+          if (currentCircuitId) {
+             // Legacy map loading removed
           }
 
           const sessionsData = await fetchWithPersistentCache(
