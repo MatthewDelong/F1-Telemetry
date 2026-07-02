@@ -162,8 +162,8 @@ export const DriverCard = (props) => {
             {driver.code}
           </span>
         </div>
-        <div className="flex items-center pr-12 gap-8 h-full">
-          <p className="text-[13px] text-white font-medium opacity-90">
+        <div className="flex items-center max-sm:pr-4 sm:pr-12 max-sm:gap-4 sm:gap-8 h-full">
+          <p className="text-[12px] sm:text-[13px] text-white font-medium opacity-90">
             {time}
           </p>
           <div className="status-icons-wrapper flex flex-col items-center justify-center gap-[1px] min-w-[20px]">

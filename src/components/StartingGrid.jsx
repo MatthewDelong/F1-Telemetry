@@ -105,11 +105,11 @@ export const StartingGrid = (props) => {
             return (
               <li
                 key={index}
-                className="text-center w-fit even:-mt-[8rem] even:ml-[8rem] even:mb-12 relative group min-h-[100px] sm:min-h-[120px]"
+                className="text-center w-fit max-sm:even:-mt-[5rem] sm:even:-mt-[8rem] max-sm:even:ml-[6rem] sm:even:ml-[8rem] even:mb-12 relative group min-h-[100px] sm:min-h-[120px]"
               >
                 <div
                   className={classNames(
-                    "border-x-2 border-t-2 border-solid w-48 font-display h-32 ml-4 transition-colors",
+                    "border-x-2 border-t-2 border-solid max-sm:w-40 sm:w-48 font-display h-32 ml-4 transition-colors",
                     isSelected ? "border-white" : "border-neutral-700",
                   )}
                   style={{
@@ -202,10 +202,10 @@ export const StartingGridF1A = (props) => {
       <div className="bg-glow-large p-32 h-fit rounded-xlarge min-w-[22.4rem]">
         <ul className="flex flex-col w-fit m-auto">
           {sortedStartingGrid.map((driverCode, index) => (
-            <li className="text-center w-fit even:-mt-[8rem] even:ml-[6rem] even:mb-8 relative group">
+            <li className="text-center w-fit max-sm:even:-mt-[5rem] sm:even:-mt-[8rem] max-sm:even:ml-[6rem] sm:even:ml-[6rem] even:mb-8 relative group">
               <div
                 className={classNames(
-                  "border-x-2 border-t-2 border-solid border-neutral-700 w-48 font-display h-32 ml-4",
+                  "border-x-2 border-t-2 border-solid border-neutral-700 max-sm:w-40 sm:w-48 font-display h-32 ml-4",
                 )}
               />
 

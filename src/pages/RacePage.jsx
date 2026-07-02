@@ -1319,79 +1319,48 @@ export function RacePage() {
                 />
               )}
               <div className="flex flex-row gap-4 sm:hidden max-sm:mb-16">
-                <div
+                <button
                   className={classNames(
-                    "text-center transition-all",
-                    showStartingGrid
-                      ? "w-[calc(66.666%-0.5rem)]"
-                      : "w-[calc(50%-0.5rem)]",
+                    "flex-1 text-center py-[10px] transition-all rounded-sm font-display text-[13px] uppercase tracking-wider leading-none",
+                    showStartingGrid ? "bg-white text-black" : "bg-glow text-neutral-400"
                   )}
+                  onClick={() => setShowStartingGrid(true)}
                 >
-                  <button
-                    className={classNames(
-                      "text-neutral-400 font-display text-12 leading-none",
-                      showStartingGrid && "text-white",
-                    )}
-                    onClick={() => setShowStartingGrid(true)}
-                  >
-                    Starting Grid
-                  </button>
-                </div>
-                <div
+                  Starting Grid
+                </button>
+                <button
                   className={classNames(
-                    "text-center transition-all",
-                    showStartingGrid
-                      ? "w-[calc(33.333%-0.5rem)]"
-                      : "w-[calc(50%-0.5rem)]",
+                    "flex-1 text-center py-[10px] transition-all rounded-sm font-display text-[13px] uppercase tracking-wider leading-none",
+                    !showStartingGrid ? "bg-white text-black" : "bg-glow text-neutral-400"
                   )}
+                  onClick={() => setShowStartingGrid(false)}
                 >
-                  <button
-                    className={classNames(
-                      "text-neutral-400 font-display text-12 leading-none",
-                      !showStartingGrid && "text-white",
-                    )}
-                    onClick={() => setShowStartingGrid(false)}
-                  >
-                    Race Results
-                  </button>
-                </div>
+                  Race Results
+                </button>
               </div>
               <div className="max-sm:hidden flex justify-center">
                 <button className="text-neutral-400 font-display sm:text-xl sm:mb-16 leading-none">
                   Starting Grid
                 </button>
               </div>
-              <div
-                className={classNames(
-                  "flex flex-row items-start gap-4 sm:hidden mb-24",
+              <div className="flex flex-col sm:hidden mb-24 w-full">
+                {showStartingGrid ? (
+                  <StartingGrid
+                    className="w-full transition-all"
+                    raceResults={fullRaceResults}
+                    startingGrid={startingGrid}
+                    year={year}
+                    driverCode={driverCode}
+                    driverNumber={driverNumber}
+                    driversDetails={driversDetails}
+                    driversColor={driversColor}
+                    driverTeamMap={driverTeamMap}
+                  />
+                ) : (
+                  <div className="w-full bg-glow-large h-fit rounded-md transition-all overflow-hidden">
+                    {driverButtons(false)}
+                  </div>
                 )}
-              >
-                <StartingGrid
-                  className={classNames(
-                    "transition-all",
-                    showStartingGrid
-                      ? "w-[calc(66.666%-0.5rem)]"
-                      : "w-[calc(50%-0.5rem)] opacity-100",
-                  )}
-                  raceResults={fullRaceResults}
-                  startingGrid={startingGrid}
-                  year={year}
-                  driverCode={driverCode}
-                  driverNumber={driverNumber}
-                  driversDetails={driversDetails}
-                  driversColor={driversColor}
-                  driverTeamMap={driverTeamMap}
-                />
-                <div
-                  className={classNames(
-                    "bg-glow-large h-fit rounded-md sm:rounded-xlarge transition-all",
-                    showStartingGrid
-                      ? "w-[calc(33.333%-0.5rem)] opacity-100 overflow-hidden"
-                      : "max-sm:w-[calc(50%-0.5rem)] max-sm:overflow-visible sm:w-2/3 sm:overflow-hidden",
-                  )}
-                >
-                  {driverButtons(false)}
-                </div>
               </div>
               <StartingGrid
                 className="max-sm:hidden w-[26rem]"
