@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, useAnimationControls } from "framer-motion";
 import { getConstructorStandings } from "./api";
-import { darkenColor } from "../../utils/darkenColor";
+import { darkenColor } from "../../utils/colorUtils";
 import { F1TelemetryLogo as Logo } from "../../components/F1TelemetryLogo";
 import { getPositionChange, storeStandings } from "./utils";
 import { getCurrentYear } from "../../utils/currentYear";

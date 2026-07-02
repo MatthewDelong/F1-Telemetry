@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { darkenColor } from '../../utils/darkenColor';
-import { lightenColor } from '../../utils/lightenColor';
+import { darkenColor, lightenColor } from '../../utils/colorUtils';
 
 const CustomizedXAxisTick = ({ x, y, payload }) => {
   return (

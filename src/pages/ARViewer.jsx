@@ -3,7 +3,7 @@ import "@google/model-viewer/";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { darkenColor } from "../utils/darkenColor";
+import { darkenColor } from "../utils/colorUtils";
 import { HistoryBar } from "../components/HistoryBar";
 import { teamHistory } from "../utils/teamHistory";
 import teamColors from "../utils/teamColors.json";

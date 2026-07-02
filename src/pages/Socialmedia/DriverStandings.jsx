@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getDriverStandings } from "./api";
 import { F1TelemetryLogo as Logo } from "../../components/F1TelemetryLogo";
-import { darkenColor } from "../../utils/darkenColor";
+import { darkenColor } from "../../utils/colorUtils";
 import { storeStandings } from "./utils";
 import { getCurrentYear } from "../../utils/currentYear";
 import teamColorsByYear from "../../utils/teamColors.json";

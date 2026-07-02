@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { useEffect } from "react";
 import { motion, useAnimationControls } from "framer-motion";
-import { darkenColor } from "../../utils/darkenColor";
+import { darkenColor } from "../../utils/colorUtils";
 import { F1TelemetryLogo as Logo } from "../../components/F1TelemetryLogo";
 import { Loading } from "../../components";
 import { getCurrentYear } from "../../utils/currentYear";

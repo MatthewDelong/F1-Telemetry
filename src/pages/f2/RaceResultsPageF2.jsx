@@ -8,6 +8,7 @@ import { fetchRaceDetails } from "../../utils/api";
 import { RaceResultItem, Loading, Button } from "../../components";
 import { NavLink } from "react-router-dom";
 import classNames from "classnames";
+import { formatDate } from "../../utils/formatDate";
 
 const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel, circuitRaceName, f1Date, f1Time }) => {
   const [raceName, setRaceName] = useState("");
@@ -15,17 +16,6 @@ const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel, circuitRa
   const [top3RaceResults2, setTop3RaceResults2] = useState([]);
   const [top3RaceResults3, setTop3RaceResults3] = useState([]);
   // console.log(year, circuitId);
-
-  const formatDate = (date) => {
-    if (!date) return "TBA";
-
-    const dateObject = new Date(`${date}T00:00:00`);
-    if (isNaN(dateObject.getTime())) {
-      return "Invalid Date";
-    }
-    const optionsDate = { month: "numeric", day: "numeric", year: "numeric" };
-    return dateObject.toLocaleDateString(undefined, optionsDate);
-  };
 
   useEffect(() => {
     const fetchData = async () => {

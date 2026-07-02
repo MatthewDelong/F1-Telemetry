@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { useEffect } from "react";
 import { motion, useAnimationControls } from "framer-motion";
-import { lightenColor } from "../../utils/lightenColor";
+import { lightenColor } from "../../utils/colorUtils";
 import { getCurrentYear } from "../../utils/currentYear";
 import { Loading } from "../../components";
 

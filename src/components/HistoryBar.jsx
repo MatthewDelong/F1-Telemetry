@@ -1,5 +1,5 @@
 import React from "react";
-import { darkenColor } from "../utils/darkenColor";
+import { darkenColor } from "../utils/colorUtils";
 
 export const HistoryBar = ({ history, color }) => {
   const MIN_DARKEN_PERCENT = 6;
