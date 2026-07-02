@@ -109,10 +109,33 @@ export function MiniTrackViewer({ circuitId }) {
           0.3,
         );
         const tubeGeom = new THREE.TubeGeometry(curve, 300, 0.6, 8, true);
+        
+        // Add sector colors (Red, Blue, Gold) using vertex colors
+        const count = tubeGeom.attributes.position.count;
+        const colors = new Float32Array(count * 3);
+        const c1 = new THREE.Color(0xff3333); // Neon Red (Sector 1)
+        const c2 = new THREE.Color(0x3366ff); // Neon Blue (Sector 2)
+        const c3 = new THREE.Color(0xffcc00); // Neon Gold (Sector 3)
+
+        for (let i = 0; i < count; i++) {
+          const progress = i / count;
+          let color;
+          // Smooth blend between sectors for a cooler look, or hard cut?
+          // Hard cut is more F1 accurate
+          if (progress < 0.33) color = c1;
+          else if (progress < 0.66) color = c2;
+          else color = c3;
+
+          colors[i * 3] = color.r;
+          colors[i * 3 + 1] = color.g;
+          colors[i * 3 + 2] = color.b;
+        }
+        tubeGeom.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+
         const mat = new THREE.MeshBasicMaterial({
-          color: 0xffffff,
+          vertexColors: true,
           transparent: true,
-          opacity: 0.8,
+          opacity: 0.9,
         });
         const mesh = new THREE.Mesh(tubeGeom, mat);
 
@@ -122,17 +145,13 @@ export function MiniTrackViewer({ circuitId }) {
         box.getSize(size);
         const maxDim = Math.max(size.x, size.y, size.z);
 
-        // Adjust the entire group's distance so the maxDim perfectly fills a 45 deg FOV
+        // Adjust the entire group's distance. 
+        // We use 1.0 here for the perfect balance!
         const dist = maxDim / (2 * Math.tan((Math.PI * 45) / 360));
-        trackGroup.position.set(0, 0, -(dist * 1.3)); // Scale to medium size
-        console.log(
-          `[MiniTrackViewer] Track mesh size:`,
-          size,
-          `maxDim:`,
-          maxDim,
-          `Placed at z=`,
-          -(dist * 1.2),
-        );
+        trackGroup.position.set(0, 0, -(dist * 1.0)); // Perfect Goldilocks size
+        
+        // Tilt the track backwards so it lies flat like it's on the ground
+        trackGroup.rotation.x = Math.PI / 2.5;
 
         trackGroup.add(mesh);
       })
@@ -144,7 +163,9 @@ export function MiniTrackViewer({ circuitId }) {
     // Animation Loop
     const animate = () => {
       if (trackGroupRef.current) {
-        trackGroupRef.current.rotation.z += 0.001;
+        // Spin slowly around the track's normal (Z axis)
+        // Since we tilted the group on X, spinning on Z makes it act like a turntable
+        trackGroupRef.current.rotation.z -= 0.002;
       }
       renderer.render(scene, camera);
       requestID = requestAnimationFrame(animate);

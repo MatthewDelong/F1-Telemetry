@@ -111,7 +111,8 @@ function createRibbonGeometry(curve, width, resolution, sectorColors, sectorBoun
     const p = points[i];
 
     // Ramp the Z coordinate slightly so the end cleanly overlaps the start
-    const zOffset = 0.5 + (i / points.length) * 0.001;
+    // We use a very small offset (0.01) so it sits flat on the black runoff without z-fighting
+    const zOffset = 0.01 + (i / points.length) * 0.001;
 
     // Left vertex
     positions.push(p.x + n.x * halfW, p.y + n.y * halfW, zOffset);
@@ -160,7 +161,7 @@ function createRibbonGeometry(curve, width, resolution, sectorColors, sectorBoun
 function createCenterLine(curve, resolution) {
   const points = curve.getSpacedPoints(resolution);
   const geom = new THREE.BufferGeometry().setFromPoints(
-    points.map(p => new THREE.Vector3(p.x, p.y, 0.7))
+    points.map(p => new THREE.Vector3(p.x, p.y, 0.02)) // Just above track (0.01)
   );
 
   return new THREE.Line(geom, new THREE.LineDashedMaterial({
@@ -191,8 +192,8 @@ function createEdgeLines(curve, width, resolution, sectorBounds = [0.333, 0.666]
     const normal = new THREE.Vector3(-tangent.y, tangent.x, 0).normalize();
     const p = points[i];
 
-    leftPts.push(p.x + normal.x * halfW, p.y + normal.y * halfW, 0.51);
-    rightPts.push(p.x - normal.x * halfW, p.y - normal.y * halfW, 0.51);
+    leftPts.push(p.x + normal.x * halfW, p.y + normal.y * halfW, 0.02); // Just above track
+    rightPts.push(p.x - normal.x * halfW, p.y - normal.y * halfW, 0.02);
 
     // Glowing sector kerbs
     const progress = i / points.length;
@@ -294,7 +295,7 @@ function createStartFinishLine(curve, trackWidth) {
       mesh.position.set(
         startPoint.x + normal.x * offset + startTangent.x * rowOffset,
         startPoint.y + normal.y * offset + startTangent.y * rowOffset,
-        0.9,
+        0.02, // Just above track
       );
       mesh.rotation.z = Math.atan2(startTangent.y, startTangent.x);
       group.add(mesh);
@@ -318,8 +319,8 @@ function createSectorMarkers(curve, trackWidth) {
     const normal = new THREE.Vector3(-tangent.y, tangent.x, 0);
 
     const pts = [
-      new THREE.Vector3(point.x + normal.x * halfW, point.y + normal.y * halfW, 0.9),
-      new THREE.Vector3(point.x - normal.x * halfW, point.y - normal.y * halfW, 0.9),
+      new THREE.Vector3(point.x + normal.x * halfW, point.y + normal.y * halfW, 0.02),
+      new THREE.Vector3(point.x - normal.x * halfW, point.y - normal.y * halfW, 0.02),
     ];
 
     const geom = new THREE.BufferGeometry().setFromPoints(pts);
@@ -354,7 +355,8 @@ function createCornerLabels(curve, numCorners = 0) {
     const v1 = new THREE.Vector3().subVectors(curr, prev);
     const v2 = new THREE.Vector3().subVectors(next, curr);
     const angle = v1.angleTo(v2);
-    curvatures.push({ index: i, curvature: angle, point: curr });
+    const crossZ = v1.x * v2.y - v1.y * v2.x;
+    curvatures.push({ index: i, curvature: angle, point: curr, isLeftTurn: crossZ > 0 });
   }
 
   // Sort by curvature and pick top N
@@ -379,7 +381,13 @@ function createCornerLabels(curve, numCorners = 0) {
   selectedCorners.forEach((corner, idx) => {
     const tangent = curve.getTangentAt(corner.index / TRACK_RESOLUTION).normalize();
     const normal = new THREE.Vector3(-tangent.y, tangent.x, 0);
-    const labelOffset = TRACK_WIDTH * 1.8;
+    // Standard normal points left of the tangent. For a left turn, this points INSIDE.
+    // We want the label/cone on the OUTSIDE of the turn, so we flip it for left turns.
+    if (corner.isLeftTurn) {
+      normal.multiplyScalar(-1);
+    }
+    const labelOffset = TRACK_WIDTH * 2.0; // Moved further out for visibility
+    const coneOffset = TRACK_WIDTH * 1.4; // Moved further out to keep off track
 
     const canvas = document.createElement("canvas");
     canvas.width = 64;
@@ -390,7 +398,7 @@ function createCornerLabels(curve, numCorners = 0) {
     ctx.font = "bold 36px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillStyle = "rgba(255,255,255,0.6)";
+    ctx.fillStyle = "rgba(255,255,255,0.9)";
     ctx.fillText(`${idx + 1}`, 32, 32);
 
     const texture = new THREE.CanvasTexture(canvas);
@@ -403,10 +411,30 @@ function createCornerLabels(curve, numCorners = 0) {
     sprite.position.set(
       corner.point.x + normal.x * labelOffset,
       corner.point.y + normal.y * labelOffset,
-      2.0,
+      0.8, // Lowered to 0.8 so it's perfectly in the FOV of the halo camera
     );
-    sprite.scale.set(1.2, 1.2, 1);
+    sprite.scale.set(1.0, 1.0, 1); // slightly smaller scale to match being closer
     group.add(sprite);
+
+    // Create a small cone pointing at the corner
+    const coneGeom = new THREE.ConeGeometry(TRACK_WIDTH * 0.15, TRACK_WIDTH * 0.4, 8);
+    const coneMat = new THREE.MeshBasicMaterial({ color: 0xeeeeee, transparent: true, opacity: 0.9 });
+    const cone = new THREE.Mesh(coneGeom, coneMat);
+    
+    cone.position.set(
+      corner.point.x + normal.x * coneOffset,
+      corner.point.y + normal.y * coneOffset,
+      0.05 // Hover just slightly above track to avoid clipping
+    );
+    
+    // Mathematically perfect orientation for a 2D plane:
+    // Set the up vector to +Z to prevent gimbal lock on XY plane targets
+    cone.up.set(0, 0, 1);
+    cone.lookAt(corner.point.x, corner.point.y, 0.05);
+    // Rotate the cone's tip (+Y) by 90 degrees so it perfectly points TOWARDS the target
+    cone.rotateX(Math.PI / 2);
+    
+    group.add(cone);
   });
 
   return group;
@@ -499,6 +527,11 @@ export function buildTrackFromGPS(rawGPSPoints, circuitId) {
   cornerLabels.name = "CornerLabels";
   group.add(cornerLabels);
 
+  // 8.5 Trees
+  const trees = createTrees(curve, TRACK_WIDTH, RUNOFF_WIDTH);
+  trees.name = "Trees";
+  group.add(trees);
+
   console.log(`[TrackBuilder] Procedural track built: ${points.length} control points, ${numCorners} corners`);
 
   return { group, curve, center, scale };
@@ -586,3 +619,83 @@ function createProceduralGrandstands(curve, trackWidth) {
   return group;
 }
 
+/**
+ * Procedurally generates scattered low-poly trees along the edge of the runoff area.
+ */
+function createTrees(curve, trackWidth, runoffWidth) {
+  const group = new THREE.Group();
+  
+  // Using InstancedMesh for performance
+  const numTrees = 350;
+  
+  const treeGeom = new THREE.ConeGeometry(0.12, 0.4, 5); // Low poly pine tree
+  const treeMat = new THREE.MeshStandardMaterial({ 
+    color: 0x1b4d1c, // Pine green
+    roughness: 0.9,
+    metalness: 0.0
+  });
+  
+  const mesh = new THREE.InstancedMesh(treeGeom, treeMat, numTrees);
+  const dummy = new THREE.Object3D();
+  
+  const trackPoints = curve.getSpacedPoints(200); // Coarse points for distance checking
+  const validTrees = [];
+  let attempts = 0;
+  const minSafeDistSq = runoffWidth * runoffWidth;
+  
+  // Keep trying until we get enough trees or hit the limit
+  while (validTrees.length < numTrees && attempts < 5000) {
+    attempts++;
+    const u = Math.random();
+    const point = curve.getPointAt(u);
+    const tangent = curve.getTangentAt(u).normalize();
+    const normal = new THREE.Vector3(-tangent.y, tangent.x, 0).normalize();
+    
+    const side = Math.random() > 0.5 ? 1 : -1;
+    // Buffer pushes them off the asphalt edge
+    const offset = runoffWidth + 0.15 + (Math.random() * 0.3);
+    const treePos = point.clone().add(normal.clone().multiplyScalar(side * offset));
+    
+    // Validate: ensure it is not on the black runoff of ANY other track segment
+    let isValid = true;
+    for (let j = 0; j < trackPoints.length; j++) {
+      const tp = trackPoints[j];
+      const dx = treePos.x - tp.x;
+      const dy = treePos.y - tp.y;
+      if (dx * dx + dy * dy < minSafeDistSq) {
+        isValid = false;
+        break;
+      }
+    }
+    
+    if (isValid) {
+      validTrees.push(treePos);
+    }
+  }
+  
+  // Adjust actual InstancedMesh count to how many valid trees we found
+  mesh.count = validTrees.length;
+  
+  for (let i = 0; i < validTrees.length; i++) {
+    const treePos = validTrees[i];
+    // Scale up the trees so they are proportional to the track width (15m track vs 20m tree)
+    const scale = 1.5 + Math.random() * 1.5;
+    
+    // Base of cone is in the middle of its height, so raise by height/2 * scale
+    // height is 0.4, so half-height is 0.2
+    dummy.position.set(treePos.x, treePos.y, 0.2 * scale);
+    
+    // Rotate so tip (+Y) points UP (+Z)
+    dummy.rotation.x = Math.PI / 2;
+    // Random spin around its own vertical axis for variety
+    dummy.rotation.y = Math.random() * Math.PI;
+    
+    dummy.scale.set(scale, scale, scale);
+    dummy.updateMatrix();
+    mesh.setMatrixAt(i, dummy.matrix);
+  }
+  
+  mesh.instanceMatrix.needsUpdate = true;
+  group.add(mesh);
+  return group;
+}

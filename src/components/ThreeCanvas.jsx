@@ -216,7 +216,7 @@ export const ThreeCanvas = ({
             }
 
             new TWEEN.Tween(carModelRef.current.position)
-              .to({ x: targetX, y: targetY, z: 0.52 }, 12)
+              .to({ x: targetX, y: targetY, z: 0.03 }, 12)
               .onUpdate(() => {
                 if (!carModelRef.current) return;
                 const dx = targetX - oldPos.x;
