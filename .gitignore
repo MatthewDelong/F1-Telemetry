@@ -3,8 +3,12 @@
 # dependencies
 /node_modules
 /backend/node_modules
-/backend/database.sqlite
 /public/api_cache
+
+# databases
+*.sqlite
+/backend/database.sqlite
+/backend/backend/
 /.pnp
 .pnp.js
 
