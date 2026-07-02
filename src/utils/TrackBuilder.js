@@ -565,6 +565,67 @@ export function telemetryToScene(x, y, center, scale) {
   return new THREE.Vector3((x - center.x) * scale, (y - center.y) * scale, 0);
 }
 
+/**
+ * Dynamically updates the color of the track ribbon based on the selected mode.
+ * Modes: "sectors" (Red/Blue/Gold) or "heatmap" (Curvature-based Speed Heatmap)
+ */
+export function updateTrackColors(trackGroup, curve, sectorBounds = [0.333, 0.666], colorMode = "sectors") {
+  if (!trackGroup || !curve) return;
+  const trackMesh = trackGroup.getObjectByName("TrackSurface");
+  if (!trackMesh) return;
+
+  const points = curve.getSpacedPoints(TRACK_RESOLUTION);
+  const colors = [];
+
+  const curvatures = [];
+  let maxCurvature = 0;
+  if (colorMode === "heatmap") {
+    // Calculate curvature at each point to map to speed
+    for (let i = 0; i < points.length; i++) {
+      const prev = points[(i - 3 + points.length) % points.length];
+      const curr = points[i];
+      const next = points[(i + 3) % points.length];
+      const v1 = new THREE.Vector3().subVectors(curr, prev);
+      const v2 = new THREE.Vector3().subVectors(next, curr);
+      let angle = 0;
+      if (v1.lengthSq() > 0 && v2.lengthSq() > 0) {
+        angle = v1.angleTo(v2);
+      }
+      curvatures.push(angle);
+      if (angle > maxCurvature) maxCurvature = angle;
+    }
+  }
+
+  for (let i = 0; i < points.length; i++) {
+    let col = new THREE.Color();
+    
+    if (colorMode === "heatmap") {
+      // High curvature = sharp corner = RED (Slow)
+      // Low curvature = straight = GREEN (Fast)
+      // We clamp the max curvature to roughly 0.6 so the tightest corners show up as deep red
+      const normalizedCurvature = Math.min(1.0, curvatures[i] / (Math.min(maxCurvature, 0.6) + 0.001));
+      const speed = 1.0 - normalizedCurvature;
+      
+      // HSL: Hue 0 (Red) to 0.33 (Green)
+      col.setHSL(speed * 0.33, 1.0, 0.5);
+    } else {
+      // Sector Mode
+      const progress = i / points.length;
+      let sectorIdx = 2; 
+      if (progress < sectorBounds[0]) sectorIdx = 0;
+      else if (progress < sectorBounds[1]) sectorIdx = 1;
+      col = SECTOR_COLORS[sectorIdx];
+    }
+    
+    // 2 vertices per track segment cross-section (Left and Right)
+    colors.push(col.r, col.g, col.b);
+    colors.push(col.r, col.g, col.b);
+  }
+
+  trackMesh.geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
+  trackMesh.geometry.attributes.color.needsUpdate = true;
+}
+
 
 
 /**

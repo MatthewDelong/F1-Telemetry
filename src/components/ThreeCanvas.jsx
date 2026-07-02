@@ -4,7 +4,8 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import TWEEN from "@tweenjs/tween.js";
 
-import { buildTrackFromGPS, telemetryToScene } from "../utils/TrackBuilder";
+import { buildTrackFromGPS, telemetryToScene, updateTrackColors } from "../utils/TrackBuilder";
+import sectorBoundaries from "../config/f1/sectorBoundaries.json";
 import { Loading } from "./Loading";
 import DriverCarDetails from "./DriverCarDetails";
 import RangeSlider from "./RangeSlider";
@@ -48,6 +49,7 @@ export const ThreeCanvas = ({
   const trailLineRef = useRef(null);
   const trailPointsRef = useRef([]);
   const requestRef = useRef(null);
+  const trackCurveRef = useRef(null);
 
   // 2. Refs for Thread-Safe Data
   const locDataRef = useRef([]);
@@ -80,6 +82,7 @@ export const ThreeCanvas = ({
   const [theta, setTheta] = useState((-131 * Math.PI) / 180);
   const [cameraHeight, setCameraHeight] = useState(15);
   const [radius, setRadius] = useState(20);
+  const [trackColorMode, setTrackColorMode] = useState("sectors");
 
   // Dynamic Prop Sync
   useEffect(() => {
@@ -103,6 +106,14 @@ export const ThreeCanvas = ({
     cameraHeight,
     radius,
   ]);
+
+  // Handle color updates
+  useEffect(() => {
+    if (mapRef.current && trackCurveRef.current) {
+      const bounds = sectorBoundaries[circuitId] || [0.333, 0.666];
+      updateTrackColors(mapRef.current, trackCurveRef.current, bounds, trackColorMode);
+    }
+  }, [trackColorMode, circuitId]);
 
   // 4. Initial Scene Setup (RUN ONCE)
   useEffect(() => {
@@ -173,7 +184,9 @@ export const ThreeCanvas = ({
       new THREE.LineBasicMaterial({
         transparent: true,
         vertexColors: true,
-        linewidth: 3,
+        linewidth: 4,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
       }),
     );
     scene.add(trailLineRef.current);
@@ -327,10 +340,11 @@ export const ThreeCanvas = ({
       return;
     }
 
-    const { group, center, scale } = result;
+    const { group, curve, center, scale } = result;
 
     // Store calibration for converting driver telemetry to scene coordinates
     trackCalibrationRef.current = { center, scale };
+    trackCurveRef.current = curve;
 
     currentScene.add(group);
     mapRef.current = group;
@@ -384,12 +398,19 @@ export const ThreeCanvas = ({
         if (requestId !== currentLoadRequestRef.current) return;
 
         const car = gltf.scene;
-        car.scale.set(0.02, 0.02, 0.02);
+        // Scaled up for better visibility
+        car.scale.set(0.05, 0.05, 0.05);
         car.rotation.x = Math.PI / 2;
         car.rotation.y = -Math.PI;
 
         const startPos = locDataRef.current[0] || { x: 0, y: 0 };
         car.position.set(startPos.x, startPos.y, 0);
+
+        // Add a dynamic glowing light to the car matching the team color!
+        const hexColor = parseInt((driverColor || "#ffffff").replace("#", "0x"), 16);
+        const carGlow = new THREE.PointLight(hexColor, 8.0, 6.0);
+        carGlow.position.set(0, 0, 10.0); // Above the car
+        car.add(carGlow);
 
         car.traverse((o) => {
           if (o.isMesh && o.material && o.material.name === "Body") {
@@ -419,6 +440,18 @@ export const ThreeCanvas = ({
         className="three-canvas-container"
         style={{ width: "100%", height: "100% !important" }}
       />
+      
+      {/* Floating Track Color Toggle */}
+      <div className="absolute top-8 left-1/2 -translate-x-1/2 z-[60]">
+        <button
+          onClick={() => setTrackColorMode(prev => prev === "sectors" ? "heatmap" : "sectors")}
+          className="bg-[#1a1a1a]/80 backdrop-blur-sm hover:bg-[#333]/90 text-white font-display uppercase tracking-widest text-[11px] py-2 px-4 rounded-sm border border-white/10 transition-all duration-200 shadow-xl"
+        >
+          <span className="opacity-60 mr-2">🎨</span>
+          {trackColorMode === "sectors" ? "Switch to Speed Heatmap" : "Switch to Sector Colors"}
+        </button>
+      </div>
+
       {driverSelected && (
         <div
           className={classNames(
