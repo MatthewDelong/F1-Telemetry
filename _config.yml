@@ -1,0 +1,10 @@
+plugins:
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: true
+include:
+  - README.md
+  - LICENSE.md
+  - F1-TELEMETRY-api-updating-Information.md
+  - TRACK_REPLACEMENT_PROGRESS.md
