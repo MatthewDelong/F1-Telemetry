@@ -262,7 +262,9 @@ async function fetchStandingsPerRound(driverId, year, totalRounds) {
       }
       await sleep(THROTTLE_MS);
     } catch (err) {
-      // Driver may not have participated in this round — skip
+      if (err.response?.status === 429) {
+        console.warn(`[DriverStats] Rate limited fetching round ${round} standings for ${driverId}`);
+      }
     }
   }
   return perRound;

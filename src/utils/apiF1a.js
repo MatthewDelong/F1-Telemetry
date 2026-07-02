@@ -16,6 +16,7 @@ export const fetchRaceMeetingKeysF1a = async (selectedYear, championshipLevel) =
     return races[selectedYear]
   } catch(error) {
     console.error('Error fetching data:', error);
+    return undefined;
   }
 };
 

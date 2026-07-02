@@ -92,7 +92,9 @@ export const fetchOpenF1FullSessionData = async (endpoint, sessionKey, extraPara
                 return data;
             }
         }
-    } catch (e) {}
+    } catch (e) {
+      console.warn("[Cache] Failed to read localStorage cache for full session data:", e);
+    }
 
     let allData = [];
     let lastDate = null;
@@ -252,10 +254,12 @@ export const fetchDriverStats = async (driverId1, driverId2, refresh = false) =>
         const data1 = await dataResponse1.json();
         return data1;
       } else {
-        console.log("Failed to fetch data");
+        console.warn(`[API] Failed to fetch driver data for ${driverId}: HTTP ${dataResponse1.status}`);
+        return null;
       }
     } catch (error) {
-      console.log(error);
+      console.error(`[API] Error fetching driver data for ${driverId}:`, error);
+      return null;
     }
   };
   const driverData1 = await fetchDriverData(driverId1);
@@ -276,7 +280,9 @@ export const fetchRaceMeetingKeys = async (selectedYear) => {
       // Use 6 hour TTL
       if (Date.now() - timestamp < (1000 * 60 * 60 * 6)) return data;
     }
-  } catch (e) {}
+  } catch (e) {
+    console.warn("[Cache] Failed to read meeting keys from localStorage:", e);
+  }
 
   try {
     const raceResponse = await fetch(`${BASE_F1_URL}races/races.json`);
@@ -300,11 +306,14 @@ export const fetchRaceMeetingKeys = async (selectedYear) => {
     // Cache the result
     try {
       localStorage.setItem(cacheKey, JSON.stringify({ data: result, timestamp: Date.now() }));
-    } catch (e) {}
+    } catch (e) {
+      console.warn("[Cache] Failed to write meeting keys to localStorage:", e);
+    }
 
     return result;
   } catch(error) {
     console.error('Error fetching data:', error);
+    return undefined;
   }
 };
 
@@ -413,7 +422,9 @@ const fetchRaceResults = async (selectedYear, raceId, fallbackRaceName = "", fal
       const { data, timestamp } = JSON.parse(cached);
       if (Date.now() - timestamp < CACHE_TTL) return data;
     }
-  } catch (e) {}
+  } catch (e) {
+    console.warn("[Cache] Failed to read race results from localStorage:", e);
+  }
 
   const resultsUrl = `${BASE_F1_URL}races/${selectedYear}/results.json`;
   try {
@@ -486,7 +497,9 @@ const fetchRaceResults = async (selectedYear, raceId, fallbackRaceName = "", fal
       // Cache successful results
       try {
         localStorage.setItem(cacheKey, JSON.stringify({ data: results, timestamp: Date.now() }));
-      } catch (e) {}
+      } catch (e) {
+        console.warn("[Cache] Failed to write race results to localStorage:", e);
+      }
       
       return results;
     }
@@ -857,7 +870,9 @@ export async function fetchTrackReferenceData(sessionKey, circuitId = null) {
           return data;
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      console.warn("[API] Failed to load local static track file:", e);
+    }
   }
 
   const cacheKey = `${CACHE_PREFIX}trackref_${sessionKey}`;
@@ -872,7 +887,9 @@ export async function fetchTrackReferenceData(sessionKey, circuitId = null) {
         return data;
       }
     }
-  } catch (e) {}
+  } catch (e) {
+    console.warn("[Cache] Failed to read track reference from localStorage:", e);
+  }
 
   try {
     // 2. Get laps to find a perfect single lap
@@ -988,7 +1005,9 @@ export async function fetchTrackReferenceData(sessionKey, circuitId = null) {
         data: trackPoints,
         timestamp: Date.now(),
       }));
-    } catch (e) {}
+    } catch (e) {
+      console.warn("[Cache] Failed to write track reference to localStorage:", e);
+    }
 
     return trackPoints;
   } catch (error) {
@@ -1064,7 +1083,9 @@ export const fetchOpenF1Podium = async (meetingKey) => {
       const { data, timestamp } = JSON.parse(cached);
       if (Date.now() - timestamp < CACHE_TTL) return data;
     }
-  } catch (e) {}
+  } catch (e) {
+    console.warn("[Cache] Failed to read podium data from localStorage:", e);
+  }
 
   try {
     const sessionUrl = `${buildOpenF1Url("/sessions")}?meeting_key=${meetingKey}&session_name=Race`;
@@ -1192,7 +1213,9 @@ export const fetchOpenF1Podium = async (meetingKey) => {
       if (results && results.length > 0) {
         localStorage.setItem(cacheKey, JSON.stringify({ data: results, timestamp: Date.now() }));
       }
-    } catch (e) {}
+    } catch (e) {
+      console.warn("[Cache] Failed to write podium data to localStorage:", e);
+    }
 
     return results;
   } catch (err) {
@@ -1212,7 +1235,9 @@ export const fetchMostRecentRace = async (selectedYear, specificRound = null, sp
       // Use 6 hour TTL as requested
       if (Date.now() - timestamp < (1000 * 60 * 60 * 6)) return data;
     }
-  } catch (e) {}
+  } catch (e) {
+    console.warn("[Cache] Failed to read most recent race from localStorage:", e);
+  }
 
   try {
     // Fetch the race details using persistent cache
@@ -1289,7 +1314,9 @@ export const fetchMostRecentRace = async (selectedYear, specificRound = null, sp
       if (raceResults && raceResults.length > 0) {
         localStorage.setItem(cacheKey, JSON.stringify({ data: raceWithDetails, timestamp: Date.now() }));
       }
-    } catch (e) {}
+    } catch (e) {
+      console.warn("[Cache] Failed to write most recent race to localStorage:", e);
+    }
 
     return raceWithDetails;
   } catch (error) {

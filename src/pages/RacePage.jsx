@@ -617,7 +617,9 @@ export function RacePage() {
         // Fetch track reference GPS data non-blockingly at the end
         fetchTrackReferenceData(sessionKey, circuitId).then(refData => {
           if (refData && refData.length > 0) setTrackReferenceData(refData);
-        }).catch(() => {});
+        }).catch((err) => {
+          console.warn("[RacePage] Failed to fetch track reference data:", err);
+        });
       } else if (selectedSession === "Sprint") {
         setIsLoading(true);
         if (circuitId) {
@@ -738,7 +740,9 @@ export function RacePage() {
         // Fetch track reference GPS data non-blockingly at the end
         fetchTrackReferenceData(sessionKey, circuitId).then(refData => {
           if (refData && refData.length > 0) setTrackReferenceData(refData);
-        }).catch(() => {});
+        }).catch((err) => {
+          console.warn("[RacePage] Failed to fetch track reference data:", err);
+        });
       }
     } catch (error) {
       console.error("Error fetching data:", error);
