@@ -35,6 +35,7 @@ import {
   RangeSelector,
   RaceControl,
   PitStopTimes,
+  WeatherDetails,
 } from "../components";
 import Drawer from "../components/Drawer";
 import Accordion from "../components/Accordion";
@@ -951,6 +952,16 @@ export function RacePage() {
               driversColor={driversColor}
               driverCode={selectedDriverAcronym}
               showTitle={false}
+            />
+          ),
+        },
+        {
+          id: "weather",
+          label: "Weather",
+          content: (
+            <WeatherDetails
+              sessionKey={selectedSessionKey}
+              speedUnit={speedUnit}
             />
           ),
         },
