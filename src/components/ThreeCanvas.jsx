@@ -4,7 +4,11 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import TWEEN from "@tweenjs/tween.js";
 
-import { buildTrackFromGPS, telemetryToScene, updateTrackColors } from "../utils/TrackBuilder";
+import {
+  buildTrackFromGPS,
+  telemetryToScene,
+  updateTrackColors,
+} from "../utils/TrackBuilder";
 import sectorBoundaries from "../config/f1/sectorBoundaries.json";
 import { Loading } from "./Loading";
 import DriverCarDetails from "./DriverCarDetails";
@@ -111,7 +115,12 @@ export const ThreeCanvas = ({
   useEffect(() => {
     if (mapRef.current && trackCurveRef.current) {
       const bounds = sectorBoundaries[circuitId] || [0.333, 0.666];
-      updateTrackColors(mapRef.current, trackCurveRef.current, bounds, trackColorMode);
+      updateTrackColors(
+        mapRef.current,
+        trackCurveRef.current,
+        bounds,
+        trackColorMode,
+      );
     }
   }, [trackColorMode, circuitId]);
 
@@ -222,37 +231,52 @@ export const ThreeCanvas = ({
               targetX = scenePos.x;
               targetY = scenePos.y;
             } else {
-              targetX =
-                (next.x - sync.telemetryCenter.x) * sync.telemetryScale;
-              targetY =
-                (next.y - sync.telemetryCenter.y) * sync.telemetryScale;
+              targetX = (next.x - sync.telemetryCenter.x) * sync.telemetryScale;
+              targetY = (next.y - sync.telemetryCenter.y) * sync.telemetryScale;
             }
 
-            new TWEEN.Tween(carModelRef.current.position)
-              .to({ x: targetX, y: targetY, z: 0.03 }, 12)
-              .onUpdate(() => {
-                if (!carModelRef.current) return;
-                const dx = targetX - oldPos.x;
-                const dy = targetY - oldPos.y;
-                if (Math.abs(dx) > 0.0001 || Math.abs(dy) > 0.0001) {
-                  const angle = Math.atan2(dy, dx);
-                  carModelRef.current.rotation.set(
-                    Math.PI / 2,
-                    0,
-                    angle + Math.PI / 2,
-                    "YZX",
-                  );
-                }
-              })
-              .easing(TWEEN.Easing.Linear.None)
-              .delay(50 * sync.speedFactor)
-              .onComplete(() => {
-                if (carModelRef.current && carModelRef.current.userData) {
-                  carModelRef.current.userData.tweenActive = false;
-                }
+            // Protect against invalid/NaN coordinates which will completely destroy the 3D model
+            if (isNaN(targetX) || isNaN(targetY) || (next.x === 0 && next.y === 0)) {
+              carModelRef.current.userData.tweenActive = false;
+              if (next.cardata) setDriverDetails(next.cardata);
+            } else {
+              // Bulletproof fix: If the distance is massive (e.g. first spawn, teleport, driver switch, GPS glitch)
+              // do not tween! Snap instantly and clear the trail memory to prevent laser beams.
+              const distSq = (targetX - oldPos.x) ** 2 + (targetY - oldPos.y) ** 2;
+              if (distSq > 100 || carModelRef.current.userData.isFirstSpawn) {
+                carModelRef.current.position.set(targetX, targetY, 0.03);
+                carModelRef.current.userData.tweenActive = false;
+                carModelRef.current.userData.isFirstSpawn = false;
+                trailPointsRef.current = [];
                 if (next.cardata) setDriverDetails(next.cardata);
-              })
-              .start();
+              } else {
+                new TWEEN.Tween(carModelRef.current.position)
+                  .to({ x: targetX, y: targetY, z: 0.03 }, 12)
+                  .onUpdate(() => {
+                    if (!carModelRef.current) return;
+                    const dx = targetX - oldPos.x;
+                    const dy = targetY - oldPos.y;
+                    if (Math.abs(dx) > 0.0001 || Math.abs(dy) > 0.0001) {
+                      const angle = Math.atan2(dy, dx);
+                      carModelRef.current.rotation.set(
+                        Math.PI / 2,
+                        0,
+                        angle + Math.PI / 2,
+                        "YZX",
+                      );
+                    }
+                  })
+                  .easing(TWEEN.Easing.Linear.None)
+                  .delay(50 * sync.speedFactor)
+                  .onComplete(() => {
+                    if (carModelRef.current && carModelRef.current.userData) {
+                      carModelRef.current.userData.tweenActive = false;
+                    }
+                    if (next.cardata) setDriverDetails(next.cardata);
+                  })
+                  .start();
+              }
+            }
           }
         }
 
@@ -294,7 +318,7 @@ export const ThreeCanvas = ({
             if (!sync.driverSelected) {
               sync.theta += 0.002; // Slow, cinematic orbit
             }
-            
+
             activeCam.position.set(
               sync.radius * Math.cos(sync.theta),
               sync.radius * Math.sin(sync.theta),
@@ -371,6 +395,9 @@ export const ThreeCanvas = ({
       currentScene.remove(carModelRef.current);
       carModelRef.current = null;
     }
+    
+    // Clear the trail when switching drivers
+    trailPointsRef.current = [];
 
     const teamTextureMap = {
       mercedes: "mercedes_LowPolyUv.png",
@@ -407,7 +434,10 @@ export const ThreeCanvas = ({
         car.position.set(startPos.x, startPos.y, 0);
 
         // Add a dynamic glowing light to the car matching the team color!
-        const hexColor = parseInt((driverColor || "#ffffff").replace("#", "0x"), 16);
+        const hexColor = parseInt(
+          (driverColor || "#ffffff").replace("#", "0x"),
+          16,
+        );
         const carGlow = new THREE.PointLight(hexColor, 8.0, 6.0);
         carGlow.position.set(0, 0, 10.0); // Above the car
         car.add(carGlow);
@@ -419,6 +449,8 @@ export const ThreeCanvas = ({
             o.material.needsUpdate = true;
           }
         });
+
+        car.userData = { tweenActive: false, isFirstSpawn: true };
 
         currentScene.add(car);
         if (haloCameraRef.current) car.add(haloCameraRef.current);
@@ -440,15 +472,21 @@ export const ThreeCanvas = ({
         className="three-canvas-container"
         style={{ width: "100%", height: "100% !important" }}
       />
-      
+
       {/* Floating Track Color Toggle */}
       <div className="absolute top-8 left-1/2 -translate-x-1/2 z-[60]">
         <button
-          onClick={() => setTrackColorMode(prev => prev === "sectors" ? "heatmap" : "sectors")}
+          onClick={() =>
+            setTrackColorMode((prev) =>
+              prev === "sectors" ? "heatmap" : "sectors",
+            )
+          }
           className="bg-[#1a1a1a]/80 backdrop-blur-sm hover:bg-[#333]/90 text-white font-display uppercase tracking-widest text-[11px] py-2 px-4 rounded-sm border border-white/10 transition-all duration-200 shadow-xl"
         >
           <span className="opacity-60 mr-2">🎨</span>
-          {trackColorMode === "sectors" ? "Switch to Speed Heatmap" : "Switch to Sector Colors"}
+          {trackColorMode === "sectors"
+            ? "Switch to Speed Heatmap"
+            : "Switch to Sector Colors"}
         </button>
       </div>
 
