@@ -38,7 +38,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
-    ? ['https://f1-telemetry.matthews-world.co.uk']
+    ? ['https://f1-telemetry.co.uk']
     : ['http://localhost:3006', 'http://localhost:3000'],
   methods: ['GET', 'POST'],
 }));
@@ -428,6 +428,70 @@ app.use("/api/proxy/:source", async (req, res) => {
   }
 });
 
+let openf1Token = null;
+let openf1TokenExpiresAt = 0;
+let tokenFetchPromise = null;
+
+async function getOpenF1Token() {
+  // Try dotenv or fallback to parsing .env files manually if process.env isn't populated
+  let username = process.env.OPENF1_USERNAME;
+  let password = process.env.OPENF1_PASSWORD;
+  
+  if (!username || !password) {
+    try {
+      const devPath = pathMod.join(__dirname, '..', '.env.development');
+      const prodPath = pathMod.join(__dirname, '..', '.env.production');
+      const envPath = fs.existsSync(prodPath) ? prodPath : devPath;
+      if (fs.existsSync(envPath)) {
+        const envContent = fs.readFileSync(envPath, 'utf8');
+        const usernameMatch = envContent.match(/^OPENF1_USERNAME=(.*)$/m);
+        const passwordMatch = envContent.match(/^OPENF1_PASSWORD=(.*)$/m);
+        if (usernameMatch) username = usernameMatch[1].trim();
+        if (passwordMatch) password = passwordMatch[1].trim();
+      }
+    } catch (e) {}
+  }
+  
+  if (!username || !password) return null;
+  if (openf1Token && Date.now() < openf1TokenExpiresAt) return openf1Token;
+  
+  // If a fetch is already in progress, wait for it instead of starting a new one
+  if (tokenFetchPromise) {
+    return tokenFetchPromise;
+  }
+  
+  tokenFetchPromise = (async () => {
+    try {
+      const params = new URLSearchParams();
+      params.append('username', username);
+      params.append('password', password);
+      // grant_type is standard for OAuth2 password credentials
+      params.append('grant_type', 'password');
+      
+      const res = await axios.post('https://api.openf1.org/token', params.toString(), {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        timeout: 5000
+      });
+      
+      if (res.data && res.data.access_token) {
+        openf1Token = res.data.access_token;
+        const expiresIn = res.data.expires_in || 3600;
+        // Expire 1 minute early to be safe
+        openf1TokenExpiresAt = Date.now() + (expiresIn * 1000) - 60000;
+        console.log('[OpenF1 Auth] Successfully obtained sponsor token');
+        return openf1Token;
+      }
+    } catch (error) {
+      console.error('[OpenF1 Auth] Failed to fetch token:', error.message);
+    } finally {
+      tokenFetchPromise = null;
+    }
+    return null;
+  })();
+  
+  return tokenFetchPromise;
+}
+
 // ─── OpenF1 Proxy: passthrough to api.openf1.org ───
 app.get("/openf1/*", async (req, res) => {
   try {
@@ -436,9 +500,15 @@ app.get("/openf1/*", async (req, res) => {
     const targetUrl = `https://api.openf1.org${decodedPath}`;
 
     console.log(`[OpenF1 Proxy] Proxying: GET ${targetUrl}`);
+    
+    const headers = { Accept: "application/json" };
+    const token = await getOpenF1Token();
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
 
     const response = await axios.get(targetUrl, {
-      headers: { Accept: "application/json" },
+      headers,
       validateStatus: false,
       timeout: 10000,
     });

@@ -61,17 +61,17 @@ const fetchOpenF1JsonWithFallback = async (
         await throttleOpenF1Requests();
 
         try {
-            // Prefer official OpenF1 directly to avoid proxy CORS/runtime noise.
-            const directResponse = await fetch(directUrl);
-            if (directResponse.ok) {
-                return await directResponse.json();
+            // Prefer the proxy because it attaches the sponsor authentication token!
+            const proxyResponse = await fetch(proxyUrl);
+            if (proxyResponse.ok) {
+                return await proxyResponse.json();
             }
 
-            if (allow404 && directResponse.status === 404) {
+            if (allow404 && proxyResponse.status === 404) {
                 return [];
             }
 
-            if (directResponse.status === 429 && retryAttempt < OPENF1_MAX_RETRIES) {
+            if (proxyResponse.status === 429 && retryAttempt < OPENF1_MAX_RETRIES) {
                 await sleep(
                     OPENF1_RETRY_BASE_DELAY_MS * Math.pow(2, retryAttempt)
                 );
@@ -79,19 +79,19 @@ const fetchOpenF1JsonWithFallback = async (
                 continue;
             }
 
-            // Only fallback to proxy for non-rate-limit HTTP errors.
-            if (directResponse.status !== 429) {
-                const proxyResponse = await fetch(proxyUrl);
-                if (proxyResponse.ok) {
-                    return await proxyResponse.json();
+            // Fallback to direct URL if the proxy is completely down
+            if (proxyResponse.status !== 429) {
+                const directResponse = await fetch(directUrl);
+                if (directResponse.ok) {
+                    return await directResponse.json();
                 }
-                if (allow404 && proxyResponse.status === 404) {
+                if (allow404 && directResponse.status === 404) {
                     return [];
                 }
-                throw new Error(`OpenF1 proxy request failed: ${proxyResponse.status}`);
+                throw new Error(`OpenF1 direct request failed: ${directResponse.status}`);
             }
 
-            throw new Error(`OpenF1 direct request failed: ${directResponse.status}`);
+            throw new Error(`OpenF1 proxy request failed: ${proxyResponse.status}`);
         } catch (directError) {
             // Retry network failures as well.
             if (retryAttempt < OPENF1_MAX_RETRIES) {

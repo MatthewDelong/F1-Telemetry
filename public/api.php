@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: https://f1-telemetry.matthews-world.co.uk');
+header('Access-Control-Allow-Origin: https://f1-telemetry.co.uk');
 header('Access-Control-Allow-Methods: GET');
 
 ini_set('display_errors', 0);
@@ -47,16 +47,81 @@ if (empty($source) || empty($path)) {
     exit;
 }
 
+// Function to fetch OpenF1 auth token
+function getOpenF1Token() {
+    $envFile = __DIR__ . '/../.env.production';
+    $username = '';
+    $password = '';
+    if (file_exists($envFile)) {
+        $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            if (strpos(trim($line), '#') === 0) continue;
+            if (strpos($line, '=') !== false) {
+                list($name, $value) = explode('=', $line, 2);
+                $name = trim($name);
+                $value = trim($value);
+                if ($name === 'OPENF1_USERNAME') $username = $value;
+                if ($name === 'OPENF1_PASSWORD') $password = $value;
+            }
+        }
+    }
+    if (empty($username) || empty($password)) {
+        return null;
+    }
+    
+    $tokenCacheDir = __DIR__ . '/api_cache/auth';
+    if (!is_dir($tokenCacheDir)) {
+        @mkdir($tokenCacheDir, 0755, true);
+    }
+    $tokenCacheFile = $tokenCacheDir . '/openf1_token.json';
+    
+    if (file_exists($tokenCacheFile)) {
+        $cached = json_decode(file_get_contents($tokenCacheFile), true);
+        if ($cached && isset($cached['access_token']) && time() < $cached['expires_at']) {
+            return $cached['access_token'];
+        }
+    }
+    
+    // Fetch new token
+    $ch = curl_init('https://api.openf1.org/token');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+        'username' => $username,
+        'password' => $password
+    ]));
+    $res = curl_exec($ch);
+    $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    
+    if ($httpcode == 200 && $res) {
+        $data = json_decode($res, true);
+        if (isset($data['access_token'])) {
+            $data['expires_at'] = time() + (isset($data['expires_in']) ? $data['expires_in'] : 3600) - 60;
+            @file_put_contents($tokenCacheFile, json_encode($data));
+            return $data['access_token'];
+        }
+    }
+    return null;
+}
+
 // Function to fetch data via cURL with file_get_contents fallback
-function fetchUrl($url, $timeout = 10, &$errorMsg = null) {
+function fetchUrl($url, $timeout = 10, &$errorMsg = null, $headers = []) {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+    
+    $curlHeaders = [];
     // Use a standard browser User-Agent
-    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+    $curlHeaders[] = 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+    foreach ($headers as $k => $v) {
+        $curlHeaders[] = "$k: $v";
+    }
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $curlHeaders);
+    
     $response = curl_exec($ch);
     $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $errorMsg = curl_error($ch);
@@ -178,7 +243,14 @@ if ($source === 'f1') {
     $baseUrl = "https://api.openf1.org/";
     // Strip leading slash if present in path
     $requestPath = ltrim($path, '/');
-    $data = fetchUrl($baseUrl . $requestPath, 15, $lastError);
+    
+    $headers = [];
+    $token = getOpenF1Token();
+    if ($token) {
+        $headers['Authorization'] = 'Bearer ' . $token;
+    }
+    
+    $data = fetchUrl($baseUrl . $requestPath, 15, $lastError, $headers);
 } else if ($source === 'f1a' || $source === 'f2') {
     $fileName = basename($pathWithoutQuery);
     $urlsToTry = [];

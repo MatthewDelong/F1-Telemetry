@@ -58,20 +58,20 @@ export const AdminPage = () => {
   const clearLiveCache = async () => {
     if (!window.confirm('Are you sure you want to clear the LIVE server cache? This forces the live site to fetch the latest GitHub data.')) return;
     setLoading(true);
-    addLog('Clearing live cache on f1-telemetry.matthews-world.co.uk...');
+    addLog('Clearing live cache on f1-telemetry.co.uk...');
     try {
-      const liveUrls = [
-        'https://f1-telemetry.matthews-world.co.uk/api.php?source=f1&path=races/2026/driverStandings.json&flush=1',
-        'https://f1-telemetry.matthews-world.co.uk/api.php?source=f1&path=races/2026/constructorStandings.json&flush=1',
-        'https://f1-telemetry.matthews-world.co.uk/api.php?source=f1&path=results.json&flush=1',
-        'https://f1-telemetry.matthews-world.co.uk/api.php?source=f1&path=sprint.json&flush=1',
-        'https://f1-telemetry.matthews-world.co.uk/api.php?source=f1&path=qualifying.json&flush=1',
-        'https://f1-telemetry.matthews-world.co.uk/api.php?source=f1&path=races/races.json&flush=1',
-        'https://f1-telemetry.matthews-world.co.uk/api.php?source=f2&path=results.json&flush=1',
-        'https://f1-telemetry.matthews-world.co.uk/api.php?source=f1a&path=results.json&flush=1'
+      const endpoints = [
+        'https://f1-telemetry.co.uk/api.php?source=f1&path=races/2026/driverStandings.json&flush=1',
+        'https://f1-telemetry.co.uk/api.php?source=f1&path=races/2026/constructorStandings.json&flush=1',
+        'https://f1-telemetry.co.uk/api.php?source=f1&path=results.json&flush=1',
+        'https://f1-telemetry.co.uk/api.php?source=f1&path=sprint.json&flush=1',
+        'https://f1-telemetry.co.uk/api.php?source=f1&path=qualifying.json&flush=1',
+        'https://f1-telemetry.co.uk/api.php?source=f1&path=races/races.json&flush=1',
+        'https://f1-telemetry.co.uk/api.php?source=f2&path=results.json&flush=1',
+        'https://f1-telemetry.co.uk/api.php?source=f1a&path=results.json&flush=1'
       ];
       
-      for (const url of liveUrls) {
+      for (const url of endpoints) {
         try {
           await axios.get(url);
           const path = url.split('path=')[1].split('&')[0];

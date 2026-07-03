@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { initializeGoogleAnalytics } from "../utils/analytics";
 import "./CookieBanner.css";
 
-const GA_ID = "G-10L7RPCBYS";
+const GA_ID = "G-3XMEQDGZ8D";
 
 const CookieBanner = () => {
   const [isVisible, setIsVisible] = useState(false);

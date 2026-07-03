@@ -12,7 +12,7 @@ export default defineConfig({
     tailwindcss(),
     svgr(),
     Sitemap({
-      hostname: "https://f1-telemetry.matthews-world.co.uk",
+      hostname: "https://f1-telemetry.co.uk",
       outDir: "build",
       dynamicRoutes: [
         "/about-us",
@@ -28,8 +28,8 @@ export default defineConfig({
         "/f2/race-results",
         "/f2/driver-standings",
         "/f2/constructor-standings",
-        "/privacy-policy"
-      ]
+        "/privacy-policy",
+      ],
     }),
     VitePWA({
       registerType: "prompt",
