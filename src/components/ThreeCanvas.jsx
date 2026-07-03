@@ -85,7 +85,7 @@ export const ThreeCanvas = ({
   const [driverDetails, setDriverDetails] = useState(null);
   const [theta, setTheta] = useState((-131 * Math.PI) / 180);
   const [cameraHeight, setCameraHeight] = useState(15);
-  const [radius, setRadius] = useState(20);
+  const [radius, setRadius] = useState(window.innerWidth < 768 ? 38 : 28);
   const [trackColorMode, setTrackColorMode] = useState("sectors");
 
   // Dynamic Prop Sync
