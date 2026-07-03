@@ -84,7 +84,7 @@ export const ThreeCanvas = ({
   const [isCalibrated, setIsCalibrated] = useState(true);
   const [driverDetails, setDriverDetails] = useState(null);
   const [theta, setTheta] = useState((-131 * Math.PI) / 180);
-  const [cameraHeight, setCameraHeight] = useState(15);
+  const [cameraHeight, setCameraHeight] = useState(window.innerWidth < 768 ? 28.5 : 21);
   const [radius, setRadius] = useState(window.innerWidth < 768 ? 38 : 28);
   const [trackColorMode, setTrackColorMode] = useState("sectors");
 
