@@ -495,33 +495,32 @@ async function getOpenF1Token() {
 // ─── OpenF1 Proxy: passthrough to api.openf1.org ───
 app.get("/openf1/*", async (req, res) => {
   try {
-    const rawPath = req.originalUrl.replace(/^\/openf1/, "");
-    const decodedPath = decodeURIComponent(rawPath);
-    const targetUrl = `https://api.openf1.org${decodedPath}`;
+    // Forward /openf1/... to Cloudflare worker
+    const targetUrl = `https://openf1-proxy.matthew-delong73.workers.dev${req.url.replace('/openf1', '')}`;
+    console.log(`[OpenF1 Proxy] Proxying: ${req.method} ${targetUrl}`);
 
-    console.log(`[OpenF1 Proxy] Proxying: GET ${targetUrl}`);
-    
-    const headers = { Accept: "application/json" };
-    const token = await getOpenF1Token();
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+    try {
+      const headers = { 
+        Accept: "application/json",
+        'Origin': 'https://f1-telemetry.com' // Spoof origin to satisfy worker restrictions
+      };
+
+      const response = await axios.get(targetUrl, {
+        headers,
+        validateStatus: false,
+        timeout: 10000,
+      });
+
+      res.writeHead(response.status, {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      });
+      res.end(JSON.stringify(response.data));
+    } catch (error) {
+      console.error("[OpenF1 Proxy] Proxy Error:", error.message);
+      res.status(500).json({ error: "Failed to fetch from OpenF1", message: error.message });
     }
-
-    const response = await axios.get(targetUrl, {
-      headers,
-      validateStatus: false,
-      timeout: 10000,
-    });
-
-    // Intercept 404s from OpenF1 to prevent browser console spam.
-    // OpenF1 uses 404 to indicate empty search results instead of an empty array.
-    if (response.status === 404) {
-      return res.status(200).json([]);
-    }
-
-    res.status(response.status).json(response.data);
   } catch (error) {
-    console.error("[OpenF1 Proxy] Proxy Error:", error.message);
     if (error.response) {
       console.error(
         "[OpenF1 Proxy] API Response Error:",

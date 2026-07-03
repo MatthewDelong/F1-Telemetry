@@ -239,16 +239,14 @@ if ($source === 'f1') {
     }
 
 } else if ($source === 'openf1') {
-    // Proxy for OpenF1 API to avoid 429 in frontend
-    $baseUrl = "https://api.openf1.org/";
+    // Proxy for OpenF1 API using the custom Cloudflare Worker to bypass live session blocks
+    $baseUrl = "https://openf1-proxy.matthew-delong73.workers.dev/";
     // Strip leading slash if present in path
     $requestPath = ltrim($path, '/');
     
-    $headers = [];
-    $token = getOpenF1Token();
-    if ($token) {
-        $headers['Authorization'] = 'Bearer ' . $token;
-    }
+    $headers = [
+        'Origin' => 'https://f1-telemetry.com' // Spoof origin to satisfy worker restrictions
+    ];
     
     $data = fetchUrl($baseUrl . $requestPath, 15, $lastError, $headers);
 } else if ($source === 'f1a' || $source === 'f2') {
