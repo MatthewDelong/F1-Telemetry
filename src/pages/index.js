@@ -18,3 +18,4 @@ export * from "./ARViewer";
 export * from "./PrivacyPolicy";
 export * from "./Trademarks";
 export * from "./Admin";
+export { default as LiveDashboard } from "./LiveDashboard/LiveDashboard";

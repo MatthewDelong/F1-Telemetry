@@ -30,11 +30,13 @@
   <strong>Explore the <a href="https://deepwiki.com/MatthewDelong/F1-Telemetry">intensive project wiki</a> for in-depth documentation, technical architecture, and developer insights.</strong>
 </p>
 
+> **⚠️ Important Note regarding Live Data:** The primary OpenF1 proxy authentication used in the Live Dashboard is restricted to the Cloudflare Worker deployed for the live site. If you clone and run this app locally, it will automatically fall back to the public `api.openf1.org` endpoint — you can still use the dashboard seamlessly, though some high-bandwidth or live telemetry features may be restricted or rate-limited due to public API limits.
+
 ---
 
 ## About
 
-F1-Telemetry is a fork of the original [f1nsight](https://github.com/adityakotha03/F1nsight) project, refactored to **React 19** and **Vite 8** with additional features and enhancements. It's an interactive web application built for motorsport fans who want to go deeper than the broadcast — providing detailed race analytics, real-time telemetry visualisation, driver comparisons, and a 3D race viewer across **Formula 1**, **Formula 2**, and **F1 Academy**.
+F1-Telemetry is a fork of the original [f1nsight](https://github.com/adityakotha03/F1nsight) project, refactored to **React 19** and **Vite 8** with additional features and enhancements. It's an interactive web application built for motorsport fans who want to go deeper than the broadcast — providing detailed race analytics, real-time telemetry visualisation, driver comparisons, and a 3D race viewer across **Formula 1**, **Formula 2**, and **F1 Academy**. It now also fully integrates the **Formula1-Live** dashboard for real-time live timing, track limits, and race control monitoring.
 
 > **Attribution** — This project builds upon the work of the original f1nsight developers. Data is now powered by the official **[OpenF1 API](https://openf1.org)** and **[Jolpica API](https://jolpi.ca/)**.
 
@@ -53,6 +55,7 @@ F1-Telemetry is a fork of the original [f1nsight](https://github.com/adityakotha
 | **3D Telemetry Viewer** | Follow drivers around the circuit in a synchronised 3D scene with multiple broadcast-style camera angles |
 | **AR Car Viewer**       | High-fidelity 3D car models with Draco / Meshopt compression (90 MB → 23 MB)                             |
 | **2026 Race Calendar**  | Up-to-date schedule covering F1                                                                          |
+| **Live Dashboard**      | A fully integrated, real-time live telemetry dashboard (formerly Formula1-Live) with race control feeds  |
 
 ---
 
@@ -233,6 +236,7 @@ To ensure uninterrupted telemetry viewing during periods of high OpenF1 API traf
 - **Paced Pagination**: Bulk data fetches bypass standard 500-record limits by paginating via timestamps, explicitly injecting a 300ms delay between batch requests to prevent rate limit spikes on the OpenF1 servers.
 
 </details>
+
 <details>  
 <summary><strong>Hybrid API Proxy Environment</strong></summary>
 

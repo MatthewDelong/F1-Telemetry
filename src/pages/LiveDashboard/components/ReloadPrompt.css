@@ -1,0 +1,72 @@
+.ReloadPrompt-container {
+  padding: 0;
+  margin: 0;
+  width: 0;
+  height: 0;
+}
+
+.ReloadPrompt-toast {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  left: 16px; /* Span across mobile */
+  margin: 0;
+  padding: 16px;
+  border: 1px solid var(--border-secondary);
+  border-left: 4px solid var(--f1-red);
+  border-radius: var(--radius-md);
+  z-index: 10000;
+  background-color: var(--bg-elevated);
+  box-shadow: var(--shadow-lg);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .ReloadPrompt-toast {
+    left: auto;
+    min-width: 300px;
+  }
+}
+
+.ReloadPrompt-message {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.ReloadPrompt-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.ReloadPrompt-toast-button {
+  flex: 1;
+  border: 1px solid var(--border-secondary);
+  outline: none;
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  cursor: pointer;
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.ReloadPrompt-toast-button:hover {
+  background-color: var(--bg-card-hover);
+  border-color: var(--text-secondary);
+}
+
+.ReloadPrompt-toast-button.btn-primary {
+  background-color: var(--f1-red);
+  border-color: var(--f1-red);
+  color: white;
+}
+
+.ReloadPrompt-toast-button.btn-primary:hover {
+  background-color: var(--f1-red-dark);
+}

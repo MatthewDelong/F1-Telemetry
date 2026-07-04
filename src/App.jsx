@@ -36,6 +36,7 @@ import {
   PrivacyPolicy,
   Trademarks,
   AdminPage,
+  LiveDashboard,
 } from "./pages";
 import { ScrollToTop } from "./utils/ScrollToTop";
 import { getCurrentYear } from "./utils/currentYear";
@@ -269,6 +270,8 @@ function MainContent({
               />
             }
           />
+          {/* Live Timings Route */}
+          <Route path="/live" element={<LiveDashboard />} />
           {/* Social Media Routes - not publicly available */}
           <Route path="/social-media" element={<SocialMedia />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />

@@ -161,6 +161,15 @@ export const Header = () => {
           <div className="flex items-center gap-16 max-md:hidden">
             <div className="relative w-max uppercase text-lg ">
               <Link
+                to="/live"
+                className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs flex items-center gap-8 text-red-500 hover:text-red-400 transition-colors"
+              >
+                <span className="w-8 h-8 bg-red-600 rounded-full animate-pulse shadow-[0_0_10px_rgba(220,38,38,0.8)]"></span>
+                Live Timings
+              </Link>
+            </div>
+            <div className="relative w-max uppercase text-lg ">
+              <Link
                 to="/about-us"
                 className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs"
               >
@@ -334,6 +343,17 @@ export const Header = () => {
             </Link>
           </div>
           <div className="px-0">
+            <Link
+              to="/live"
+              className="w-full flex justify-between items-center py-4 px-8 tracking-sm uppercase text-lg hover:text-red-400 text-red-500 transition-colors"
+              onClick={toggleOpen}
+            >
+              <div className="flex items-center gap-8">
+                <span className="w-8 h-8 bg-red-600 rounded-full animate-pulse shadow-[0_0_10px_rgba(220,38,38,0.8)]"></span>
+                Live Timings
+              </div>
+            </Link>
+            <div className="divider-glow-dark mt-4 border-t border-neutral-700" />
             <Link
               to="/about-us"
               className="w-full flex justify-between items-center py-4 px-8 tracking-sm uppercase text-lg hover:text-brand-blue-400 transition-colors"
