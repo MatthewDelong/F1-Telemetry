@@ -251,17 +251,21 @@ if ($source === 'f1') {
     $data = fetchUrl($baseUrl . $requestPath, 15, $lastError, $headers);
 } else if ($source === 'f1a' || $source === 'f2') {
     $fileName = basename($pathWithoutQuery);
+    $is2026OrGlobal = (strpos($pathWithoutQuery, '/2026/') !== false) || 
+                      (strpos($pathWithoutQuery, 'races.json') !== false) || 
+                      (strpos($pathWithoutQuery, 'racesbyMK.json') !== false);
+                      
     $urlsToTry = [];
     if ($source === 'f1a') {
-        $urlsToTry = [
-            'https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1a/' . $fileName => 5,
-            'https://raw.githubusercontent.com/MatthewDelong/f1aapi/main/' . $path => 5,
-        ];
+        if ($is2026OrGlobal) {
+            $urlsToTry['https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1a/' . $fileName] = 5;
+        }
+        $urlsToTry['https://raw.githubusercontent.com/MatthewDelong/f1aapi/main/' . $path] = 5;
     } else {
-        $urlsToTry = [
-            'https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f2/' . $fileName => 5,
-            'https://raw.githubusercontent.com/MatthewDelong/f2api/main/' . $path => 5,
-        ];
+        if ($is2026OrGlobal) {
+            $urlsToTry['https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f2/' . $fileName] = 5;
+        }
+        $urlsToTry['https://raw.githubusercontent.com/MatthewDelong/f2api/main/' . $path] = 5;
     }
 
     foreach ($urlsToTry as $url => $timeout) {
