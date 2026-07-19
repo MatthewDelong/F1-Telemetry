@@ -2,7 +2,7 @@
     "driverId": "stroll",
     "driverCode": "STR",
     "driverNumber": "18",
-    "lastUpdate": "2026-06-28T19:21:17.212778",
+    "lastUpdate": "2026-07-19T20:19:10.472903",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -43,7 +43,9 @@
             "Canadian Grand Prix": "1:18.721",
             "Monaco Grand Prix": "1:18.845",
             "Barcelona Grand Prix": "1:25.904",
-            "Austrian Grand Prix": "1:13.796"
+            "Austrian Grand Prix": "1:13.796",
+            "British Grand Prix": "1:37.232",
+            "Belgian Grand Prix": "1:53.980"
         }
     },
     "finalStandings": {
@@ -80,6 +82,12 @@
                 },
                 "Austrian Grand Prix": {
                     "points": 0
+                },
+                "British Grand Prix": {
+                    "points": 0
+                },
+                "Belgian Grand Prix": {
+                    "points": 0
                 }
             }
         }
@@ -95,7 +103,9 @@
                 "Canadian Grand Prix": "15",
                 "Monaco Grand Prix": "18",
                 "Barcelona Grand Prix": "22",
-                "Austrian Grand Prix": "19"
+                "Austrian Grand Prix": "19",
+                "British Grand Prix": "19",
+                "Belgian Grand Prix": "20"
             }
         }
     },
@@ -110,7 +120,9 @@
                 "Canadian Grand Prix": "22",
                 "Monaco Grand Prix": "22",
                 "Barcelona Grand Prix": "21",
-                "Austrian Grand Prix": "22"
+                "Austrian Grand Prix": "22",
+                "British Grand Prix": "22",
+                "Belgian Grand Prix": "20"
             }
         }
     },
@@ -152,6 +164,16 @@
                     "1:10.363",
                     "N/A",
                     "N/A"
+                ],
+                "British Grand Prix": [
+                    "1:32.863",
+                    "N/A",
+                    "N/A"
+                ],
+                "Belgian Grand Prix": [
+                    "1:50.177",
+                    "N/A",
+                    "N/A"
                 ]
             }
         }
@@ -191,10 +213,10 @@
         }
     },
     "avgRacePositions": {
-        "2026": 18.375
+        "2026": 18.6
     },
     "avgQualiPositions": {
-        "2026": 21.125
+        "2026": 21.1
     },
     "rates": {
         "wins": {
@@ -207,13 +229,13 @@
             "2026": 0.0
         },
         "DNFs": {
-            "2026": 0.625
+            "2026": 0.5
         }
     },
     "winRate": 0.0,
     "podiumRate": 0.0,
     "poleRate": 0.0,
-    "dnfRate": 0.625,
+    "dnfRate": 0.5,
     "ptwConRate": {
         "2026": -1
     },
@@ -226,7 +248,9 @@
             "Canadian Grand Prix": 7,
             "Monaco Grand Prix": 4,
             "Barcelona Grand Prix": -1,
-            "Austrian Grand Prix": 3
+            "Austrian Grand Prix": 3,
+            "British Grand Prix": 3,
+            "Belgian Grand Prix": 0
         }
     }
 }
