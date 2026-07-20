@@ -43,15 +43,30 @@ export const AdminPage = () => {
   };
 
   const clearCache = async () => {
-    if (!window.confirm('Are you sure you want to clear all backend caches?')) return;
+    if (!window.confirm('Are you sure you want to clear all backend and browser caches?')) return;
     setLoading(true);
-    addLog('Clearing local backend caches...');
+    addLog('Clearing backend caches...');
     try {
       const res = await axios.get('/api/admin/clear-cache');
-      addLog(`Success:\n${res.data.message}`);
+      addLog(`Backend Success:\n${res.data.message}`);
     } catch (e) {
-      addLog(`Error clearing local cache:\n${e.response?.data?.error || e.message}`);
+      addLog(`Error clearing backend cache:\n${e.response?.data?.error || e.message}`);
     }
+    
+    addLog('Clearing browser localStorage caches...');
+    try {
+      let clearedCount = 0;
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('f1_cache_')) {
+          localStorage.removeItem(key);
+          clearedCount++;
+        }
+      });
+      addLog(`Browser Cache Success: Cleared ${clearedCount} items from localStorage.`);
+    } catch (e) {
+      addLog(`Error clearing browser cache:\n${e.message}`);
+    }
+    
     setLoading(false);
   };
 
@@ -73,7 +88,7 @@ export const AdminPage = () => {
       
       for (const url of endpoints) {
         try {
-          await axios.get(url);
+          await fetch(url, { mode: 'no-cors' });
           const path = url.split('path=')[1].split('&')[0];
           addLog(`Flushed live cache for: ${path}`);
         } catch(e) {
