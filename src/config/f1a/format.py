@@ -27,7 +27,9 @@ for idx, season_data in enumerate(data):
     lines.append('        "raceName": "' + season_data['raceName'] + '",')
     lines.append('        "Circuit": {')
     lines.append('            "circuitId": "' + season_data['Circuit']['circuitId'] + '",')
-    lines.append('            "circuitName": "' + season_data['Circuit']['circuitName'] + '"')
+    c_name = season_data['Circuit']['circuitName']
+    c_name_str = c_name.get('CircuitName', '') if isinstance(c_name, dict) else str(c_name)
+    lines.append('            "circuitName": "' + c_name_str + '"')
     lines.append('        },')
     lines.append('        "Results": {')
     lines.append('            "race1": ' + format_race_results(season_data['Results'].get('race1', [])) + ',')

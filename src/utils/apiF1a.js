@@ -58,7 +58,20 @@ const enrichDriverData = (raceData, driverInfo) => {
         driverDetails,
         availableDrivers: Object.keys(driverInfo || {}),
       });
-      return driver;
+      return {
+        ...driver,
+        Driver: {
+          driverId: `wildcard_${driver.number}`,
+          permanentNumber: driver.number,
+          code: "WLD",
+          givenName: "Wildcard",
+          familyName: "Driver"
+        },
+        Constructor: {
+          constructorId: "wildcard",
+          name: "Wildcard Entry"
+        }
+      };
     }
     return {
       ...driver,

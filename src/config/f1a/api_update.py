@@ -170,13 +170,29 @@ def main():
     country_name = page_data.get('CountryName', '')
     race_name = country_name + " Grand Prix"
     
+    circuit_info = page_data.get('CircuitInformation', '')
+    circuit_name = circuit_info.get('CircuitName', '') if isinstance(circuit_info, dict) else str(circuit_info)
+    
+    c_map = {
+        "China": "shanghai",
+        "Saudi Arabia": "jeddah",
+        "Miami": "miami",
+        "Canada": "villeneuve",
+        "Netherlands": "zandvoort",
+        "Singapore": "marina_bay",
+        "Las Vegas": "las_vegas",
+        "Great Britain": "silverstone",
+        "Spain": "barcelona"
+    }
+    circuit_id = c_map.get(country_name, country_name.lower().replace(' ', '_'))
+    
     new_round = {
         "season": season,
         "round": round_number,
         "raceName": race_name,
         "Circuit": {
-            "circuitId": country_name.lower().replace(' ', '_'),
-            "circuitName": page_data.get('CircuitInformation', '')
+            "circuitId": circuit_id,
+            "circuitName": circuit_name
         },
         "Results": new_results
     }
