@@ -23,21 +23,22 @@ export function DriverStandingsF1a({ selectedYear, championshipLevel }) {
       setDriverRacePoints(driverPointsByRace);
       setRacesMeta(racesMeta);
 
+      let driverStandings = [];
+
       if (Number(selectedYear) >= 2025) {
         const { formattedDrivers } = calculateSeriesPoints2025(
           allRaceResults,
           championshipLevel,
         );
-        setStandings(formattedDrivers);
+        driverStandings = formattedDrivers;
       } else {
         const driverPoints = {};
-        // Aggregate points for each driver
         allRaceResults.forEach((race) => {
           ["race1", "race2", "race3"].forEach((raceKey) => {
+            if (!race[raceKey]) return;
             race[raceKey].forEach((result) => {
               const driverId = result.Driver.driverId;
               const points = parseInt(result.points, 10);
-
               if (!driverPoints[driverId]) {
                 driverPoints[driverId] = {
                   ...result.Driver,
@@ -48,12 +49,33 @@ export function DriverStandingsF1a({ selectedYear, championshipLevel }) {
             });
           });
         });
-        // Convert to array and sort by points in descending order
-        const sortedDrivers = Object.values(driverPoints).sort(
+        driverStandings = Object.values(driverPoints).sort(
           (a, b) => b.points - a.points,
         );
-        setStandings(sortedDrivers);
       }
+
+      try {
+        const offRes = await fetch(`/api/proxy/${championshipLevel.toLowerCase()}/official_driver_standings.json`);
+        if (offRes.ok) {
+          const officialStandings = await offRes.json();
+          if (officialStandings && officialStandings.length > 0) {
+            driverStandings = driverStandings.map(d => {
+              const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(' jr.', '').replace('ue', 'u');
+              const ln = norm(d.familyName || d.driverId);
+              const match = officialStandings.find(x => norm(x.name).includes(ln));
+              if (match) {
+                return { ...d, points: match.points };
+              }
+              return d;
+            });
+            driverStandings.sort((a, b) => b.points - a.points);
+          }
+        }
+      } catch (e) {
+        console.warn("Could not load official driver standings", e);
+      }
+
+      setStandings(driverStandings);
       setIsLoading(false);
     };
 

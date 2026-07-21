@@ -8,8 +8,8 @@ const scoringConfigs = {
     featureKey: 'race2',
     sprintPoints: [10, 8, 6, 5, 4, 3, 2, 1],
     featurePoints: [25, 18, 15, 12, 10, 8, 6, 4, 2, 1],
-    fastestLapEligibility: { race1: 8, race2: 10 },
-    poleBonusRace: 'race2',
+    fastestLapEligibility: { race1: 10, race2: 10 },
+    poleBonusRace: 'both',
   },
   F2: {
     rescheduledFeatureKey: 'race0', // rescheduled race
@@ -40,11 +40,9 @@ export const calculateSeriesPoints2025 = (allRaceResults, championshipLevel) => 
     const raceSeason = Number(race?.season);
     const wildcardCodesForSeason = wildCardDrivers[raceSeason] || [];
 
-    // If a round only has race1 results, treat it as a feature race
     const hasRace1 = Array.isArray(race[config.sprintKey]) && race[config.sprintKey].length > 0;
     const hasRace2 = Array.isArray(race[config.featureKey]) && race[config.featureKey].length > 0;
     const hasRace3 = Array.isArray(race.race3) && race.race3.length > 0;
-    const isSingleRaceEvent = hasRace1 && !hasRace2;
 
     let raceMap = {};
     if (hasRace3) {
@@ -63,8 +61,8 @@ export const calculateSeriesPoints2025 = (allRaceResults, championshipLevel) => 
     } else {
       raceMap = {
         [config.sprintKey]: {
-          points: isSingleRaceEvent ? config.featurePoints : config.sprintPoints,
-          fastestLapLimit: isSingleRaceEvent ? config.fastestLapEligibility[config.featureKey] : config.fastestLapEligibility[config.sprintKey]
+          points: config.sprintPoints,
+          fastestLapLimit: config.fastestLapEligibility[config.sprintKey]
         },
         [config.featureKey]: {
           points: config.featurePoints,
@@ -147,7 +145,7 @@ export const calculateSeriesPoints2025 = (allRaceResults, championshipLevel) => 
 
         // Sort scores descending by points and sum all non-wildcard drivers for constructors
         teamData.scores.sort((a, b) => b.points - a.points);
-        const eligibleScores = teamData.scores;
+        const eligibleScores = championshipLevel === "F1A" ? teamData.scores.slice(0, 2) : teamData.scores;
 
         eligibleScores.forEach(score => {
           constructorPoints[constructorId].points += score.points;
@@ -157,7 +155,8 @@ export const calculateSeriesPoints2025 = (allRaceResults, championshipLevel) => 
     });
 
     // Pole bonus for Feature Race
-    const poleBonusRaces = hasRace3 ? [race.race3] : [isSingleRaceEvent ? race[config.sprintKey] : race[config.featureKey]];
+    let poleBonusRaces = [];
+    poleBonusRaces = hasRace3 ? [race.race3] : [race[config.featureKey]];
     
     poleBonusRaces.forEach(poleBonusResults => {
       if (Array.isArray(poleBonusResults)) {

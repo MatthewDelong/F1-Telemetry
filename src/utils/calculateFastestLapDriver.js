@@ -8,12 +8,9 @@ export function calculateFastestLapDriver(results, eligibleLimit) {
   let fastestLapDriverNumber = null;
 
   results.forEach((result) => {
-    const finishPosition = parseInt(result?.position, 10);
-    const isEligiblePosition =
-      Number.isFinite(finishPosition) &&
-      finishPosition >= 1 &&
-      finishPosition <= eligibleLimit;
-    if (!isEligiblePosition) return;
+    // Check eligibility first
+    const pos = parseInt(result.position);
+    if (!Number.isFinite(pos) || pos < 1 || pos > eligibleLimit) return;
 
     const lapTime = result.FastestLap?.Time?.time;
     if (!lapTime) return;

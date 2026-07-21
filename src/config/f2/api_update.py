@@ -75,7 +75,7 @@ def format_race(data, pole_car_number=None):
             res.pop("gap", None)
             
         best_time = d.get('Best', '')
-        if best_time and time_val != "":
+        if best_time:
             res["FastestLap"] = {
                 "rank": "1" if is_fastest else "",
                 "lap": str(d.get('BestLap', '1')),

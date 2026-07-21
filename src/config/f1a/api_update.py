@@ -18,7 +18,7 @@ def parse_time(t_str):
     except:
         return float('inf')
 
-def format_race(data):
+def format_race(data, pole_car_number=None):
     if not data:
         return []
     
@@ -63,6 +63,9 @@ def format_race(data):
             "Time": { "time": time_val }
         }
         
+        if pole_car_number and res["number"] == pole_car_number:
+            res["grid"] = "1"
+        
         if pos == "1":
             res["gap"] = "-"
             
@@ -71,7 +74,7 @@ def format_race(data):
             res.pop("gap", None)
             
         best_time = d.get('Best', '')
-        if best_time and time_val != "":
+        if best_time:
             res["FastestLap"] = {
                 "rank": "1" if is_fastest else "",
                 "lap": str(d.get('BestLap', '1')),
@@ -138,6 +141,29 @@ def main():
             races_data['reverse'] = results
         elif 'feature' in name or 'race 3' in name:
             races_data['feature'] = results
+        elif 'qualifying' in name:
+            races_data['qualifying'] = results
+
+    fastest_quali_time = float('inf')
+    pole_car_number = None
+
+    def time_to_ms(t_str):
+        if not t_str: return float('inf')
+        parts = t_str.split(':')
+        if len(parts) == 2:
+            return float(parts[0]) * 60 * 1000 + float(parts[1]) * 1000
+        try:
+            return float(t_str) * 1000
+        except:
+            return float('inf')
+
+    if 'qualifying' in races_data:
+        for res in races_data['qualifying']:
+            if str(res.get('FinishPosition', '')) == '1' or str(res.get('DisplayFinishPosition', '')) == '1':
+                t = time_to_ms(res.get('Best', ''))
+                if t < fastest_quali_time:
+                    fastest_quali_time = t
+                    pole_car_number = str(res.get('CarNumber', ''))
             
     if not races_data:
         print("No Race results found in the data.")
@@ -147,19 +173,21 @@ def main():
     new_results = {}
     if 'opening' in races_data and 'reverse' in races_data and 'feature' in races_data:
         # 3 Races Weekend
-        new_results['race1'] = format_race(races_data['opening'])
+        new_results['race1'] = format_race(races_data['opening'], pole_car_number=pole_car_number)
         new_results['race2'] = format_race(races_data['reverse'])
-        new_results['race3'] = format_race(races_data['feature'])
+        new_results['race3'] = format_race(races_data['feature'], pole_car_number=pole_car_number)
     elif 'reverse' in races_data and 'feature' in races_data:
         # 2 Races Weekend
         new_results['race1'] = format_race(races_data['reverse'])
-        new_results['race2'] = format_race(races_data['feature'])
+        new_results['race2'] = format_race(races_data['feature'], pole_car_number=pole_car_number)
     else:
         # Fallback if names are slightly different or only 1 race exists
         count = 1
         for k in ['opening', 'reverse', 'feature']:
             if k in races_data:
-                new_results[f'race{count}'] = format_race(races_data[k])
+                # Apply pole only to the first and last found to be safe, or just opening/feature
+                is_pole_race = k in ['opening', 'feature']
+                new_results[f'race{count}'] = format_race(races_data[k], pole_car_number=pole_car_number if is_pole_race else None)
                 count += 1
         
     season = str(page_data.get('SeasonName', '2026'))

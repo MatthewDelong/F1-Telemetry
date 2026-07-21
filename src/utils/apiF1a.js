@@ -1,7 +1,8 @@
-import { sortByPosition } from './raceUtils';
+import { sortByPosition } from './raceUtils.js';
 
-export const BASE_F1A_URL = import.meta.env.PROD ? '/api.php?source=f1a&path=' : '/api/proxy/f1a/';
-export const BASE_F2_URL = import.meta.env.PROD ? '/api.php?source=f2&path=' : '/api/proxy/f2/';
+const isProd = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.PROD : false;
+export const BASE_F1A_URL = isProd ? '/api.php?source=f1a&path=' : '/api/proxy/f1a/';
+export const BASE_F2_URL = isProd ? '/api.php?source=f2&path=' : '/api/proxy/f2/';
 
 export const getSeriesBaseUrl = (championshipLevel) =>
   championshipLevel === 'F1A' ? BASE_F1A_URL : BASE_F2_URL;
@@ -141,6 +142,7 @@ export const fetchAllRaceResults = async (year, championshipLevel) => {
       let race3Results = race.Results.race3 ? enrichDriverData(race.Results.race3, driverInfo) : [];
 
       return {
+        season: race.season,
         raceName: race.raceName,
         circuitId: race.Circuit.circuitId,
         race0: race0Results,

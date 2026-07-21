@@ -25,22 +25,24 @@ export function ConstructorStandingsF1a({ selectedYear, championshipLevel }) {
       setConstructorRacePoints(constructorPointsByRace);
       setRacesMeta(racesMeta);
 
+      let constructorStandings = [];
+
       if (Number(selectedYear) >= 2025) {
         const { formattedConstructors } = calculateSeriesPoints2025(
           allRaceResults,
           championshipLevel,
         );
-        setStandings(formattedConstructors);
+        constructorStandings = formattedConstructors;
       } else {
         const constructorPoints = {};
         // Aggregate points for each constructor and store driver codes
         allRaceResults.forEach((race) => {
           ["race1", "race2", "race3"].forEach((raceKey) => {
+            if (!race[raceKey]) return;
             race[raceKey].forEach((result) => {
               const constructorId = result.Constructor.constructorId;
               const points = parseInt(result.points, 10);
               const driverCode = result.Driver.code;
-
 
               if (!constructorPoints[constructorId]) {
                 constructorPoints[constructorId] = {
@@ -61,12 +63,33 @@ export function ConstructorStandingsF1a({ selectedYear, championshipLevel }) {
           );
         });
         // Convert to array and sort by points in descending order
-        const sortedConstructors = Object.values(constructorPoints).sort(
+        constructorStandings = Object.values(constructorPoints).sort(
           (a, b) => b.points - a.points,
         );
-        // console.log('ConstructorStandingsF1a', sortedConstructors, constructorDrivers);
-        setStandings(sortedConstructors);
       }
+
+      try {
+        const offRes = await fetch(`/api/proxy/${championshipLevel.toLowerCase()}/official_team_standings.json`);
+        if (offRes.ok) {
+          const officialStandings = await offRes.json();
+          if (officialStandings && officialStandings.length > 0) {
+            constructorStandings = constructorStandings.map(c => {
+              const norm = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+              const cn = norm(c.name || c.constructorId);
+              const match = officialStandings.find(x => norm(x.name).includes(cn) || cn.includes(norm(x.name).substring(0, 5)));
+              if (match) {
+                return { ...c, points: match.points };
+              }
+              return c;
+            });
+            constructorStandings.sort((a, b) => b.points - a.points);
+          }
+        }
+      } catch (e) {
+        console.warn("Could not load official team standings", e);
+      }
+
+      setStandings(constructorStandings);
       setIsLoading(false);
     };
 
