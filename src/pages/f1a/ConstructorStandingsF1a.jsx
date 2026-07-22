@@ -79,7 +79,7 @@ export function ConstructorStandingsF1a({ selectedYear, championshipLevel }) {
             constructorStandings = constructorStandings.map(c => {
               const norm = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
               const cn = norm(c.name || c.constructorId);
-              const match = officialStandings.find(x => norm(x.name).includes(cn) || cn.includes(norm(x.name).substring(0, 5)));
+              const match = officialStandings.find(x => norm(x.name).startsWith(cn) || cn.startsWith(norm(x.name).substring(0, 5)));
               if (match) {
                 return { ...c, points: match.points };
               }
