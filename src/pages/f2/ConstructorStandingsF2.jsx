@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { fetchAllRaceResults } from "../../utils/apiF1a";
+import { fetchAllRaceResults, getSeriesBaseUrl } from "../../utils/apiF1a";
 import { ConstructorCarF2, Loading } from "../../components";
 import { calculateSeriesPoints2025 } from "../../utils/calculateSeriesPoints2025";
 import { PointsByRaceDropdown } from "../../components/PointsByRaceDropdown";
@@ -32,7 +32,10 @@ export function ConstructorStandingsF2({ selectedYear, championshipLevel }) {
       let constructorStandings = formattedConstructors;
       
       try {
-        const offRes = await fetch(`/api/proxy/${championshipLevel.toLowerCase()}/official_team_standings.json`);
+        let offRes = await fetch(`${getSeriesBaseUrl(championshipLevel)}official_team_standings.json`);
+        if (!offRes.ok) {
+          offRes = await fetch(`https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/official_team_standings.json`);
+        }
         if (offRes.ok) {
           const officialStandings = await offRes.json();
           if (officialStandings && officialStandings.length > 0) {
