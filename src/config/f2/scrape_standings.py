@@ -17,6 +17,7 @@ def parse_standings(url):
             st = data.get('props', {}).get('pageProps', {}).get('pageData', {}).get('Standings', [])
             for item in st:
                 name = item.get('FullName') or item.get('DisplayName') or item.get('TeamName') or str(item.get('Position'))
+                name = re.sub(r'^\d+', '', name).strip()
                 pts = item.get('TotalPoints', 0)
                 standings.append({"name": name, "points": pts})
             return standings
@@ -39,6 +40,7 @@ def parse_standings(url):
                 total_points = tds[-1].text.strip()
                 
             try:
+                name = re.sub(r'^\d+', '', name).strip()
                 pts = float(total_points) if '.' in total_points else int(total_points)
                 standings.append({
                     "name": name,

@@ -19,6 +19,7 @@ const scoringConfigs = {
     featurePoints: [25, 18, 15, 12, 10, 8, 6, 4, 2, 1],
     fastestLapEligibility: { race1: 10, race2: 10 },
     poleBonusRace: 'race2',
+    usePrecalculatedPoints: true,
   },
 };
 
@@ -109,7 +110,10 @@ export const calculateSeriesPoints2025 = (allRaceResults, championshipLevel) => 
           fastestLapPointAwarded = true;
         }
 
-        const totalDriverPoints = pointsFromFinish + fastestLapPoint;
+        let totalDriverPoints = pointsFromFinish + fastestLapPoint;
+        if (result.points !== undefined) {
+          totalDriverPoints = Number(result.points);
+        }
 
         // Add to driver standings
         if (!driverPoints[driverId]) {
@@ -168,7 +172,9 @@ export const calculateSeriesPoints2025 = (allRaceResults, championshipLevel) => 
           const constructorId = resolvedPoleConstructor?.constructorId;
           const code = resolvedPoleDriver?.code;
           
-          if (driverId) {
+          const hasPrecalculatedPoints = poleBonusResults.some(r => r?.points !== undefined);
+          
+          if (driverId && !hasPrecalculatedPoints) {
             if (!driverPoints[driverId]) {
               driverPoints[driverId] = { ...resolvedPoleDriver, points: 0 };
             }

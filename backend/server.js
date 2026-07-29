@@ -594,7 +594,13 @@ app.post('/api/admin/update/f2', requireAdmin, (req, res) => {
       if (fmtError) {
         return res.status(500).json({ error: fmtError.message, stderr: fmtStderr, partialOutput: stdout });
       }
-      res.json({ message: 'F2 Data updated successfully', output: stdout + '\n' + fmtStdout });
+      // Run scrape_standings.py
+      execFile('py', ['scrape_standings.py'], { cwd: scriptPath }, (scrapeError, scrapeStdout, scrapeStderr) => {
+        if (scrapeError) {
+           return res.status(500).json({ error: scrapeError.message, stderr: scrapeStderr, partialOutput: stdout + '\n' + fmtStdout });
+        }
+        res.json({ message: 'F2 Data updated successfully', output: stdout + '\n' + fmtStdout + '\n' + scrapeStdout });
+      });
     });
   });
 });

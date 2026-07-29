@@ -14,8 +14,10 @@ def map_result(data):
     laps = str(data.get('lapsCompleted', '0'))
     time_val = str(data.get('raceTime') or data.get('completionStatusCode') or "")
     
-    if pos == "" or pos == "None" or int(pos) > 40:
+    if pos == "" or pos == "None" or (pos.isdigit() and int(pos) > 40):
         pos = "DNF"
+    elif not pos.isdigit():
+        pass # keep it as NC, DSQ, etc
         
     status = "Finished"
     if "DNF" in time_val.upper() or pos == "DNF" or "DNF" in str(data.get('displayPosition', '')).upper():
@@ -33,6 +35,7 @@ def map_result(data):
         "laps": laps,
         "gap": gap,
         "status": status,
+        "points": str(data.get('racePoints', '0')),
         "Time": { "time": time_val }
     }
     
@@ -175,10 +178,13 @@ def main():
         
         browser.close()
         
+    with open('raw_dump.json', 'w') as f:
+        json.dump(all_json_objects, f)
+        
     unique_sessions = {}
     for obj in all_json_objects:
         name = obj.get('shortName')
-        if name:
+        if name in ['Sprint Race', 'Feature Race', 'Qualifying']:
             if not unique_sessions.get(name) or len(obj.get('results', [])) > len(unique_sessions[name].get('results', [])):
                 unique_sessions[name] = obj
             
@@ -205,6 +211,20 @@ def main():
         print("No Sprint Race or Feature Race results found in the data.")
         sys.exit(1)
         
+    qualifying_data = unique_sessions.get('Qualifying', {}).get('results', [])
+    pole_number = None
+    for r in qualifying_data:
+        if str(r.get('positionValue', '')) == '1':
+            pole_number = str(r.get('racingNumber'))
+            break
+            
+    if pole_number:
+        for r in feature_data:
+            if r.get('number') == pole_number:
+                current_points = int(float(r.get('points', '0')))
+                r['points'] = str(current_points + 2)
+                break
+        
     # Extract round info from URL
     parts = url.strip('/').split('/')
     season = "2026"
@@ -216,6 +236,25 @@ def main():
             season = p
             
     circuit_id = parts[-1].lower()
+    
+    # Map F2 slugs to internal circuit IDs
+    c_map = {
+        "sakhir": "bahrain",
+        "melbourne": "albert_park",
+        "jeddah": "jeddah",
+        "imola": "imola",
+        "monaco": "monaco",
+        "barcelona": "catalunya",
+        "spielberg": "red_bull_ring",
+        "silverstone": "silverstone",
+        "spa-francorchamps": "spa",
+        "budapest": "budapest",
+        "monza": "monza",
+        "baku": "baku",
+        "lusail": "losail",
+        "yas-island": "yas_marina"
+    }
+    circuit_id = c_map.get(circuit_id, circuit_id)
     
     new_round = {
         "season": season,
