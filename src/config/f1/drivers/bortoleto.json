@@ -2,7 +2,7 @@
     "driverId": "bortoleto",
     "driverCode": "BOR",
     "driverNumber": "5",
-    "lastUpdate": "2026-07-20T13:58:07.321522",
+    "lastUpdate": "2026-07-29T18:02:22.319544",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -44,7 +44,8 @@
             "Barcelona Grand Prix": "1:21.446",
             "Austrian Grand Prix": "1:11.866",
             "British Grand Prix": "1:33.650",
-            "Belgian Grand Prix": "1:50.334"
+            "Belgian Grand Prix": "1:50.334",
+            "Hungarian Grand Prix": "1:24.783"
         }
     },
     "finalStandings": {
@@ -87,6 +88,9 @@
                 },
                 "Belgian Grand Prix": {
                     "points": 10
+                },
+                "Hungarian Grand Prix": {
+                    "points": 10
                 }
             }
         }
@@ -104,7 +108,8 @@
                 "Barcelona Grand Prix": "11",
                 "Austrian Grand Prix": "11",
                 "British Grand Prix": "8",
-                "Belgian Grand Prix": "8"
+                "Belgian Grand Prix": "8",
+                "Hungarian Grand Prix": "11"
             }
         }
     },
@@ -121,7 +126,8 @@
                 "Barcelona Grand Prix": "12",
                 "Austrian Grand Prix": "12",
                 "British Grand Prix": "11",
-                "Belgian Grand Prix": "8"
+                "Belgian Grand Prix": "8",
+                "Hungarian Grand Prix": "14"
             }
         }
     },
@@ -178,6 +184,11 @@
                     "1:46.609",
                     "1:46.082",
                     "1:45.628"
+                ],
+                "Hungarian Grand Prix": [
+                    "1:19.069",
+                    "1:19.105",
+                    "N/A"
                 ]
             }
         }
@@ -217,10 +228,10 @@
         }
     },
     "avgRacePositions": {
-        "2026": 11.7
+        "2026": 11.636363636363637
     },
     "avgQualiPositions": {
-        "2026": 12.8
+        "2026": 12.909090909090908
     },
     "rates": {
         "wins": {
@@ -233,13 +244,13 @@
             "2026": 0.0
         },
         "DNFs": {
-            "2026": 0.4
+            "2026": 0.36363636363636365
         }
     },
     "winRate": 0.0,
     "podiumRate": 0.0,
     "poleRate": 0.0,
-    "dnfRate": 0.4,
+    "dnfRate": 0.36363636363636365,
     "ptwConRate": {
         "2026": -1
     },
@@ -254,7 +265,8 @@
             "Barcelona Grand Prix": 1,
             "Austrian Grand Prix": 1,
             "British Grand Prix": 3,
-            "Belgian Grand Prix": 0
+            "Belgian Grand Prix": 0,
+            "Hungarian Grand Prix": 3
         }
     }
 }

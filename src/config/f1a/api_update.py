@@ -118,7 +118,7 @@ def main():
     match = re.search(r'<script id="__NEXT_DATA__" type="application/json">([\s\S]*?)</script>', html)
     if not match:
         print("Could not find __NEXT_DATA__ in the page")
-        return
+        sys.exit(1)
         
     next_data = json.loads(match.group(1))
     page_data = next_data.get('props', {}).get('pageProps', {}).get('pageData', {})

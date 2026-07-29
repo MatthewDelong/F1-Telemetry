@@ -2,7 +2,7 @@
     "driverId": "arvid_lindblad",
     "driverCode": "LIN",
     "driverNumber": "41",
-    "lastUpdate": "2026-07-20T13:58:07.321545",
+    "lastUpdate": "2026-07-29T18:02:22.319508",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -44,14 +44,15 @@
             "Barcelona Grand Prix": "1:21.914",
             "Austrian Grand Prix": "1:11.587",
             "British Grand Prix": "1:33.632",
-            "Belgian Grand Prix": "1:50.536"
+            "Belgian Grand Prix": "1:50.536",
+            "Hungarian Grand Prix": "1:25.931"
         }
     },
     "finalStandings": {
         "2026": {
             "year": "2026",
             "position": "11",
-            "points": "22"
+            "points": "23"
         }
     },
     "posAfterRace": {
@@ -59,34 +60,37 @@
             "year": "2026",
             "pos": {
                 "Australian Grand Prix": {
-                    "points": 22
+                    "points": 23
                 },
                 "Chinese Grand Prix": {
-                    "points": 22
+                    "points": 23
                 },
                 "Japanese Grand Prix": {
-                    "points": 22
+                    "points": 23
                 },
                 "Miami Grand Prix": {
-                    "points": 22
+                    "points": 23
                 },
                 "Canadian Grand Prix": {
-                    "points": 22
+                    "points": 23
                 },
                 "Monaco Grand Prix": {
-                    "points": 22
+                    "points": 23
                 },
                 "Barcelona Grand Prix": {
-                    "points": 22
+                    "points": 23
                 },
                 "Austrian Grand Prix": {
-                    "points": 22
+                    "points": 23
                 },
                 "British Grand Prix": {
-                    "points": 22
+                    "points": 23
                 },
                 "Belgian Grand Prix": {
-                    "points": 22
+                    "points": 23
+                },
+                "Hungarian Grand Prix": {
+                    "points": 23
                 }
             }
         }
@@ -104,7 +108,8 @@
                 "Barcelona Grand Prix": "9",
                 "Austrian Grand Prix": "10",
                 "British Grand Prix": "7",
-                "Belgian Grand Prix": "9"
+                "Belgian Grand Prix": "9",
+                "Hungarian Grand Prix": "10"
             }
         }
     },
@@ -121,7 +126,8 @@
                 "Barcelona Grand Prix": "11",
                 "Austrian Grand Prix": "10",
                 "British Grand Prix": "9",
-                "Belgian Grand Prix": "7"
+                "Belgian Grand Prix": "7",
+                "Hungarian Grand Prix": "9"
             }
         }
     },
@@ -178,6 +184,11 @@
                     "1:46.191",
                     "1:45.629",
                     "1:45.143"
+                ],
+                "Hungarian Grand Prix": [
+                    "1:19.233",
+                    "1:18.360",
+                    "1:18.281"
                 ]
             }
         }
@@ -187,7 +198,7 @@
             "wins": 0.0,
             "podiums": 0.0,
             "poles": 0.0,
-            "points": 22.0
+            "points": 23.0
         },
         "std": {
             "wins": 0.0,
@@ -217,10 +228,10 @@
         }
     },
     "avgRacePositions": {
-        "2026": 11.2
+        "2026": 11.090909090909092
     },
     "avgQualiPositions": {
-        "2026": 11.1
+        "2026": 10.909090909090908
     },
     "rates": {
         "wins": {
@@ -233,13 +244,13 @@
             "2026": 0.0
         },
         "DNFs": {
-            "2026": 0.4
+            "2026": 0.36363636363636365
         }
     },
     "winRate": 0.0,
     "podiumRate": 0.0,
     "poleRate": 0.0,
-    "dnfRate": 0.4,
+    "dnfRate": 0.36363636363636365,
     "ptwConRate": {
         "2026": -1
     },
@@ -254,7 +265,8 @@
             "Barcelona Grand Prix": 2,
             "Austrian Grand Prix": 0,
             "British Grand Prix": 2,
-            "Belgian Grand Prix": -2
+            "Belgian Grand Prix": -2,
+            "Hungarian Grand Prix": -1
         }
     }
 }
