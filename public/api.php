@@ -2,6 +2,7 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: https://f1-telemetry.co.uk');
 header('Access-Control-Allow-Methods: GET');
+header('X-API-Version: 2.1');
 
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
@@ -192,7 +193,7 @@ if ($source === 'f1') {
     $localPath = __DIR__ . '/' . $pathWithoutQuery;
     $realLocal = realpath($localPath);
     $realBase = realpath(__DIR__);
-    if ($realLocal && $realBase && strpos($realLocal, $realBase) === 0 
+    if (!$flush && $realLocal && $realBase && strpos($realLocal, $realBase) === 0 
         && preg_match('/\.json$/', $realLocal) && file_exists($realLocal)) {
         $data = file_get_contents($realLocal);
     }
