@@ -502,7 +502,7 @@ app.get("/openf1/*", async (req, res) => {
     try {
       const headers = { 
         Accept: "application/json",
-        'Origin': 'https://f1-telemetry.com' // Spoof origin to satisfy worker restrictions
+        'Origin': 'https://f1-telemetry.co.uk' // Spoof origin to satisfy worker restrictions
       };
 
       const response = await axios.get(targetUrl, {

@@ -241,7 +241,7 @@ if ($source === 'f1') {
     $requestPath = ltrim($path, '/');
     
     $headers = [
-        'Origin' => 'https://f1-telemetry.com' // Spoof origin to satisfy worker restrictions
+        'Origin' => 'https://f1-telemetry.co.uk' // Spoof origin to satisfy worker restrictions
     ];
     
     $data = fetchUrl($baseUrl . $requestPath, 15, $lastError, $headers);
