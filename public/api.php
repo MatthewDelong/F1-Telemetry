@@ -215,11 +215,6 @@ if ($source === 'f1') {
                     $year = $m[1];
                     $file = $m[2];
                     $pathVariations[] = "{$year}/{$file}";
-                    
-                    // Special mapping for main repository flat structure (2026)
-                    if (strpos($baseUrl, 'F1-Telemetry') !== false && $year === '2026') {
-                        $pathVariations = [$file]; // Priority for root file in 2026
-                    }
                 }
                 // 2. Map global files like 'races/races.json' -> 'races.json'
                 else if ($path === 'races/races.json') {
@@ -250,21 +245,12 @@ if ($source === 'f1') {
     
     $data = fetchUrl($baseUrl . $requestPath, 15, $lastError, $headers);
 } else if ($source === 'f1a' || $source === 'f2') {
-    $fileName = basename($pathWithoutQuery);
-    $is2026OrGlobal = (strpos($pathWithoutQuery, '/2026/') !== false) || 
-                      (strpos($pathWithoutQuery, 'races.json') !== false) || 
-                      (strpos($pathWithoutQuery, 'racesbyMK.json') !== false);
-                      
     $urlsToTry = [];
     if ($source === 'f1a') {
-        if ($is2026OrGlobal) {
-            $urlsToTry['https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1a/' . $fileName] = 5;
-        }
+        $urlsToTry['https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1a/' . $path] = 10;
         $urlsToTry['https://raw.githubusercontent.com/MatthewDelong/f1aapi/main/' . $path] = 5;
     } else {
-        if ($is2026OrGlobal) {
-            $urlsToTry['https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f2/' . $fileName] = 5;
-        }
+        $urlsToTry['https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f2/' . $path] = 10;
         $urlsToTry['https://raw.githubusercontent.com/MatthewDelong/f2api/main/' . $path] = 5;
     }
 
