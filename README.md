@@ -40,6 +40,8 @@ F1-Telemetry is a fork of the original [f1nsight](https://github.com/adityakotha
 
 > **Attribution** — This project builds upon the work of the original f1nsight developers. Data is now powered by the official **[OpenF1 API](https://openf1.org)** and **[Jolpica API](https://jolpi.ca/)**.
 
+**New Feature**: The 3D Telemetry Viewer now includes **Procedural 3D Tracks**, which automatically generate accurate, rotating 3D track geometries from real GPS telemetry data, complete with dynamic racing lines, kerbs, and surrounding environments using React Three Fiber.
+
 ---
 
 ## Features
@@ -53,6 +55,7 @@ F1-Telemetry is a fork of the original [f1nsight](https://github.com/adityakotha
 | **Pit Stop Analytics**  | Scatter-chart visualisation of pit-stop durations per driver                                             |
 | **Driver Comparisons**  | Head-to-head telemetry overlays for any two drivers in a session                                         |
 | **3D Telemetry Viewer** | Follow drivers around the circuit in a synchronised 3D scene with multiple broadcast-style camera angles |
+| **Procedural Tracks**   | Automatically generated, accurate 3D track geometries from GPS data with dynamic kerbs and environment   |
 | **AR Car Viewer**       | High-fidelity 3D car models with Draco / Meshopt compression (90 MB → 23 MB)                             |
 | **2026 Race Calendar**  | Up-to-date schedule covering F1                                                                          |
 | **Live Dashboard**      | A fully integrated, real-time live telemetry dashboard (formerly Formula1-Live) with race control feeds  |
