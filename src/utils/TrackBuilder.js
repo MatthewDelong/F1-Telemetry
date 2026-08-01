@@ -459,6 +459,89 @@ function createCornerLabels(curve, numCorners = 0) {
   return group;
 }
 
+/**
+ * Create dynamic alternating red/white kerbs at the apex of corners.
+ */
+function createApexKerbs(curve, trackWidth) {
+  const group = new THREE.Group();
+  const trackPoints = curve.getSpacedPoints(TRACK_RESOLUTION);
+
+  const curvatures = [];
+  for (let i = 0; i < trackPoints.length; i++) {
+    const prev = trackPoints[(i - 3 + trackPoints.length) % trackPoints.length];
+    const curr = trackPoints[i];
+    const next = trackPoints[(i + 3) % trackPoints.length];
+
+    const v1 = new THREE.Vector3().subVectors(curr, prev);
+    const v2 = new THREE.Vector3().subVectors(next, curr);
+    const angle = v1.angleTo(v2);
+    const crossZ = v1.x * v2.y - v1.y * v2.x;
+    curvatures.push({ index: i, curvature: angle, point: curr, isLeftTurn: crossZ > 0 });
+  }
+
+  const smoothed = [];
+  for (let i = 0; i < trackPoints.length; i++) {
+     let sum = 0;
+     for (let j = -2; j <= 2; j++) {
+        sum += curvatures[(i + j + trackPoints.length) % trackPoints.length].curvature;
+     }
+     smoothed.push(sum / 5);
+  }
+
+  const kerbWidth = 0.08;
+  const kerbLength = 0.15;
+  const halfW = trackWidth / 2;
+  
+  const redBlocks = [];
+  const whiteBlocks = [];
+
+  let blockCounter = 0;
+  for (let i = 0; i < trackPoints.length; i++) {
+    // If curvature is high enough, it's a corner -> add apex kerbs on the inside
+    if (smoothed[i] > 0.015) { 
+      let tangent = curve.getTangentAt(i / TRACK_RESOLUTION);
+      if (tangent.lengthSq() < 0.000001) tangent = new THREE.Vector3(1, 0, 0);
+      else tangent.normalize();
+      
+      const normal = new THREE.Vector3(-tangent.y, tangent.x, 0);
+      const isLeftTurn = curvatures[i].isLeftTurn;
+      
+      // Apex kerb is on the INSIDE of the corner
+      let side = isLeftTurn ? 1 : -1; 
+      
+      const pos = trackPoints[i].clone().add(normal.clone().multiplyScalar(side * (halfW + kerbWidth/2)));
+      
+      const matrix = new THREE.Matrix4();
+      const quaternion = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.atan2(tangent.y, tangent.x));
+      const scale = new THREE.Vector3(kerbLength, kerbWidth, 0.02); 
+      matrix.compose(new THREE.Vector3(pos.x, pos.y, 0.01), quaternion, scale);
+      
+      if (Math.floor(blockCounter / 2) % 2 === 0) { 
+         redBlocks.push(matrix);
+      } else {
+         whiteBlocks.push(matrix);
+      }
+      blockCounter++;
+    } else {
+      blockCounter = 0;
+    }
+  }
+
+  const boxGeom = new THREE.BoxGeometry(1, 1, 1);
+  if (redBlocks.length > 0) {
+    const redMesh = new THREE.InstancedMesh(boxGeom, new THREE.MeshStandardMaterial({ color: 0xcc0000, roughness: 0.8 }), redBlocks.length);
+    for (let i=0; i<redBlocks.length; i++) redMesh.setMatrixAt(i, redBlocks[i]);
+    group.add(redMesh);
+  }
+  if (whiteBlocks.length > 0) {
+    const whiteMesh = new THREE.InstancedMesh(boxGeom, new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.8 }), whiteBlocks.length);
+    for (let i=0; i<whiteBlocks.length; i++) whiteMesh.setMatrixAt(i, whiteBlocks[i]);
+    group.add(whiteMesh);
+  }
+
+  return group;
+}
+
 // ─── Corner count per circuit (approximate, for labeling) ────────────
 const CORNER_COUNTS = {
   albert_park: 14, americas: 20, bahrain: 15, baku: 20,
@@ -539,6 +622,11 @@ export function buildTrackFromGPS(rawGPSPoints, circuitId) {
   const grandstands = createProceduralGrandstands(curve, TRACK_WIDTH);
   grandstands.name = "Grandstands";
   group.add(grandstands);
+
+  // 7.5 Apex Kerbs
+  const kerbs = createApexKerbs(curve, TRACK_WIDTH);
+  kerbs.name = "Kerbs";
+  group.add(kerbs);
 
   // 8. Corner labels
   const numCorners = CORNER_COUNTS[circuitId] || 14;

@@ -13,6 +13,7 @@ import { nationalityToFlag } from "../utils/nationalityToFlag";
 import { getCurrentYear } from "../utils/currentYear";
 import DatesSection from "../layouts/DatesSection";
 import NextRaceSection from "../layouts/NextRaceSection";
+import ProceduralTrackBackground from "../components/ProceduralTrackBackground";
 import teamColorsData from "../utils/teamColors.json";
 import raceDetails from "../config/f1/raceDetails.json";
 
@@ -469,8 +470,8 @@ export function LandingPage() {
           </Button>
         </div>
 
-        <div className="bg-neutral-950/40 absolute inset-0 w-full h-full overflow-hidden">
-          {circuitIdToUse && <MiniTrackViewer circuitId={circuitIdToUse} />}
+        <div className="bg-neutral-950/40 absolute inset-0 w-full h-full overflow-hidden" style={{ opacity: 0.5 }}>
+          {circuitIdToUse && <ProceduralTrackBackground trackKey={circuitIdToUse} />}
         </div>
       </>
     );
