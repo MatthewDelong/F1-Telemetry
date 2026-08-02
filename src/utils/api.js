@@ -470,7 +470,7 @@ const fetchRaceResults = async (selectedYear, raceId, fallbackRaceName = "", fal
         }
         return [];
       }
-      const data = raceData.Results.slice(0,3);
+      const data = raceData.Results;
       // console.log('response', data);
 
       // console.log(data.slice(0,3));

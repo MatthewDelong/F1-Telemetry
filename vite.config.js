@@ -129,7 +129,7 @@ export default defineConfig({
   ],
   build: {
     outDir: "build",
-    chunkSizeWarningLimit: 2500,
+    chunkSizeWarningLimit: 3000,
     rolldownOptions: {
       checks: {
         eval: false,
