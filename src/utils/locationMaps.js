@@ -52,4 +52,7 @@ export const locationMaps = {
     "yas island": "yas_marina",
     "yas marina": "yas_marina",
     "abu dhabi": "yas_marina",
+    "kuala lumpur": "sepang",
+    "malaysia": "sepang",
+    "sepang": "sepang"
 };

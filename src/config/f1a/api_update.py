@@ -210,7 +210,9 @@ def main():
         "Singapore": "marina_bay",
         "Las Vegas": "las_vegas",
         "Great Britain": "silverstone",
-        "Spain": "barcelona"
+        "Spain": "barcelona",
+        "Malaysia": "sepang",
+        "Bahrain": "sepang"
     }
     circuit_id = c_map.get(country_name, country_name.lower().replace(' ', '_'))
     

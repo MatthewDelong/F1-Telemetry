@@ -549,7 +549,7 @@ const CORNER_COUNTS = {
   jeddah: 27, losail: 16, marina_bay: 23, miami: 19,
   monaco: 19, monza: 11, red_bull_ring: 10, rodriguez: 17,
   shanghai: 16, silverstone: 18, spa: 19, suzuka: 18,
-  vegas: 17, villeneuve: 14, yas_marina: 16, zandvoort: 14,
+  vegas: 17, villeneuve: 14, yas_marina: 16, zandvoort: 14, sepang: 15,
 };
 
 // ─── Main Export ─────────────────────────────────────────────────────

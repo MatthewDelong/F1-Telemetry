@@ -23,4 +23,5 @@ export const trackLengths = {
     catalunya: 4.657,
     losail: 5.419,
     yas_marina: 5.281,
+    sepang: 5.543,
 };

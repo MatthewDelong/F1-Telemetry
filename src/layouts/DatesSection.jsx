@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import RaceCalendar from "../components/RaceCalendar";
 
 const DatesSection = () => {
   const sectionRef = useRef(null);
@@ -29,16 +30,12 @@ const DatesSection = () => {
         </motion.p>
 
         <motion.div
-          className="relative w-full max-w-5xl mx-auto rounded-2xl overflow-hidden border-2 border-[#4f63e3]"
+          className="relative w-full max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-xl"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <img
-            src="/images/2026/F1Dates.png"
-            alt="2026 F1 Race Calendar"
-            className="w-full h-auto max-h-[65vh] object-contain mx-auto"
-          />
+          <RaceCalendar />
         </motion.div>
       </div>
 

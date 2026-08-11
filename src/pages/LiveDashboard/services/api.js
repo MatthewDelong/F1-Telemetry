@@ -4,15 +4,22 @@
  * Includes rate limiting protection with retry and staggered requests
  */
 
-const BASE_URL = 'https://openf1-proxy.matthew-delong73.workers.dev/v1';
+const BASE_URL = 'https://api.openf1.org/v1';
 const FALLBACK_URL = 'https://api.openf1.org/v1';
 
-// Simple request queue to stagger concurrent requests
+// Strict queue to ensure requests are staggered and never hit the OpenF1 429 rate limit
 let requestQueue = Promise.resolve();
-const STAGGER_DELAY = 150; // ms between requests
+const STAGGER_DELAY = 1200; // ms between requests
 
-function stagger() {
-  return new Promise(resolve => setTimeout(resolve, STAGGER_DELAY));
+function enqueueFetch(urlStr) {
+  const promise = requestQueue.then(async () => {
+    await new Promise(resolve => setTimeout(resolve, STAGGER_DELAY));
+    return fetchWithRetry(urlStr);
+  });
+  
+  // ensure queue doesn't halt if a request fails
+  requestQueue = promise.catch(() => {});
+  return promise;
 }
 
 async function fetchWithRetry(urlStr, retries = 3, backoff = 1000) {
@@ -34,6 +41,10 @@ async function fetchWithRetry(urlStr, retries = 3, backoff = 1000) {
         console.warn(`Proxy authentication failed. Falling back to public API...`);
         currentUrl = currentUrl.replace(BASE_URL, FALLBACK_URL);
         continue;
+      }
+      
+      if (response.status === 404) {
+        return [];
       }
       
       if (!response.ok) {
@@ -63,9 +74,8 @@ async function fetchAPI(endpoint, params = {}) {
     }
   });
 
-  // Stagger requests to avoid rate limiting
-  await stagger();
-  return fetchWithRetry(url.toString());
+  // Enqueue requests to strictly stagger them and avoid rate limiting
+  return enqueueFetch(url.toString());
 }
 
 // ===== SESSION =====

@@ -214,8 +214,22 @@ const RACES_DATA = {
     flag: "az.webp",
     direction: "ccw",
   },
-  "Singapore Grand Prix": {
+  "Bahrain Grand Prix": {
     round: 16,
+    raceName: "Bahrain Grand Prix",
+    circuitName: "Sepang International Circuit",
+    date: "2026-10-04",
+    localTime: "15:00",
+    laps: 56,
+    city: "Kuala Lumpur, MY",
+    country: "Malaysia",
+    displayName: "Kuala Lumpur",
+    countDownDate: "2026-10-04T07:00:00Z",
+    flag: "my.webp",
+    direction: "cw",
+  },
+  "Singapore Grand Prix": {
+    round: 17,
     raceName: "Singapore Grand Prix",
     circuitName: "Marina Bay Street Circuit",
     date: "2026-10-11",
@@ -229,7 +243,7 @@ const RACES_DATA = {
     direction: "ccw",
   },
   "United States Grand Prix": {
-    round: 17,
+    round: 18,
     raceName: "United States Grand Prix",
     circuitName: "Circuit of the Americas",
     date: "2026-10-25",
@@ -243,7 +257,7 @@ const RACES_DATA = {
     direction: "ccw",
   },
   "Mexico Grand Prix": {
-    round: 18,
+    round: 19,
     raceName: "Mexico City Grand Prix",
     circuitName: "Autódromo Hermanos Rodríguez",
     date: "2026-11-01",
@@ -257,7 +271,7 @@ const RACES_DATA = {
     direction: "cw",
   },
   "Brazilian Grand Prix": {
-    round: 19,
+    round: 20,
     raceName: "Brazilian Grand Prix",
     circuitName: "Autódromo José Carlos Pace",
     date: "2026-11-08",
@@ -271,7 +285,7 @@ const RACES_DATA = {
     direction: "ccw",
   },
   "Las Vegas Grand Prix": {
-    round: 20,
+    round: 21,
     raceName: "Las Vegas Grand Prix",
     circuitName: "Las Vegas Strip Street Circuit",
     date: "2026-11-21",
@@ -285,7 +299,7 @@ const RACES_DATA = {
     direction: "ccw",
   },
   "Qatar Grand Prix": {
-    round: 21,
+    round: 22,
     raceName: "Qatar Grand Prix",
     circuitName: "Lusail International Circuit",
     date: "2026-11-29",
@@ -299,7 +313,7 @@ const RACES_DATA = {
     direction: "cw",
   },
   "Abu Dhabi Grand Prix": {
-    round: 22,
+    round: 23,
     raceName: "Abu Dhabi Grand Prix",
     circuitName: "Yas Marina Circuit",
     date: "2026-12-06",
