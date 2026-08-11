@@ -3,7 +3,7 @@ import { buildOpenF1Url, OPENF1_API_BASE_URL } from "../config/openf1";
 import { trackLengths } from "./trackLengths";
 import { locationMaps } from "./locationMaps";
 
-const CANCELLED_RACES_2026 = ["Bahrain Grand Prix", "Saudi Arabian Grand Prix"];
+const CANCELLED_RACES_2026 = ["Saudi Arabian Grand Prix"];
 
 export const BASE_F1_URL = import.meta.env.PROD 
   ? '/api.php?source=f1&path=' 
@@ -27,7 +27,7 @@ export function normalizeOpenF1Date(date) {
   return d.toISOString();
 }
 
-const CACHE_PREFIX = "f1_cache_v6_";
+const CACHE_PREFIX = "f1_cache_v7_";
 const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -285,7 +285,7 @@ export const fetchRaceMeetingKeys = async (selectedYear) => {
   }
 
   try {
-    const raceResponse = await fetch(`${BASE_F1_URL}races/races.json`);
+    const raceResponse = await fetch(`${BASE_F1_URL}races/races.json?t=${Date.now()}`);
     if(!raceResponse.ok) {
       throw new Error('Failed to fetch races');
     }
@@ -367,7 +367,7 @@ export const fetchRacesAndSessions = async (selectedYear) => {
   
 // race results page
 export const fetchRaceDetails = async (selectedYear) => {
-  const url = `${BASE_F1_URL}races/${selectedYear}/raceDetails.json`; 
+const url = `${BASE_F1_URL}races/${selectedYear}/raceDetails.json?t=${Date.now()}`;
   try {
     const response = await fetch(url);
     if (response.ok) {
