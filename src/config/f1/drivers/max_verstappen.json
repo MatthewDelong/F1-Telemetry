@@ -2,7 +2,7 @@
     "driverId": "max_verstappen",
     "driverCode": "VER",
     "driverNumber": "3",
-    "lastUpdate": "2026-07-29T18:02:22.319175",
+    "lastUpdate": "2026-08-26T22:53:40.531800",
     "totalWins": 0,
     "totalPodiums": 4,
     "totalPoles": 0,
@@ -47,14 +47,15 @@
             "Austrian Grand Prix": "1:10.483",
             "British Grand Prix": "1:32.101",
             "Belgian Grand Prix": "1:49.618",
-            "Hungarian Grand Prix": "1:23.433"
+            "Hungarian Grand Prix": "1:23.433",
+            "Dutch Grand Prix": -1
         }
     },
     "finalStandings": {
         "2026": {
             "year": "2026",
             "position": "6",
-            "points": "109"
+            "points": "112"
         }
     },
     "posAfterRace": {
@@ -62,37 +63,40 @@
             "year": "2026",
             "pos": {
                 "Australian Grand Prix": {
-                    "points": 109
+                    "points": 112
                 },
                 "Chinese Grand Prix": {
-                    "points": 109
+                    "points": 112
                 },
                 "Japanese Grand Prix": {
-                    "points": 109
+                    "points": 112
                 },
                 "Miami Grand Prix": {
-                    "points": 109
+                    "points": 112
                 },
                 "Canadian Grand Prix": {
-                    "points": 109
+                    "points": 112
                 },
                 "Monaco Grand Prix": {
-                    "points": 109
+                    "points": 112
                 },
                 "Barcelona Grand Prix": {
-                    "points": 109
+                    "points": 112
                 },
                 "Austrian Grand Prix": {
-                    "points": 109
+                    "points": 112
                 },
                 "British Grand Prix": {
-                    "points": 109
+                    "points": 112
                 },
                 "Belgian Grand Prix": {
-                    "points": 109
+                    "points": 112
                 },
                 "Hungarian Grand Prix": {
-                    "points": 109
+                    "points": 112
+                },
+                "Dutch Grand Prix": {
+                    "points": 112
                 }
             }
         }
@@ -111,7 +115,8 @@
                 "Austrian Grand Prix": "2",
                 "British Grand Prix": "20",
                 "Belgian Grand Prix": "3",
-                "Hungarian Grand Prix": "2"
+                "Hungarian Grand Prix": "2",
+                "Dutch Grand Prix": "22"
             }
         }
     },
@@ -129,7 +134,8 @@
                 "Austrian Grand Prix": "5",
                 "British Grand Prix": "7",
                 "Belgian Grand Prix": "2",
-                "Hungarian Grand Prix": "4"
+                "Hungarian Grand Prix": "4",
+                "Dutch Grand Prix": "7"
             }
         }
     },
@@ -186,6 +192,11 @@
                     "1:18.656",
                     "1:18.249",
                     "1:17.725"
+                ],
+                "Dutch Grand Prix": [
+                    "1:13.290",
+                    "1:11.874",
+                    "1:11.618"
                 ]
             }
         }
@@ -195,7 +206,7 @@
             "wins": 0.0,
             "podiums": 4.0,
             "poles": 0.0,
-            "points": 109.0
+            "points": 112.0
         },
         "std": {
             "wins": 0.0,
@@ -225,29 +236,29 @@
         }
     },
     "avgRacePositions": {
-        "2026": 8.272727272727273
+        "2026": 9.416666666666666
     },
     "avgQualiPositions": {
-        "2026": 6.545454545454546
+        "2026": 6.583333333333333
     },
     "rates": {
         "wins": {
             "2026": 0.0
         },
         "podiums": {
-            "2026": 0.36363636363636365
+            "2026": 0.3333333333333333
         },
         "poles": {
             "2026": 0.0
         },
         "DNFs": {
-            "2026": 0.09090909090909091
+            "2026": 0.08333333333333333
         }
     },
     "winRate": 0.0,
-    "podiumRate": 0.36363636363636365,
+    "podiumRate": 0.3333333333333333,
     "poleRate": 0.0,
-    "dnfRate": 0.09090909090909091,
+    "dnfRate": 0.08333333333333333,
     "ptwConRate": {
         "2026": -1
     },
@@ -263,7 +274,8 @@
             "Austrian Grand Prix": 3,
             "British Grand Prix": -13,
             "Belgian Grand Prix": -1,
-            "Hungarian Grand Prix": 2
+            "Hungarian Grand Prix": 2,
+            "Dutch Grand Prix": -15
         }
     }
 }

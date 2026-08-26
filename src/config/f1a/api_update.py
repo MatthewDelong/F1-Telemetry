@@ -5,7 +5,7 @@ import requests
 import os
 
 # PASTE YOUR URL HERE:
-URL_TO_SCRAPE = "https://www.f1academy.com/Racing-Series/Results?raceid=25"
+URL_TO_SCRAPE = "https://www.f1academy.com/Racing-Series/Results?raceid=26"
 
 def parse_time(t_str):
     if not t_str:
@@ -63,8 +63,24 @@ def format_race(data, pole_car_number=None):
             "Time": { "time": time_val }
         }
         
+        base_points = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1]
+        pts = 0
+        try:
+            p_num = int(pos)
+            if 1 <= p_num <= 10:
+                pts += base_points[p_num - 1]
+        except:
+            p_num = -1
+            
         if pole_car_number and res["number"] == pole_car_number:
             res["grid"] = "1"
+            pts += 2
+            
+        if is_fastest and 1 <= p_num <= 10:
+            pts += 1
+            
+        res["points"] = str(pts)
+
         
         if pos == "1":
             res["gap"] = "-"

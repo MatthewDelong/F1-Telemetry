@@ -2,7 +2,7 @@
     "driverId": "sainz",
     "driverCode": "SAI",
     "driverNumber": "55",
-    "lastUpdate": "2026-07-29T18:02:22.319875",
+    "lastUpdate": "2026-08-26T22:53:40.531479",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -44,13 +44,14 @@
             "Austrian Grand Prix": "1:13.694",
             "British Grand Prix": "1:32.734",
             "Belgian Grand Prix": "1:51.363",
-            "Hungarian Grand Prix": "1:24.864"
+            "Hungarian Grand Prix": "1:24.864",
+            "Dutch Grand Prix": "1:17.328"
         }
     },
     "finalStandings": {
         "2026": {
             "year": "2026",
-            "position": "15",
+            "position": "16",
             "points": "6"
         }
     },
@@ -90,6 +91,9 @@
                 },
                 "Hungarian Grand Prix": {
                     "points": 6
+                },
+                "Dutch Grand Prix": {
+                    "points": 6
                 }
             }
         }
@@ -108,7 +112,8 @@
                 "Austrian Grand Prix": "20",
                 "British Grand Prix": "17",
                 "Belgian Grand Prix": "16",
-                "Hungarian Grand Prix": "18"
+                "Hungarian Grand Prix": "18",
+                "Dutch Grand Prix": "16"
             }
         }
     },
@@ -126,7 +131,8 @@
                 "Austrian Grand Prix": "17",
                 "British Grand Prix": "14",
                 "Belgian Grand Prix": "19",
-                "Hungarian Grand Prix": "18"
+                "Hungarian Grand Prix": "18",
+                "Dutch Grand Prix": "17"
             }
         }
     },
@@ -183,6 +189,11 @@
                     "1:20.621",
                     "N/A",
                     "N/A"
+                ],
+                "Dutch Grand Prix": [
+                    "1:13.574",
+                    "N/A",
+                    "N/A"
                 ]
             }
         }
@@ -222,10 +233,10 @@
         }
     },
     "avgRacePositions": {
-        "2026": 14.181818181818182
+        "2026": 14.333333333333334
     },
     "avgQualiPositions": {
-        "2026": 16.181818181818183
+        "2026": 16.25
     },
     "rates": {
         "wins": {
@@ -238,13 +249,13 @@
             "2026": 0.0
         },
         "DNFs": {
-            "2026": 0.2727272727272727
+            "2026": 0.25
         }
     },
     "winRate": 0.0,
     "podiumRate": 0.0,
     "poleRate": 0.0,
-    "dnfRate": 0.2727272727272727,
+    "dnfRate": 0.25,
     "ptwConRate": {
         "2026": -1
     },
@@ -260,7 +271,8 @@
             "Austrian Grand Prix": -3,
             "British Grand Prix": -3,
             "Belgian Grand Prix": 3,
-            "Hungarian Grand Prix": 0
+            "Hungarian Grand Prix": 0,
+            "Dutch Grand Prix": 1
         }
     }
 }
