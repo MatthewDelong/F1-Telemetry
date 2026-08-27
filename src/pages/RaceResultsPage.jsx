@@ -23,12 +23,12 @@ export function RaceResultsPage({ selectedYear }) {
         if (race.results && race.results.length > 0) {
           resultsForRace = race.results.slice(0, 3).map(res => ({
             number: res.number,
-            driver: res.driver,
-            fastestLap: res.fastestLap,
+            driver: res.driver || res.Driver,
+            fastestLap: res.fastestLap || res.FastestLap,
             grid: res.grid,
             position: res.position,
             status: res.status,
-            time: res.time
+            time: res.time || (res.Time && res.Time.time)
           }));
 
           // Augment fastest lap if missing
