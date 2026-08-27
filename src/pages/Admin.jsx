@@ -83,7 +83,9 @@ export const AdminPage = () => {
         'https://f1-telemetry.co.uk/api.php?source=f1&path=qualifying.json&flush=1',
         'https://f1-telemetry.co.uk/api.php?source=f1&path=races/races.json&flush=1',
         'https://f1-telemetry.co.uk/api.php?source=f2&path=results.json&flush=1',
-        'https://f1-telemetry.co.uk/api.php?source=f1a&path=results.json&flush=1'
+        'https://f1-telemetry.co.uk/api.php?source=f2&path=races/2026/results.json&flush=1',
+        'https://f1-telemetry.co.uk/api.php?source=f1a&path=results.json&flush=1',
+        'https://f1-telemetry.co.uk/api.php?source=f1a&path=races/2026/results.json&flush=1'
       ];
       
       for (const url of endpoints) {
