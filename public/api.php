@@ -256,8 +256,12 @@ if ($source === 'f1') {
         $pathsToTry[] = basename($path);
     }
 
+    // Try the new F1-Telemetry repo first for all path variations
     foreach ($pathsToTry as $p) {
         $urlsToTry['https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/' . $basePath . '/' . $p] = 10;
+    }
+    // Fallback to legacy APIs if not found in the new repo
+    foreach ($pathsToTry as $p) {
         $urlsToTry['https://raw.githubusercontent.com/MatthewDelong/' . $legacyApi . '/main/' . $p] = 5;
     }
 
