@@ -16,32 +16,23 @@ export function RaceResultsPage({ selectedYear }) {
       setIsLoading(true);
       const details = await fetchRaceDetails(selectedYear);
       const racesMK = await fetchRaceMeetingKeys(selectedYear);
-      
-      // Fetch results for all races to populate the cards
-      const resultsResponse = await fetch(`${BASE_F1_URL}races/${selectedYear}/results.json`);
-      let allResults = [];
-      if (resultsResponse.ok) {
-        allResults = await resultsResponse.json();
-      }
-
-      // Merge results into details
+      // The details array from fetchRaceDetails already contains .results for past races
       const enrichedDetails = await Promise.all(details.map(async race => {
-        const raceResult = allResults.find(r => parseInt(r.round, 10) === parseInt(race.round, 10));
         let resultsForRace = [];
 
-        if (raceResult && raceResult.Results) {
-          resultsForRace = raceResult.Results.slice(0, 3).map(res => ({
+        if (race.results && race.results.length > 0) {
+          resultsForRace = race.results.slice(0, 3).map(res => ({
             number: res.number,
-            driver: res.Driver,
-            fastestLap: res.FastestLap || res.fastestLap,
+            driver: res.driver,
+            fastestLap: res.fastestLap,
             grid: res.grid,
             position: res.position,
             status: res.status,
-            time: res.Time?.time
+            time: res.time
           }));
 
           // Augment fastest lap if missing
-          const hasFastestLap = resultsForRace.some(r => r.fastestLap?.rank === "1" || r.fastestLap?.rank === 1 || r.FastestLap?.rank === "1");
+          const hasFastestLap = resultsForRace.some(r => r.fastestLap?.rank === "1" || r.fastestLap?.rank === 1);
           const meetingKey = racesMK[race.raceName]?.["meeting_key"];
           
           if (!hasFastestLap && meetingKey) {
