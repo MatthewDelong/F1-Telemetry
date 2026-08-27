@@ -247,12 +247,18 @@ if ($source === 'f1') {
     $data = fetchUrl($baseUrl . $requestPath, 15, $lastError, $headers);
 } else if ($source === 'f1a' || $source === 'f2') {
     $urlsToTry = [];
-    if ($source === 'f1a') {
-        $urlsToTry['https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1a/' . $path] = 10;
-        $urlsToTry['https://raw.githubusercontent.com/MatthewDelong/f1aapi/main/' . $path] = 5;
-    } else {
-        $urlsToTry['https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f2/' . $path] = 10;
-        $urlsToTry['https://raw.githubusercontent.com/MatthewDelong/f2api/main/' . $path] = 5;
+    $basePath = ($source === 'f1a') ? 'f1a' : 'f2';
+    $legacyApi = ($source === 'f1a') ? 'f1aapi' : 'f2api';
+
+    // Try original path and a flattened path (like local server.js does)
+    $pathsToTry = [$path];
+    if (basename($path) !== $path) {
+        $pathsToTry[] = basename($path);
+    }
+
+    foreach ($pathsToTry as $p) {
+        $urlsToTry['https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/' . $basePath . '/' . $p] = 10;
+        $urlsToTry['https://raw.githubusercontent.com/MatthewDelong/' . $legacyApi . '/main/' . $p] = 5;
     }
 
     foreach ($urlsToTry as $url => $timeout) {
