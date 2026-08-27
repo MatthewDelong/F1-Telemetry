@@ -4,6 +4,7 @@ import { trackLengths } from "./trackLengths";
 import { locationMaps } from "./locationMaps";
 
 const CANCELLED_RACES_2026 = ["Saudi Arabian Grand Prix"];
+const CANCELLED_MEETING_KEYS_2026 = [1282]; // Remove old Bahrain GP (Sakhir) since a new one was added
 
 export const BASE_F1_URL = import.meta.env.PROD 
   ? '/api.php?source=f1&path=' 
@@ -341,7 +342,8 @@ export const fetchRacesAndSessions = async (selectedYear) => {
 
       if (Number(selectedYear) === 2026) {
         filteredRacesData = filteredRacesData.filter(race => 
-          !CANCELLED_RACES_2026.includes(race.meeting_name)
+          !CANCELLED_RACES_2026.includes(race.meeting_name) &&
+          !CANCELLED_MEETING_KEYS_2026.includes(race.meeting_key)
         );
       }
 
