@@ -23,7 +23,7 @@ export const fetchRaceMeetingKeysF1a = async (selectedYear, championshipLevel) =
 
 export const fetchCircuitData = async (championshipLevel) => {
     try {
-        const url = `${getSeriesBaseUrl(championshipLevel)}races/racesbyMK.json`;
+        const url = `${getSeriesBaseUrl(championshipLevel)}racesbyMK.json`;
         const response = await fetch(url);
         const data = await response.json();
         return data;
@@ -92,11 +92,11 @@ const filterTop3 = (raceData) => {
 
 export const fetchRaceResultsByCircuit = async (year, circuitId, top3 = false, championshipLevel) => {
   try {
-    const url = `${getSeriesBaseUrl(championshipLevel)}races/${year}/results.json`;
+    const url = `${getSeriesBaseUrl(championshipLevel)}results.json`;
     const response = await fetch(url);
     const data = await response.json();
 
-    const results = data.find(race => race.Circuit.circuitId === circuitId);
+    const results = data.find(race => race.Circuit.circuitId === circuitId && race.season === String(year));
 
     if (!results) {
       console.error(`No race found for circuitId: ${circuitId}`);

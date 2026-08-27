@@ -37,7 +37,7 @@ export function RacePageF1a({ championshipLevel }) {
 
   useEffect(() => {
     const fetchByMeetingKey = async () => {
-      const response = await fetch(`${BASE_F1A_URL}races/racesbyMK.json`).then(
+      const response = await fetch(`${BASE_F1A_URL}racesbyMK.json`).then(
         (res) => res.json(),
       );
       setYear(response[raceId]["year"]);

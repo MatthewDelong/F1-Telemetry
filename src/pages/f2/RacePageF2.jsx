@@ -37,7 +37,7 @@ export function RacePageF2({ championshipLevel }) {
   useEffect(() => {
     const fetchByMeetingKey = async () => {
       const response = await fetch(
-        `${BASE_F2_URL}races/racesbyMK.json`,
+        `${BASE_F2_URL}racesbyMK.json`,
       ).then((res) => res.json());
       setYear(response[raceId]["year"]);
       setLocation(response[raceId]["location"]);
