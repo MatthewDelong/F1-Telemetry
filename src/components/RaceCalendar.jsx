@@ -292,6 +292,7 @@ const RaceCalendar = () => {
       flag: "my.webp",
       track: "Bahrain.webp",
       direction: "cw",
+      isNew: true,
     },
     "Singapore Grand Prix": {
       round: 17,
@@ -444,6 +445,7 @@ const RaceCalendar = () => {
       </div>
       <div className="race-cal-name">
         {race.displayName.toUpperCase()}
+        {race.isNew && <span className="race-cal-new">NEW</span>}
       </div>
       <div className="race-cal-date">
         {formatDate(race.date)}

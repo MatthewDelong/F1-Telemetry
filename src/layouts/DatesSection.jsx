@@ -9,7 +9,7 @@ const DatesSection = () => {
   return (
     <section
       ref={sectionRef}
-      className="h-screen snap-start flex flex-col items-center justify-center px-16 bg-neutral-950 relative py-32 overflow-hidden"
+      className="min-h-screen snap-start scroll-mt-24 flex flex-col items-center max-md:justify-start md:justify-center px-4 md:px-16 bg-neutral-950 relative max-md:pt-[120px] max-md:pb-[80px] md:py-32"
     >
       <div className="max-w-[1200px] w-full mx-auto text-center z-10">
         <motion.h2

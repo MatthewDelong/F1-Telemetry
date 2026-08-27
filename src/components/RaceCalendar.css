@@ -98,6 +98,18 @@
   min-width: 50px;
 }
 
+.race-cal-new {
+  color: #3b82f6;
+  margin-left: 8px;
+  font-weight: 800;
+  font-size: 0.65rem;
+  background: rgba(59, 130, 246, 0.1);
+  padding: 1px 4px;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .race-calendar-container {
