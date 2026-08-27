@@ -426,10 +426,11 @@ const fetchRaceResults = async (selectedYear, raceId, fallbackRaceName = "", fal
     console.warn("[Cache] Failed to read race results from localStorage:", e);
   }
 
-  const resultsUrl = `${BASE_F1_URL}races/${selectedYear}/results.json`;
+  const resultsUrl = `${BASE_F1_URL}results.json`;
   try {
-    const tempdata = await fetchWithPersistentCache(resultsUrl);
-    if (tempdata && Array.isArray(tempdata)) {
+    const rawData = await fetchWithPersistentCache(resultsUrl);
+    if (rawData && Array.isArray(rawData)) {
+      const tempdata = rawData.filter(el => el.season === String(selectedYear));
       const raceIdNum = parseInt(raceId, 10);
       
       // 1. Primary search: by round
@@ -782,12 +783,15 @@ export const fetchDriversAndTires = async (sessionKey) => {
 
 export const fetchRaceResultsByCircuit = async (year, circuitId, raceName = "") => {
   try {
-    const url = `${BASE_F1_URL}races/${year}/results.json`;
+    const url = `${BASE_F1_URL}results.json`;
     const data = await fetchWithPersistentCache(url);
     if (!data || !Array.isArray(data)) return [];
     
     // Robust finding: try circuitId, then raceName, then locality
     const raceData = data.find(element => {
+      const matchYear = element.season === String(year);
+      if (!matchYear) return false;
+
       const matchId = element.Circuit && element.Circuit.circuitId === circuitId;
       const matchName = raceName && element.raceName && 
                         element.raceName.toLowerCase().includes(raceName.toLowerCase());
@@ -806,11 +810,14 @@ export const fetchRaceResultsByCircuit = async (year, circuitId, raceName = "") 
 
 export const fetchQualifyingResultsByCircuit = async(year, circuitId, raceName = "") => {
   try {
-    const url = `${BASE_F1_URL}races/${year}/qualifying.json`;
+    const url = `${BASE_F1_URL}qualifying.json`;
     const data = await fetchWithPersistentCache(url);
     if (!data || !Array.isArray(data)) return [];
 
     const raceData = data.find(element => {
+      const matchYear = element.season === String(year);
+      if (!matchYear) return false;
+
       const matchId = element.Circuit && element.Circuit.circuitId === circuitId;
       const matchName = raceName && element.raceName && 
                         element.raceName.toLowerCase().includes(raceName.toLowerCase());
@@ -829,11 +836,14 @@ export const fetchQualifyingResultsByCircuit = async(year, circuitId, raceName =
 
 export const fetchSprintResultsByCircuit = async(year, circuitId, raceName = "") => {
   try {
-    const url = `${BASE_F1_URL}races/${year}/sprint.json`;
+    const url = `${BASE_F1_URL}sprint.json`;
     const data = await fetchWithPersistentCache(url);
     if (!data || !Array.isArray(data)) return [];
 
     const raceData = data.find(element => {
+      const matchYear = element.season === String(year);
+      if (!matchYear) return false;
+
       const matchId = element.Circuit && element.Circuit.circuitId === circuitId;
       const matchName = raceName && element.raceName && 
                         element.raceName.toLowerCase().includes(raceName.toLowerCase());
