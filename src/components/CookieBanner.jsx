@@ -33,23 +33,23 @@ const CookieBanner = () => {
   if (!mounted || !isVisible) return null;
 
   return createPortal(
-    <div className="cookie-consent-banner">
-      <div className="cookie-top-row">
-        <div className="cookie-content">
+    <div className="privacy-notice-banner">
+      <div className="privacy-top-row">
+        <div className="privacy-content">
           <h3>We use cookies</h3>
           <p>
             This website uses cookies to ensure you get the best experience on
             our website.
           </p>
-          <p className="cookie-analytics-note">
+          <p className="privacy-analytics-note">
             We use Google Analytics to analyze traffic.
           </p>
         </div>
-        <div className="cookie-actions">
-          <button onClick={handleReject} className="cookie-btn reject">
+        <div className="privacy-actions">
+          <button onClick={handleReject} className="privacy-btn reject">
             Reject
           </button>
-          <button onClick={handleAccept} className="cookie-btn accept">
+          <button onClick={handleAccept} className="privacy-btn accept">
             Accept
           </button>
         </div>
