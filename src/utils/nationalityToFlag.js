@@ -440,7 +440,8 @@ export const nationalityToFlag = (nationality) => {
     "CIC": "au",
     "CHO": "gb",
     "JUF": "sa",
-    "FLO": "ro"
+    "FLO": "ro",
+    "BAT": "ch"
   };
 
   const key = normalized.toLowerCase();
