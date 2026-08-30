@@ -88,6 +88,9 @@ export const TeammatesComparison = () => {
     setYear(selectedYear);
     setTeam('');
     setDrivers([]);
+    setSelectedDriver1('');
+    setSelectedDriver2('');
+    setShowDriverSelectors(false);
     setHeadToHeadData(null);
     navigate(team ? `/teammates-comparison/${selectedYear}/${team}${search}` : `/teammates-comparison/${selectedYear}${search}`, { replace: true });
   };
@@ -96,6 +99,9 @@ export const TeammatesComparison = () => {
   const handleTeamChange = (selectedOption) => {
     const selectedTeam = selectedOption.value;
     setTeam(selectedTeam);
+    setSelectedDriver1('');
+    setSelectedDriver2('');
+    setShowDriverSelectors(false);
     navigate(`/teammates-comparison/${year}/${selectedTeam}${search}`, { replace: true });
     submit(selectedTeam);
   };
@@ -124,6 +130,7 @@ export const TeammatesComparison = () => {
   };
 
   const fetchDriverData = async (drivers, refresh = false) => {
+    if (!drivers || drivers.some(d => !d)) return;
     setIsLoading(true);
     try {
       const driverPromises = drivers.map(driver => driver.driverId);
@@ -243,7 +250,9 @@ export const TeammatesComparison = () => {
       setRenderHead(true);
       const driver1Data = drivers.find(driver => driver.driverId === selectedOption.value);
       const driver2Data = drivers.find(driver => driver.driverId === selectedDriver2);
-      await fetchDriverData([driver1Data, driver2Data]);
+      if (driver1Data && driver2Data) {
+        await fetchDriverData([driver1Data, driver2Data]);
+      }
     }
   };
 
@@ -255,7 +264,9 @@ export const TeammatesComparison = () => {
       setRenderHead(true);
       const driver1Data = drivers.find(driver => driver.driverId === selectedDriver1);
       const driver2Data = drivers.find(driver => driver.driverId === selectedOption.value);
-      await fetchDriverData([driver1Data, driver2Data]);
+      if (driver1Data && driver2Data) {
+        await fetchDriverData([driver1Data, driver2Data]);
+      }
     }
   };
 
@@ -281,7 +292,7 @@ export const TeammatesComparison = () => {
     let driver2RaceWins = 0;
 
     const processQualifyingResults = (qualifyingResults) => {
-      if (!qualifyingResults) return { qualifyingTimes: [] };
+      if (!qualifyingResults || !qualifyingResults.QualiTimes) return { qualifyingTimes: [] };
 
       const qualifyingTimes = Object.entries(qualifyingResults.QualiTimes).map(([raceName, times]) => ({
         race: raceName,
@@ -292,7 +303,7 @@ export const TeammatesComparison = () => {
     };
 
     const processPositions = (positions) => {
-      if (!positions) return { pos: [] };
+      if (!positions || !positions.positions) return { pos: [] };
 
       return {
         pos: Object.entries(positions.positions).map(([raceName, pos]) => ({
@@ -535,7 +546,7 @@ const GridRow = (label, driver1, driver2, title) => {
         <div className="flex items-center gap-8">
           <ReactSelectComponent
             placeholder="Select Driver 1"
-            options={driverOptions.map(driver => ({ ...driver, isDisabled: driver.value === selectedDriver1.value }))}
+            options={driverOptions.map(driver => ({ ...driver, isDisabled: driver.value === selectedDriver2 }))}
             onChange={handleDriver1Change}
             value={driverOptions.find(option => option.value === selectedDriver1)}
             isSearchable={false}
@@ -543,7 +554,7 @@ const GridRow = (label, driver1, driver2, title) => {
             />
           <ReactSelectComponent
             placeholder="Select Driver 2"
-            options={driverOptions.map(driver => ({ ...driver, isDisabled: driver.value === selectedDriver2.value }))}
+            options={driverOptions.map(driver => ({ ...driver, isDisabled: driver.value === selectedDriver1 }))}
             onChange={handleDriver2Change}
             value={driverOptions.find(option => option.value === selectedDriver2)}
             isSearchable={false}
