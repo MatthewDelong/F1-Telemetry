@@ -1,0 +1,360 @@
+{
+    "driverId": "stevens",
+    "driverCode": "STE",
+    "driverNumber": "28",
+    "lastUpdate": "2026-08-30T20:01:52.114Z",
+    "totalWins": 0,
+    "totalPodiums": 0,
+    "totalPoles": 0,
+    "totalDNFs": 3,
+    "totalRaces": 19,
+    "winRate": 0,
+    "podiumRate": 0,
+    "poleRate": 0,
+    "dnfRate": 0.15789473684210525,
+    "seasonWins": {
+        "2014": 0,
+        "2015": 0
+    },
+    "seasonPodiums": {
+        "2014": 0,
+        "2015": 0
+    },
+    "seasonPoles": {
+        "2014": 0,
+        "2015": 0
+    },
+    "seasonDNFs": {
+        "2014": 0,
+        "2015": 3
+    },
+    "poles": {
+        "2014": [],
+        "2015": []
+    },
+    "podiums": {
+        "2014": {},
+        "2015": {}
+    },
+    "DNFs": {
+        "2014": {},
+        "2015": {
+            "Malaysian Grand Prix": "Fuel system",
+            "Austrian Grand Prix": "Oil leak",
+            "United States Grand Prix": "Retired"
+        }
+    },
+    "fastLaps": {
+        "2014": {
+            "Abu Dhabi Grand Prix": "1:48.398"
+        },
+        "2015": {
+            "Malaysian Grand Prix": -1,
+            "Chinese Grand Prix": "1:45.414",
+            "Bahrain Grand Prix": "1:41.759",
+            "Spanish Grand Prix": "1:33.655",
+            "Monaco Grand Prix": "1:22.693",
+            "Canadian Grand Prix": "1:20.707",
+            "Austrian Grand Prix": -1,
+            "British Grand Prix": "1:41.919",
+            "Hungarian Grand Prix": "1:29.543",
+            "Belgian Grand Prix": "1:58.150",
+            "Italian Grand Prix": "1:31.098",
+            "Singapore Grand Prix": "1:55.890",
+            "Japanese Grand Prix": "1:41.452",
+            "Russian Grand Prix": "1:44.926",
+            "United States Grand Prix": -1,
+            "Mexican Grand Prix": "1:25.540",
+            "Brazilian Grand Prix": "1:19.098",
+            "Abu Dhabi Grand Prix": "1:49.610"
+        }
+    },
+    "finalStandings": {
+        "2014": {
+            "year": "2014",
+            "position": "23",
+            "points": "0"
+        },
+        "2015": {
+            "year": "2015",
+            "position": "21",
+            "points": "0"
+        }
+    },
+    "posAfterRace": {
+        "2014": {
+            "year": "2014",
+            "pos": {
+                "Abu Dhabi Grand Prix": {
+                    "points": 0
+                }
+            }
+        },
+        "2015": {
+            "year": "2015",
+            "pos": {
+                "Malaysian Grand Prix": {
+                    "points": 0
+                },
+                "Chinese Grand Prix": {
+                    "points": 0
+                },
+                "Bahrain Grand Prix": {
+                    "points": 0
+                },
+                "Spanish Grand Prix": {
+                    "points": 0
+                },
+                "Monaco Grand Prix": {
+                    "points": 0
+                },
+                "Canadian Grand Prix": {
+                    "points": 0
+                },
+                "Austrian Grand Prix": {
+                    "points": 0
+                },
+                "British Grand Prix": {
+                    "points": 0
+                },
+                "Hungarian Grand Prix": {
+                    "points": 0
+                },
+                "Belgian Grand Prix": {
+                    "points": 0
+                },
+                "Italian Grand Prix": {
+                    "points": 0
+                },
+                "Singapore Grand Prix": {
+                    "points": 0
+                },
+                "Japanese Grand Prix": {
+                    "points": 0
+                },
+                "Russian Grand Prix": {
+                    "points": 0
+                },
+                "United States Grand Prix": {
+                    "points": 0
+                },
+                "Mexican Grand Prix": {
+                    "points": 0
+                },
+                "Brazilian Grand Prix": {
+                    "points": 0
+                },
+                "Abu Dhabi Grand Prix": {
+                    "points": 0
+                }
+            }
+        }
+    },
+    "racePosition": {
+        "2014": {
+            "positions": {
+                "Abu Dhabi Grand Prix": "17"
+            }
+        },
+        "2015": {
+            "positions": {
+                "Malaysian Grand Prix": "20",
+                "Chinese Grand Prix": "15",
+                "Bahrain Grand Prix": "16",
+                "Spanish Grand Prix": "17",
+                "Monaco Grand Prix": "17",
+                "Canadian Grand Prix": "17",
+                "Austrian Grand Prix": "18",
+                "British Grand Prix": "13",
+                "Hungarian Grand Prix": "16",
+                "Belgian Grand Prix": "16",
+                "Italian Grand Prix": "15",
+                "Singapore Grand Prix": "15",
+                "Japanese Grand Prix": "19",
+                "Russian Grand Prix": "14",
+                "United States Grand Prix": "20",
+                "Mexican Grand Prix": "16",
+                "Brazilian Grand Prix": "17",
+                "Abu Dhabi Grand Prix": "18"
+            }
+        }
+    },
+    "qualiPosition": {
+        "2014": {
+            "positions": {
+                "Abu Dhabi Grand Prix": "18"
+            }
+        },
+        "2015": {
+            "positions": {
+                "Chinese Grand Prix": "19",
+                "Bahrain Grand Prix": "18",
+                "Spanish Grand Prix": "19",
+                "Monaco Grand Prix": "19",
+                "Canadian Grand Prix": "19",
+                "Austrian Grand Prix": "20",
+                "British Grand Prix": "19",
+                "Hungarian Grand Prix": "20",
+                "Belgian Grand Prix": "19",
+                "Italian Grand Prix": "18",
+                "Singapore Grand Prix": "19",
+                "Japanese Grand Prix": "19",
+                "Russian Grand Prix": "18",
+                "United States Grand Prix": "19",
+                "Mexican Grand Prix": "19",
+                "Brazilian Grand Prix": "19",
+                "Abu Dhabi Grand Prix": "19"
+            }
+        }
+    },
+    "positionsGainLost": {
+        "2014": {
+            "positions": {
+                "Abu Dhabi Grand Prix": "0"
+            }
+        },
+        "2015": {
+            "positions": {
+                "Chinese Grand Prix": "4",
+                "Bahrain Grand Prix": "2",
+                "Spanish Grand Prix": "2",
+                "Monaco Grand Prix": "1",
+                "Canadian Grand Prix": "0",
+                "Austrian Grand Prix": "-1",
+                "British Grand Prix": "6",
+                "Hungarian Grand Prix": "4",
+                "Belgian Grand Prix": "-1",
+                "Italian Grand Prix": "-2",
+                "Singapore Grand Prix": "4",
+                "Japanese Grand Prix": "-1",
+                "Russian Grand Prix": "3",
+                "United States Grand Prix": "-1",
+                "Mexican Grand Prix": "1",
+                "Brazilian Grand Prix": "1",
+                "Abu Dhabi Grand Prix": "1"
+            }
+        }
+    },
+    "driverQualifyingTimes": {
+        "2014": {
+            "QualiTimes": {
+                "Abu Dhabi Grand Prix": [
+                    "1:45.095",
+                    "N/A",
+                    "N/A"
+                ]
+            }
+        },
+        "2015": {
+            "QualiTimes": {
+                "Chinese Grand Prix": [
+                    "1:42.091",
+                    "N/A",
+                    "N/A"
+                ],
+                "Bahrain Grand Prix": [
+                    "1:38.713",
+                    "N/A",
+                    "N/A"
+                ],
+                "Spanish Grand Prix": [
+                    "1:31.200",
+                    "N/A",
+                    "N/A"
+                ],
+                "Monaco Grand Prix": [
+                    "1:20.655",
+                    "N/A",
+                    "N/A"
+                ],
+                "Canadian Grand Prix": [
+                    "1:19.157",
+                    "N/A",
+                    "N/A"
+                ],
+                "Austrian Grand Prix": [
+                    "1:15.368",
+                    "N/A",
+                    "N/A"
+                ],
+                "British Grand Prix": [
+                    "1:37.364",
+                    "N/A",
+                    "N/A"
+                ],
+                "Hungarian Grand Prix": [
+                    "1:27.949",
+                    "N/A",
+                    "N/A"
+                ],
+                "Belgian Grand Prix": [
+                    "1:52.948",
+                    "N/A",
+                    "N/A"
+                ],
+                "Italian Grand Prix": [
+                    "1:27.731",
+                    "N/A",
+                    "N/A"
+                ],
+                "Singapore Grand Prix": [
+                    "1:51.021",
+                    "N/A",
+                    "N/A"
+                ],
+                "Japanese Grand Prix": [
+                    "1:38.783",
+                    "N/A",
+                    "N/A"
+                ],
+                "Russian Grand Prix": [
+                    "1:43.693",
+                    "N/A",
+                    "N/A"
+                ],
+                "United States Grand Prix": [
+                    "2:04.526",
+                    "N/A",
+                    "N/A"
+                ],
+                "Mexican Grand Prix": [
+                    "1:24.386",
+                    "N/A",
+                    "N/A"
+                ],
+                "Brazilian Grand Prix": [
+                    "1:16.283",
+                    "N/A",
+                    "N/A"
+                ],
+                "Abu Dhabi Grand Prix": [
+                    "1:46.297",
+                    "N/A",
+                    "N/A"
+                ]
+            }
+        }
+    },
+    "avgRacePositions": {
+        "2014": "17.00",
+        "2015": "16.61"
+    },
+    "avgQualiPositions": {
+        "2014": "18.00",
+        "2015": "18.94"
+    },
+    "rates": {
+        "wins": {
+            "2014": "0.0000",
+            "2015": "0.0000"
+        },
+        "podiums": {
+            "2014": "0.0000",
+            "2015": "0.0000"
+        },
+        "poles": {
+            "2014": "0.0000",
+            "2015": "0.0000"
+        }
+    }
+}

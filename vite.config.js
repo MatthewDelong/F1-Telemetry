@@ -170,6 +170,9 @@ export default defineConfig({
     port: 3006,
     strictPort: true,
     open: true,
+    watch: {
+      ignored: ['**/backend/**', '**/src/config/f1/**']
+    },
     proxy: {
       "/openf1": {
         target: "http://localhost:3000",

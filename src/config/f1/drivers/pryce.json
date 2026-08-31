@@ -1,0 +1,484 @@
+{
+    "driverId": "pryce",
+    "driverCode": "",
+    "driverNumber": "",
+    "lastUpdate": "2026-08-31T07:03:24.732Z",
+    "totalWins": 0,
+    "totalPodiums": 2,
+    "totalPoles": 0,
+    "totalDNFs": 18,
+    "totalRaces": 42,
+    "winRate": 0,
+    "podiumRate": 0.047619047619047616,
+    "poleRate": 0,
+    "dnfRate": 0.42857142857142855,
+    "seasonWins": {
+        "1974": 0,
+        "1975": 0,
+        "1976": 0,
+        "1977": 0
+    },
+    "seasonPodiums": {
+        "1974": 0,
+        "1975": 1,
+        "1976": 1,
+        "1977": 0
+    },
+    "seasonPoles": {
+        "1974": 0,
+        "1975": 0,
+        "1976": 0,
+        "1977": 0
+    },
+    "seasonDNFs": {
+        "1974": 5,
+        "1975": 7,
+        "1976": 4,
+        "1977": 2
+    },
+    "poles": {
+        "1974": [],
+        "1975": [],
+        "1976": [],
+        "1977": []
+    },
+    "podiums": {
+        "1974": {},
+        "1975": {
+            "Austrian Grand Prix": "3"
+        },
+        "1976": {
+            "Brazilian Grand Prix": "3"
+        },
+        "1977": {}
+    },
+    "DNFs": {
+        "1974": {
+            "Belgian Grand Prix": "Collision",
+            "Dutch Grand Prix": "Collision",
+            "French Grand Prix": "Collision",
+            "Austrian Grand Prix": "Spun off",
+            "Canadian Grand Prix": "Engine"
+        },
+        "1975": {
+            "Argentine Grand Prix": "Transmission",
+            "Brazilian Grand Prix": "Accident",
+            "Spanish Grand Prix": "Accident",
+            "Monaco Grand Prix": "Accident",
+            "Swedish Grand Prix": "Spun off",
+            "French Grand Prix": "Transmission",
+            "British Grand Prix": "Accident"
+        },
+        "1976": {
+            "United States Grand Prix West": "Halfshaft",
+            "Austrian Grand Prix": "Brakes",
+            "United States Grand Prix": "Engine",
+            "Japanese Grand Prix": "Physical"
+        },
+        "1977": {
+            "Brazilian Grand Prix": "Engine",
+            "South African Grand Prix": "Accident"
+        }
+    },
+    "fastLaps": {
+        "1974": {
+            "Belgian Grand Prix": -1,
+            "Dutch Grand Prix": -1,
+            "French Grand Prix": -1,
+            "British Grand Prix": -1,
+            "German Grand Prix": -1,
+            "Austrian Grand Prix": -1,
+            "Italian Grand Prix": -1,
+            "Canadian Grand Prix": -1,
+            "United States Grand Prix": -1
+        },
+        "1975": {
+            "Argentine Grand Prix": -1,
+            "Brazilian Grand Prix": -1,
+            "South African Grand Prix": -1,
+            "Spanish Grand Prix": -1,
+            "Monaco Grand Prix": -1,
+            "Belgian Grand Prix": -1,
+            "Swedish Grand Prix": -1,
+            "Dutch Grand Prix": -1,
+            "French Grand Prix": -1,
+            "British Grand Prix": -1,
+            "German Grand Prix": -1,
+            "Austrian Grand Prix": -1,
+            "Italian Grand Prix": -1,
+            "United States Grand Prix": -1
+        },
+        "1976": {
+            "Brazilian Grand Prix": -1,
+            "South African Grand Prix": -1,
+            "United States Grand Prix West": -1,
+            "Spanish Grand Prix": -1,
+            "Belgian Grand Prix": -1,
+            "Monaco Grand Prix": -1,
+            "Swedish Grand Prix": -1,
+            "French Grand Prix": -1,
+            "British Grand Prix": -1,
+            "German Grand Prix": -1,
+            "Austrian Grand Prix": -1,
+            "Dutch Grand Prix": -1,
+            "Italian Grand Prix": -1,
+            "Canadian Grand Prix": -1,
+            "United States Grand Prix": -1,
+            "Japanese Grand Prix": -1
+        },
+        "1977": {
+            "Argentine Grand Prix": -1,
+            "Brazilian Grand Prix": -1,
+            "South African Grand Prix": -1
+        }
+    },
+    "finalStandings": {
+        "1974": {
+            "year": "1974",
+            "position": "19",
+            "points": "1"
+        },
+        "1975": {
+            "year": "1975",
+            "position": "10",
+            "points": "8"
+        },
+        "1976": {
+            "year": "1976",
+            "position": "12",
+            "points": "10"
+        },
+        "1977": {
+            "year": "1977",
+            "points": "0"
+        }
+    },
+    "posAfterRace": {
+        "1974": {
+            "year": "1974",
+            "pos": {
+                "Belgian Grand Prix": {
+                    "points": 0
+                },
+                "Dutch Grand Prix": {
+                    "points": 0
+                },
+                "French Grand Prix": {
+                    "points": 0
+                },
+                "British Grand Prix": {
+                    "points": 0
+                },
+                "German Grand Prix": {
+                    "points": 1
+                },
+                "Austrian Grand Prix": {
+                    "points": 1
+                },
+                "Italian Grand Prix": {
+                    "points": 1
+                },
+                "Canadian Grand Prix": {
+                    "points": 1
+                },
+                "United States Grand Prix": {
+                    "points": 1
+                }
+            }
+        },
+        "1975": {
+            "year": "1975",
+            "pos": {
+                "Argentine Grand Prix": {
+                    "points": 0
+                },
+                "Brazilian Grand Prix": {
+                    "points": 0
+                },
+                "South African Grand Prix": {
+                    "points": 0
+                },
+                "Spanish Grand Prix": {
+                    "points": 0
+                },
+                "Monaco Grand Prix": {
+                    "points": 0
+                },
+                "Belgian Grand Prix": {
+                    "points": 1
+                },
+                "Swedish Grand Prix": {
+                    "points": 1
+                },
+                "Dutch Grand Prix": {
+                    "points": 2
+                },
+                "French Grand Prix": {
+                    "points": 2
+                },
+                "British Grand Prix": {
+                    "points": 2
+                },
+                "German Grand Prix": {
+                    "points": 5
+                },
+                "Austrian Grand Prix": {
+                    "points": 7
+                },
+                "Italian Grand Prix": {
+                    "points": 8
+                },
+                "United States Grand Prix": {
+                    "points": 8
+                }
+            }
+        },
+        "1976": {
+            "year": "1976",
+            "pos": {
+                "Brazilian Grand Prix": {
+                    "points": 4
+                },
+                "South African Grand Prix": {
+                    "points": 4
+                },
+                "United States Grand Prix West": {
+                    "points": 4
+                },
+                "Spanish Grand Prix": {
+                    "points": 4
+                },
+                "Belgian Grand Prix": {
+                    "points": 4
+                },
+                "Monaco Grand Prix": {
+                    "points": 4
+                },
+                "Swedish Grand Prix": {
+                    "points": 4
+                },
+                "French Grand Prix": {
+                    "points": 4
+                },
+                "British Grand Prix": {
+                    "points": 7
+                },
+                "German Grand Prix": {
+                    "points": 7
+                },
+                "Austrian Grand Prix": {
+                    "points": 7
+                },
+                "Dutch Grand Prix": {
+                    "points": 10
+                },
+                "Italian Grand Prix": {
+                    "points": 10
+                },
+                "Canadian Grand Prix": {
+                    "points": 10
+                },
+                "United States Grand Prix": {
+                    "points": 10
+                },
+                "Japanese Grand Prix": {
+                    "points": 10
+                }
+            }
+        },
+        "1977": {
+            "year": "1977",
+            "pos": {
+                "Argentine Grand Prix": {
+                    "points": 0
+                },
+                "Brazilian Grand Prix": {
+                    "points": 0
+                },
+                "South African Grand Prix": {
+                    "points": 0
+                }
+            }
+        }
+    },
+    "racePosition": {
+        "1974": {
+            "positions": {
+                "Belgian Grand Prix": "20",
+                "Dutch Grand Prix": "24",
+                "French Grand Prix": "20",
+                "British Grand Prix": "8",
+                "German Grand Prix": "6",
+                "Austrian Grand Prix": "21",
+                "Italian Grand Prix": "10",
+                "Canadian Grand Prix": "19",
+                "United States Grand Prix": "15"
+            }
+        },
+        "1975": {
+            "positions": {
+                "Argentine Grand Prix": "12",
+                "Brazilian Grand Prix": "18",
+                "South African Grand Prix": "9",
+                "Spanish Grand Prix": "12",
+                "Monaco Grand Prix": "14",
+                "Belgian Grand Prix": "6",
+                "Swedish Grand Prix": "18",
+                "Dutch Grand Prix": "6",
+                "French Grand Prix": "25",
+                "British Grand Prix": "22",
+                "German Grand Prix": "4",
+                "Austrian Grand Prix": "3",
+                "Italian Grand Prix": "6",
+                "United States Grand Prix": "11"
+            }
+        },
+        "1976": {
+            "positions": {
+                "Brazilian Grand Prix": "3",
+                "South African Grand Prix": "7",
+                "United States Grand Prix West": "14",
+                "Spanish Grand Prix": "8",
+                "Belgian Grand Prix": "10",
+                "Monaco Grand Prix": "7",
+                "Swedish Grand Prix": "9",
+                "French Grand Prix": "8",
+                "British Grand Prix": "4",
+                "German Grand Prix": "8",
+                "Austrian Grand Prix": "23",
+                "Dutch Grand Prix": "4",
+                "Italian Grand Prix": "8",
+                "Canadian Grand Prix": "11",
+                "United States Grand Prix": "16",
+                "Japanese Grand Prix": "14"
+            }
+        },
+        "1977": {
+            "positions": {
+                "Argentine Grand Prix": "9",
+                "Brazilian Grand Prix": "9",
+                "South African Grand Prix": "21"
+            }
+        }
+    },
+    "qualiPosition": {
+        "1974": {
+            "positions": {}
+        },
+        "1975": {
+            "positions": {}
+        },
+        "1976": {
+            "positions": {}
+        },
+        "1977": {
+            "positions": {}
+        }
+    },
+    "positionsGainLost": {
+        "1974": {
+            "positions": {
+                "Belgian Grand Prix": "0",
+                "Dutch Grand Prix": "-13",
+                "French Grand Prix": "-17",
+                "British Grand Prix": "-3",
+                "German Grand Prix": "5",
+                "Austrian Grand Prix": "-5",
+                "Italian Grand Prix": "12",
+                "Canadian Grand Prix": "-6",
+                "United States Grand Prix": "3"
+            }
+        },
+        "1975": {
+            "positions": {
+                "Argentine Grand Prix": "2",
+                "Brazilian Grand Prix": "-4",
+                "South African Grand Prix": "10",
+                "Spanish Grand Prix": "-4",
+                "Monaco Grand Prix": "-12",
+                "Belgian Grand Prix": "-1",
+                "Swedish Grand Prix": "-11",
+                "Dutch Grand Prix": "6",
+                "French Grand Prix": "-19",
+                "British Grand Prix": "-21",
+                "German Grand Prix": "12",
+                "Austrian Grand Prix": "12",
+                "Italian Grand Prix": "8",
+                "United States Grand Prix": "-4"
+            }
+        },
+        "1976": {
+            "positions": {
+                "Brazilian Grand Prix": "9",
+                "South African Grand Prix": "0",
+                "United States Grand Prix West": "-9",
+                "Spanish Grand Prix": "14",
+                "Belgian Grand Prix": "3",
+                "Monaco Grand Prix": "8",
+                "Swedish Grand Prix": "3",
+                "French Grand Prix": "8",
+                "British Grand Prix": "16",
+                "German Grand Prix": "10",
+                "Austrian Grand Prix": "-17",
+                "Dutch Grand Prix": "-1",
+                "Italian Grand Prix": "7",
+                "Canadian Grand Prix": "2",
+                "United States Grand Prix": "-7",
+                "Japanese Grand Prix": "0"
+            }
+        },
+        "1977": {
+            "positions": {
+                "Argentine Grand Prix": "0",
+                "Brazilian Grand Prix": "-4",
+                "South African Grand Prix": "-6"
+            }
+        }
+    },
+    "driverQualifyingTimes": {
+        "1974": {
+            "QualiTimes": {}
+        },
+        "1975": {
+            "QualiTimes": {}
+        },
+        "1976": {
+            "QualiTimes": {}
+        },
+        "1977": {
+            "QualiTimes": {}
+        }
+    },
+    "avgRacePositions": {
+        "1974": "15.89",
+        "1975": "11.86",
+        "1976": "9.63",
+        "1977": "13.00"
+    },
+    "avgQualiPositions": {
+        "1974": "0.00",
+        "1975": "0.00",
+        "1976": "0.00",
+        "1977": "0.00"
+    },
+    "rates": {
+        "wins": {
+            "1974": "0.0000",
+            "1975": "0.0000",
+            "1976": "0.0000",
+            "1977": "0.0000"
+        },
+        "podiums": {
+            "1974": "0.0000",
+            "1975": "0.0714",
+            "1976": "0.0625",
+            "1977": "0.0000"
+        },
+        "poles": {
+            "1974": "0.0000",
+            "1975": "0.0000",
+            "1976": "0.0000",
+            "1977": "0.0000"
+        }
+    }
+}

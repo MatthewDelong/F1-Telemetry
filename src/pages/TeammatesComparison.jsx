@@ -7,6 +7,7 @@ import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import { fetchDriverStats, BASE_F1_URL } from '../utils/api';
 import { getCurrentYear } from '../utils/currentYear';
 import { HeadToHeadChart, PositionsGainedLostChart, QualifyingLapTimesChart, QualifyingLapTimesDeltaChart, PositionsComparisonChart, ReactSelectComponent, Loading, Button } from '../components';
+import teamColors from '../utils/teamColors.json';
 
 
 export const TeammatesComparison = () => {
@@ -112,9 +113,6 @@ export const TeammatesComparison = () => {
       const fetchedDrivers = response.data;
       setDrivers(fetchedDrivers);
 
-      const colorsResponse = await axios.get(`${BASE_F1_URL}colors/teams.json`);
-      const teamColors = colorsResponse.data;
-
       setTeamColor(teamColors[year]?.[selectedTeam] || '5F0B84');
 
       if (fetchedDrivers.length > 2) {
@@ -123,6 +121,7 @@ export const TeammatesComparison = () => {
       } else {
         fetchDriverData(fetchedDrivers);
         setShowDriverSelectors(false);
+        setRenderHead(true);
       }
     } catch (error) {
       console.error("Error submitting team data:", error);

@@ -1,7 +1,7 @@
 import { buildOpenF1Url } from "../../config/openf1";
 import { getCurrentYear } from "../../utils/currentYear";
-import qualifyingData from "../../config/f1/qualifying.json";
-import resultsData from "../../config/f1/results.json";
+import qualifyingData from "../../config/f1/2026/qualifying.json";
+import resultsData from "../../config/f1/2026/results.json";
 import teamColors from "../../utils/teamColors.json";
 
 const OPENF1_DIRECT_API_BASE_URL = "https://api.openf1.org/v1";

@@ -1,0 +1,292 @@
+{
+    "driverId": "serra",
+    "driverCode": "",
+    "driverNumber": "",
+    "lastUpdate": "2026-08-31T05:22:16.045Z",
+    "totalWins": 0,
+    "totalPodiums": 0,
+    "totalPoles": 0,
+    "totalDNFs": 8,
+    "totalRaces": 19,
+    "winRate": 0,
+    "podiumRate": 0,
+    "poleRate": 0,
+    "dnfRate": 0.42105263157894735,
+    "seasonWins": {
+        "1981": 0,
+        "1982": 0,
+        "1983": 0
+    },
+    "seasonPodiums": {
+        "1981": 0,
+        "1982": 0,
+        "1983": 0
+    },
+    "seasonPoles": {
+        "1981": 0,
+        "1982": 0,
+        "1983": 0
+    },
+    "seasonDNFs": {
+        "1981": 4,
+        "1982": 3,
+        "1983": 1
+    },
+    "poles": {
+        "1981": [],
+        "1982": [],
+        "1983": []
+    },
+    "podiums": {
+        "1981": {},
+        "1982": {},
+        "1983": {}
+    },
+    "DNFs": {
+        "1981": {
+            "Brazilian Grand Prix": "Collision",
+            "Argentine Grand Prix": "Gearbox",
+            "Belgian Grand Prix": "Engine",
+            "French Grand Prix": "Withdrew"
+        },
+        "1982": {
+            "Brazilian Grand Prix": "Suspension",
+            "Dutch Grand Prix": "Fuel system",
+            "British Grand Prix": "Collision"
+        },
+        "1983": {
+            "French Grand Prix": "Gearbox"
+        }
+    },
+    "fastLaps": {
+        "1981": {
+            "United States Grand Prix West": -1,
+            "Brazilian Grand Prix": -1,
+            "Argentine Grand Prix": -1,
+            "Belgian Grand Prix": -1,
+            "Spanish Grand Prix": -1,
+            "French Grand Prix": -1
+        },
+        "1982": {
+            "South African Grand Prix": -1,
+            "Brazilian Grand Prix": -1,
+            "Belgian Grand Prix": -1,
+            "Detroit Grand Prix": -1,
+            "Dutch Grand Prix": -1,
+            "British Grand Prix": -1,
+            "German Grand Prix": -1,
+            "Austrian Grand Prix": -1,
+            "Italian Grand Prix": -1
+        },
+        "1983": {
+            "Brazilian Grand Prix": -1,
+            "French Grand Prix": -1,
+            "San Marino Grand Prix": -1,
+            "Monaco Grand Prix": -1
+        }
+    },
+    "finalStandings": {
+        "1981": {
+            "year": "1981",
+            "points": "0"
+        },
+        "1982": {
+            "year": "1982",
+            "position": "26",
+            "points": "1"
+        },
+        "1983": {
+            "year": "1983",
+            "points": "0"
+        }
+    },
+    "posAfterRace": {
+        "1981": {
+            "year": "1981",
+            "pos": {
+                "United States Grand Prix West": {
+                    "points": 0
+                },
+                "Brazilian Grand Prix": {
+                    "points": 0
+                },
+                "Argentine Grand Prix": {
+                    "points": 0
+                },
+                "Belgian Grand Prix": {
+                    "points": 0
+                },
+                "Spanish Grand Prix": {
+                    "points": 0
+                },
+                "French Grand Prix": {
+                    "points": 0
+                }
+            }
+        },
+        "1982": {
+            "year": "1982",
+            "pos": {
+                "South African Grand Prix": {
+                    "points": 0
+                },
+                "Brazilian Grand Prix": {
+                    "points": 0
+                },
+                "Belgian Grand Prix": {
+                    "points": 1
+                },
+                "Detroit Grand Prix": {
+                    "points": 1
+                },
+                "Dutch Grand Prix": {
+                    "points": 1
+                },
+                "British Grand Prix": {
+                    "points": 1
+                },
+                "German Grand Prix": {
+                    "points": 1
+                },
+                "Austrian Grand Prix": {
+                    "points": 1
+                },
+                "Italian Grand Prix": {
+                    "points": 1
+                }
+            }
+        },
+        "1983": {
+            "year": "1983",
+            "pos": {
+                "Brazilian Grand Prix": {
+                    "points": 0
+                },
+                "French Grand Prix": {
+                    "points": 0
+                },
+                "San Marino Grand Prix": {
+                    "points": 0
+                },
+                "Monaco Grand Prix": {
+                    "points": 0
+                }
+            }
+        }
+    },
+    "racePosition": {
+        "1981": {
+            "positions": {
+                "United States Grand Prix West": "7",
+                "Brazilian Grand Prix": "24",
+                "Argentine Grand Prix": "18",
+                "Belgian Grand Prix": "16",
+                "Spanish Grand Prix": "11",
+                "French Grand Prix": "24"
+            }
+        },
+        "1982": {
+            "positions": {
+                "South African Grand Prix": "17",
+                "Brazilian Grand Prix": "14",
+                "Belgian Grand Prix": "6",
+                "Detroit Grand Prix": "11",
+                "Dutch Grand Prix": "24",
+                "British Grand Prix": "22",
+                "German Grand Prix": "11",
+                "Austrian Grand Prix": "7",
+                "Italian Grand Prix": "11"
+            }
+        },
+        "1983": {
+            "positions": {
+                "Brazilian Grand Prix": "8",
+                "French Grand Prix": "19",
+                "San Marino Grand Prix": "8",
+                "Monaco Grand Prix": "7"
+            }
+        }
+    },
+    "qualiPosition": {
+        "1981": {
+            "positions": {}
+        },
+        "1982": {
+            "positions": {}
+        },
+        "1983": {
+            "positions": {}
+        }
+    },
+    "positionsGainLost": {
+        "1981": {
+            "positions": {
+                "United States Grand Prix West": "11",
+                "Brazilian Grand Prix": "-2",
+                "Argentine Grand Prix": "2",
+                "Belgian Grand Prix": "4",
+                "Spanish Grand Prix": "10",
+                "French Grand Prix": "0"
+            }
+        },
+        "1982": {
+            "positions": {
+                "South African Grand Prix": "8",
+                "Brazilian Grand Prix": "11",
+                "Belgian Grand Prix": "17",
+                "Detroit Grand Prix": "15",
+                "Dutch Grand Prix": "-5",
+                "British Grand Prix": "-1",
+                "German Grand Prix": "14",
+                "Austrian Grand Prix": "13",
+                "Italian Grand Prix": "15"
+            }
+        },
+        "1983": {
+            "positions": {
+                "Brazilian Grand Prix": "15",
+                "French Grand Prix": "7",
+                "San Marino Grand Prix": "12",
+                "Monaco Grand Prix": "8"
+            }
+        }
+    },
+    "driverQualifyingTimes": {
+        "1981": {
+            "QualiTimes": {}
+        },
+        "1982": {
+            "QualiTimes": {}
+        },
+        "1983": {
+            "QualiTimes": {}
+        }
+    },
+    "avgRacePositions": {
+        "1981": "16.67",
+        "1982": "13.67",
+        "1983": "10.50"
+    },
+    "avgQualiPositions": {
+        "1981": "0.00",
+        "1982": "0.00",
+        "1983": "0.00"
+    },
+    "rates": {
+        "wins": {
+            "1981": "0.0000",
+            "1982": "0.0000",
+            "1983": "0.0000"
+        },
+        "podiums": {
+            "1981": "0.0000",
+            "1982": "0.0000",
+            "1983": "0.0000"
+        },
+        "poles": {
+            "1981": "0.0000",
+            "1982": "0.0000",
+            "1983": "0.0000"
+        }
+    }
+}

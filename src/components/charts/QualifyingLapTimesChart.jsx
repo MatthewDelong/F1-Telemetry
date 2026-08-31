@@ -56,9 +56,14 @@ export const QualifyingLapTimesChart = ({ headToHeadData, teamColor }) => {
         };
 
         const convertToSeconds = (time) => {
+          if (!time) return null;
+          if (!time.includes(':')) {
+            const [secs, millis] = time.split('.');
+            return parseInt(secs) + parseInt(millis || 0) / 1000;
+          }
           const [minutes, seconds] = time.split(':');
           const [secs, millis] = seconds.split('.');
-          return parseInt(minutes) * 60 + parseInt(secs) + parseInt(millis) / 1000;
+          return parseInt(minutes) * 60 + parseInt(secs) + parseInt(millis || 0) / 1000;
         };
 
         const bestTime1 = getTime(q.QualiTimes);

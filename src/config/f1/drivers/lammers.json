@@ -1,0 +1,400 @@
+{
+    "driverId": "lammers",
+    "driverCode": "",
+    "driverNumber": "",
+    "lastUpdate": "2026-08-30T22:18:32.683Z",
+    "totalWins": 0,
+    "totalPodiums": 0,
+    "totalPoles": 0,
+    "totalDNFs": 12,
+    "totalRaces": 24,
+    "winRate": 0,
+    "podiumRate": 0,
+    "poleRate": 0,
+    "dnfRate": 0.5,
+    "seasonWins": {
+        "1979": 0,
+        "1980": 0,
+        "1981": 0,
+        "1982": 0,
+        "1992": 0
+    },
+    "seasonPodiums": {
+        "1979": 0,
+        "1980": 0,
+        "1981": 0,
+        "1982": 0,
+        "1992": 0
+    },
+    "seasonPoles": {
+        "1979": 0,
+        "1980": 0,
+        "1981": 0,
+        "1982": 0,
+        "1992": 0
+    },
+    "seasonDNFs": {
+        "1979": 5,
+        "1980": 3,
+        "1981": 2,
+        "1982": 1,
+        "1992": 1
+    },
+    "poles": {
+        "1979": [],
+        "1980": [],
+        "1981": [],
+        "1982": [],
+        "1992": []
+    },
+    "podiums": {
+        "1979": {},
+        "1980": {},
+        "1981": {},
+        "1982": {},
+        "1992": {}
+    },
+    "DNFs": {
+        "1979": {
+            "Argentine Grand Prix": "Transmission",
+            "South African Grand Prix": "Accident",
+            "United States Grand Prix West": "Suspension",
+            "Austrian Grand Prix": "Accident",
+            "Dutch Grand Prix": "Gearbox"
+        },
+        "1980": {
+            "United States Grand Prix West": "Transmission",
+            "Belgian Grand Prix": "Engine",
+            "United States Grand Prix": "Steering"
+        },
+        "1981": {
+            "United States Grand Prix West": "Collision",
+            "San Marino Grand Prix": "Retired"
+        },
+        "1982": {
+            "Dutch Grand Prix": "Engine"
+        },
+        "1992": {
+            "Japanese Grand Prix": "Clutch"
+        }
+    },
+    "fastLaps": {
+        "1979": {
+            "Argentine Grand Prix": -1,
+            "Brazilian Grand Prix": -1,
+            "South African Grand Prix": -1,
+            "United States Grand Prix West": -1,
+            "Spanish Grand Prix": -1,
+            "Belgian Grand Prix": -1,
+            "French Grand Prix": -1,
+            "British Grand Prix": -1,
+            "German Grand Prix": -1,
+            "Austrian Grand Prix": -1,
+            "Dutch Grand Prix": -1,
+            "Canadian Grand Prix": -1
+        },
+        "1980": {
+            "United States Grand Prix West": -1,
+            "Belgian Grand Prix": -1,
+            "Monaco Grand Prix": -1,
+            "German Grand Prix": -1,
+            "Canadian Grand Prix": -1,
+            "United States Grand Prix": -1
+        },
+        "1981": {
+            "United States Grand Prix West": -1,
+            "Argentine Grand Prix": -1,
+            "San Marino Grand Prix": -1
+        },
+        "1982": {
+            "Dutch Grand Prix": -1
+        },
+        "1992": {
+            "Japanese Grand Prix": -1,
+            "Australian Grand Prix": -1
+        }
+    },
+    "finalStandings": {
+        "1979": {
+            "year": "1979",
+            "points": "0"
+        },
+        "1980": {
+            "year": "1980",
+            "points": "0"
+        },
+        "1981": {
+            "year": "1981",
+            "points": "0"
+        },
+        "1982": {
+            "year": "1982",
+            "points": "0"
+        },
+        "1992": {
+            "year": "1992",
+            "points": "0"
+        }
+    },
+    "posAfterRace": {
+        "1979": {
+            "year": "1979",
+            "pos": {
+                "Argentine Grand Prix": {
+                    "points": 0
+                },
+                "Brazilian Grand Prix": {
+                    "points": 0
+                },
+                "South African Grand Prix": {
+                    "points": 0
+                },
+                "United States Grand Prix West": {
+                    "points": 0
+                },
+                "Spanish Grand Prix": {
+                    "points": 0
+                },
+                "Belgian Grand Prix": {
+                    "points": 0
+                },
+                "French Grand Prix": {
+                    "points": 0
+                },
+                "British Grand Prix": {
+                    "points": 0
+                },
+                "German Grand Prix": {
+                    "points": 0
+                },
+                "Austrian Grand Prix": {
+                    "points": 0
+                },
+                "Dutch Grand Prix": {
+                    "points": 0
+                },
+                "Canadian Grand Prix": {
+                    "points": 0
+                }
+            }
+        },
+        "1980": {
+            "year": "1980",
+            "pos": {
+                "United States Grand Prix West": {
+                    "points": 0
+                },
+                "Belgian Grand Prix": {
+                    "points": 0
+                },
+                "Monaco Grand Prix": {
+                    "points": 0
+                },
+                "German Grand Prix": {
+                    "points": 0
+                },
+                "Canadian Grand Prix": {
+                    "points": 0
+                },
+                "United States Grand Prix": {
+                    "points": 0
+                }
+            }
+        },
+        "1981": {
+            "year": "1981",
+            "pos": {
+                "United States Grand Prix West": {
+                    "points": 0
+                },
+                "Argentine Grand Prix": {
+                    "points": 0
+                },
+                "San Marino Grand Prix": {
+                    "points": 0
+                }
+            }
+        },
+        "1982": {
+            "year": "1982",
+            "pos": {
+                "Dutch Grand Prix": {
+                    "points": 0
+                }
+            }
+        },
+        "1992": {
+            "year": "1992",
+            "pos": {
+                "Japanese Grand Prix": {
+                    "points": 0
+                },
+                "Australian Grand Prix": {
+                    "points": 0
+                }
+            }
+        }
+    },
+    "racePosition": {
+        "1979": {
+            "positions": {
+                "Argentine Grand Prix": "14",
+                "Brazilian Grand Prix": "14",
+                "South African Grand Prix": "24",
+                "United States Grand Prix West": "16",
+                "Spanish Grand Prix": "12",
+                "Belgian Grand Prix": "10",
+                "French Grand Prix": "18",
+                "British Grand Prix": "11",
+                "German Grand Prix": "10",
+                "Austrian Grand Prix": "22",
+                "Dutch Grand Prix": "16",
+                "Canadian Grand Prix": "9"
+            }
+        },
+        "1980": {
+            "positions": {
+                "United States Grand Prix West": "22",
+                "Belgian Grand Prix": "12",
+                "Monaco Grand Prix": "10",
+                "German Grand Prix": "14",
+                "Canadian Grand Prix": "12",
+                "United States Grand Prix": "21"
+            }
+        },
+        "1981": {
+            "positions": {
+                "United States Grand Prix West": "16",
+                "Argentine Grand Prix": "12",
+                "San Marino Grand Prix": "27"
+            }
+        },
+        "1982": {
+            "positions": {
+                "Dutch Grand Prix": "17"
+            }
+        },
+        "1992": {
+            "positions": {
+                "Japanese Grand Prix": "20",
+                "Australian Grand Prix": "12"
+            }
+        }
+    },
+    "qualiPosition": {
+        "1979": {
+            "positions": {}
+        },
+        "1980": {
+            "positions": {}
+        },
+        "1981": {
+            "positions": {}
+        },
+        "1982": {
+            "positions": {}
+        },
+        "1992": {
+            "positions": {}
+        }
+    },
+    "positionsGainLost": {
+        "1979": {
+            "positions": {
+                "Argentine Grand Prix": "7",
+                "Brazilian Grand Prix": "7",
+                "South African Grand Prix": "-3",
+                "United States Grand Prix West": "-2",
+                "Spanish Grand Prix": "12",
+                "Belgian Grand Prix": "11",
+                "French Grand Prix": "3",
+                "British Grand Prix": "10",
+                "German Grand Prix": "10",
+                "Austrian Grand Prix": "1",
+                "Dutch Grand Prix": "7",
+                "Canadian Grand Prix": "12"
+            }
+        },
+        "1980": {
+            "positions": {
+                "United States Grand Prix West": "-18",
+                "Belgian Grand Prix": "3",
+                "Monaco Grand Prix": "3",
+                "German Grand Prix": "10",
+                "Canadian Grand Prix": "7",
+                "United States Grand Prix": "4"
+            }
+        },
+        "1981": {
+            "positions": {
+                "United States Grand Prix West": "5",
+                "Argentine Grand Prix": "11"
+            }
+        },
+        "1982": {
+            "positions": {
+                "Dutch Grand Prix": "9"
+            }
+        },
+        "1992": {
+            "positions": {
+                "Japanese Grand Prix": "3",
+                "Australian Grand Prix": "13"
+            }
+        }
+    },
+    "driverQualifyingTimes": {
+        "1979": {
+            "QualiTimes": {}
+        },
+        "1980": {
+            "QualiTimes": {}
+        },
+        "1981": {
+            "QualiTimes": {}
+        },
+        "1982": {
+            "QualiTimes": {}
+        },
+        "1992": {
+            "QualiTimes": {}
+        }
+    },
+    "avgRacePositions": {
+        "1979": "14.67",
+        "1980": "15.17",
+        "1981": "18.33",
+        "1982": "17.00",
+        "1992": "16.00"
+    },
+    "avgQualiPositions": {
+        "1979": "0.00",
+        "1980": "0.00",
+        "1981": "0.00",
+        "1982": "0.00",
+        "1992": "0.00"
+    },
+    "rates": {
+        "wins": {
+            "1979": "0.0000",
+            "1980": "0.0000",
+            "1981": "0.0000",
+            "1982": "0.0000",
+            "1992": "0.0000"
+        },
+        "podiums": {
+            "1979": "0.0000",
+            "1980": "0.0000",
+            "1981": "0.0000",
+            "1982": "0.0000",
+            "1992": "0.0000"
+        },
+        "poles": {
+            "1979": "0.0000",
+            "1980": "0.0000",
+            "1981": "0.0000",
+            "1982": "0.0000",
+            "1992": "0.0000"
+        }
+    }
+}

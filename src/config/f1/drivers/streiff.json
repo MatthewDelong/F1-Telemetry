@@ -1,0 +1,600 @@
+{
+    "driverId": "streiff",
+    "driverCode": "",
+    "driverNumber": "",
+    "lastUpdate": "2026-08-31T05:01:48.728Z",
+    "totalWins": 0,
+    "totalPodiums": 1,
+    "totalPoles": 0,
+    "totalDNFs": 26,
+    "totalRaces": 54,
+    "winRate": 0,
+    "podiumRate": 0.018518518518518517,
+    "poleRate": 0,
+    "dnfRate": 0.48148148148148145,
+    "seasonWins": {
+        "1984": 0,
+        "1985": 0,
+        "1986": 0,
+        "1987": 0,
+        "1988": 0
+    },
+    "seasonPodiums": {
+        "1984": 0,
+        "1985": 1,
+        "1986": 0,
+        "1987": 0,
+        "1988": 0
+    },
+    "seasonPoles": {
+        "1984": 0,
+        "1985": 0,
+        "1986": 0,
+        "1987": 0,
+        "1988": 0
+    },
+    "seasonDNFs": {
+        "1984": 1,
+        "1985": 1,
+        "1986": 8,
+        "1987": 5,
+        "1988": 11
+    },
+    "poles": {
+        "1984": [],
+        "1985": [],
+        "1986": [],
+        "1987": [],
+        "1988": []
+    },
+    "podiums": {
+        "1984": {},
+        "1985": {
+            "Australian Grand Prix": "3"
+        },
+        "1986": {},
+        "1987": {},
+        "1988": {}
+    },
+    "DNFs": {
+        "1984": {
+            "Portuguese Grand Prix": "Transmission"
+        },
+        "1985": {
+            "South African Grand Prix": "Accident"
+        },
+        "1986": {
+            "Spanish Grand Prix": "Engine",
+            "San Marino Grand Prix": "Transmission",
+            "French Grand Prix": "Heat shield fire",
+            "German Grand Prix": "Engine",
+            "Austrian Grand Prix": "Engine",
+            "Portuguese Grand Prix": "Engine",
+            "Mexican Grand Prix": "Turbo",
+            "Australian Grand Prix": "Out of fuel"
+        },
+        "1987": {
+            "Monaco Grand Prix": "Accident",
+            "Detroit Grand Prix": "Wheel",
+            "British Grand Prix": "Engine",
+            "Austrian Grand Prix": "Accident",
+            "Australian Grand Prix": "Spun off"
+        },
+        "1988": {
+            "Brazilian Grand Prix": "Brakes",
+            "Monaco Grand Prix": "Throttle",
+            "Canadian Grand Prix": "Suspension",
+            "Detroit Grand Prix": "Suspension",
+            "French Grand Prix": "Fuel leak",
+            "British Grand Prix": "Broken wing",
+            "German Grand Prix": "Throttle",
+            "Hungarian Grand Prix": "Collision",
+            "Italian Grand Prix": "Clutch",
+            "Spanish Grand Prix": "Engine",
+            "Australian Grand Prix": "Electrical"
+        }
+    },
+    "fastLaps": {
+        "1984": {
+            "Portuguese Grand Prix": -1
+        },
+        "1985": {
+            "Italian Grand Prix": -1,
+            "Belgian Grand Prix": -1,
+            "European Grand Prix": -1,
+            "South African Grand Prix": -1,
+            "Australian Grand Prix": -1
+        },
+        "1986": {
+            "Brazilian Grand Prix": -1,
+            "Spanish Grand Prix": -1,
+            "San Marino Grand Prix": -1,
+            "Monaco Grand Prix": -1,
+            "Belgian Grand Prix": -1,
+            "Canadian Grand Prix": -1,
+            "Detroit Grand Prix": -1,
+            "French Grand Prix": -1,
+            "British Grand Prix": -1,
+            "German Grand Prix": -1,
+            "Hungarian Grand Prix": -1,
+            "Austrian Grand Prix": -1,
+            "Italian Grand Prix": -1,
+            "Portuguese Grand Prix": -1,
+            "Mexican Grand Prix": -1,
+            "Australian Grand Prix": -1
+        },
+        "1987": {
+            "Brazilian Grand Prix": -1,
+            "San Marino Grand Prix": -1,
+            "Belgian Grand Prix": -1,
+            "Monaco Grand Prix": -1,
+            "Detroit Grand Prix": -1,
+            "French Grand Prix": -1,
+            "British Grand Prix": -1,
+            "German Grand Prix": -1,
+            "Hungarian Grand Prix": -1,
+            "Austrian Grand Prix": -1,
+            "Italian Grand Prix": -1,
+            "Portuguese Grand Prix": -1,
+            "Spanish Grand Prix": -1,
+            "Mexican Grand Prix": -1,
+            "Japanese Grand Prix": -1,
+            "Australian Grand Prix": -1
+        },
+        "1988": {
+            "Brazilian Grand Prix": -1,
+            "San Marino Grand Prix": -1,
+            "Monaco Grand Prix": -1,
+            "Mexican Grand Prix": -1,
+            "Canadian Grand Prix": -1,
+            "Detroit Grand Prix": -1,
+            "French Grand Prix": -1,
+            "British Grand Prix": -1,
+            "German Grand Prix": -1,
+            "Hungarian Grand Prix": -1,
+            "Belgian Grand Prix": -1,
+            "Italian Grand Prix": -1,
+            "Portuguese Grand Prix": -1,
+            "Spanish Grand Prix": -1,
+            "Japanese Grand Prix": -1,
+            "Australian Grand Prix": -1
+        }
+    },
+    "finalStandings": {
+        "1984": {
+            "year": "1984",
+            "points": "0"
+        },
+        "1985": {
+            "year": "1985",
+            "position": "15",
+            "points": "4"
+        },
+        "1986": {
+            "year": "1986",
+            "position": "14",
+            "points": "3"
+        },
+        "1987": {
+            "year": "1987",
+            "position": "15",
+            "points": "4"
+        },
+        "1988": {
+            "year": "1988",
+            "points": "0"
+        }
+    },
+    "posAfterRace": {
+        "1984": {
+            "year": "1984",
+            "pos": {
+                "Portuguese Grand Prix": {
+                    "points": 0
+                }
+            }
+        },
+        "1985": {
+            "year": "1985",
+            "pos": {
+                "Italian Grand Prix": {
+                    "points": 0
+                },
+                "Belgian Grand Prix": {
+                    "points": 0
+                },
+                "European Grand Prix": {
+                    "points": 0
+                },
+                "South African Grand Prix": {
+                    "points": 0
+                },
+                "Australian Grand Prix": {
+                    "points": 4
+                }
+            }
+        },
+        "1986": {
+            "year": "1986",
+            "pos": {
+                "Brazilian Grand Prix": {
+                    "points": 0
+                },
+                "Spanish Grand Prix": {
+                    "points": 0
+                },
+                "San Marino Grand Prix": {
+                    "points": 0
+                },
+                "Monaco Grand Prix": {
+                    "points": 0
+                },
+                "Belgian Grand Prix": {
+                    "points": 0
+                },
+                "Canadian Grand Prix": {
+                    "points": 0
+                },
+                "Detroit Grand Prix": {
+                    "points": 0
+                },
+                "French Grand Prix": {
+                    "points": 0
+                },
+                "British Grand Prix": {
+                    "points": 1
+                },
+                "German Grand Prix": {
+                    "points": 1
+                },
+                "Hungarian Grand Prix": {
+                    "points": 1
+                },
+                "Austrian Grand Prix": {
+                    "points": 1
+                },
+                "Italian Grand Prix": {
+                    "points": 1
+                },
+                "Portuguese Grand Prix": {
+                    "points": 1
+                },
+                "Mexican Grand Prix": {
+                    "points": 1
+                },
+                "Australian Grand Prix": {
+                    "points": 3
+                }
+            }
+        },
+        "1987": {
+            "year": "1987",
+            "pos": {
+                "Brazilian Grand Prix": {
+                    "points": 0
+                },
+                "San Marino Grand Prix": {
+                    "points": 0
+                },
+                "Belgian Grand Prix": {
+                    "points": 0
+                },
+                "Monaco Grand Prix": {
+                    "points": 0
+                },
+                "Detroit Grand Prix": {
+                    "points": 0
+                },
+                "French Grand Prix": {
+                    "points": 1
+                },
+                "British Grand Prix": {
+                    "points": 1
+                },
+                "German Grand Prix": {
+                    "points": 4
+                },
+                "Hungarian Grand Prix": {
+                    "points": 4
+                },
+                "Austrian Grand Prix": {
+                    "points": 4
+                },
+                "Italian Grand Prix": {
+                    "points": 4
+                },
+                "Portuguese Grand Prix": {
+                    "points": 4
+                },
+                "Spanish Grand Prix": {
+                    "points": 4
+                },
+                "Mexican Grand Prix": {
+                    "points": 4
+                },
+                "Japanese Grand Prix": {
+                    "points": 4
+                },
+                "Australian Grand Prix": {
+                    "points": 4
+                }
+            }
+        },
+        "1988": {
+            "year": "1988",
+            "pos": {
+                "Brazilian Grand Prix": {
+                    "points": 0
+                },
+                "San Marino Grand Prix": {
+                    "points": 0
+                },
+                "Monaco Grand Prix": {
+                    "points": 0
+                },
+                "Mexican Grand Prix": {
+                    "points": 0
+                },
+                "Canadian Grand Prix": {
+                    "points": 0
+                },
+                "Detroit Grand Prix": {
+                    "points": 0
+                },
+                "French Grand Prix": {
+                    "points": 0
+                },
+                "British Grand Prix": {
+                    "points": 0
+                },
+                "German Grand Prix": {
+                    "points": 0
+                },
+                "Hungarian Grand Prix": {
+                    "points": 0
+                },
+                "Belgian Grand Prix": {
+                    "points": 0
+                },
+                "Italian Grand Prix": {
+                    "points": 0
+                },
+                "Portuguese Grand Prix": {
+                    "points": 0
+                },
+                "Spanish Grand Prix": {
+                    "points": 0
+                },
+                "Japanese Grand Prix": {
+                    "points": 0
+                },
+                "Australian Grand Prix": {
+                    "points": 0
+                }
+            }
+        }
+    },
+    "racePosition": {
+        "1984": {
+            "positions": {
+                "Portuguese Grand Prix": "21"
+            }
+        },
+        "1985": {
+            "positions": {
+                "Italian Grand Prix": "10",
+                "Belgian Grand Prix": "9",
+                "European Grand Prix": "8",
+                "South African Grand Prix": "11",
+                "Australian Grand Prix": "3"
+            }
+        },
+        "1986": {
+            "positions": {
+                "Brazilian Grand Prix": "7",
+                "Spanish Grand Prix": "17",
+                "San Marino Grand Prix": "13",
+                "Monaco Grand Prix": "11",
+                "Belgian Grand Prix": "12",
+                "Canadian Grand Prix": "11",
+                "Detroit Grand Prix": "9",
+                "French Grand Prix": "16",
+                "British Grand Prix": "6",
+                "German Grand Prix": "24",
+                "Hungarian Grand Prix": "8",
+                "Austrian Grand Prix": "21",
+                "Italian Grand Prix": "9",
+                "Portuguese Grand Prix": "22",
+                "Mexican Grand Prix": "23",
+                "Australian Grand Prix": "5"
+            }
+        },
+        "1987": {
+            "positions": {
+                "Brazilian Grand Prix": "11",
+                "San Marino Grand Prix": "8",
+                "Belgian Grand Prix": "9",
+                "Monaco Grand Prix": "23",
+                "Detroit Grand Prix": "15",
+                "French Grand Prix": "6",
+                "British Grand Prix": "10",
+                "German Grand Prix": "4",
+                "Hungarian Grand Prix": "9",
+                "Austrian Grand Prix": "26",
+                "Italian Grand Prix": "12",
+                "Portuguese Grand Prix": "12",
+                "Spanish Grand Prix": "7",
+                "Mexican Grand Prix": "8",
+                "Japanese Grand Prix": "12",
+                "Australian Grand Prix": "25"
+            }
+        },
+        "1988": {
+            "positions": {
+                "Brazilian Grand Prix": "15",
+                "San Marino Grand Prix": "10",
+                "Monaco Grand Prix": "26",
+                "Mexican Grand Prix": "12",
+                "Canadian Grand Prix": "16",
+                "Detroit Grand Prix": "21",
+                "French Grand Prix": "25",
+                "British Grand Prix": "25",
+                "German Grand Prix": "20",
+                "Hungarian Grand Prix": "24",
+                "Belgian Grand Prix": "10",
+                "Italian Grand Prix": "16",
+                "Portuguese Grand Prix": "9",
+                "Spanish Grand Prix": "20",
+                "Japanese Grand Prix": "8",
+                "Australian Grand Prix": "11"
+            }
+        }
+    },
+    "qualiPosition": {
+        "1984": {
+            "positions": {}
+        },
+        "1985": {
+            "positions": {}
+        },
+        "1986": {
+            "positions": {}
+        },
+        "1987": {
+            "positions": {}
+        },
+        "1988": {
+            "positions": {}
+        }
+    },
+    "positionsGainLost": {
+        "1984": {
+            "positions": {
+                "Portuguese Grand Prix": "-8"
+            }
+        },
+        "1985": {
+            "positions": {
+                "Italian Grand Prix": "9",
+                "Belgian Grand Prix": "9",
+                "European Grand Prix": "-3",
+                "South African Grand Prix": "8",
+                "Australian Grand Prix": "15"
+            }
+        },
+        "1986": {
+            "positions": {
+                "Brazilian Grand Prix": "11",
+                "Spanish Grand Prix": "3",
+                "San Marino Grand Prix": "9",
+                "Monaco Grand Prix": "2",
+                "Belgian Grand Prix": "6",
+                "Canadian Grand Prix": "6",
+                "Detroit Grand Prix": "9",
+                "French Grand Prix": "1",
+                "British Grand Prix": "10",
+                "German Grand Prix": "-6",
+                "Hungarian Grand Prix": "10",
+                "Austrian Grand Prix": "-1",
+                "Italian Grand Prix": "14",
+                "Portuguese Grand Prix": "1",
+                "Mexican Grand Prix": "-4",
+                "Australian Grand Prix": "5"
+            }
+        },
+        "1987": {
+            "positions": {
+                "Brazilian Grand Prix": "9",
+                "San Marino Grand Prix": "12",
+                "Belgian Grand Prix": "14",
+                "Monaco Grand Prix": "0",
+                "Detroit Grand Prix": "-1",
+                "French Grand Prix": "19",
+                "British Grand Prix": "12",
+                "German Grand Prix": "18",
+                "Hungarian Grand Prix": "5",
+                "Austrian Grand Prix": "-1",
+                "Italian Grand Prix": "12",
+                "Portuguese Grand Prix": "9",
+                "Spanish Grand Prix": "8",
+                "Mexican Grand Prix": "17",
+                "Japanese Grand Prix": "13",
+                "Australian Grand Prix": "-7"
+            }
+        },
+        "1988": {
+            "positions": {
+                "Brazilian Grand Prix": "4",
+                "San Marino Grand Prix": "3",
+                "Monaco Grand Prix": "-14",
+                "Mexican Grand Prix": "7",
+                "Canadian Grand Prix": "-6",
+                "Detroit Grand Prix": "-10",
+                "French Grand Prix": "-8",
+                "British Grand Prix": "-9",
+                "German Grand Prix": "-4",
+                "Hungarian Grand Prix": "-1",
+                "Belgian Grand Prix": "8",
+                "Italian Grand Prix": "7",
+                "Portuguese Grand Prix": "12",
+                "Spanish Grand Prix": "-7",
+                "Japanese Grand Prix": "10",
+                "Australian Grand Prix": "5"
+            }
+        }
+    },
+    "driverQualifyingTimes": {
+        "1984": {
+            "QualiTimes": {}
+        },
+        "1985": {
+            "QualiTimes": {}
+        },
+        "1986": {
+            "QualiTimes": {}
+        },
+        "1987": {
+            "QualiTimes": {}
+        },
+        "1988": {
+            "QualiTimes": {}
+        }
+    },
+    "avgRacePositions": {
+        "1984": "21.00",
+        "1985": "8.20",
+        "1986": "13.38",
+        "1987": "12.31",
+        "1988": "16.75"
+    },
+    "avgQualiPositions": {
+        "1984": "0.00",
+        "1985": "0.00",
+        "1986": "0.00",
+        "1987": "0.00",
+        "1988": "0.00"
+    },
+    "rates": {
+        "wins": {
+            "1984": "0.0000",
+            "1985": "0.0000",
+            "1986": "0.0000",
+            "1987": "0.0000",
+            "1988": "0.0000"
+        },
+        "podiums": {
+            "1984": "0.0000",
+            "1985": "0.2000",
+            "1986": "0.0000",
+            "1987": "0.0000",
+            "1988": "0.0000"
+        },
+        "poles": {
+            "1984": "0.0000",
+            "1985": "0.0000",
+            "1986": "0.0000",
+            "1987": "0.0000",
+            "1988": "0.0000"
+        }
+    }
+}

@@ -55,7 +55,7 @@ def update_constructor_drivers():
         data = json.load(file)
 
     active_drivers = set()
-    for filename in ['results.json', 'qualifying.json', 'sprint.json']:
+    for filename in [f'{current_year}/results.json', f'{current_year}/qualifying.json', f'{current_year}/sprint.json']:
         try:
             with open(filename, 'r', encoding='utf-8') as f:
                 r_data = json.load(f)
@@ -109,7 +109,7 @@ def update_driverData():
 
     # 1. Fetch all races results
     try:
-        with open('results.json', 'r', encoding='utf-8') as f:
+        with open(f'{current_year}/results.json', 'r', encoding='utf-8') as f:
             races = json.load(f)
     except Exception:
         url_results = f'{api_url}/current/results.json?limit=1000'
@@ -121,7 +121,7 @@ def update_driverData():
 
     # 2. Fetch all qualifying results
     try:
-        with open('qualifying.json', 'r', encoding='utf-8') as f:
+        with open(f'{current_year}/qualifying.json', 'r', encoding='utf-8') as f:
             quali_races = json.load(f)
     except Exception:
         url_quali = f'{api_url}/current/qualifying.json?limit=1000'
@@ -840,7 +840,7 @@ def update_raceResults():
 
     # Patch missing grid positions from qualifying.json
     try:
-        with open('qualifying.json', 'r', encoding='utf-8') as qf:
+        with open(f'{current_year}/qualifying.json', 'r', encoding='utf-8') as qf:
             quali_races = json.load(qf)
             for race in result:
                 qrace = next((qr for qr in quali_races if qr.get("round") == race.get("round")), None)
@@ -855,7 +855,7 @@ def update_raceResults():
     except Exception as e:
         print("Could not patch grid from qualifying:", e)
 
-    write_compact_race_json(result, 'results.json', 'Results')
+    write_compact_race_json(result, f'{current_year}/results.json', 'Results')
 
     print("Race Results updated successfully!")
 
@@ -900,7 +900,7 @@ def update_qualifying():
         else:
             break
 
-    write_compact_race_json(result, 'qualifying.json', 'QualifyingResults')
+    write_compact_race_json(result, f'{current_year}/qualifying.json', 'QualifyingResults')
 
     print("Qualifying results updated successfully!")
 
@@ -950,7 +950,7 @@ def update_sprintResults():
             # Don't break - future sprint weekends may exist after non-sprint ones
             continue
 
-    write_compact_race_json(result, 'sprint.json', 'Results')
+    write_compact_race_json(result, f'{current_year}/sprint.json', 'Results')
 
     print("Sprint Results updated successfully!")
 
@@ -1011,12 +1011,12 @@ def update_driverStandings():
         
         # Patch driverStandings with correct points from results.json and sprint.json
         try:
-            with open('results.json', 'r', encoding='utf-8') as rf:
+            with open(f'{current_year}/results.json', 'r', encoding='utf-8') as rf:
                 race_results = json.load(rf)
             
             sprint_results = []
             try:
-                with open('sprint.json', 'r', encoding='utf-8') as sf:
+                with open(f'{current_year}/sprint.json', 'r', encoding='utf-8') as sf:
                     sprint_results = json.load(sf)
             except Exception:
                 pass
@@ -1133,12 +1133,12 @@ def update_constructorStandings():
         
         # Patch constructorStandings with correct points from results.json and sprint.json
         try:
-            with open('results.json', 'r', encoding='utf-8') as rf:
+            with open(f'{current_year}/results.json', 'r', encoding='utf-8') as rf:
                 race_results = json.load(rf)
             
             sprint_results = []
             try:
-                with open('sprint.json', 'r', encoding='utf-8') as sf:
+                with open(f'{current_year}/sprint.json', 'r', encoding='utf-8') as sf:
                     sprint_results = json.load(sf)
             except Exception:
                 pass

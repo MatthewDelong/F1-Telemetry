@@ -110,9 +110,9 @@ async function getDriverSeasons(driverId) {
  * Fetch all race results for a driver in a given season
  */
 async function fetchDriverResults(driverId, year) {
-  if (year === "2026") {
+  if (parseInt(year) >= 2026) {
     try {
-      const resultsPath = path.join(__dirname, '..', 'src', 'config', 'f1', 'results.json');
+      const resultsPath = path.join(__dirname, '..', 'src', 'config', 'f1', String(year), 'results.json');
       if (fs.existsSync(resultsPath)) {
         const results = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
         const filtered = results.filter(race =>
@@ -124,11 +124,11 @@ async function fetchDriverResults(driverId, year) {
             status: r.status || (r.Time?.time === "DNF" ? "DNF" : (r.Time?.time === "DNS" ? "DNS" : "Finished"))
           }))
         }));
-        console.log(`[DriverStats] Loaded ${filtered.length} local 2026 races for ${driverId}`);
+        console.log(`[DriverStats] Loaded ${filtered.length} local ${year} races for ${driverId}`);
         return filtered;
       }
     } catch (e) {
-      console.error("[DriverStats] Error loading local 2026 results:", e.message);
+      console.error(`[DriverStats] Error loading local ${year} results:`, e.message);
     }
   }
   try {
@@ -157,9 +157,9 @@ async function fetchDriverResults(driverId, year) {
  * Fetch all qualifying results for a driver in a given season
  */
 async function fetchDriverQualifying(driverId, year) {
-  if (year === "2026") {
+  if (parseInt(year) >= 2026) {
     try {
-      const qualiPath = path.join(__dirname, '..', 'src', 'config', 'f1', 'qualifying.json');
+      const qualiPath = path.join(__dirname, '..', 'src', 'config', 'f1', String(year), 'qualifying.json');
       if (fs.existsSync(qualiPath)) {
         const quali = JSON.parse(fs.readFileSync(qualiPath, 'utf8'));
         return quali.filter(race =>
@@ -199,25 +199,25 @@ async function fetchDriverQualifying(driverId, year) {
  * Fetch end-of-season standing for a driver
  */
 async function fetchDriverStanding(driverId, year) {
-  if (year === "2026") {
+  if (parseInt(year) >= 2026) {
     try {
-      const resultsPath = path.join(__dirname, '..', 'src', 'config', 'f1', 'results.json');
-      console.log(`[DriverStats] Checking for 2026 results at: ${resultsPath}`);
+      const resultsPath = path.join(__dirname, '..', 'src', 'config', 'f1', String(year), 'results.json');
+      console.log(`[DriverStats] Checking for ${year} results at: ${resultsPath}`);
       if (fs.existsSync(resultsPath)) {
-        console.log(`[DriverStats] Found 2026 results file.`);
+        console.log(`[DriverStats] Found ${year} results file.`);
         const resultsData = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
         let points = 0;
         resultsData.forEach(race => {
           const result = race.Results.find(r => matchesDriver(r.Driver, driverId));
           if (result) points += parseInt(result.points || '0', 10);
         });
-        console.log(`[DriverStats] Calculated 2026 points for ${driverId}: ${points}`);
+        console.log(`[DriverStats] Calculated ${year} points for ${driverId}: ${points}`);
         return { year, position: '0', points: String(points) };
       } else {
-        console.warn(`[DriverStats] 2026 results file NOT found at: ${resultsPath}`);
+        console.warn(`[DriverStats] ${year} results file NOT found at: ${resultsPath}`);
       }
     } catch (e) {
-      console.error("[DriverStats] Error calculating 2026 standing:", e.message);
+      console.error(`[DriverStats] Error calculating ${year} standing:`, e.message);
     }
   }
   try {

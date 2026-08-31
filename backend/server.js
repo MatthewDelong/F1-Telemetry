@@ -152,6 +152,13 @@ app.get('/api/admin/rebuild-2026', requireAdmin, async (req, res) => {
           } else {
             await Cache.create({ key: cacheKey, value, lastUpdated: now });
           }
+
+          // Write to local JSON file so it can be committed to GitHub for the live site
+          const driverPath = pathMod.join(__dirname, '..', 'src', 'config', 'f1', 'drivers', `${id}.json`);
+          if (fs.existsSync(pathMod.dirname(driverPath))) {
+            fs.writeFileSync(driverPath, value, 'utf8');
+            console.log(`[Admin] Wrote full historical stats to ${driverPath}`);
+          }
           results.push({ id, status: 'success' });
 
           // Track driver for team roster
@@ -238,7 +245,7 @@ app.use("/api/proxy/:source", async (req, res) => {
       const isYearSpecificMatch = year && localConfigPath.includes(pathMod.join(year, fileName));
       const isRootAnd2026 = (!year || year === "2026") && localConfigPath.endsWith(pathMod.join("f1", path));
 
-      if (isGlobal || isYearSpecificMatch || isRootAnd2026 || path.includes("2026") || path.startsWith("drivers/")) {
+      if (isGlobal || isYearSpecificMatch || isRootAnd2026 || path.includes("2026")) {
         console.log(`[Proxy] Serving local file: ${localConfigPath}`);
         try {
           const content = fs.readFileSync(localConfigPath, 'utf8');
