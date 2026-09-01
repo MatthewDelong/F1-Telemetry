@@ -12,7 +12,7 @@ $source = $_GET['source'] ?? '';
 $path = $_GET['path'] ?? '';
 
 // Validate source against allowed values
-if (!in_array($source, ['f1', 'f2', 'f1a', 'openf1'], true)) {
+if (!in_array($source, ['f1', 'f2', 'f1a', 'openf1', 'gpfans'], true)) {
     http_response_code(400);
     echo json_encode(['error' => 'Invalid source parameter']);
     exit;
@@ -164,6 +164,9 @@ if (!is_dir($cacheDir)) {
 $cacheKey = md5($path);
 $cacheFile = $cacheDir . '/' . $cacheKey . '.json';
 $cacheTTL = 60 * 30; // 30 minutes
+if ($source === 'gpfans') {
+    $cacheTTL = 60 * 5; // 5 minutes for news
+}
 
 // Check cache - allow bypass with ?flush=1 or ?refresh=true
 $flush = (isset($_GET['flush']) && $_GET['flush'] == '1') || 
@@ -277,6 +280,9 @@ if ($source === 'f1') {
             if ($data) break;
         }
     }
+} else if ($source === 'gpfans') {
+    $url = "https://www.gpfans.com/en/rss.xml?cb=" . time();
+    $data = fetchUrl($url, 15, $lastError);
 }
 
 // Serve Data

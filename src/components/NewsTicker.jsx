@@ -7,7 +7,7 @@ const REFRESH_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
 
 /**
  * Fetch news items. Tries the backend proxy first (local dev),
- * then falls back to rss2json API (production / static hosting).
+ * then falls back to allorigins API (production / static hosting).
  */
 async function fetchNewsItems() {
   // Strategy 1: Backend proxy (works in local dev)
@@ -22,24 +22,17 @@ async function fetchNewsItems() {
     // Backend not available — expected on production
   }
 
-  // Strategy 2: rss2json API (works on production, no CORS issues)
+  // Strategy 2: PHP API proxy (works on production IONOS server, bypasses CORS and 3rd party caches)
   try {
-    const res = await fetch(
-      `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(GPFANS_RSS_URL)}`,
-      { signal: AbortSignal.timeout(8000) }
-    );
+    // Append timestamp to ensure we get a fresh result if cache is flushed
+    const res = await fetch(`/api.php?source=gpfans&path=rss.xml&cb=${Date.now()}`, { signal: AbortSignal.timeout(8000) });
     if (res.ok) {
-      const data = await res.json();
-      if (data.status === "ok" && data.items?.length > 0) {
-        return data.items.map((item) => ({
-          title: item.title || "",
-          link: item.link || "",
-          pubDate: item.pubDate || "",
-        }));
-      }
+      const xmlText = await res.text();
+      const items = parseRSSXml(xmlText);
+      if (items.length > 0) return items;
     }
   } catch {
-    // rss2json also failed
+    // PHP proxy failed
   }
 
   return [];
@@ -52,12 +45,18 @@ function parseRSSXml(xmlString) {
   try {
     const parser = new DOMParser();
     const doc = parser.parseFromString(xmlString, "application/xml");
-    const items = doc.querySelectorAll("item");
-    return Array.from(items).map((item) => ({
-      title: item.querySelector("title")?.textContent || "",
+    const itemNodes = doc.querySelectorAll("item");
+    let items = Array.from(itemNodes).map((item) => ({
+      title: item.querySelector("title")?.textContent?.replace(/^F1 News Today:\s*/i, "") || "",
       link: item.querySelector("link")?.textContent || "",
       pubDate: item.querySelector("pubDate")?.textContent || "",
     }));
+
+    if (items.length > 0) {
+      items[0].title = `F1 News Today: ${items[0].title}`;
+    }
+
+    return items;
   } catch {
     return [];
   }
