@@ -13,10 +13,12 @@
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  scroll-snap-type: y proximity;
   background: linear-gradient(180deg, #050508 0%, #0a0b12 40%, #080a10 100%);
 
   &__track-view {
     position: relative;
+    scroll-snap-align: start;
 
     /* Atmospheric gradient overlay behind the canvas */
     &::before {
@@ -50,11 +52,9 @@
   }
 
   &__leaderboard-desktop-wrapper {
-    max-height: calc(100dvh - 150px);
-    height: 100%;
-    overflow-y: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    max-height: none;
+    height: auto;
+    overflow-y: visible;
     padding: 0.8rem;
 
     &::-webkit-scrollbar {
@@ -63,6 +63,7 @@
   }
 
   &__scroll-container {
+    scroll-snap-align: start;
     padding: 3rem 0;
     position: relative;
   }
@@ -258,9 +259,8 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 1.6rem;
   padding: 0.8rem;
-  padding-bottom: 120px;
-  max-height: 100%;
-  overflow-y: auto;
+  max-height: none;
+  overflow: visible;
   scrollbar-width: none;
   -ms-overflow-style: none;
 
@@ -527,5 +527,92 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* ─── Glass Leaderboard Wrapper ─── */
+.race-leaderboard-glass {
+  background: rgba(5, 5, 8, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  width: 320px;
+  pointer-events: auto;
+
+  /* Custom Scrollbar for Leaderboard */
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 4px; }
+  &::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
+  &::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+
+  &__header {
+    font-family: 'Formula1', sans-serif;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* ─── Floating Control Bar ─── */
+.race-control-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(10, 11, 18, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 100px;
+  padding: 8px 16px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  pointer-events: auto;
+
+  &__divider {
+    width: 1px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0 4px;
+  }
+
+  &__btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.6);
+    background: transparent;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 100px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+    &__label {
+      font-size: 0.8rem;
+      font-family: 'Inter', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+
+    &:hover {
+      color: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    &--active {
+      color: #3b82f6;
+      background: rgba(59, 130, 246, 0.1);
+      
+      &:hover {
+        background: rgba(59, 130, 246, 0.15);
+        color: #60a5fa;
+      }
+    }
   }
 }

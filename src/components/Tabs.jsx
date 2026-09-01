@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import classNames from "classnames";
+import "./Tabs.scss";
 
 export const Tabs = ({
     tabs = [],
@@ -29,16 +30,14 @@ export const Tabs = ({
         }
     }, [activeTabId, visibleTabs]);
 
-    // Animate underline indicator position
     useEffect(() => {
-        if (!tabListRef.current) return;
-        const activeBtn = tabListRef.current.querySelector(`[data-tab-id="${activeTabId}"]`);
+        const activeBtn = tabListRef.current?.querySelector(
+            `button[data-tab-id="${activeTabId}"]`
+        );
         if (activeBtn) {
-            const listRect = tabListRef.current.getBoundingClientRect();
-            const btnRect = activeBtn.getBoundingClientRect();
             setIndicatorStyle({
-                left: btnRect.left - listRect.left,
-                width: btnRect.width,
+                width: activeBtn.offsetWidth,
+                left: activeBtn.offsetLeft,
             });
         }
     }, [activeTabId, visibleTabs]);
@@ -49,15 +48,14 @@ export const Tabs = ({
         visibleTabs.find((tab) => tab.id === activeTabId) || visibleTabs[0];
 
     return (
-        <div className={classNames("", className)}>
+        <div className={classNames("glass-tabs", className)}>
             <div
                 ref={tabListRef}
                 className={classNames(
-                    "relative flex overflow-x-auto no-scrollbar",
+                    "glass-tab-list no-scrollbar",
                     tabListClassName
                 )}
                 role="tablist"
-                style={{ gap: "0.2rem" }}
             >
                 {visibleTabs.map((tab) => (
                     <button
@@ -67,41 +65,20 @@ export const Tabs = ({
                         role="tab"
                         aria-selected={tab.id === activeTab.id}
                         className={classNames(
-                            "relative px-16 py-6 text-xs tracking-xs uppercase transition-all duration-300 whitespace-nowrap font-display",
-                            "border-b-2 border-transparent",
-                            tab.id === activeTab.id
-                                ? "text-white"
-                                : "text-neutral-500 hover:text-neutral-300"
+                            "glass-tab-btn",
+                            tab.id === activeTab.id ? "active" : ""
                         )}
                         onClick={() => setActiveTabId(tab.id)}
                     >
                         {tab.label}
                     </button>
                 ))}
-
-                {/* Animated underline indicator */}
                 <div
-                    className="absolute bottom-0 h-[2px] transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
-                    style={{
-                        left: indicatorStyle.left ?? 0,
-                        width: indicatorStyle.width ?? 0,
-                        background: "linear-gradient(90deg, #3b82f6, #60a5fa)",
-                        boxShadow: "0 0 12px rgba(59, 130, 246, 0.4), 0 0 4px rgba(59, 130, 246, 0.2)",
-                        borderRadius: "1px",
-                    }}
-                />
-
-                {/* Bottom border line */}
-                <div
-                    className="absolute bottom-0 left-0 w-full h-[1px]"
-                    style={{
-                        background: "rgba(255, 255, 255, 0.06)",
-                    }}
+                    className="glass-tab-indicator"
+                    style={indicatorStyle}
                 />
             </div>
-            <div className={classNames("mt-20", panelClassName)}>
-                {activeTab.content}
-            </div>
+            <div className={classNames("mt-4", panelClassName)}>{activeTab.content}</div>
         </div>
     );
 };

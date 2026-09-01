@@ -31,11 +31,6 @@ export const DriverCard = (props) => {
   const cardRef = useRef(null);
   const isInView = useInView(cardRef, { once: true });
 
-  const teamColor = driverColor ? `#${driverColor}` : "rgba(255,255,255,0.15)";
-  const teamColorRgba = driverColor
-    ? `rgba(${parseInt(driverColor.slice(0, 2), 16)}, ${parseInt(driverColor.slice(2, 4), 16)}, ${parseInt(driverColor.slice(4, 6), 16)}, `
-    : "rgba(255,255,255,";
-
   const getTireCompound = (driverCode, lap) => {
     const driverStint = stint?.find((item) => item.acronym === driverCode);
     if (driverStint && driverStint.tires) {
@@ -91,11 +86,9 @@ export const DriverCard = (props) => {
           ? `${"/images/" + year + "/" + championshipLevel + "/" + driver.code + ".png"}`
           : `${"/images/" + year + "/drivers/" + driver.code + ".png"}`
       }
-      className={classNames(
-        "absolute block bottom-[0px]",
-        "left-[60px] sm:left-[50px]",
-        "w-[64px] h-[64px] sm:w-[48px] sm:h-[48px] object-cover object-bottom"
-      )}
+      width={72}
+      height={72}
+      className={classNames("absolute block bottom-[0px]", "left-[28px]")}
       style={{
         opacity: isInView ? 1 : 0,
         transition: `all 1s cubic-bezier(0.17, 0.55, 0.55, 1) .${index}s`,
@@ -132,86 +125,24 @@ export const DriverCard = (props) => {
     };
   }, [rawAverageSpeed, isMph, displayUnit]);
 
-  // Shared fastest lap popover content
-  const fastestLapPopoverContent = (
-    <div className="p-4">
-      <div className="bg-fastest-lap-plum text-center font-display rounded px-8 text-white">
-        {fastestLapTime}
-      </div>
-      <div className="flex align-start justify-around mt-4">
-        <div className="flex flex-col items-center px-4 text-center">
-          <span className="text-[10px] uppercase opacity-70">
-            Lap
-          </span>
-          <span className="font-display text-sm leading-tight text-white">
-            {fastestLap?.lap || "-"}
-          </span>
-        </div>
-        <div className="flex flex-col items-center px-4 text-center border-l border-white/10">
-          <span className="text-[10px] uppercase opacity-70">
-            Tyre
-          </span>
-          <span className="font-display text-sm leading-tight uppercase text-white">
-            {getTireCompound(driver.code, fastestLap?.lap).charAt(0)}
-          </span>
-        </div>
-      </div>
-
-      {fastestLapAverageSpeed && (
-        <div className="flex flex-col items-center mt-8 pt-6 border-t border-white/5">
-          <span className="text-[10px] uppercase opacity-70 underline underline-offset-2">
-            Avg Speed
-          </span>
-          <div className="flex items-baseline gap-1 mt-1">
-            <span className="font-display text-sm text-white">
-              {fastestLapAverageSpeed?.speed}
-            </span>
-            <span className="text-[10px] opacity-60 uppercase">
-              {fastestLapAverageSpeed?.units}
-            </span>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-
   return (
     <div
       ref={cardRef}
       className={classNames(
         className,
-        "driver-card relative transition-all duration-200",
+        "driver-card-glass",
         {
-          "driver-card--canvas": mobileSmall,
+          "driver-card-glass--canvas": mobileSmall,
           hidden: status === "cancelled",
-        },
-        mobileSmall ? "rounded-sm mb-[1px]" : "rounded-[0.6rem] mb-[2px]",
+          "active": isActive,
+        }
       )}
-      style={{
-        background: isActive
-          ? `linear-gradient(135deg, ${teamColorRgba}0.12) 0%, rgba(10,10,20,0.85) 100%)`
-          : "rgba(255, 255, 255, 0.03)",
-        border: isActive
-          ? `1px solid ${teamColorRgba}0.35)`
-          : "1px solid rgba(255, 255, 255, 0.04)",
-        boxShadow: isActive
-          ? `0 0 20px ${teamColorRgba}0.12), inset 0 0 20px ${teamColorRgba}0.05)`
-          : "none",
-      }}
+      style={{ borderLeftColor: isActive ? `#${driverColor}` : undefined }}
     >
-      {/* Team color left accent bar */}
-      <div
-        className="absolute left-0 top-0 bottom-0 w-[3px] transition-opacity duration-300 rounded-l-[inherit]"
-        style={{
-          background: `linear-gradient(180deg, ${teamColor} 0%, ${teamColorRgba}0.3) 100%)`,
-          opacity: isActive ? 1 : 0.4,
-        }}
-      />
-
       {/* Layout for List Items (P4+) */}
       <div
         className={classNames(
-          "flex items-center justify-between w-full font-display pl-[12px]",
+          "flex items-center justify-between w-full font-display",
           {
             "max-md:hidden": mobileSmall,
             hidden: !layoutSmall,
@@ -221,12 +152,8 @@ export const DriverCard = (props) => {
         <div className="flex items-center leading-none text-sm font-bold">
           <p
             className={classNames(
-              "w-48 py-[2px] text-center text-[10px]",
+              "w-48 bg-neutral-700/80 py-[1px] text-center rounded-l-sm text-[10px] shadow-inner",
             )}
-            style={{
-              background: isActive ? `${teamColorRgba}0.15)` : "rgba(255,255,255,0.04)",
-              borderRadius: "0.3rem",
-            }}
           >
             P{isRace ? endPosition : index + 1}
           </p>
@@ -246,7 +173,49 @@ export const DriverCard = (props) => {
                 trigger="hover"
                 placement="top"
                 arrow={false}
-                content={fastestLapPopoverContent}
+                content={
+                  <div className="p-4">
+                    <div className="bg-fastest-lap-plum text-center font-display rounded px-8 text-white">
+                      {fastestLapTime}
+                    </div>
+                    <div className="flex align-start justify-around mt-4">
+                      <div className="flex flex-col items-center px-4 text-center">
+                        <span className="text-[10px] uppercase opacity-70">
+                          Lap
+                        </span>
+                        <span className="font-display text-sm leading-tight text-white">
+                          {fastestLap?.lap || "-"}
+                        </span>
+                      </div>
+                      <div className="flex flex-col items-center px-4 text-center border-l border-white/10">
+                        <span className="text-[10px] uppercase opacity-70">
+                          Tyre
+                        </span>
+                        <span className="font-display text-sm leading-tight uppercase text-white">
+                          {getTireCompound(driver.code, fastestLap?.lap).charAt(
+                            0,
+                          )}
+                        </span>
+                      </div>
+                    </div>
+
+                    {fastestLapAverageSpeed && (
+                      <div className="flex flex-col items-center mt-8 pt-6 border-t border-white/5">
+                        <span className="text-[10px] uppercase opacity-70 underline underline-offset-2">
+                          Avg Speed
+                        </span>
+                        <div className="flex items-baseline gap-1 mt-1">
+                          <span className="font-display text-sm text-white">
+                            {fastestLapAverageSpeed?.speed}
+                          </span>
+                          <span className="text-[10px] opacity-60 uppercase">
+                            {fastestLapAverageSpeed?.units}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                }
               >
                 <span className="fa-layers fa-fw fa-xs scale-90 cursor-help">
                   <FontAwesomeIcon icon="circle" className="text-white" />
@@ -272,11 +241,8 @@ export const DriverCard = (props) => {
       >
         <div
           className={classNames(
-            "driver-card-position text-[18px] font-display px-6 py-1 rounded-l-[0.5rem] flex items-center h-full min-h-[44px]",
+            "driver-card-position text-[18px] font-display px-6 py-1 bg-neutral-700/80 rounded-l-md flex items-center h-full min-h-[44px]",
           )}
-          style={{
-            background: isActive ? `${teamColorRgba}0.15)` : "rgba(255,255,255,0.04)",
-          }}
         >
           P{isRace ? endPosition : index + 1}
         </div>
@@ -315,15 +281,7 @@ export const DriverCard = (props) => {
               {isRace && !hidePositionMovement && positionMovement()}
             </div>
           </div>
-          <div
-            className="w-full my-4"
-            style={{
-              height: "1px",
-              background: isActive
-                ? `linear-gradient(90deg, transparent 0%, ${teamColorRgba}0.3) 50%, transparent 100%)`
-                : "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%)",
-            }}
-          />
+          <div className="divider-glow w-full my-4" />
           <p className={classNames("text-base font-bold text-white/90")}>
             {time}
           </p>
@@ -332,14 +290,9 @@ export const DriverCard = (props) => {
 
       {/* Mobile Small Layout */}
       {mobileSmall && (
-        <div className="md:hidden pl-[12px]">
+        <div className="md:hidden">
           <div className="flex items-center text-xs font-display">
-            <p
-              className="w-24 py-1 text-center rounded-tl-[.3rem]"
-              style={{
-                background: isActive ? `${teamColorRgba}0.15)` : "rgba(255,255,255,0.05)",
-              }}
-            >
+            <p className="w-24 bg-neutral-600 py-1 text-center rounded-tl-[.4rem]">
               P{isRace ? endPosition : index + 1}
             </p>
             <p className="pl-8 pr-8 font-bold text-white">{driver.code}</p>
