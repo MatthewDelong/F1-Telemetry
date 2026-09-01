@@ -122,6 +122,18 @@ npm run preview   # preview the production build locally
 ## Developer Workflow
 
 <details>
+<summary><strong>Procedural Tracks (React-Three-Fiber)</strong></summary>
+
+F1-Telemetry features dynamic, procedural 3D tracks powered by `Three.js` and `@react-three/fiber`. 
+
+- **Data Pipeline**: Raw X/Y telemetry positional coordinates are fetched via JSON (recorded from OpenF1) and processed directly into a 3D spline (`THREE.CatmullRomCurve3`).
+- **Generation**: `src/utils/TrackBuilder.js` triangulates this spline into a 3D ribbon geometry, automatically determining the width, corners, and straightaways. 
+- **Features**: Sector times map directly onto track segments to color-code the track layout. Procedural grandstands, low-poly tree scatter (`InstancedMesh`), and alternating red/white apex kerbs are dynamically placed around corner vertices using vector math.
+- **Component Usage**: A slow-rotating procedural background canvas (`ProceduralTrackBackground`) is used seamlessly behind key components, while interactive variants with `OrbitControls` are provided in modals.
+
+</details>
+
+<details>
 <summary><strong>AR Model Compression</strong></summary>
 
 Optimize `.glb` files added to `public/ArFiles/glbs/` for web delivery:
