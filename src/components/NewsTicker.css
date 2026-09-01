@@ -1,0 +1,187 @@
+/* ─── News Ticker ─── */
+.news-ticker {
+  position: fixed;
+  top: 64px; /* sits directly under the header */
+  left: 0;
+  right: 0;
+  z-index: 90;
+  height: 32px;
+  background: linear-gradient(
+    90deg,
+    rgba(220, 38, 38, 0.12) 0%,
+    rgba(15, 15, 20, 0.92) 15%,
+    rgba(15, 15, 20, 0.92) 85%,
+    rgba(220, 38, 38, 0.12) 100%
+  );
+  border-bottom: 1px solid rgba(220, 38, 38, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  font-family: 'Inter', 'Roboto', sans-serif;
+}
+
+/* GPFans badge on the left */
+.news-ticker__badge {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.25), rgba(220, 38, 38, 0.08));
+  border-right: 1px solid rgba(220, 38, 38, 0.3);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.news-ticker__badge:hover {
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.4), rgba(220, 38, 38, 0.15));
+  color: #fff;
+}
+
+.news-ticker__badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ef4444;
+  animation: ticker-pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+}
+
+@keyframes ticker-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+
+/* Scrolling track */
+.news-ticker__track-wrapper {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+  /* Fade edges */
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 4%,
+    black 96%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 4%,
+    black 96%,
+    transparent 100%
+  );
+}
+
+.news-ticker__track {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: max-content;
+  animation: ticker-scroll var(--ticker-duration, 60s) linear infinite;
+  will-change: transform;
+}
+
+.news-ticker__track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Individual news item */
+.news-ticker__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 24px;
+  white-space: nowrap;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  height: 100%;
+}
+
+.news-ticker__item:hover {
+  color: #fff;
+}
+
+.news-ticker__item-title {
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.news-ticker__separator {
+  color: rgba(220, 38, 38, 0.5);
+  font-size: 8px;
+  user-select: none;
+}
+
+.news-ticker__item-time {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 400;
+}
+
+/* Loading state */
+.news-ticker__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.news-ticker__loading-dots {
+  display: inline-flex;
+  gap: 3px;
+  margin-left: 8px;
+}
+
+.news-ticker__loading-dots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(220, 38, 38, 0.5);
+  animation: ticker-loading 1.2s ease-in-out infinite;
+}
+
+.news-ticker__loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.news-ticker__loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes ticker-loading {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Responsive: hide on very small screens */
+@media (max-width: 480px) {
+  .news-ticker__badge {
+    padding: 0 8px;
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+  .news-ticker__item {
+    font-size: 11px;
+    padding: 0 16px;
+  }
+}

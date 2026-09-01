@@ -51,7 +51,7 @@
 
 <IfModule mod_headers.c>
     # Content Security Policy (CSP)
-    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://www.googletagmanager.com; connect-src 'self' blob: https://api.openf1.org https://api.jolpi.ca https://raw.githubusercontent.com https://weather-bar.matthew-delong73.workers.dev https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com; img-src 'self' data: blob: https://flagpedia.net https://openweathermap.org https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; media-src 'self' blob:; worker-src 'self' blob:; frame-src 'self';"
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://www.googletagmanager.com; connect-src 'self' blob: https://api.openf1.org https://api.jolpi.ca https://raw.githubusercontent.com https://weather-bar.matthew-delong73.workers.dev https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com https://api.rss2json.com; img-src 'self' data: blob: https://flagpedia.net https://openweathermap.org https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; media-src 'self' blob:; worker-src 'self' blob:; frame-src 'self';"
 
     # Ensure GLB files are cached and not re-validated every time
     <FilesMatch "\.(glb|gltf|wasm)$">

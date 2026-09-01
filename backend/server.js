@@ -541,6 +541,42 @@ app.get("/openf1/*", async (req, res) => {
   }
 });
 
+// ─── News Ticker: GPFans RSS Proxy ───
+let cachedRSS = { data: null, fetchedAt: 0 };
+const RSS_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+app.get("/api/news-ticker", async (req, res) => {
+  try {
+    const now = Date.now();
+    if (cachedRSS.data && now - cachedRSS.fetchedAt < RSS_CACHE_TTL) {
+      res.set("Content-Type", "application/xml; charset=utf-8");
+      return res.send(cachedRSS.data);
+    }
+
+    console.log("[News Ticker] Fetching GPFans RSS feed...");
+    const rssResponse = await axios.get("https://www.gpfans.com/en/rss.xml", {
+      timeout: 10000,
+      headers: {
+        "User-Agent": "F1-Telemetry-NewsTicker/1.0",
+        Accept: "application/rss+xml, application/xml, text/xml",
+      },
+      responseType: "text",
+    });
+
+    cachedRSS = { data: rssResponse.data, fetchedAt: now };
+    res.set("Content-Type", "application/xml; charset=utf-8");
+    res.send(rssResponse.data);
+  } catch (err) {
+    console.error("[News Ticker] RSS fetch error:", err.message);
+    // Return stale cache if available
+    if (cachedRSS.data) {
+      res.set("Content-Type", "application/xml; charset=utf-8");
+      return res.send(cachedRSS.data);
+    }
+    res.status(502).json({ error: "Failed to fetch news feed" });
+  }
+});
+
 const {
   startCronJobs,
   runCurrentSeasonUpdate,

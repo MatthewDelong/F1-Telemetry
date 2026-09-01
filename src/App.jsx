@@ -12,6 +12,7 @@ import {
   ResultsSelector,
   ReloadPrompt,
   CookieBanner,
+  NewsTicker,
 } from "./components";
 import { F1ALogo } from "./components/F1ALogo";
 import { F2Logo } from "./components/F2Logo";
@@ -71,6 +72,7 @@ function App() {
           setResultPage={setResultPage}
           setResultPagePath={setResultPagePath}
         />
+        <TickerWrapper />
         <MainContent
           setSelectedYear={setSelectedYear}
           selectedYear={selectedYear}
@@ -83,6 +85,13 @@ function App() {
       </Router>
     </div>
   );
+}
+
+/** Render the news ticker only on the landing page, as a fixed overlay. */
+function TickerWrapper() {
+  const location = useLocation().pathname;
+  if (location !== "/") return null;
+  return <NewsTicker />;
 }
 
 function MainContent({
