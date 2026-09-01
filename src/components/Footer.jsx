@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import { useLocation } from "react-router-dom";
-import { FaLinkedin, FaGlobe, FaInstagram } from "react-icons/fa";
+import { FaLinkedin, FaGlobe, FaInstagram, FaEnvelope } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { F1TelemetryLogo as Logo } from "./F1TelemetryLogo";
 import { Button } from "./Button";
@@ -40,18 +40,30 @@ export const Footer = ({ className }) => {
               for F1 Data and Analysis
             </p>
           </div>
-          <Button
-            as="href"
-            className="flex flex-row items-center gap-16"
-            href="https://x.com/F1_Telemetry_uk"
-            target="_blank"
-            rel="noopener noreferrer"
-            buttonStyle="hollow"
-            size="sm"
-          >
-            <FaXTwitter size={24} />
-            <p className="uppercase tracking-xs">Follow us</p>
-          </Button>
+          <div className="flex flex-row items-center gap-8 flex-wrap">
+            <Button
+              as="href"
+              className="flex flex-row items-center gap-16"
+              href="https://x.com/F1_Telemetry_uk"
+              target="_blank"
+              rel="noopener noreferrer"
+              buttonStyle="hollow"
+              size="sm"
+            >
+              <FaXTwitter size={24} />
+              <p className="uppercase tracking-xs">Follow us</p>
+            </Button>
+            <Button
+              as="href"
+              className="flex flex-row items-center gap-16"
+              href="mailto:admin@f1-telemetry.co.uk"
+              buttonStyle="hollow"
+              size="sm"
+            >
+              <FaEnvelope size={22} />
+              <p className="uppercase tracking-xs">Contact us</p>
+            </Button>
+          </div>
         </div>
 
         {/* Right side: Page path links */}
