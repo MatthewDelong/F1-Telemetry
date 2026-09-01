@@ -46,8 +46,15 @@ const Drawer = ({ isOpen, onClose, children }) => {
           {/* Drawer */}
           <motion.div
             className={classNames(
-              "fixed bottom-[0] left-0 w-full max-h-[90vh] bg-glow bg-neutral-900 shadow-xl rounded-t-2xl z-[9001] px-16 pb-32 pt-24 flex flex-col",
+              "fixed bottom-[0] left-0 w-full max-h-[95dvh] shadow-xl rounded-t-3xl z-[9001] pt-24 flex flex-col",
             )}
+            style={{
+              background: "rgba(10, 12, 20, 0.85)",
+              backdropFilter: "blur(24px)",
+              WebkitBackdropFilter: "blur(24px)",
+              borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+              boxShadow: "0 -10px 40px rgba(0, 0, 0, 0.6)"
+            }}
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
@@ -55,14 +62,19 @@ const Drawer = ({ isOpen, onClose, children }) => {
           >
             {/* Close Button */}
             <button
-              className="absolute -top-32 right-16"
+              className="absolute top-16 right-16 z-10 w-32 h-32 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors"
               onClick={onClose}
             >
-              <FontAwesomeIcon icon="xmark" className="fa-lg" />
+              <FontAwesomeIcon icon="xmark" className="fa-lg text-white" />
             </button>
 
             {/* Drawer Content */}
-            <div className="overflow-y-auto">{children}</div>
+            <div 
+              className="overflow-y-auto px-16 w-full"
+              style={{ paddingBottom: "max(env(safe-area-inset-bottom), 2rem)" }}
+            >
+              {children}
+            </div>
           </motion.div>
         </>
       )}

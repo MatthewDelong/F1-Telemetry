@@ -66,7 +66,7 @@ const RaceControl = ({ messages, isLive = false }) => {
         </div>
       </div>
 
-      <div className="bg-glow-dark rounded-xlarge overflow-hidden border border-white/5 w-full">
+      <div className="rounded-xlarge overflow-hidden w-full" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
         <div className={classNames(
           "overflow-y-auto custom-scrollbar transition-all duration-300",
           isExpanded ? "max-h-[60rem]" : "max-h-[25rem]"

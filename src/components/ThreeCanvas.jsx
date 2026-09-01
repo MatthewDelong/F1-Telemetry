@@ -324,7 +324,9 @@ export const ThreeCanvas = ({
               sync.radius * Math.sin(sync.theta),
               sync.cameraHeight,
             );
-            activeCam.lookAt(0, 0, 0);
+            // Look slightly below the origin to shift the track UP in the viewport
+            // This compensates for the perspective projection making the near side (bottom) look larger
+            activeCam.lookAt(0, 0, -6);
           }
           rendererRef.current.render(scene, activeCam);
         }
@@ -464,7 +466,7 @@ export const ThreeCanvas = ({
     <div
       className={classNames(
         className,
-        "relative overflow-hidden w-full h-full min-h-[585px]",
+        "relative overflow-hidden w-full h-full min-h-[250px]",
       )}
     >
       <div

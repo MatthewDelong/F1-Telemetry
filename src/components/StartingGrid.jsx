@@ -19,8 +19,12 @@ export const StartingGrid = (props) => {
     <div
       className={classNames(
         className,
-        "bg-glow-large py-32 px-20 sm:px-0 h-fit rounded-md sm:rounded-xlarge",
+        "py-32 px-20 sm:px-0 h-fit rounded-md sm:rounded-xlarge",
       )}
+      style={{
+        background: "rgba(255, 255, 255, 0.02)",
+        border: "1px solid rgba(255, 255, 255, 0.05)",
+      }}
     >
       <ul className="flex flex-col w-fit m-auto">
         {startingGrid

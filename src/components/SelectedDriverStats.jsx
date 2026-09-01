@@ -76,7 +76,7 @@ export const SelectedDriverStats = (props) => {
                     </p>
                 </div>
             </div>
-            <div className="bg-glow bg-glow-large px-24 pt-24 pb-24 rounded-xlarge">
+            <div className="px-24 pt-24 pb-24 rounded-xlarge" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', backdropFilter: 'blur(12px)' }}>
                 <div className="flex items-start justify-between">
                     <div>
                         <div className="uppercase tracking-xs text-xs">
@@ -112,7 +112,7 @@ export const SelectedDriverStats = (props) => {
                     </div>
                 </div>
 
-                <div className="divider-glow-dark mt-12 mb-10" />
+                <div className="mt-12 mb-10" style={{ height: '1px', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent)' }} />
 
                 <p className="font-display text-center mb-14 ml-24">
                     fastest lap
@@ -209,7 +209,7 @@ export const SelectedDriverStats = (props) => {
             </div>
 
             {prevYearData && (
-                <div className="mt-16 bg-glow bg-glow-large px-24 pt-16 pb-16 rounded-xlarge border border-white/5">
+                <div className="mt-16 px-24 pt-16 pb-16 rounded-xlarge" style={{ background: 'rgba(255,255,255,0.015)', border: '1px solid rgba(255,255,255,0.04)' }}>
                     <div className="flex items-center justify-between mb-8">
                         <span className="uppercase tracking-widest text-[10px] text-neutral-400 font-bold">Previous Year ({parseInt(year) - 1})</span>
                         <div className="h-1 w-1/2 bg-gradient-to-r from-brand-blue-500/20 to-transparent" />

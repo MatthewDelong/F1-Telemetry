@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import classNames from "classnames";
 
 export const Tabs = ({
@@ -12,6 +12,8 @@ export const Tabs = ({
         [tabs]
     );
     const [activeTabId, setActiveTabId] = useState(visibleTabs[0]?.id || "");
+    const tabListRef = useRef(null);
+    const [indicatorStyle, setIndicatorStyle] = useState({});
 
     useEffect(() => {
         if (!visibleTabs.length) {
@@ -27,6 +29,20 @@ export const Tabs = ({
         }
     }, [activeTabId, visibleTabs]);
 
+    // Animate underline indicator position
+    useEffect(() => {
+        if (!tabListRef.current) return;
+        const activeBtn = tabListRef.current.querySelector(`[data-tab-id="${activeTabId}"]`);
+        if (activeBtn) {
+            const listRect = tabListRef.current.getBoundingClientRect();
+            const btnRect = activeBtn.getBoundingClientRect();
+            setIndicatorStyle({
+                left: btnRect.left - listRect.left,
+                width: btnRect.width,
+            });
+        }
+    }, [activeTabId, visibleTabs]);
+
     if (!visibleTabs.length) return null;
 
     const activeTab =
@@ -35,29 +51,57 @@ export const Tabs = ({
     return (
         <div className={classNames("", className)}>
             <div
-                className={classNames("flex flex-wrap gap-8", tabListClassName)}
+                ref={tabListRef}
+                className={classNames(
+                    "relative flex overflow-x-auto no-scrollbar",
+                    tabListClassName
+                )}
                 role="tablist"
+                style={{ gap: "0.2rem" }}
             >
                 {visibleTabs.map((tab) => (
                     <button
                         key={tab.id}
+                        data-tab-id={tab.id}
                         type="button"
                         role="tab"
                         aria-selected={tab.id === activeTab.id}
                         className={classNames(
-                            "px-12 py-3 rounded-sm text-xs tracking-xs uppercase transition-colors",
+                            "relative px-16 py-6 text-xs tracking-xs uppercase transition-all duration-300 whitespace-nowrap font-display",
+                            "border-b-2 border-transparent",
                             tab.id === activeTab.id
-                                ? "bg-brand-blue-500 text-white"
-                                : "bg-glow text-neutral-300 hover:text-white"
+                                ? "text-white"
+                                : "text-neutral-500 hover:text-neutral-300"
                         )}
                         onClick={() => setActiveTabId(tab.id)}
                     >
                         {tab.label}
                     </button>
                 ))}
+
+                {/* Animated underline indicator */}
+                <div
+                    className="absolute bottom-0 h-[2px] transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                    style={{
+                        left: indicatorStyle.left ?? 0,
+                        width: indicatorStyle.width ?? 0,
+                        background: "linear-gradient(90deg, #3b82f6, #60a5fa)",
+                        boxShadow: "0 0 12px rgba(59, 130, 246, 0.4), 0 0 4px rgba(59, 130, 246, 0.2)",
+                        borderRadius: "1px",
+                    }}
+                />
+
+                {/* Bottom border line */}
+                <div
+                    className="absolute bottom-0 left-0 w-full h-[1px]"
+                    style={{
+                        background: "rgba(255, 255, 255, 0.06)",
+                    }}
+                />
             </div>
-            <div className={classNames("mt-16", panelClassName)}>{activeTab.content}</div>
+            <div className={classNames("mt-20", panelClassName)}>
+                {activeTab.content}
+            </div>
         </div>
     );
 };
-

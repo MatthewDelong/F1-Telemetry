@@ -428,7 +428,8 @@ const fetchRaceResults = async (selectedYear, raceId, fallbackRaceName = "", fal
     console.warn("[Cache] Failed to read race results from localStorage:", e);
   }
 
-  const resultsUrl = `${BASE_F1_URL}results.json`;
+  const isCurrentYear = String(selectedYear) === "2026";
+  const resultsUrl = `${BASE_F1_URL}${isCurrentYear ? '2026/' : ''}results.json`;
   try {
     const rawData = await fetchWithPersistentCache(resultsUrl);
     if (rawData && Array.isArray(rawData)) {
@@ -785,7 +786,8 @@ export const fetchDriversAndTires = async (sessionKey) => {
 
 export const fetchRaceResultsByCircuit = async (year, circuitId, raceName = "") => {
   try {
-    const url = `${BASE_F1_URL}results.json`;
+    const isCurrentYear = String(year) === "2026";
+    const url = `${BASE_F1_URL}${isCurrentYear ? '2026/' : ''}results.json`;
     const data = await fetchWithPersistentCache(url);
     if (!data || !Array.isArray(data)) return [];
     
@@ -812,7 +814,8 @@ export const fetchRaceResultsByCircuit = async (year, circuitId, raceName = "") 
 
 export const fetchQualifyingResultsByCircuit = async(year, circuitId, raceName = "") => {
   try {
-    const url = `${BASE_F1_URL}qualifying.json`;
+    const isCurrentYear = String(year) === "2026";
+    const url = `${BASE_F1_URL}${isCurrentYear ? '2026/' : ''}qualifying.json`;
     const data = await fetchWithPersistentCache(url);
     if (!data || !Array.isArray(data)) return [];
 
@@ -838,7 +841,8 @@ export const fetchQualifyingResultsByCircuit = async(year, circuitId, raceName =
 
 export const fetchSprintResultsByCircuit = async(year, circuitId, raceName = "") => {
   try {
-    const url = `${BASE_F1_URL}sprint.json`;
+    const isCurrentYear = String(year) === "2026";
+    const url = `${BASE_F1_URL}${isCurrentYear ? '2026/' : ''}sprint.json`;
     const data = await fetchWithPersistentCache(url);
     if (!data || !Array.isArray(data)) return [];
 

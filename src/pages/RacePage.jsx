@@ -43,6 +43,26 @@ import Accordion from "../components/Accordion";
 import { locationMaps } from "../utils/locationMaps";
 import { organizeQualifyingResults } from "../utils/organizeQualifyingResults";
 
+const generateFallbackResults = (driverData) => {
+  if (!driverData || driverData.length === 0) return [];
+  return driverData.map((d, index) => ({
+    number: d.driver_number?.toString() || "",
+    position: (index + 1).toString(),
+    grid: "0",
+    Driver: {
+      driverId: d.name_acronym?.toLowerCase() || d.driver_number?.toString(),
+      permanentNumber: d.driver_number?.toString(),
+      code: d.name_acronym,
+      givenName: d.first_name || "",
+      familyName: d.last_name || "",
+    },
+    Constructor: {
+      constructorId: d.team_name?.replace(/\s+/g, "_").toLowerCase() || "f1",
+      name: d.team_name || "Unknown",
+    }
+  }));
+};
+
 export function RacePage() {
   const { state } = useLocation();
   const { raceId } = useParams();
@@ -440,6 +460,12 @@ export function RacePage() {
 
         setDriversDetails(driverDetailsMap);
 
+        // Fallback 2: Generate dummy results for live sessions
+        if ((!sessionResults || sessionResults.length === 0) && driverDetailsData && driverDetailsData.length > 0) {
+          sessionResults = generateFallbackResults(driverDetailsData);
+          setRaceResults(sessionResults);
+        }
+
         const driverColorMap = (driverDetailsData || []).reduce(
           (acc, driver) => ({
             ...acc,
@@ -583,6 +609,12 @@ export function RacePage() {
         }
         
         setDriversDetails(driverDetailsMap);
+
+        // Fallback 2: Generate dummy results for live sessions
+        if ((!sessionResults || sessionResults.length === 0) && driverDetailsData && driverDetailsData.length > 0) {
+          sessionResults = generateFallbackResults(driverDetailsData);
+          setRaceResults(sessionResults);
+        }
         const driverColorMap = driverDetailsData.reduce(
           (acc, driver) => ({
             ...acc,
@@ -705,6 +737,12 @@ export function RacePage() {
         }
         
         setDriversDetails(driverDetailsMap);
+
+        // Fallback 2: Generate dummy results for live sessions
+        if ((!sessionResults || sessionResults.length === 0) && driverDetailsData && driverDetailsData.length > 0) {
+          sessionResults = generateFallbackResults(driverDetailsData);
+          setRaceResults(sessionResults);
+        }
         const driverColorMap = (driverDetailsData || []).reduce(
           (acc, driver) => ({
             ...acc,
@@ -1008,7 +1046,7 @@ export function RacePage() {
   ) : (
     <div className="race-page">
       <div className="race-page__track-view relative">
-        <div className="absolute bottom-8 w-full flex justify-between sm:justify-end items-center z-10 gap-8 px-8">
+        <div className="absolute bottom-[80px] w-full flex justify-between sm:justify-end items-center z-10 gap-8 px-8">
           {driverSelected && (
             <div className="flex items-center gap-8">
               <button
@@ -1278,7 +1316,10 @@ export function RacePage() {
                 </div>
               )}
               <div className="race-page__leaderboard-desktop-wrapper max-sm:hidden absolute top-[0] left-[0]">
-                {driverButtons(true)}
+                <div className="race-leaderboard-glass">
+                  <div className="race-leaderboard-glass__header">Leaderboard</div>
+                  {driverButtons(true)}
+                </div>
               </div>
             </div>
           </>
