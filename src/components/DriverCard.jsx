@@ -83,16 +83,13 @@ export const DriverCard = (props) => {
       alt=""
       src={
         championshipLevel
-          ? `${"/images/" + year + "/" + championshipLevel + "/" + driver.code + ".png"}`
-          : `${"/images/" + year + "/drivers/" + driver.code + ".png"}`
+          ? `${"/images/" + year + "/" + championshipLevel + "/" + driver.code?.trim() + ".png"}`
+          : `${"/images/" + year + "/drivers/" + driver.code?.trim() + ".png"}`
       }
       width={72}
       height={72}
-      className={classNames("absolute block bottom-[0px]", "left-[28px]")}
-      style={{
-        opacity: isInView ? 1 : 0,
-        transition: `all 1s cubic-bezier(0.17, 0.55, 0.55, 1) .${index}s`,
-      }}
+      className={classNames("absolute block bottom-[0px] left-[28px] z-20 object-contain")}
+      style={{ opacity: 1 }}
     />
   );
 
@@ -234,7 +231,7 @@ export const DriverCard = (props) => {
 
       {/* Layout for Hero Cards (P1-P3) */}
       <div
-        className={classNames("flex items-center w-full", {
+        className={classNames("flex items-center w-full relative", {
           "max-md:hidden": mobileSmall,
           hidden: layoutSmall,
         })}
