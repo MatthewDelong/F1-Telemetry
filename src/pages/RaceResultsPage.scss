@@ -32,7 +32,9 @@
         padding-bottom: 0.8rem;
         padding-top: 1.6rem;
         width: 100%;
-        background: #171717;
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: none;
     }
     .driver-headshot {
         position: absolute;
@@ -50,9 +52,12 @@
 .race-results__list__item-3:after {
     background: linear-gradient(
         180deg,
-        rgba(34, 34, 34, 1) 0%,
-        rgba(138, 138, 138, 1) 100%
+        rgba(255, 255, 255, 0.15) 0%,
+        rgba(255, 255, 255, 0.02) 100%
     );
+    backdrop-filter: blur(8px);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
     content: "";
     height: 0.8rem;
     position: absolute;
@@ -79,7 +84,9 @@
         padding-bottom: 0.4rem;
         padding-top: 0.8rem;
         width: 100%;
-        background: #171717;
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: none;
     }
     .driver-headshot {
         position: absolute;
@@ -101,7 +108,9 @@
         padding-bottom: 0.4rem;
         padding-top: 0.4rem;
         width: 100%;
-        background: #171717;
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: none;
     }
     .driver-headshot {
         position: absolute;

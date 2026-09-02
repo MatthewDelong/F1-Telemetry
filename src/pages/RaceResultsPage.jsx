@@ -98,7 +98,7 @@ export function RaceResultsPage({ selectedYear }) {
               <li
                 key={index}
                 className={classNames(
-                  "bg-glow-dark rounded-[2.4rem] mt-56 px-32 group duration-150 transition-transform ease-in-out relative",
+                  "bg-glow-dark border border-white/5 shadow-xl hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] rounded-[2.4rem] mt-56 px-32 group duration-300 transition-all ease-in-out relative",
                   {
                     "hover:scale-[.98] hover:cursor-pointer": true,
                   },
@@ -135,20 +135,20 @@ export function RaceResultsPage({ selectedYear }) {
                   </div>
                 )}
                 <div className="text-center mb-8 mt-12">
-                  <div className="uppercase text-xs text-neutral-400 tracking-sm leading-none mb-4 mt-24">
+                  <div className="uppercase text-xs text-brand-blue-400 font-bold tracking-widest leading-none mb-4 mt-24">
                     {`Round ${race.displayRound}`}
                   </div>
-                  <p className="font-display tracking-xs leading-none mb-4 font-bold">
+                  <p className="font-display tracking-xs leading-none mb-4 font-bold gradient-text-light text-2xl">
                     {race.raceName}
                   </p>
-                  <div className="text-xs text-neutral-400 tracking-sm leading-none">
+                  <div className="text-sm text-neutral-400 tracking-sm leading-none font-medium">
                     {formatDateTime(race.date, race.time)}
                   </div>
                 </div>
                 <Button
                   size="sm"
                   disabled={!races[race.raceName]?.["meeting_key"]}
-                  className="opacity-100 lg:opacity-0 lg:group-hover:opacity-100 absolute bottom-[-.9rem] left-1/2 -translate-x-1/2"
+                  className="opacity-100 lg:opacity-0 lg:group-hover:opacity-100 absolute bottom-[-1.2rem] left-1/2 -translate-x-1/2 rounded-full px-8 tracking-widest uppercase border border-white/10 shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.6)]"
                 >
                   View Race Data
                 </Button>
