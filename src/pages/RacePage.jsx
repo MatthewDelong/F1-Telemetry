@@ -1401,11 +1401,11 @@ export function RacePage() {
         </div>
 
         {selectedSession === "Qualifying" && (
-          <div className="flex items-start justify-center gap-8 sm:gap-32 mx-8 mb-32">
+          <div className="flex items-start justify-center gap-8 sm:gap-32 mx-8 mb-32 max-md:overflow-x-auto max-md:justify-start max-md:w-full max-md:px-8 max-md:snap-x max-md:snap-mandatory no-scrollbar">
             {[q1Results, q2Results, q3Results].map((res, i) => (
               <div
                 key={i}
-                className="p-16 bg-glow-dark rounded-md sm:rounded-xlarge max-md:w-full"
+                className="p-16 bg-glow-dark rounded-md sm:rounded-xlarge max-md:min-w-[85vw] max-md:snap-center max-md:shrink-0"
               >
                 <h3 className="heading-3 mb-32 gradient-text-light">
                   Q{i + 1}
@@ -1426,7 +1426,7 @@ export function RacePage() {
                       time={r[`Q${i + 1}`]}
                       fastestLap={r.FastestLap}
                       layoutSmall={idx > 2}
-                      mobileSmall
+                      mobileSmall={idx > 2}
                       isRace={true}
                       speedUnit={speedUnit}
                     />
