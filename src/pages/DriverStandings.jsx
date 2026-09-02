@@ -61,11 +61,11 @@ export function DriverStandings({ selectedYear }) {
           />
           <ul>
             {standings.map((standing, index) => (
-              <li key={index} className='w-full'>
+              <li key={index} className='w-full relative'>
                 <ConstructorDriver 
-                  className="mt-32"
                   image={standing.driverCode} 
                   car={standing.constructorId}
+                  color={standing.constructorColor}
                   points={standing.points}
                   firstName={standing.firstName}
                   lastName={standing.lastName}

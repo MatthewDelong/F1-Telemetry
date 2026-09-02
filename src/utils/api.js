@@ -696,6 +696,9 @@ export const getDriverStandings = async (selectedYear) => {
         lastName: standing.Driver.familyName || standing.Driver.lastName,
         constructorName: standing.Constructors[0].name,
         constructorId: standing.Constructors[0].constructorId,
+        constructorColor: teamColors[selectedYear]?.[standing.Constructors[0].constructorId] 
+          ? `#${teamColors[selectedYear][standing.Constructors[0].constructorId]}` 
+          : "#ffffff",
         points: standing.points,
         nationality: standing.Driver.nationality || ""
       }));
@@ -730,6 +733,9 @@ export const getPartialDriverStandings = async (selectedYear, start, end) => {
           lastName : end.Driver.familyName || end.Driver.lastName,
           constructorName : end.Constructors[0].name,
           constructorId : end.Constructors[0].constructorId,
+          constructorColor: teamColors[selectedYear]?.[end.Constructors[0].constructorId] 
+            ? `#${teamColors[selectedYear][end.Constructors[0].constructorId]}` 
+            : "#ffffff",
           points : end.points - (start ? start.points : 0),
           nationality: end.Driver.nationality || ""
         }

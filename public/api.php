@@ -159,9 +159,14 @@ if (!is_dir($cacheDir)) {
     @mkdir($cacheDir, 0755, true);
 }
 
+// We might need a version of the path without query strings for local files and GitHub.
+$pathWithoutQuery = explode('?', $path)[0];
+$pathWithoutQuery = explode('&', $pathWithoutQuery)[0];
+
 // Convert path to a safe filename for caching. 
-// We use MD5 of the full path to ensure different query parameters get different cache files.
-$cacheKey = md5($path);
+// For OpenF1 we need query parameters to distinguish requests, but for f1/f2/f1a we ignore them.
+$cachePath = in_array($source, ['f1', 'f2', 'f1a']) ? $pathWithoutQuery : $path;
+$cacheKey = md5($cachePath);
 $cacheFile = $cacheDir . '/' . $cacheKey . '.json';
 $cacheTTL = 60 * 30; // 30 minutes
 if ($source === 'gpfans') {
@@ -181,10 +186,6 @@ if ($flush) {
     echo file_get_contents($cacheFile);
     exit;
 }
-
-// For F1 source logic only, we might need a version of the path without query strings
-$pathWithoutQuery = explode('?', $path)[0];
-$pathWithoutQuery = explode('&', $pathWithoutQuery)[0];
 
 $data = null;
 $lastError = "";
@@ -212,19 +213,19 @@ if ($source === 'f1') {
             ];
             foreach ($baseUrls as $baseUrl => $timeout) {
                 // Try up to 3 path variations for maximum resilience
-                $pathVariations = [$path];
+                $pathVariations = [$pathWithoutQuery];
                 
                 // 1. Try stripping 'races/' prefix for historical repos that might be flat
-                if (preg_match('/^races\/(\d{4})\/(.*\.json)$/', $path, $m)) {
+                if (preg_match('/^races\/(\d{4})\/(.*\.json)$/', $pathWithoutQuery, $m)) {
                     $year = $m[1];
                     $file = $m[2];
                     $pathVariations[] = "{$year}/{$file}";
                 }
                 // 2. Map global files like 'races/races.json' -> 'races.json'
-                else if ($path === 'races/races.json') {
+                else if ($pathWithoutQuery === 'races/races.json') {
                     $pathVariations[] = 'races.json';
                 }
-                else if ($path === 'races/raceDetails.json') {
+                else if ($pathWithoutQuery === 'races/raceDetails.json') {
                     $pathVariations[] = 'raceDetails.json';
                 }
 
@@ -254,9 +255,9 @@ if ($source === 'f1') {
     $legacyApi = ($source === 'f1a') ? 'f1aapi' : 'f2api';
 
     // Try original path and a flattened path (like local server.js does)
-    $pathsToTry = [$path];
-    if (basename($path) !== $path) {
-        $pathsToTry[] = basename($path);
+    $pathsToTry = [$pathWithoutQuery];
+    if (basename($pathWithoutQuery) !== $pathWithoutQuery) {
+        $pathsToTry[] = basename($pathWithoutQuery);
     }
 
     // Try the new F1-Telemetry repo first for all path variations

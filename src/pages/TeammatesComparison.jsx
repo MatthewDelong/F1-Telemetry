@@ -453,9 +453,12 @@ const driverLockup = (driverCode, driverId, driverName) => {
   
   return (
     <div 
-      className="flex justify-center relative text-center group rounded-lg px-16"
-      style={{ boxShadow: "inset 0px 0px 32px 0px rgba(0,0,0,0.5)" }}
+      className="flex justify-center relative text-center group rounded-[2.4rem] px-16 bg-glow-dark border border-white/5 shadow-xl hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] overflow-hidden transition-all duration-300"
     >
+      <div 
+          className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-20"
+          style={{ background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 70%)` }}
+      />
       <img 
         alt="" 
         src={fallbackChain[0]}
@@ -470,9 +473,9 @@ const driverLockup = (driverCode, driverId, driverName) => {
         }}
         width={150} 
         height={150} 
-        className={classNames("-mt-32", {"group-[:first-of-type]:scale-x-[-1]" : year <= 2023 })}
+        className={classNames("-mt-32 relative z-[1]", {"group-[:first-of-type]:scale-x-[-1]" : year <= 2023 })}
       />
-      <div className="absolute top-full leading-none w-full mt-8">
+      <div className="absolute top-full leading-none w-full mt-8 relative z-[1]">
         <div className="text-sm tracking-sm uppercase text-gradient-light">{driverSplitName[0]}</div>
         <div className="font-display text-gradient-light">{driverSplitName[1]}</div>
       </div>

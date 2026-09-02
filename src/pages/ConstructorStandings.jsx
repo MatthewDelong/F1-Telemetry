@@ -75,7 +75,7 @@ export function ConstructorStandings({ selectedYear }) {
           />
           <ul>
             {standings.map((standing, index) => (
-              <li key={index} className='mb-32 relative' onClick={()=> {navigateToTeamComp(standing.constructorId)}}  >
+              <li key={index} className='w-full relative' onClick={()=> {navigateToTeamComp(standing.constructorId)}}  >
                 <ConstructorCar 
                   image={standing.constructorId} 
                   points={standing.points}
@@ -85,7 +85,6 @@ export function ConstructorStandings({ selectedYear }) {
                   color={standing.constructorColor}
                   index={index}
                 />
-                <div className="h-full w-full absolute top-[0] inset z-[-1] opacity-10" style={{background: `radial-gradient(50% 50% at 50% 50%, ${standing.constructorColor} 0%, rgba(0,0,0,0) 100%)`}} />
               </li>
             ))}
           </ul>

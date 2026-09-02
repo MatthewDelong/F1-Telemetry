@@ -273,23 +273,26 @@ export function DriverComparison(){
 
         return (
             <div> 
-                <div 
+                <div
                     className={classNames(
-                        "flex flex-col items-center max-w-[16rem] md:max-w-[60rem] bg-glow-dark rounded-[2.4rem] relative",
-                        // "before:content-[''] before:absolute before:top-[0] before:left-[0] before:w-full before:h-full before:bg-gradient-to-t before:from-neutral-950 before:to-neutral-950/0 before:rounded-b-[1.2rem]"
+                        "flex flex-col items-center max-w-[16rem] md:max-w-[60rem] bg-glow-dark border border-white/5 rounded-[2.4rem] shadow-xl hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] transition-all duration-300 relative overflow-hidden group",
                     )}
                 >
-                    <div className="-mt-32 z-[1] md:flex md:items-end">
+                    <div 
+                        className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-20"
+                        style={{ background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 70%)` }}
+                    />
+                    <div className="-mt-32 z-[1] md:flex md:items-end relative">
                         {DriverImage(driverData.driverCode, driverData.driverId || driverData.id)}
                         <div className="max-md:hidden">{mainData}</div>
                     </div>
-                    <div className="constructor-stand bg-glow-md py-8 md:py-16 mt-4 w-[110%] text-center">
+                    <div className="constructor-stand bg-glow-md py-8 md:py-16 mt-4 w-[110%] text-center relative z-[1]">
                         <p className="gradient-text-light uppercase tracking-xs -mb-8">{firstName}</p>
                         <h2 className="font-display md:text-[3.2rem] gradient-text-white">{LastName}</h2>
                     </div>
-                    <div className="md:hidden w-full">{mainData}</div>
-                    <div className="divider-glow-dark -mt-4 -mb-12 md:hidden " />
-                    {otherData}
+                    <div className="md:hidden w-full relative z-[1]">{mainData}</div>
+                    <div className="divider-glow-dark -mt-4 -mb-12 md:hidden relative z-[1]" />
+                    <div className="relative z-[1]">{otherData}</div>
                 </div>
             </div>
         )

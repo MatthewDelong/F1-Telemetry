@@ -19,6 +19,7 @@ export const ConstructorDriver = (props) => {
     showStanding,
     championshipLevel,
     nationality,
+    color,
   } = props;
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
@@ -34,14 +35,19 @@ export const ConstructorDriver = (props) => {
   const imageSrc = `${"/images/" + year + "/cars/" + car + ".png"}`;
 
   return (
-    <div>
+    <div className="mb-24 w-full">
       <div
         className={classNames(
           className,
-          "constructor-driver-card flex justify-center items-end relative",
+          "constructor-driver-card flex justify-center items-end relative bg-glow-dark border border-white/5 shadow-xl hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] rounded-[2rem] duration-300 transition-all hover:scale-[.98] cursor-pointer group px-8 pt-24 pb-8 overflow-hidden",
         )}
         ref={ref}
+        style={{ boxShadow: color ? `inset 0 -2px 15px ${color}22` : undefined }}
       >
+        <div 
+          className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-25"
+          style={{ background: `radial-gradient(circle at 50% 50%, ${color || "rgba(255,255,255,0.5)"} 0%, rgba(0,0,0,0) 70%)` }}
+        />
         <img
           alt=""
           className="constructor-driver-card__person -mr-28 w-[12rem] z-[0] rounded-t-lg"
@@ -120,7 +126,6 @@ export const ConstructorDriver = (props) => {
           </div>
         </div>
       </div>
-      <div className="divider-glow-dark w-full" />
     </div>
   );
 };

@@ -35,13 +35,19 @@ export const ConstructorCar = (props) => {
     "group-hover:scale-[1.05] duration-150 transition-transform ease-in-out";
 
   return (
-    <div
-      className={classNames(
-        className,
-        "constructor-card mt-32 group duration-150 transition-transform ease-in-out hover:scale-[.98] hover:cursor-pointer",
-      )}
-      ref={ref}
-    >
+    <div className="w-full mb-24 relative group">
+      <div
+        className={classNames(
+          className,
+          "constructor-card duration-300 transition-all ease-in-out hover:scale-[.98] hover:cursor-pointer bg-glow-dark border border-white/5 rounded-[2.4rem] shadow-xl hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] overflow-hidden relative pb-8 pt-8",
+        )}
+        ref={ref}
+        style={{ boxShadow: `inset 0 -2px 15px ${color}22` }}
+      >
+        <div 
+          className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-25"
+          style={{ background: `radial-gradient(circle at 50% 50%, ${color} 0%, rgba(0,0,0,0) 70%)` }}
+        />
       <div className="flex flex-col items-center pb-40">
         <div div className="flex items-end mb-4">
           <div className="h-1 w-32 border-b-[1px] border-solid border-neutral-500" />
@@ -124,16 +130,12 @@ export const ConstructorCar = (props) => {
           )}
         </div>
       </div>
-      <div
-        className="constructor-stand bg-glow h-16 m-auto -mt-32 border-b-[1px]"
-        style={{ borderColor: color }}
-      />
-      <div className="divider-glow-dark w-full" />
+      </div>
       {championshipLevel !== "f2" && (
         <Button
           size="sm"
           disabled
-          className="opacity-0 group-hover:opacity-100 !absolute -bottom-[2.4rem] left-1/2 -translate-x-1/2"
+          className="opacity-0 group-hover:opacity-100 absolute -bottom-[1.2rem] left-1/2 -translate-x-1/2 rounded-full px-8 tracking-widest uppercase shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300"
         >
           View Comparison
         </Button>
