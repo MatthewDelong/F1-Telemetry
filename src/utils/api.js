@@ -28,7 +28,7 @@ export function normalizeOpenF1Date(date) {
   return d.toISOString();
 }
 
-const CACHE_PREFIX = "f1_cache_v7_";
+const CACHE_PREFIX = "f1_cache_v8_";
 const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -188,13 +188,13 @@ export const fetchWithPersistentCache = async (url) => {
         if (cachedItem) {
             const { data, timestamp } = JSON.parse(cachedItem);
             const isExpired = Date.now() - timestamp > CACHE_TTL;
-            const isEmptyArray = Array.isArray(data) && data.length === 0;
+            const isInvalidArray = Array.isArray(data) && data.length <= 1;
             
-            if (!isExpired && !isEmptyArray) {
+            if (!isExpired && !isInvalidArray) {
                 return data;
             }
-            // Keep for fallback if network fails, but only if it's not an empty array
-            if (!isEmptyArray) {
+            // Keep for fallback if network fails, but only if it's not an empty or 1-item array
+            if (!isInvalidArray && Array.isArray(data)) {
                 cachedData = data; 
             }
         }
@@ -206,8 +206,8 @@ export const fetchWithPersistentCache = async (url) => {
     try {
         const data = await fetchOpenF1Data(url);
         
-        // 3. Save to localStorage if successful AND not an empty array
-        if (data && !data.error && !(Array.isArray(data) && data.length === 0)) {
+        // 3. Save to localStorage if successful AND valid data
+        if (data && !data.error && !(Array.isArray(data) && data.length <= 1)) {
             try {
                 const cacheEntry = JSON.stringify({
                     data,
@@ -225,7 +225,35 @@ export const fetchWithPersistentCache = async (url) => {
         }
         return data;
     } catch (error) {
-        // 4. FALLBACK: If network fails but we had expired data, return it
+        // 4. GitHub Fallback for F1 API endpoints
+        if (url.includes('source=f1') || url.includes('/proxy/f1/')) {
+            try {
+                let cleanPath = url.includes('path=') 
+                    ? url.split('path=')[1] 
+                    : (url.includes('/proxy/f1/') ? url.split('/proxy/f1/')[1] : '');
+                cleanPath = cleanPath.split('?')[0].split('&')[0];
+                if (cleanPath) {
+                    const ghUrls = [
+                        `https://raw.githubusercontent.com/MatthewDelong/f1-telemetry-api/main/${cleanPath}`,
+                        `https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1/${cleanPath}`
+                    ];
+                    for (const ghUrl of ghUrls) {
+                        try {
+                            const ghResp = await fetch(ghUrl);
+                            if (ghResp.ok) {
+                                const ghData = await ghResp.json();
+                                if (ghData && !ghData.error && !(Array.isArray(ghData) && ghData.length <= 1)) {
+                                    console.log(`[Cache Fallback] Loaded ${cleanPath} from raw GitHub`);
+                                    return ghData;
+                                }
+                            }
+                        } catch (e) {}
+                    }
+                }
+            } catch (e) {}
+        }
+
+        // 5. FALLBACK: If network and GitHub fail but we had expired data, return it
         if (cachedData) {
             console.warn(`[Cache] Network failed for ${url}, returning stale data.`, error);
             return cachedData;
@@ -235,15 +263,70 @@ export const fetchWithPersistentCache = async (url) => {
 };
 
 export const fetchDriversList = async () => {
-    const response = await fetchWithPersistentCache(`${BASE_F1_URL}driversList.json`);
-    return response.map(driver => ({
-        id: driver.driverId,
-        name: `${driver.givenName} ${driver.familyName}`
-    }));
+    const formatDriverName = (driver) => {
+        if (driver.driverId === 'antonelli') {
+            return 'Kimi Antonelli';
+        }
+        return `${driver.givenName} ${driver.familyName}`;
+    };
+
+    try {
+        const response = await fetchWithPersistentCache(`${BASE_F1_URL}driversList.json?v=2026_v2`);
+        if (Array.isArray(response) && response.length > 50 && response[0]?.driverId) {
+            return response.map(driver => ({
+                id: driver.driverId,
+                name: formatDriverName(driver)
+            }));
+        }
+        console.warn("[API] fetchDriversList response was not a valid driver array. Triggering static/GitHub fallback...");
+    } catch (e) {
+        console.warn("[API] fetchDriversList failed via primary endpoint:", e);
+    }
+
+    // 1. Direct static build asset fallback (/driversList.json in public/build)
+    try {
+        const staticResp = await fetch('/driversList.json');
+        if (staticResp.ok) {
+            const data = await staticResp.json();
+            if (Array.isArray(data) && data.length > 50) {
+                return data.map(driver => ({
+                    id: driver.driverId,
+                    name: formatDriverName(driver)
+                }));
+            }
+        }
+    } catch (e) {}
+
+    // 2. Direct GitHub raw fallback from main F1-Telemetry repository
+    try {
+        const ghUrls = [
+            'https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1/driversList.json',
+            'https://raw.githubusercontent.com/MatthewDelong/f1-telemetry-api/main/driversList.json'
+        ];
+        for (const ghUrl of ghUrls) {
+            try {
+                const ghResp = await fetch(ghUrl);
+                if (ghResp.ok) {
+                    const data = await ghResp.json();
+                    if (Array.isArray(data) && data.length > 50) {
+                        return data.map(driver => ({
+                            id: driver.driverId,
+                            name: formatDriverName(driver)
+                        }));
+                    }
+                }
+            } catch (err) {}
+        }
+    } catch (e) {
+        console.error("[API] GitHub fallbacks for driversList failed:", e);
+    }
+    return [];
 };
 
 export const fetchDriverStats = async (driverId1, driverId2, refresh = false) => {
   const fetchDriverData = async (driverId) => {
+    const rawGithubUrl = `https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1/drivers/${driverId}.json`;
+
     try {
       let url = `${BASE_F1_URL}drivers/${driverId}.json`;
       if (refresh) {
@@ -253,15 +336,26 @@ export const fetchDriverStats = async (driverId1, driverId2, refresh = false) =>
       const dataResponse1 = await fetch(url);
       if (dataResponse1.ok) {
         const data1 = await dataResponse1.json();
-        return data1;
-      } else {
-        console.warn(`[API] Failed to fetch driver data for ${driverId}: HTTP ${dataResponse1.status}`);
-        return null;
+        if (data1 && !data1.error) return data1;
       }
+      console.warn(`[API] Primary fetch failed for driver ${driverId} (HTTP ${dataResponse1?.status}). Trying raw GitHub fallback...`);
     } catch (error) {
-      console.error(`[API] Error fetching driver data for ${driverId}:`, error);
-      return null;
+      console.warn(`[API] Error fetching driver data for ${driverId} via primary endpoint. Trying raw GitHub fallback...`, error);
     }
+
+    // Fallback directly to GitHub raw content if primary API / proxy fails
+    try {
+      const ghResponse = await fetch(rawGithubUrl);
+      if (ghResponse.ok) {
+        const ghData = await ghResponse.json();
+        return ghData;
+      }
+      console.error(`[API] Raw GitHub fallback failed for driver ${driverId}: HTTP ${ghResponse.status}`);
+    } catch (ghErr) {
+      console.error(`[API] Error fetching raw GitHub fallback for driver ${driverId}:`, ghErr);
+    }
+
+    return null;
   };
   const driverData1 = await fetchDriverData(driverId1);
   const driverData2 = await fetchDriverData(driverId2);

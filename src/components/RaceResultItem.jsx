@@ -37,7 +37,10 @@ export const RaceResultItem = (props) => {
         "driver-card flex items-end relative mt-[9rem]",
         { hidden: status === "cancelled" },
       )}
-      style={{ borderColor: isActive && `#${driverColor}` }}
+      style={{ 
+        borderColor: isActive && driverColor ? `#${driverColor}` : undefined,
+        '--driver-color': driverColor ? `#${driverColor}` : 'rgba(255,255,255,0.5)'
+      }}
     >
       <div
         className={classNames("flex item-center w-full", {
@@ -65,7 +68,13 @@ export const RaceResultItem = (props) => {
             transition: `all 1s cubic-bezier(0.17, 0.55, 0.55, 1) .${index}s`,
           }}
         />
-        <div className="stand bg-glow px-14 text-center">
+        <div 
+          className="stand px-14 text-center"
+          style={{
+            background: `radial-gradient(circle at 50% 100%, color-mix(in srgb, var(--driver-color) 30%, transparent) 0%, rgba(0,0,0,0) 80%)`,
+            boxShadow: `inset 0 -5px 15px color-mix(in srgb, var(--driver-color) 20%, transparent)`
+          }}
+        >
           <div className="font-display text-[1.8rem] flex items-center justify-center gap-2">
             <span className="text-neutral-500">P{endPosition}</span>{" "}
             {driver.code}

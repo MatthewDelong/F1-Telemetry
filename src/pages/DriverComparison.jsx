@@ -73,35 +73,51 @@ export function DriverComparison(){
         }
     }, [urlDriver2, urlDriverName2, inputdriver2.value, inputdriver2.label]);
 
+    const [error, setError] = useState(null);
+
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
+            setError(null);
             if(driver1 && driver2){
                 const DriversData = await fetchDriverStats(driver1, driver2);
 
-                setDriver1Data(DriversData.driver1);
-                setDriver2Data(DriversData.driver2);
+                if (DriversData?.driver1?.finalStandings && DriversData?.driver2?.finalStandings) {
+                    setDriver1Data(DriversData.driver1);
+                    setDriver2Data(DriversData.driver2);
 
-                // Convert finalStandings objects to arrays of years
-                const driver1Years = Object.keys(DriversData.driver1.finalStandings);
-                const driver2Years = Object.keys(DriversData.driver2.finalStandings);
+                    // Convert finalStandings objects to arrays of years
+                    const driver1Years = Object.keys(DriversData.driver1.finalStandings || {});
+                    const driver2Years = Object.keys(DriversData.driver2.finalStandings || {});
 
-                // Determine overlapping years
-                const overlappingYears = driver1Years.filter(year => driver2Years.includes(year));
+                    // Determine overlapping years
+                    const overlappingYears = driver1Years.filter(year => driver2Years.includes(year));
 
-                // Determine all years combined
-                const combinedYears = Array.from(new Set([...driver1Years, ...driver2Years])).sort();
-                setCompetingYears(overlappingYears);
-                setDisplayCompetingYears(overlappingYears.length > 0)
-                setAllYears(combinedYears);
+                    // Determine all years combined
+                    const combinedYears = Array.from(new Set([...driver1Years, ...driver2Years])).sort();
+                    setCompetingYears(overlappingYears);
+                    setDisplayCompetingYears(overlappingYears.length > 0);
+                    setAllYears(combinedYears);
+                } else {
+                    setDriver1Data(DriversData?.driver1 || null);
+                    setDriver2Data(DriversData?.driver2 || null);
+                    setCompetingYears([]);
+                    setDisplayCompetingYears(false);
+                    setAllYears([]);
 
-                // console.log({ overlappingYears, combinedYears });
+                    const failedDrivers = [];
+                    if (!DriversData?.driver1) failedDrivers.push(driversList.find(q => q.id === driver1)?.name || driver1);
+                    if (!DriversData?.driver2) failedDrivers.push(driversList.find(q => q.id === driver2)?.name || driver2);
+                    if (failedDrivers.length > 0) {
+                        setError(`Failed to load driver data for ${failedDrivers.join(' and ')}.`);
+                    }
+                }
             }
             setIsLoading(false);
         };
 
         fetchData();
-    }, [driver1, driver2]);
+    }, [driver1, driver2, driversList]);
 
     useEffect(() => {
         const fetchRaceNames = async (year) => {
@@ -158,7 +174,7 @@ export function DriverComparison(){
                         
                         <div className="flex item-center justify-center gap-4">
                             <div>
-                                {driver1Data.finalStandings[year] ? (
+                                {driver1Data?.finalStandings?.[year] ? (
                                     <div className="flex items-center justify-center font-display">
                                         <div className="w-48 bg-black px-16 py-2 rounded-l-[1rem]"><span className="gradient-text-white">{driver1Data.finalStandings[year].position}</span></div>
                                         <div className="w-[10rem] text-right bg-glow pr-16 py-2 gradient-text-white">{driver1Data.finalStandings[year].points}</div>
@@ -168,13 +184,13 @@ export function DriverComparison(){
                                 )}
                             </div>
                             <div>
-                                {driver2Data.finalStandings[year] ? (
+                                {driver2Data?.finalStandings?.[year] ? (
                                     <div className="flex items-center justify-center font-display">
                                         <div className="w-[10rem] bg-glow pl-16 py-2 gradient-text-white">{driver2Data.finalStandings[year].points}</div>
                                         <div className="w-48 bg-black px-16 py-2 rounded-r-[1rem]"><span className="gradient-text-white">{driver2Data.finalStandings[year].position}</span></div>
                                     </div>
                                 ) : (
-                                    <div className="w-[14.8rem] bg-glow-dark pl-16 py-2 gradient-text-white rounded-r-[1rem]">DNC</div>
+                                    <div className="w-[14.8rem] bg-glow-dark pr-16 py-2 gradient-text-white rounded-r-[1rem]">DNC</div>
                                 )}
                             </div>
                         </div>
@@ -188,19 +204,34 @@ export function DriverComparison(){
         // Build a prioritized list of image paths to try
         const fallbackChain = [];
         
-        // 1. Try 2024 images with driverCode first (e.g., ALO.png)
+        // 1. Try 2026 images first
+        if (driverCode) {
+          fallbackChain.push(`/images/2026/drivers/${driverCode}.png`);
+        }
+        if (driverId && driverId !== driverCode) {
+          fallbackChain.push(`/images/2026/drivers/${driverId}.png`);
+        }
+        
+        // 2. Try 2025 images
+        if (driverCode) {
+          fallbackChain.push(`/images/2025/drivers/${driverCode}.png`);
+        }
+        if (driverId && driverId !== driverCode) {
+          fallbackChain.push(`/images/2025/drivers/${driverId}.png`);
+        }
+
+        // 3. Try 2024 images
         if (driverCode) {
           fallbackChain.push(`/images/2024/drivers/${driverCode}.png`);
         }
-        // 2. Try 2024 images with driverId (e.g., alonso.png)
         if (driverId && driverId !== driverCode) {
           fallbackChain.push(`/images/2024/drivers/${driverId}.png`);
         }
-        // 3. Try historical images with driverId (files are named by driverId)
+
+        // 4. Try historical images
         if (driverId) {
           fallbackChain.push(`/images/historical/drivers/${driverId}.png`);
         }
-        // 4. Try historical images with driverCode as last resort
         if (driverCode && driverCode !== driverId) {
           fallbackChain.push(`/images/historical/drivers/${driverCode}.png`);
         }
@@ -223,7 +254,7 @@ export function DriverComparison(){
         return (
           <img 
             alt="Driver" 
-            className="w-[15rem] md:w-[22rem]"
+            className="w-[15rem] md:w-[22rem] object-contain"
             src={imageUrl}
             data-fallback-step="0"
             onError={handleError}
@@ -232,8 +263,11 @@ export function DriverComparison(){
     };
 
     const splitName = (name) => {
-        return name.split(' ');
-    }
+        if (!name) return ['', ''];
+        const parts = String(name).trim().split(' ');
+        if (parts.length <= 1) return [name, ''];
+        return [parts.slice(0, -1).join(' '), parts[parts.length - 1]];
+    };
     const statLine = (label, stat, rate, last) => (
         <>
         <div className={classNames(
@@ -275,11 +309,11 @@ export function DriverComparison(){
             <div> 
                 <div
                     className={classNames(
-                        "flex flex-col items-center max-w-[16rem] md:max-w-[60rem] bg-glow-dark border border-white/5 rounded-[2.4rem] shadow-xl hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] transition-all duration-300 relative overflow-hidden group",
+                        "flex flex-col items-center max-w-[16rem] md:max-w-[60rem] bg-glow-dark border border-white/5 rounded-[2.4rem] shadow-xl hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] transition-all duration-300 relative group",
                     )}
                 >
                     <div 
-                        className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-20"
+                        className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-20 rounded-[2.4rem] overflow-hidden"
                         style={{ background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 70%)` }}
                     />
                     <div className="-mt-32 z-[1] md:flex md:items-end relative">
@@ -314,19 +348,25 @@ export function DriverComparison(){
                 </div>
             </div>
 
+            {error && (
+                <div className="bg-red-500/10 border border-red-500 text-red-500 p-16 rounded-lg mb-32 text-center max-w-[40rem] mx-auto">
+                    {error}
+                </div>
+            )}
+
             {isLoading ? (
-                <Loading className="mt-[20rem] mb-[20rem]" message={`Comparing ${driversList.find(q=> q.id === driver1).name} and ${driversList.find(q=> q.id === driver2).name}`} />
+                <Loading className="mt-[20rem] mb-[20rem]" message={`Comparing ${driversList.find(q=> q.id === driver1)?.name || driver1} and ${driversList.find(q=> q.id === driver2)?.name || driver2}`} />
             ) : (
                 <div>
                     <div className="flex max-md:flex-col justify-center items-center gap-16 z-[2] relative max-w-[45rem] m-auto">
                         <ReactSelectComponent
                             placeholder="Select Driver 1"
-                            options={driversList.sort((a,b) => a.name-b.name).map(driver => ({ value: driver.id, label: driver.name }))}
+                            options={[...driversList].sort((a,b) => (a.name || '').localeCompare(b.name || '')).map(driver => ({ value: driver.id, label: driver.name }))}
                             onChange={(selectedOption) => setInputDriver1(selectedOption)}
                         />
                         <ReactSelectComponent
                             placeholder="Select Driver 2"
-                            options={driversList.map(driver => ({ value: driver.id, label: driver.name }))}
+                            options={[...driversList].sort((a,b) => (a.name || '').localeCompare(b.name || '')).map(driver => ({ value: driver.id, label: driver.name }))}
                             onChange={(selectedOption) => setInputDriver2(selectedOption)}
                         />
                     </div>
@@ -338,13 +378,13 @@ export function DriverComparison(){
 
                             <div className='flex justify-center gap-24 md:gap-48 mt-64 mb-64'>
                                 {driverCard(
-                                    splitName(driversList.find(q=> q.id === driver1).name)[0], 
-                                    splitName(driversList.find(q=> q.id === driver1).name)[1], 
+                                    splitName(driversList.find(q=> q.id === driver1)?.name || driver1)[0], 
+                                    splitName(driversList.find(q=> q.id === driver1)?.name || driver1)[1], 
                                     driver1Data
                                 )}
                                 {driverCard(
-                                    splitName(driversList.find(q=> q.id === driver2).name)[0], 
-                                    splitName(driversList.find(q=> q.id === driver2).name)[1], 
+                                    splitName(driversList.find(q=> q.id === driver2)?.name || driver2)[0], 
+                                    splitName(driversList.find(q=> q.id === driver2)?.name || driver2)[1], 
                                     driver2Data
                                 )}
                             </div>
@@ -396,8 +436,8 @@ export function DriverComparison(){
                                     <p className="text-sm text-neutral-400 mb-16 ml-24 leading-none">* Only seasons both drivers competed against each other</p> 
                                     <LineChartByYear
                                         className="mb-96"
-                                        driver1Name={driversList.find(q=> q.id === driver1).name}
-                                        driver2Name={driversList.find(q=> q.id === driver2).name}
+                                        driver1Name={driversList.find(q=> q.id === driver1)?.name || driver1}
+                                        driver2Name={driversList.find(q=> q.id === driver2)?.name || driver2}
                                         driver1Data={driver1Data.racePosition}
                                         driver2Data={driver2Data.racePosition}
                                         competingYears={competingYears}
@@ -409,8 +449,8 @@ export function DriverComparison(){
                                     <p className="text-sm text-neutral-400 mb-16 ml-24 leading-none">* Only seasons both drivers competed against each other</p> 
                                     <LineChartByYear
                                         className="mb-96"
-                                        driver1Name={driversList.find(q=> q.id === driver1).name}
-                                        driver2Name={driversList.find(q=> q.id === driver2).name}
+                                        driver1Name={driversList.find(q=> q.id === driver1)?.name || driver1}
+                                        driver2Name={driversList.find(q=> q.id === driver2)?.name || driver2}
                                         driver1Data={driver1Data.qualiPosition}
                                         driver2Data={driver2Data.qualiPosition}
                                         competingYears={competingYears}
@@ -422,8 +462,8 @@ export function DriverComparison(){
                                     <p className="text-sm text-neutral-400 mb-16 ml-24 leading-none">* Only seasons both drivers competed against each other</p> 
                                     <LineChartByYear
                                         className="mb-96"
-                                        driver1Name={driversList.find(q=> q.id === driver1).name}
-                                        driver2Name={driversList.find(q=> q.id === driver2).name}
+                                        driver1Name={driversList.find(q=> q.id === driver1)?.name || driver1}
+                                        driver2Name={driversList.find(q=> q.id === driver2)?.name || driver2}
                                         driver1Data={driver1Data.posAfterRace}
                                         driver2Data={driver2Data.posAfterRace}
                                         competingYears={competingYears}

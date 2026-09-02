@@ -49,7 +49,7 @@ export const ConstructorCar = (props) => {
           style={{ background: `radial-gradient(circle at 50% 50%, ${color} 0%, rgba(0,0,0,0) 70%)` }}
         />
       <div className="flex flex-col items-center pb-40">
-        <div div className="flex items-end mb-4">
+        <div className="flex items-end mb-4">
           <div className="h-1 w-32 border-b-[1px] border-solid border-neutral-500" />
           <div className="font-display text-24 leading-none -mb-4 mx-8 text-neutral-400">
             {index + 1}
@@ -134,8 +134,7 @@ export const ConstructorCar = (props) => {
       {championshipLevel !== "f2" && (
         <Button
           size="sm"
-          disabled
-          className="opacity-0 group-hover:opacity-100 absolute -bottom-[1.2rem] left-1/2 -translate-x-1/2 rounded-full px-8 tracking-widest uppercase shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300"
+          className="opacity-0 group-hover:opacity-100 absolute -bottom-[1.2rem] left-1/2 -translate-x-1/2 rounded-[2rem] px-16 tracking-widest uppercase shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300"
         >
           View Comparison
         </Button>

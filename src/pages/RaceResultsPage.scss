@@ -52,8 +52,8 @@
 .race-results__list__item-3:after {
     background: linear-gradient(
         180deg,
-        rgba(255, 255, 255, 0.15) 0%,
-        rgba(255, 255, 255, 0.02) 100%
+        color-mix(in srgb, var(--driver-color) 40%, rgba(255, 255, 255, 0.15)) 0%,
+        color-mix(in srgb, var(--driver-color) 10%, rgba(255, 255, 255, 0.02)) 100%
     );
     backdrop-filter: blur(8px);
     border-left: 1px solid rgba(255, 255, 255, 0.1);

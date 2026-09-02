@@ -250,6 +250,23 @@ async function updateDriversList() {
       if (offset < total) await sleep(THROTTLE_MS);
     }
 
+    const missing2026 = [
+      { driverId: "antonelli", givenName: "Andrea Kimi", familyName: "Antonelli", nationality: "Italian" },
+      { driverId: "bortoleto", givenName: "Gabriel", familyName: "Bortoleto", nationality: "Brazilian" },
+      { driverId: "hadjar", givenName: "Isack", familyName: "Hadjar", nationality: "French" },
+      { driverId: "doohan", givenName: "Jack", familyName: "Doohan", nationality: "Australian" },
+      { driverId: "colapinto", givenName: "Franco", familyName: "Colapinto", nationality: "Argentine" },
+      { driverId: "lawson", givenName: "Liam", familyName: "Lawson", nationality: "New Zealander" },
+      { driverId: "bearman", givenName: "Oliver", familyName: "Bearman", nationality: "British" },
+      { driverId: "arvid_lindblad", givenName: "Arvid", familyName: "Lindblad", nationality: "British" }
+    ];
+
+    for (const d of missing2026) {
+      if (!allDrivers.some(existing => existing.driverId === d.driverId)) {
+        allDrivers.push(d);
+      }
+    }
+
     await upsertCache('f1:driversList.json', allDrivers);
     console.log(`[Updater] ✓ Drivers list synced (${allDrivers.length} drivers)`);
   } catch (error) {

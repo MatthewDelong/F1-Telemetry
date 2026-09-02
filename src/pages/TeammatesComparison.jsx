@@ -116,9 +116,14 @@ export const TeammatesComparison = () => {
       setTeamColor(teamColors[year]?.[selectedTeam] || '5F0B84');
 
       if (fetchedDrivers.length > 2) {
+        setSelectedDriver1(fetchedDrivers[0].driverId);
+        setSelectedDriver2(fetchedDrivers[1].driverId);
+        fetchDriverData([fetchedDrivers[0], fetchedDrivers[1]]);
         setShowDriverSelectors(true);
-        setRenderHead(false);
+        setRenderHead(true);
       } else {
+        setSelectedDriver1(fetchedDrivers[0]?.driverId || '');
+        setSelectedDriver2(fetchedDrivers[1]?.driverId || '');
         fetchDriverData(fetchedDrivers);
         setShowDriverSelectors(false);
         setRenderHead(true);
@@ -243,12 +248,22 @@ export const TeammatesComparison = () => {
 
   const handleDriver1Change = async (selectedOption) => {
     setSelectedDriver1(selectedOption.value);
-    if (selectedDriver2) {
+    
+    let currentDriver2 = selectedDriver2;
+    if (!currentDriver2) {
+      const otherDriver = drivers.find(d => d.driverId !== selectedOption.value);
+      if (otherDriver) {
+        currentDriver2 = otherDriver.driverId;
+        setSelectedDriver2(currentDriver2);
+      }
+    }
+
+    if (currentDriver2) {
       setAmbQ(true);
       setAmbR(true);
       setRenderHead(true);
       const driver1Data = drivers.find(driver => driver.driverId === selectedOption.value);
-      const driver2Data = drivers.find(driver => driver.driverId === selectedDriver2);
+      const driver2Data = drivers.find(driver => driver.driverId === currentDriver2);
       if (driver1Data && driver2Data) {
         await fetchDriverData([driver1Data, driver2Data]);
       }
@@ -257,11 +272,21 @@ export const TeammatesComparison = () => {
 
   const handleDriver2Change = async (selectedOption) => {
     setSelectedDriver2(selectedOption.value);
-    if (selectedDriver1) {
+    
+    let currentDriver1 = selectedDriver1;
+    if (!currentDriver1) {
+      const otherDriver = drivers.find(d => d.driverId !== selectedOption.value);
+      if (otherDriver) {
+        currentDriver1 = otherDriver.driverId;
+        setSelectedDriver1(currentDriver1);
+      }
+    }
+
+    if (currentDriver1) {
       setAmbQ(true);
       setAmbR(true);
       setRenderHead(true);
-      const driver1Data = drivers.find(driver => driver.driverId === selectedDriver1);
+      const driver1Data = drivers.find(driver => driver.driverId === currentDriver1);
       const driver2Data = drivers.find(driver => driver.driverId === selectedOption.value);
       if (driver1Data && driver2Data) {
         await fetchDriverData([driver1Data, driver2Data]);
@@ -417,8 +442,15 @@ export const TeammatesComparison = () => {
   const memoizedHeadToHeadData = useMemo(() => headToHeadData, [headToHeadData]);
 
 
+const splitDriverName = (driverName) => {
+  if (!driverName) return ['', ''];
+  const parts = String(driverName).trim().split(" ");
+  if (parts.length <= 1) return [driverName, ''];
+  return [parts.slice(0, -1).join(' '), parts[parts.length - 1]];
+};
+
 const driverLockup = (driverCode, driverId, driverName) => {
-  const driverSplitName = driverName.split(" ");
+  const driverSplitName = splitDriverName(driverName);
   
   // Build a prioritized fallback chain for image sources
   const fallbackChain = [];
@@ -453,10 +485,10 @@ const driverLockup = (driverCode, driverId, driverName) => {
   
   return (
     <div 
-      className="flex justify-center relative text-center group rounded-[2.4rem] px-16 bg-glow-dark border border-white/5 shadow-xl hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] overflow-hidden transition-all duration-300"
+      className="flex justify-center relative text-center group rounded-[2.4rem] px-16 bg-glow-dark border border-white/5 shadow-xl hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] transition-all duration-300"
     >
       <div 
-          className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-20"
+          className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-20 rounded-[2.4rem] overflow-hidden"
           style={{ background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 70%)` }}
       />
       <img 
@@ -471,9 +503,7 @@ const driverLockup = (driverCode, driverId, driverName) => {
             e.target.src = fallbackChain[nextStep];
           }
         }}
-        width={150} 
-        height={150} 
-        className={classNames("-mt-32 relative z-[1]", {"group-[:first-of-type]:scale-x-[-1]" : year <= 2023 })}
+        className={classNames("w-[10rem] md:w-[15rem] object-contain -mt-32 relative z-[1]", {"group-[:first-of-type]:scale-x-[-1]" : year <= 2023 })}
       />
       <div className="absolute top-full leading-none w-full mt-8 relative z-[1]">
         <div className="text-sm tracking-sm uppercase text-gradient-light">{driverSplitName[0]}</div>
@@ -490,8 +520,8 @@ const formatDate = (isoString) => {
 };
 
 const GridRow = (label, driver1, driver2, title) => {
-  const driver1SplitName = String(driver1).split(" ");
-  const driver2SplitName = String(driver2).split(" ");
+  const driver1SplitName = splitDriverName(String(driver1));
+  const driver2SplitName = splitDriverName(String(driver2));
 
   return (
     <>

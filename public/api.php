@@ -183,8 +183,19 @@ if ($flush) {
         @unlink($cacheFile); // Delete old cache to be safe
     }
 } else if (file_exists($cacheFile) && (time() - filemtime($cacheFile) < $cacheTTL)) {
-    echo file_get_contents($cacheFile);
-    exit;
+    $cachedContent = file_get_contents($cacheFile);
+    if (strpos($path, 'driversList.json') !== false) {
+        $decoded = json_decode($cachedContent, true);
+        if (is_array($decoded) && count($decoded) > 10 && isset($decoded[0]['driverId'])) {
+            echo $cachedContent;
+            exit;
+        }
+        // Cache is invalid/corrupt, remove it and re-fetch!
+        @unlink($cacheFile);
+    } else {
+        echo $cachedContent;
+        exit;
+    }
 }
 
 $data = null;
@@ -197,44 +208,40 @@ if ($source === 'f1') {
     $localPath = __DIR__ . '/' . $pathWithoutQuery;
     $realLocal = realpath($localPath);
     $realBase = realpath(__DIR__);
-    if (!$flush && $realLocal && $realBase && strpos($realLocal, $realBase) === 0 
+    if ($realLocal && $realBase && strpos($realLocal, $realBase) === 0 
         && preg_match('/\.json$/', $realLocal) && file_exists($realLocal)) {
         $data = file_get_contents($realLocal);
     }
 
     // 2. Try GitHub fallbacks
     if (!$data) {
+        $baseUrls = [
+            'https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1/' => 10,
+            'https://raw.githubusercontent.com/MatthewDelong/f1-telemetry-api/main/' => 5,
+        ];
+        foreach ($baseUrls as $baseUrl => $timeout) {
+            // Try up to 3 path variations for maximum resilience
+            $pathVariations = [$pathWithoutQuery];
+            
+            // 1. Try stripping 'races/' prefix for historical repos that might be flat
+            if (preg_match('/^races\/(\d{4})\/(.*\.json)$/', $pathWithoutQuery, $m)) {
+                $year = $m[1];
+                $file = $m[2];
+                $pathVariations[] = "{$year}/{$file}";
+            }
+            // 2. Map global files like 'races/races.json' -> 'races.json'
+            else if ($pathWithoutQuery === 'races/races.json') {
+                $pathVariations[] = 'races.json';
+            }
+            else if ($pathWithoutQuery === 'races/raceDetails.json') {
+                $pathVariations[] = 'raceDetails.json';
+            }
 
-        // 2. Try GitHub fallbacks
-        if (!$data) {
-            $baseUrls = [
-                'https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/f1/' => 10,
-                'https://raw.githubusercontent.com/MatthewDelong/f1-telemetry-api/main/' => 5,
-            ];
-            foreach ($baseUrls as $baseUrl => $timeout) {
-                // Try up to 3 path variations for maximum resilience
-                $pathVariations = [$pathWithoutQuery];
-                
-                // 1. Try stripping 'races/' prefix for historical repos that might be flat
-                if (preg_match('/^races\/(\d{4})\/(.*\.json)$/', $pathWithoutQuery, $m)) {
-                    $year = $m[1];
-                    $file = $m[2];
-                    $pathVariations[] = "{$year}/{$file}";
-                }
-                // 2. Map global files like 'races/races.json' -> 'races.json'
-                else if ($pathWithoutQuery === 'races/races.json') {
-                    $pathVariations[] = 'races.json';
-                }
-                else if ($pathWithoutQuery === 'races/raceDetails.json') {
-                    $pathVariations[] = 'raceDetails.json';
-                }
-
-                foreach ($pathVariations as $fetchPath) {
-                    $data = fetchUrl($baseUrl . $fetchPath, $timeout, $lastError);
-                    if ($data && strlen($data) > 10) break;
-                }
+            foreach ($pathVariations as $fetchPath) {
+                $data = fetchUrl($baseUrl . $fetchPath, $timeout, $lastError);
                 if ($data && strlen($data) > 10) break;
             }
+            if ($data && strlen($data) > 10) break;
         }
     }
 

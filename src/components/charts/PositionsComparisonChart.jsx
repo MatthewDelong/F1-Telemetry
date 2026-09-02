@@ -45,7 +45,7 @@ export const PositionsComparisonChart = ({ headToHeadData, teamColor, isQualifyi
       <LineChart data={chartData} margin={{ top: 20, right: 30 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="#444444" />
         <XAxis dataKey="index" tick={<CustomizedXAxisTick />} />
-        <YAxis reversed={true} domain={[1, 'dataMax']} />
+        <YAxis reversed={true} domain={[1, 22]} />
         <Tooltip 
           labelFormatter={(name) => {
             const data = chartData[name];

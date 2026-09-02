@@ -87,7 +87,7 @@ export const LineChartByYear = ({ driver1Name, driver2Name, driver1Data, driver2
         <LineChart data={type === 'position' ? positionData : cumulativePointsData} margin={{ top: 20, right: 30 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#444444" />
           <XAxis dataKey="race" tick={<CustomizedXAxisTick />} />
-          <YAxis reversed={type === 'position'} domain={[1, 'dataMax']} />
+          <YAxis reversed={type === 'position'} domain={type === 'position' ? [1, 22] : [0, 'dataMax']} />
           <Tooltip 
             labelFormatter={(name) => name} 
             formatter={(value) => {

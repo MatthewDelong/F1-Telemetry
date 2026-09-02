@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { fetchRaceDetails, fetchRaceMeetingKeys, fetchOpenF1Podium, BASE_F1_URL } from "../utils/api";
+import teamColors from "../utils/teamColors.json";
 import classNames from "classnames";
 
 import { RaceResultItem, Loading, Button } from "../components";
@@ -24,6 +25,7 @@ export function RaceResultsPage({ selectedYear }) {
           resultsForRace = race.results.slice(0, 3).map(res => ({
             number: res.number,
             driver: res.driver || res.Driver,
+            driverColor: res.Constructor ? teamColors[selectedYear]?.[res.Constructor.constructorId] : undefined,
             fastestLap: res.fastestLap || res.FastestLap,
             grid: res.grid,
             position: res.position,
@@ -117,6 +119,7 @@ export function RaceResultsPage({ selectedYear }) {
                         className={`race-results__list__item-${resultIndex + 1}`}
                         carNumber={result.number}
                         driver={result.driver}
+                        driverColor={result.driverColor}
                         fastestLap={result.fastestLap}
                         startPosition={parseInt(result.grid, 10)}
                         key={resultIndex}
