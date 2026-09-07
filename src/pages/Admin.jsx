@@ -6,7 +6,14 @@ export const AdminPage = () => {
   const [f2Url, setF2Url] = useState('');
   const [f1aUrl, setF1aUrl] = useState('');
   const [loading, setLoading] = useState(false);
-  const [logs, setLogs] = useState([]);
+  const [logs, setLogs] = useState(() => {
+    try {
+      const saved = localStorage.getItem('admin_logs');
+      return saved ? JSON.parse(saved) : [];
+    } catch(e) {
+      return [];
+    }
+  });
 
   if (!import.meta.env.DEV) {
     return (
@@ -18,7 +25,7 @@ export const AdminPage = () => {
 
   const fetchStatus = async () => {
     try {
-      const res = await axios.get('/api/admin/update/status');
+      const res = await axios.get(`/api/admin/update/status?t=${Date.now()}`);
       setStatus(res.data);
     } catch (e) {
       console.error(e);
@@ -33,9 +40,9 @@ export const AdminPage = () => {
     setLoading(true);
     addLog(`Starting update for ${type}...`);
     try {
-      const res = await axios.post(`/api/admin/update/${type}`, { url });
+      const res = await axios.post(`/api/admin/update/${type}`, { url }, { timeout: 300000 });
       addLog(`Success (${type}):\n${res.data.output}`);
-      fetchStatus();
+      await fetchStatus();
     } catch (e) {
       addLog(`Error (${type}):\n${e.response?.data?.error || e.message}`);
     }
@@ -105,12 +112,22 @@ export const AdminPage = () => {
   };
 
   const addLog = (msg) => {
-    setLogs(prev => [msg, ...prev]);
+    setLogs(prev => {
+      const next = [msg, ...prev].slice(0, 50);
+      try { localStorage.setItem('admin_logs', JSON.stringify(next)); } catch(e){}
+      return next;
+    });
   };
 
   const formatDate = (dateString) => {
     if (!dateString) return 'Never updated or file missing';
-    return new Date(dateString).toLocaleString();
+    try {
+      const d = new Date(dateString);
+      if (isNaN(d.getTime())) return 'Never updated or file missing';
+      return d.toLocaleString();
+    } catch(e) {
+      return 'Never updated or file missing';
+    }
   };
 
   return (

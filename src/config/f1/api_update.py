@@ -366,13 +366,34 @@ def analyse_driverData():
             data = json.load(file)
         if(data):
             seasons = sorted(data['seasonWins'].keys())
+
+            # Ensure all seasons have entries in dictionaries that process() expects
+            for season in seasons:
+                if 'finalStandings' not in data: data['finalStandings'] = {}
+                if season not in data['finalStandings']:
+                    data['finalStandings'][season] = {"year": season, "position": "40", "points": "0"}
+                if 'seasonWins' not in data: data['seasonWins'] = {}
+                if season not in data['seasonWins']: data['seasonWins'][season] = 0
+                if 'seasonPodiums' not in data: data['seasonPodiums'] = {}
+                if season not in data['seasonPodiums']: data['seasonPodiums'][season] = 0
+                if 'seasonPoles' not in data: data['seasonPoles'] = {}
+                if season not in data['seasonPoles']: data['seasonPoles'][season] = 0
+                if 'seasonDNFs' not in data: data['seasonDNFs'] = {}
+                if season not in data['seasonDNFs']: data['seasonDNFs'][season] = 0
+                if 'racePosition' not in data: data['racePosition'] = {}
+                if season not in data['racePosition']: data['racePosition'][season] = {"year": season, "positions": {}}
+                if 'qualiPosition' not in data: data['qualiPosition'] = {}
+                if season not in data['qualiPosition']: data['qualiPosition'][season] = {"year": season, "positions": {}}
+                if 'poles' not in data: data['poles'] = {}
+                if season not in data['poles']: data['poles'][season] = []
+
             wins_per_season = [data['seasonWins'][season] for season in seasons]
             podiums_per_season = [data['seasonPodiums'][season] for season in seasons]
             poles_per_season = [data['seasonPoles'][season] for season in seasons]
             dnfs_per_season = [data['seasonDNFs'][season] for season in seasons]
 
             # final_positions = [int(data['finalStandings'][season]['position']) for season in seasons]
-            points_per_season = [float(data['finalStandings'][season]['points']) for season in seasons]
+            points_per_season = [float(data['finalStandings'][season].get('points', '0')) for season in seasons]
 
             mean_wins, std_dev_wins, cv_wins = calculate_consistency(wins_per_season)
             mean_podiums, std_dev_podiums, cv_podiums = calculate_consistency(podiums_per_season)
@@ -385,8 +406,8 @@ def analyse_driverData():
 
             race_positions_per_season = {season: [int(data['racePosition'][season]['positions'][race]) for race in data['racePosition'][season]['positions'] if data['racePosition'][season]['positions'][race] is not None] for season in seasons}
             quali_positions_per_season = {season: [int(data['qualiPosition'][season]['positions'][race]) for race in data['qualiPosition'][season]['positions'] if data['qualiPosition'][season]['positions'][race] is not None] for season in seasons}
-            avg_race_positions = [np.mean(race_positions_per_season[season]) for season in seasons]
-            avg_quali_positions = [np.mean(quali_positions_per_season[season]) for season in seasons]
+            avg_race_positions = [np.mean(race_positions_per_season[season]) if len(race_positions_per_season[season]) > 0 else 0.0 for season in seasons]
+            avg_quali_positions = [np.mean(quali_positions_per_season[season]) if len(quali_positions_per_season[season]) > 0 else 0.0 for season in seasons]
 
             total_races_per_season = {season: len(data['racePosition'][season]['positions']) for season in seasons}
             total_races = 0
@@ -397,19 +418,19 @@ def analyse_driverData():
                 if len(pole_races):
                     tempwins = 0
                     for racex in pole_races:
-                        if data["racePosition"][season]["positions"][racex] == "1":
+                        if data["racePosition"][season]["positions"].get(racex) == "1":
                             tempwins += 1
                     pole_conversion_rate[season] = tempwins/len(pole_races)
                 else:
                     pole_conversion_rate[season] = -1
-            win_rate_per_season = [wins_per_season[seasons.index(season)] / total_races_per_season[season] for season in seasons]
-            podium_rate_per_season = [podiums_per_season[seasons.index(season)] / total_races_per_season[season] for season in seasons]
-            pole_rate_per_season = [poles_per_season[seasons.index(season)] / total_races_per_season[season] for season in seasons]
-            dnf_rate_per_season = [dnfs_per_season[seasons.index(season)] / total_races_per_season[season] for season in seasons]
-            win_rate = data['totalWins']/total_races
-            podium_rate = data['totalPodiums']/total_races
-            pole_rate = data['totalPoles']/total_races
-            dnf_rate = data['totalDNFs']/total_races
+            win_rate_per_season = [wins_per_season[seasons.index(season)] / total_races_per_season[season] if total_races_per_season[season] > 0 else 0.0 for season in seasons]
+            podium_rate_per_season = [podiums_per_season[seasons.index(season)] / total_races_per_season[season] if total_races_per_season[season] > 0 else 0.0 for season in seasons]
+            pole_rate_per_season = [poles_per_season[seasons.index(season)] / total_races_per_season[season] if total_races_per_season[season] > 0 else 0.0 for season in seasons]
+            dnf_rate_per_season = [dnfs_per_season[seasons.index(season)] / total_races_per_season[season] if total_races_per_season[season] > 0 else 0.0 for season in seasons]
+            win_rate = data['totalWins']/total_races if total_races > 0 else 0.0
+            podium_rate = data['totalPodiums']/total_races if total_races > 0 else 0.0
+            pole_rate = data['totalPoles']/total_races if total_races > 0 else 0.0
+            dnf_rate = data['totalDNFs']/total_races if total_races > 0 else 0.0
 
 
             # pole_conversion_rate = data['totalWins'] / data['totalPoles'] if data['totalPoles'] > 0 else 0

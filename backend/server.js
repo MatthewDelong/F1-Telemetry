@@ -585,32 +585,42 @@ const {
 
 // ─── Admin API Update Endpoints ───
 app.get('/api/admin/update/status', requireAdmin, (req, res) => {
-  const statuses = {};
+  res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
   const rootDir = pathMod.join(__dirname, '..');
   
-  const checkFile = (key, filePath) => {
-    try {
-      if (fs.existsSync(filePath)) {
-        const stats = fs.statSync(filePath);
-        statuses[key] = { lastUpdated: stats.mtime };
-      } else {
-        statuses[key] = { lastUpdated: null };
-      }
-    } catch (e) {
-      statuses[key] = { lastUpdated: null };
+  function getLatestMtime(dirPath) {
+    let latest = null;
+    if (!fs.existsSync(dirPath)) return null;
+    function scan(dir) {
+      try {
+        const entries = fs.readdirSync(dir, { withFileTypes: true });
+        for (const e of entries) {
+          const full = pathMod.join(dir, e.name);
+          if (e.isDirectory() && e.name !== '__pycache__' && e.name !== 'node_modules') {
+            scan(full);
+          } else if (e.isFile() && e.name.endsWith('.json')) {
+            const stat = fs.statSync(full);
+            if (!latest || stat.mtime > latest) latest = stat.mtime;
+          }
+        }
+      } catch (err) {}
     }
-  };
+    scan(dirPath);
+    return latest;
+  }
 
-  checkFile('f1', pathMod.join(rootDir, 'src', 'config', 'f1', 'results.json'));
-  checkFile('f2', pathMod.join(rootDir, 'src', 'config', 'f2', 'results.json'));
-  checkFile('f1a', pathMod.join(rootDir, 'src', 'config', 'f1a', 'results.json'));
+  const statuses = {
+    f1: { lastUpdated: getLatestMtime(pathMod.join(rootDir, 'src', 'config', 'f1')) },
+    f2: { lastUpdated: getLatestMtime(pathMod.join(rootDir, 'src', 'config', 'f2')) },
+    f1a: { lastUpdated: getLatestMtime(pathMod.join(rootDir, 'src', 'config', 'f1a')) }
+  };
   
   res.json(statuses);
 });
 
 app.post('/api/admin/update/f1', requireAdmin, (req, res) => {
   const scriptPath = pathMod.join(__dirname, '..', 'src', 'config', 'f1');
-  execFile('py', ['api_update.py'], { cwd: scriptPath }, (error, stdout, stderr) => {
+  execFile('py', ['api_update.py'], { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (error, stdout, stderr) => {
     if (error) {
       console.error(`[Admin Update F1] Error: ${error.message}`);
       return res.status(500).json({ error: error.message, stderr });
@@ -627,18 +637,18 @@ app.post('/api/admin/update/f2', requireAdmin, (req, res) => {
     return res.status(400).json({ error: 'Invalid URL format' });
   }
   const args = url ? ['api_update.py', url] : ['api_update.py'];
-  execFile('py', args, { cwd: scriptPath }, (error, stdout, stderr) => {
+  execFile('py', args, { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (error, stdout, stderr) => {
     if (error) {
       console.error(`[Admin Update F2] Error: ${error.message}`);
       return res.status(500).json({ error: error.message, stderr });
     }
     // Run format.py as a separate step
-    execFile('py', ['format.py'], { cwd: scriptPath }, (fmtError, fmtStdout, fmtStderr) => {
+    execFile('py', ['format.py'], { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (fmtError, fmtStdout, fmtStderr) => {
       if (fmtError) {
         return res.status(500).json({ error: fmtError.message, stderr: fmtStderr, partialOutput: stdout });
       }
       // Run scrape_standings.py
-      execFile('py', ['scrape_standings.py'], { cwd: scriptPath }, (scrapeError, scrapeStdout, scrapeStderr) => {
+      execFile('py', ['scrape_standings.py'], { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (scrapeError, scrapeStdout, scrapeStderr) => {
         if (scrapeError) {
            return res.status(500).json({ error: scrapeError.message, stderr: scrapeStderr, partialOutput: stdout + '\n' + fmtStdout });
         }
@@ -656,13 +666,13 @@ app.post('/api/admin/update/f1a', requireAdmin, (req, res) => {
     return res.status(400).json({ error: 'Invalid URL format' });
   }
   const args = url ? ['api_update.py', url] : ['api_update.py'];
-  execFile('py', args, { cwd: scriptPath }, (error, stdout, stderr) => {
+  execFile('py', args, { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (error, stdout, stderr) => {
     if (error) {
       console.error(`[Admin Update F1A] Error: ${error.message}`);
       return res.status(500).json({ error: error.message, stderr });
     }
     // Run format.py as a separate step
-    execFile('py', ['format.py'], { cwd: scriptPath }, (fmtError, fmtStdout, fmtStderr) => {
+    execFile('py', ['format.py'], { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (fmtError, fmtStdout, fmtStderr) => {
       if (fmtError) {
         return res.status(500).json({ error: fmtError.message, stderr: fmtStderr, partialOutput: stdout });
       }

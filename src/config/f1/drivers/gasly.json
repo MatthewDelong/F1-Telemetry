@@ -2,16 +2,16 @@
     "driverId": "gasly",
     "driverCode": "GAS",
     "driverNumber": "10",
-    "lastUpdate": "2026-08-30T17:05:15.486Z",
+    "lastUpdate": "2026-09-07T09:27:39.254021",
     "totalWins": 1,
     "totalPodiums": 6,
-    "totalPoles": 0,
+    "totalPoles": 1,
     "totalDNFs": 46,
     "totalRaces": 190,
-    "winRate": 0.005263157894736842,
-    "podiumRate": 0.031578947368421054,
-    "poleRate": 0,
-    "dnfRate": 0.24210526315789474,
+    "winRate": 0.005235602094240838,
+    "podiumRate": 0.031413612565445025,
+    "poleRate": 0.005235602094240838,
+    "dnfRate": 0.24083769633507854,
     "seasonWins": {
         "2017": 0,
         "2018": 0,
@@ -46,7 +46,7 @@
         "2023": 0,
         "2024": 0,
         "2025": 0,
-        "2026": 0
+        "2026": 1
     },
     "seasonDNFs": {
         "2017": 0,
@@ -70,7 +70,9 @@
         "2023": [],
         "2024": [],
         "2025": [],
-        "2026": []
+        "2026": [
+            "Italian Grand Prix"
+        ]
     },
     "podiums": {
         "2017": {},
@@ -371,7 +373,8 @@
             "British Grand Prix": "1:34.179",
             "Belgian Grand Prix": "1:51.101",
             "Hungarian Grand Prix": "1:22.871",
-            "Dutch Grand Prix": "1:16.220"
+            "Dutch Grand Prix": "1:16.220",
+            "Italian Grand Prix": "1:24.927"
         }
     },
     "finalStandings": {
@@ -422,8 +425,8 @@
         },
         "2026": {
             "year": "2026",
-            "position": "0",
-            "points": "42"
+            "position": "10",
+            "points": "41"
         }
     },
     "posAfterRace": {
@@ -1010,28 +1013,28 @@
             "year": "2026",
             "pos": {
                 "Australian Grand Prix": {
-                    "points": 1
+                    "points": 41
                 },
                 "Chinese Grand Prix": {
-                    "points": 9
+                    "points": 41
                 },
                 "Japanese Grand Prix": {
-                    "points": 15
+                    "points": 41
                 },
                 "Miami Grand Prix": {
-                    "points": 15
+                    "points": 41
                 },
                 "Canadian Grand Prix": {
-                    "points": 19
+                    "points": 41
                 },
                 "Monaco Grand Prix": {
-                    "points": 34
+                    "points": 41
                 },
                 "Barcelona Grand Prix": {
-                    "points": 40
+                    "points": 41
                 },
                 "Austrian Grand Prix": {
-                    "points": 40
+                    "points": 41
                 },
                 "British Grand Prix": {
                     "points": 41
@@ -1043,7 +1046,10 @@
                     "points": 41
                 },
                 "Dutch Grand Prix": {
-                    "points": 42
+                    "points": 41
+                },
+                "Italian Grand Prix": {
+                    "points": 41
                 }
             }
         }
@@ -1270,13 +1276,14 @@
                 "Japanese Grand Prix": "7",
                 "Miami Grand Prix": "21",
                 "Canadian Grand Prix": "8",
-                "Monaco Grand Prix": "3",
+                "Monaco Grand Prix": "7",
                 "Barcelona Grand Prix": "7",
                 "Austrian Grand Prix": "13",
                 "British Grand Prix": "10",
                 "Belgian Grand Prix": "11",
                 "Hungarian Grand Prix": "12",
-                "Dutch Grand Prix": "10"
+                "Dutch Grand Prix": "10",
+                "Italian Grand Prix": "7"
             }
         }
     },
@@ -1504,239 +1511,224 @@
                 "Monaco Grand Prix": "9",
                 "Barcelona Grand Prix": "14",
                 "Austrian Grand Prix": "11",
-                "British Grand Prix": "12",
-                "Belgian Grand Prix": "12",
+                "British Grand Prix": "15",
+                "Belgian Grand Prix": "10",
                 "Hungarian Grand Prix": "12",
-                "Dutch Grand Prix": "11"
+                "Dutch Grand Prix": "11",
+                "Italian Grand Prix": "1"
             }
         }
     },
     "positionsGainLost": {
         "2017": {
-            "positions": {
-                "Malaysian Grand Prix": "1",
-                "Japanese Grand Prix": "1",
-                "Mexican Grand Prix": "7",
-                "Brazilian Grand Prix": "7",
-                "Abu Dhabi Grand Prix": "1"
-            }
+            "Malaysian Grand Prix": 1,
+            "Japanese Grand Prix": 4,
+            "Brazilian Grand Prix": 5,
+            "Abu Dhabi Grand Prix": 1
         },
         "2018": {
-            "positions": {
-                "Australian Grand Prix": "2",
-                "Bahrain Grand Prix": "1",
-                "Chinese Grand Prix": "-1",
-                "Azerbaijan Grand Prix": "5",
-                "Spanish Grand Prix": "-7",
-                "Monaco Grand Prix": "3",
-                "Canadian Grand Prix": "5",
-                "French Grand Prix": "-6",
-                "Austrian Grand Prix": "1",
-                "British Grand Prix": "1",
-                "German Grand Prix": "2",
-                "Hungarian Grand Prix": "0",
-                "Belgian Grand Prix": "1",
-                "Italian Grand Prix": "-5",
-                "Singapore Grand Prix": "2",
-                "Russian Grand Prix": "-2",
-                "Japanese Grand Prix": "-4",
-                "United States Grand Prix": "7",
-                "Mexican Grand Prix": "10",
-                "Brazilian Grand Prix": "-4",
-                "Abu Dhabi Grand Prix": "1"
-            }
+            "Australian Grand Prix": 2,
+            "Bahrain Grand Prix": 2,
+            "Chinese Grand Prix": -1,
+            "Azerbaijan Grand Prix": 5,
+            "Spanish Grand Prix": -7,
+            "Monaco Grand Prix": 3,
+            "Canadian Grand Prix": 5,
+            "French Grand Prix": -6,
+            "Austrian Grand Prix": 1,
+            "British Grand Prix": 1,
+            "German Grand Prix": 3,
+            "Hungarian Grand Prix": 0,
+            "Belgian Grand Prix": 2,
+            "Italian Grand Prix": -5,
+            "Singapore Grand Prix": 2,
+            "Russian Grand Prix": -6,
+            "Japanese Grand Prix": -4,
+            "United States Grand Prix": 1,
+            "Mexican Grand Prix": 5,
+            "Brazilian Grand Prix": -3,
+            "Abu Dhabi Grand Prix": 1
         },
         "2019": {
-            "positions": {
-                "Australian Grand Prix": "6",
-                "Bahrain Grand Prix": "5",
-                "Chinese Grand Prix": "0",
-                "Spanish Grand Prix": "0",
-                "Monaco Grand Prix": "3",
-                "Canadian Grand Prix": "-3",
-                "French Grand Prix": "-1",
-                "Austrian Grand Prix": "1",
-                "British Grand Prix": "1",
-                "German Grand Prix": "-10",
-                "Hungarian Grand Prix": "0",
-                "Belgian Grand Prix": "4",
-                "Italian Grand Prix": "6",
-                "Singapore Grand Prix": "3",
-                "Russian Grand Prix": "2",
-                "Japanese Grand Prix": "2",
-                "Mexican Grand Prix": "1",
-                "United States Grand Prix": "-6",
-                "Brazilian Grand Prix": "4",
-                "Abu Dhabi Grand Prix": "-7"
-            }
+            "Australian Grand Prix": 6,
+            "Bahrain Grand Prix": 5,
+            "Chinese Grand Prix": 0,
+            "Azerbaijan Grand Prix": 3,
+            "Spanish Grand Prix": 0,
+            "Monaco Grand Prix": 0,
+            "Canadian Grand Prix": -3,
+            "French Grand Prix": -1,
+            "Austrian Grand Prix": 2,
+            "British Grand Prix": 1,
+            "German Grand Prix": -10,
+            "Hungarian Grand Prix": 0,
+            "Belgian Grand Prix": 7,
+            "Italian Grand Prix": 4,
+            "Singapore Grand Prix": 4,
+            "Russian Grand Prix": -3,
+            "Japanese Grand Prix": 2,
+            "Mexican Grand Prix": 1,
+            "United States Grand Prix": -6,
+            "Brazilian Grand Prix": 5,
+            "Abu Dhabi Grand Prix": -6
         },
         "2020": {
-            "positions": {
-                "Austrian Grand Prix": "5",
-                "Styrian Grand Prix": "-8",
-                "Hungarian Grand Prix": "-10",
-                "British Grand Prix": "4",
-                "70th Anniversary Grand Prix": "-4",
-                "Spanish Grand Prix": "1",
-                "Belgian Grand Prix": "4",
-                "Italian Grand Prix": "9",
-                "Tuscan Grand Prix": "-4",
-                "Russian Grand Prix": "0",
-                "Eifel Grand Prix": "6",
-                "Portuguese Grand Prix": "4",
-                "Emilia Romagna Grand Prix": "-16",
-                "Turkish Grand Prix": "6",
-                "Bahrain Grand Prix": "2",
-                "Sakhir Grand Prix": "-2",
-                "Abu Dhabi Grand Prix": "1"
-            }
+            "Austrian Grand Prix": 5,
+            "Styrian Grand Prix": -7,
+            "Hungarian Grand Prix": -10,
+            "British Grand Prix": 4,
+            "70th Anniversary Grand Prix": -4,
+            "Spanish Grand Prix": 1,
+            "Belgian Grand Prix": 4,
+            "Italian Grand Prix": 9,
+            "Tuscan Grand Prix": -4,
+            "Russian Grand Prix": 0,
+            "Eifel Grand Prix": 6,
+            "Portuguese Grand Prix": 4,
+            "Emilia Romagna Grand Prix": -16,
+            "Turkish Grand Prix": 2,
+            "Bahrain Grand Prix": 2,
+            "Sakhir Grand Prix": -2,
+            "Abu Dhabi Grand Prix": 2
         },
         "2021": {
-            "positions": {
-                "Bahrain Grand Prix": "-12",
-                "Emilia Romagna Grand Prix": "-2",
-                "Portuguese Grand Prix": "-1",
-                "Spanish Grand Prix": "2",
-                "Monaco Grand Prix": "0",
-                "Azerbaijan Grand Prix": "1",
-                "French Grand Prix": "-1",
-                "Styrian Grand Prix": "-14",
-                "Austrian Grand Prix": "-3",
-                "British Grand Prix": "0",
-                "Hungarian Grand Prix": "0",
-                "Belgian Grand Prix": "0",
-                "Dutch Grand Prix": "0",
-                "Russian Grand Prix": "-2",
-                "Turkish Grand Prix": "-2",
-                "United States Grand Prix": "-12",
-                "Mexico City Grand Prix": "1",
-                "São Paulo Grand Prix": "0",
-                "Qatar Grand Prix": "-9",
-                "Saudi Arabian Grand Prix": "0",
-                "Abu Dhabi Grand Prix": "7"
-            }
+            "Bahrain Grand Prix": -12,
+            "Emilia Romagna Grand Prix": -2,
+            "Portuguese Grand Prix": -1,
+            "Spanish Grand Prix": 2,
+            "Monaco Grand Prix": 0,
+            "Azerbaijan Grand Prix": 1,
+            "French Grand Prix": -1,
+            "Styrian Grand Prix": -14,
+            "Austrian Grand Prix": -3,
+            "British Grand Prix": 1,
+            "Hungarian Grand Prix": 0,
+            "Belgian Grand Prix": 0,
+            "Dutch Grand Prix": 0,
+            "Italian Grand Prix": -13,
+            "Russian Grand Prix": -1,
+            "Turkish Grand Prix": -1,
+            "United States Grand Prix": -11,
+            "Mexico City Grand Prix": 1,
+            "São Paulo Grand Prix": -2,
+            "Qatar Grand Prix": -7,
+            "Saudi Arabian Grand Prix": 0,
+            "Abu Dhabi Grand Prix": 7
         },
         "2022": {
-            "positions": {
-                "Bahrain Grand Prix": "-10",
-                "Saudi Arabian Grand Prix": "1",
-                "Australian Grand Prix": "2",
-                "Emilia Romagna Grand Prix": "5",
-                "Miami Grand Prix": "-11",
-                "Spanish Grand Prix": "1",
-                "Monaco Grand Prix": "6",
-                "Azerbaijan Grand Prix": "1",
-                "Canadian Grand Prix": "1",
-                "British Grand Prix": "-5",
-                "Austrian Grand Prix": "-1",
-                "French Grand Prix": "2",
-                "Dutch Grand Prix": "0",
-                "Italian Grand Prix": "-3",
-                "Singapore Grand Prix": "-3",
-                "Japanese Grand Prix": "-1",
-                "United States Grand Prix": "-3",
-                "Mexico City Grand Prix": "3",
-                "São Paulo Grand Prix": "-4",
-                "Abu Dhabi Grand Prix": "3"
-            }
+            "Bahrain Grand Prix": -10,
+            "Saudi Arabian Grand Prix": 1,
+            "Australian Grand Prix": 2,
+            "Emilia Romagna Grand Prix": 5,
+            "Miami Grand Prix": -11,
+            "Spanish Grand Prix": 1,
+            "Monaco Grand Prix": 6,
+            "Azerbaijan Grand Prix": 1,
+            "Canadian Grand Prix": 2,
+            "British Grand Prix": -5,
+            "Austrian Grand Prix": -5,
+            "French Grand Prix": 4,
+            "Hungarian Grand Prix": 7,
+            "Belgian Grand Prix": 3,
+            "Dutch Grand Prix": 0,
+            "Italian Grand Prix": 1,
+            "Singapore Grand Prix": -3,
+            "Japanese Grand Prix": -1,
+            "United States Grand Prix": -1,
+            "Mexico City Grand Prix": 3,
+            "São Paulo Grand Prix": -2,
+            "Abu Dhabi Grand Prix": 3
         },
         "2023": {
-            "positions": {
-                "Bahrain Grand Prix": "11",
-                "Saudi Arabian Grand Prix": "0",
-                "Australian Grand Prix": "-4",
-                "Azerbaijan Grand Prix": "3",
-                "Miami Grand Prix": "-3",
-                "Monaco Grand Prix": "0",
-                "Spanish Grand Prix": "0",
-                "Canadian Grand Prix": "3",
-                "Austrian Grand Prix": "-1",
-                "British Grand Prix": "-8",
-                "Hungarian Grand Prix": "-5",
-                "Belgian Grand Prix": "1",
-                "Dutch Grand Prix": "9",
-                "Italian Grand Prix": "2",
-                "Singapore Grand Prix": "6",
-                "Japanese Grand Prix": "2",
-                "Qatar Grand Prix": "-5",
-                "United States Grand Prix": "1",
-                "Mexico City Grand Prix": "0",
-                "São Paulo Grand Prix": "8",
-                "Las Vegas Grand Prix": "-7",
-                "Abu Dhabi Grand Prix": "-3"
-            }
+            "Bahrain Grand Prix": 11,
+            "Saudi Arabian Grand Prix": 1,
+            "Australian Grand Prix": -4,
+            "Azerbaijan Grand Prix": 5,
+            "Miami Grand Prix": -3,
+            "Monaco Grand Prix": 0,
+            "Spanish Grand Prix": -6,
+            "Canadian Grand Prix": 5,
+            "Austrian Grand Prix": -1,
+            "British Grand Prix": -8,
+            "Hungarian Grand Prix": -5,
+            "Belgian Grand Prix": 1,
+            "Dutch Grand Prix": 9,
+            "Italian Grand Prix": 2,
+            "Singapore Grand Prix": 6,
+            "Japanese Grand Prix": 2,
+            "Qatar Grand Prix": -5,
+            "United States Grand Prix": 1,
+            "Mexico City Grand Prix": 0,
+            "São Paulo Grand Prix": 6,
+            "Las Vegas Grand Prix": -6,
+            "Abu Dhabi Grand Prix": -3
         },
         "2024": {
-            "positions": {
-                "Bahrain Grand Prix": "2",
-                "Saudi Arabian Grand Prix": "-2",
-                "Australian Grand Prix": "4",
-                "Japanese Grand Prix": "1",
-                "Chinese Grand Prix": "2",
-                "Miami Grand Prix": "0",
-                "Emilia Romagna Grand Prix": "-1",
-                "Monaco Grand Prix": "0",
-                "Canadian Grand Prix": "6",
-                "Spanish Grand Prix": "-2",
-                "Austrian Grand Prix": "3",
-                "British Grand Prix": "-1",
-                "Hungarian Grand Prix": "0",
-                "Belgian Grand Prix": "-1",
-                "Dutch Grand Prix": "0",
-                "Italian Grand Prix": "-1",
-                "Azerbaijan Grand Prix": "6",
-                "Singapore Grand Prix": "1",
-                "United States Grand Prix": "-6",
-                "Mexico City Grand Prix": "-2",
-                "São Paulo Grand Prix": "10",
-                "Las Vegas Grand Prix": "-17",
-                "Qatar Grand Prix": "6",
-                "Abu Dhabi Grand Prix": "-2"
-            }
+            "Bahrain Grand Prix": 2,
+            "Saudi Arabian Grand Prix": -2,
+            "Australian Grand Prix": 4,
+            "Japanese Grand Prix": 1,
+            "Chinese Grand Prix": 2,
+            "Miami Grand Prix": 0,
+            "Emilia Romagna Grand Prix": -1,
+            "Monaco Grand Prix": 0,
+            "Canadian Grand Prix": 6,
+            "Spanish Grand Prix": -2,
+            "Austrian Grand Prix": 3,
+            "British Grand Prix": 0,
+            "Hungarian Grand Prix": 0,
+            "Belgian Grand Prix": -1,
+            "Dutch Grand Prix": 0,
+            "Italian Grand Prix": -1,
+            "Azerbaijan Grand Prix": 3,
+            "Singapore Grand Prix": 1,
+            "United States Grand Prix": -5,
+            "Mexico City Grand Prix": -2,
+            "São Paulo Grand Prix": 12,
+            "Las Vegas Grand Prix": -17,
+            "Qatar Grand Prix": 6,
+            "Abu Dhabi Grand Prix": -1
         },
         "2025": {
-            "positions": {
-                "Australian Grand Prix": "-2",
-                "Chinese Grand Prix": "-4",
-                "Japanese Grand Prix": "-2",
-                "Bahrain Grand Prix": "-3",
-                "Saudi Arabian Grand Prix": "-11",
-                "Miami Grand Prix": "7",
-                "Emilia Romagna Grand Prix": "-3",
-                "Monaco Grand Prix": "-3",
-                "Spanish Grand Prix": "0",
-                "Canadian Grand Prix": "5",
-                "Austrian Grand Prix": "-3",
-                "British Grand Prix": "2",
-                "Belgian Grand Prix": "3",
-                "Hungarian Grand Prix": "-3",
-                "Dutch Grand Prix": "-3",
-                "Italian Grand Prix": "4",
-                "Azerbaijan Grand Prix": "0",
-                "Singapore Grand Prix": "0",
-                "United States Grand Prix": "-5",
-                "Mexico City Grand Prix": "3",
-                "São Paulo Grand Prix": "-1",
-                "Las Vegas Grand Prix": "-3",
-                "Qatar Grand Prix": "-7",
-                "Abu Dhabi Grand Prix": "0"
-            }
+            "Australian Grand Prix": -2,
+            "Chinese Grand Prix": -4,
+            "Japanese Grand Prix": -2,
+            "Bahrain Grand Prix": -2,
+            "Saudi Arabian Grand Prix": -11,
+            "Miami Grand Prix": 5,
+            "Emilia Romagna Grand Prix": -3,
+            "Monaco Grand Prix": -2,
+            "Spanish Grand Prix": 0,
+            "Canadian Grand Prix": 5,
+            "Austrian Grand Prix": -3,
+            "British Grand Prix": 4,
+            "Belgian Grand Prix": 3,
+            "Hungarian Grand Prix": -2,
+            "Dutch Grand Prix": -3,
+            "Italian Grand Prix": 3,
+            "Azerbaijan Grand Prix": 0,
+            "Singapore Grand Prix": -1,
+            "United States Grand Prix": -5,
+            "Mexico City Grand Prix": 3,
+            "São Paulo Grand Prix": -1,
+            "Las Vegas Grand Prix": -3,
+            "Qatar Grand Prix": -7,
+            "Abu Dhabi Grand Prix": 0
         },
         "2026": {
-            "positions": {
-                "Australian Grand Prix": "4",
-                "Chinese Grand Prix": "1",
-                "Japanese Grand Prix": "0",
-                "Miami Grand Prix": "-12",
-                "Canadian Grand Prix": "6",
-                "Monaco Grand Prix": "6",
-                "Barcelona Grand Prix": "7",
-                "Austrian Grand Prix": "-2",
-                "British Grand Prix": "5",
-                "Belgian Grand Prix": "-1",
-                "Hungarian Grand Prix": "0",
-                "Dutch Grand Prix": "1"
-            }
+            "Australian Grand Prix": 4,
+            "Chinese Grand Prix": 1,
+            "Japanese Grand Prix": 0,
+            "Miami Grand Prix": -12,
+            "Canadian Grand Prix": 6,
+            "Monaco Grand Prix": 2,
+            "Barcelona Grand Prix": 7,
+            "Austrian Grand Prix": -2,
+            "British Grand Prix": 5,
+            "Belgian Grand Prix": -1,
+            "Hungarian Grand Prix": 0,
+            "Dutch Grand Prix": 1,
+            "Italian Grand Prix": -6
         }
     },
     "driverQualifyingTimes": {
@@ -2722,70 +2714,133 @@
                     "1:13.115",
                     "1:12.616",
                     "N/A"
+                ],
+                "Italian Grand Prix": [
+                    "1:22.612",
+                    "1:22.077",
+                    "1:21.786"
                 ]
             }
         }
     },
     "avgRacePositions": {
-        "2017": "13.60",
-        "2018": "12.86",
-        "2019": "9.33",
-        "2020": "10.35",
-        "2021": "9.36",
-        "2022": "12.45",
-        "2023": "10.68",
-        "2024": "12.88",
-        "2025": "14.58",
-        "2026": "9.83"
+        "2017": 13.6,
+        "2018": 12.857142857142858,
+        "2019": 9.333333333333334,
+        "2020": 10.352941176470589,
+        "2021": 9.363636363636363,
+        "2022": 12.454545454545455,
+        "2023": 10.681818181818182,
+        "2024": 12.875,
+        "2025": 14.583333333333334,
+        "2026": 9.923076923076923
     },
     "avgQualiPositions": {
-        "2017": "16.50",
-        "2018": "12.90",
-        "2019": "9.86",
-        "2020": "10.12",
-        "2021": "6.82",
-        "2022": "12.50",
-        "2023": "11.05",
-        "2024": "13.21",
-        "2025": "13.42",
-        "2026": "11.00"
+        "2017": 16.5,
+        "2018": 12.904761904761905,
+        "2019": 9.857142857142858,
+        "2020": 10.117647058823529,
+        "2021": 6.818181818181818,
+        "2022": 12.5,
+        "2023": 11.045454545454545,
+        "2024": 13.208333333333334,
+        "2025": 13.416666666666666,
+        "2026": 10.307692307692308
     },
     "rates": {
         "wins": {
-            "2017": "0.0000",
-            "2018": "0.0000",
-            "2019": "0.0000",
-            "2020": "0.0588",
-            "2021": "0.0000",
-            "2022": "0.0000",
-            "2023": "0.0000",
-            "2024": "0.0000",
-            "2025": "0.0000",
-            "2026": "0.0000"
+            "2017": 0.0,
+            "2018": 0.0,
+            "2019": 0.0,
+            "2020": 0.058823529411764705,
+            "2021": 0.0,
+            "2022": 0.0,
+            "2023": 0.0,
+            "2024": 0.0,
+            "2025": 0.0,
+            "2026": 0.0
         },
         "podiums": {
-            "2017": "0.0000",
-            "2018": "0.0000",
-            "2019": "0.0476",
-            "2020": "0.0588",
-            "2021": "0.0455",
-            "2022": "0.0000",
-            "2023": "0.0455",
-            "2024": "0.0417",
-            "2025": "0.0000",
-            "2026": "0.0833"
+            "2017": 0.0,
+            "2018": 0.0,
+            "2019": 0.047619047619047616,
+            "2020": 0.058823529411764705,
+            "2021": 0.045454545454545456,
+            "2022": 0.0,
+            "2023": 0.045454545454545456,
+            "2024": 0.041666666666666664,
+            "2025": 0.0,
+            "2026": 0.07692307692307693
         },
         "poles": {
-            "2017": "0.0000",
-            "2018": "0.0000",
-            "2019": "0.0000",
-            "2020": "0.0000",
-            "2021": "0.0000",
-            "2022": "0.0000",
-            "2023": "0.0000",
-            "2024": "0.0000",
-            "2025": "0.0000",
-            "2026": "0.0000"
+            "2017": 0.0,
+            "2018": 0.0,
+            "2019": 0.0,
+            "2020": 0.0,
+            "2021": 0.0,
+            "2022": 0.0,
+            "2023": 0.0,
+            "2024": 0.0,
+            "2025": 0.0,
+            "2026": 0.07692307692307693
+        },
+        "DNFs": {
+            "2017": 0.0,
+            "2018": 0.23809523809523808,
+            "2019": 0.14285714285714285,
+            "2020": 0.17647058823529413,
+            "2021": 0.18181818181818182,
+            "2022": 0.13636363636363635,
+            "2023": 0.13636363636363635,
+            "2024": 0.5416666666666666,
+            "2025": 0.5,
+            "2026": 0.0
         }
+    },
+    "consistency": {
+        "mean": {
+            "wins": 0.1,
+            "podiums": 0.6,
+            "poles": 0.1,
+            "points": 49.9
+        },
+        "std": {
+            "wins": 0.30000000000000004,
+            "podiums": 0.48989794855663565,
+            "poles": 0.30000000000000004,
+            "points": 33.155542523083525
+        },
+        "cv": {
+            "wins": 3.0000000000000004,
+            "podiums": 0.8164965809277261,
+            "poles": 3.0000000000000004,
+            "points": 0.6644397299215136
+        }
+    },
+    "peakSeason": {
+        "wins": {
+            "season": "2020",
+            "wins": 1
+        },
+        "podiums": {
+            "season": "2019",
+            "podiums": 1
+        },
+        "poles": {
+            "season": "2026",
+            "poles": 1
+        }
+    },
+    "ptwConRate": {
+        "2017": -1,
+        "2018": -1,
+        "2019": -1,
+        "2020": -1,
+        "2021": -1,
+        "2022": -1,
+        "2023": -1,
+        "2024": -1,
+        "2025": -1,
+        "2026": 0.0
     }
 }

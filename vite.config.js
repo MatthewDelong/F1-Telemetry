@@ -171,7 +171,7 @@ export default defineConfig({
     strictPort: true,
     open: true,
     watch: {
-      ignored: ['**/backend/**', '**/src/config/f1/**']
+      ignored: [/backend/, /config/],
     },
     proxy: {
       "/openf1": {
