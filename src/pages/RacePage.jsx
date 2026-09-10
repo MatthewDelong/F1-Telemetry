@@ -1061,70 +1061,6 @@ export function RacePage() {
   ) : (
     <div className="race-page">
       <div className="race-page__track-view relative">
-        <div className="absolute bottom-[80px] w-full flex justify-between sm:justify-end items-center z-10 gap-8 px-8">
-          {driverSelected && (
-            <div className="flex items-center bg-gradient-to-r from-black/80 to-black/40 border border-white/10 rounded-[2rem] p-2 backdrop-blur-2xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] pointer-events-auto">
-              {/* Play/Pause Combo */}
-              <button
-                className={classNames(
-                  "flex items-center gap-3 px-6 py-3 rounded-full font-display uppercase tracking-widest text-xs transition-all duration-300 border border-transparent",
-                  !isPaused
-                    ? "bg-brand-blue-500 text-white shadow-[0_0_20px_rgba(59,130,246,0.5)]"
-                    : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border-white/10"
-                )}
-                onClick={() => setIsPaused(!isPaused)}
-              >
-                <FontAwesomeIcon icon={isPaused ? "play" : "pause"} className="text-sm" />
-                <span>{isPaused ? "Play" : "Live"}</span>
-              </button>
-
-              <div className="w-[1px] h-8 bg-white/10 mx-4"></div>
-
-              {/* Tools */}
-              <div className="flex items-center gap-2 pr-2">
-                <button
-                  className={classNames(
-                    "flex items-center gap-2 px-4 py-3 rounded-full transition-all duration-300 font-display uppercase tracking-widest text-[10px]",
-                    showCameraControls
-                      ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.4)]"
-                      : "text-white/50 hover:bg-white/10 hover:text-white"
-                  )}
-                  onClick={() => setShowCameraControls(!showCameraControls)}
-                >
-                  <FontAwesomeIcon icon="camera-rotate" className="text-sm" />
-                  <span className="max-sm:hidden">Camera</span>
-                </button>
-                <button
-                  className={classNames(
-                    "flex items-center gap-2 px-4 py-3 rounded-full transition-all duration-300 font-display uppercase tracking-widest text-[10px]",
-                    showCarDetails
-                      ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.4)]"
-                      : "text-white/50 hover:bg-white/10 hover:text-white"
-                  )}
-                  onClick={() => setShowCarDetails(!showCarDetails)}
-                >
-                  <FontAwesomeIcon icon="gauge" className="text-sm" />
-                  <span className="max-sm:hidden">Telemetry</span>
-                </button>
-              </div>
-            </div>
-          )}
-          <div className="flex items-center gap-6">
-            <button
-              className="w-12 h-12 bg-black/40 border border-white/10 text-white/50 hover:bg-white/10 hover:text-white rounded-xl backdrop-blur-md flex items-center justify-center transition-all shadow-lg sm:hidden pointer-events-auto"
-              onClick={() => setDriverDrawerOpen(true)}
-            >
-              <FontAwesomeIcon icon="user" className="text-xl" />
-            </button>
-            <button
-              className="w-12 h-12 bg-black/40 border border-white/10 text-white/50 hover:bg-white/10 hover:text-white rounded-xl backdrop-blur-md flex items-center justify-center transition-all shadow-lg pointer-events-auto"
-              onClick={() => setIsDrawerOpen(true)}
-            >
-              <FontAwesomeIcon icon="gear" className="text-xl" />
-            </button>
-          </div>
-        </div>
-
         <Drawer
           isOpen={driverDrawerOpen}
           onClose={() => setDriverDrawerOpen(false)}
@@ -1267,22 +1203,89 @@ export function RacePage() {
               ) : null}
             </div>
 
-            {/* ─── Bottom Titles and Session Selectors ─── */}
-            <div className="absolute bottom-[40px] w-full flex flex-col items-center z-[20] pointer-events-none gap-6">
-              <div className="flex flex-col items-center">
-                <div className="font-display text-sm tracking-widest uppercase text-white/30 mb-2">
+            {/* ─── Bottom Controls, Titles, and Session Selectors ─── */}
+            <div className="absolute bottom-4 sm:bottom-[40px] w-full flex flex-col items-center z-[20] pointer-events-none gap-3 sm:gap-6 px-4">
+              {/* Controls Bar */}
+              <div className="w-full flex justify-between sm:justify-end items-center gap-4 px-2 sm:px-8">
+                {driverSelected && (
+                  <div className="flex items-center bg-gradient-to-r from-black/80 to-black/40 border border-white/10 rounded-[2rem] p-2 backdrop-blur-2xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] pointer-events-auto">
+                    {/* Play/Pause Combo */}
+                    <button
+                      className={classNames(
+                        "flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-full font-display uppercase tracking-widest text-xs transition-all duration-300 border border-transparent",
+                        !isPaused
+                          ? "bg-brand-blue-500 text-white shadow-[0_0_20px_rgba(59,130,246,0.5)]"
+                          : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border-white/10"
+                      )}
+                      onClick={() => setIsPaused(!isPaused)}
+                    >
+                      <FontAwesomeIcon icon={isPaused ? "play" : "pause"} className="text-sm" />
+                      <span>{isPaused ? "Play" : "Live"}</span>
+                    </button>
+
+                    <div className="w-[1px] h-6 sm:h-8 bg-white/10 mx-2 sm:mx-4"></div>
+
+                    {/* Tools */}
+                    <div className="flex items-center gap-1 sm:gap-2 pr-1 sm:pr-2">
+                      <button
+                        className={classNames(
+                          "flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 rounded-full transition-all duration-300 font-display uppercase tracking-widest text-[10px]",
+                          showCameraControls
+                            ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.4)]"
+                            : "text-white/50 hover:bg-white/10 hover:text-white"
+                        )}
+                        onClick={() => setShowCameraControls(!showCameraControls)}
+                      >
+                        <FontAwesomeIcon icon="camera-rotate" className="text-sm" />
+                        <span className="max-sm:hidden">Camera</span>
+                      </button>
+                      <button
+                        className={classNames(
+                          "flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 rounded-full transition-all duration-300 font-display uppercase tracking-widest text-[10px]",
+                          showCarDetails
+                            ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.4)]"
+                            : "text-white/50 hover:bg-white/10 hover:text-white"
+                        )}
+                        onClick={() => setShowCarDetails(!showCarDetails)}
+                      >
+                        <FontAwesomeIcon icon="gauge" className="text-sm" />
+                        <span className="max-sm:hidden">Telemetry</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+                <div className="flex items-center gap-4 sm:gap-6 ml-auto pointer-events-auto">
+                  <button
+                    className="w-10 h-10 sm:w-12 sm:h-12 bg-black/40 border border-white/10 text-white/50 hover:bg-white/10 hover:text-white rounded-xl backdrop-blur-md flex items-center justify-center transition-all shadow-lg sm:hidden"
+                    onClick={() => setDriverDrawerOpen(true)}
+                  >
+                    <FontAwesomeIcon icon="user" className="text-lg sm:text-xl" />
+                  </button>
+                  <button
+                    className="w-10 h-10 sm:w-12 sm:h-12 bg-black/40 border border-white/10 text-white/50 hover:bg-white/10 hover:text-white rounded-xl backdrop-blur-md flex items-center justify-center transition-all shadow-lg"
+                    onClick={() => setIsDrawerOpen(true)}
+                  >
+                    <FontAwesomeIcon icon="gear" className="text-lg sm:text-xl" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Race Name Title & Season */}
+              <div className="flex flex-col items-center text-center">
+                <div className="font-display text-xs sm:text-sm tracking-widest uppercase text-white/30 mb-1">
                   {year} Season
                 </div>
-                <h1 className="font-display text-5xl sm:text-[4rem] uppercase tracking-widest text-white drop-shadow-lg leading-none">
+                <h1 className="font-display text-2xl sm:text-5xl md:text-[4rem] uppercase tracking-widest text-white drop-shadow-lg leading-tight px-4">
                   {raceName}
                 </h1>
               </div>
 
-              <div className="flex gap-6 pointer-events-auto">
+              {/* Session Selectors */}
+              <div className="flex gap-4 sm:gap-6 pointer-events-auto">
                 {hasRaceSession && (
                   <button
                     className={classNames(
-                      "px-8 py-3 rounded-full font-display text-sm tracking-widest uppercase transition-all",
+                      "px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-display text-xs sm:text-sm tracking-widest uppercase transition-all",
                       selectedSession === "Race"
                         ? "bg-brand-blue-500 text-white shadow-[0_0_20px_rgba(59,130,246,0.6)]"
                         : "bg-black/40 text-white/60 hover:bg-black/60 hover:text-white backdrop-blur-md border border-white/10",
@@ -1295,7 +1298,7 @@ export function RacePage() {
                 {hasQualifyingSession && (
                   <button
                     className={classNames(
-                      "px-8 py-3 rounded-full font-display text-sm tracking-widest uppercase transition-all",
+                      "px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-display text-xs sm:text-sm tracking-widest uppercase transition-all",
                       selectedSession === "Qualifying"
                         ? "bg-brand-blue-500 text-white shadow-[0_0_20px_rgba(59,130,246,0.6)]"
                         : "bg-black/40 text-white/60 hover:bg-black/60 hover:text-white backdrop-blur-md border border-white/10",
@@ -1308,7 +1311,7 @@ export function RacePage() {
                 {hasSprintSession && (
                   <button
                     className={classNames(
-                      "px-8 py-3 rounded-full font-display text-sm tracking-widest uppercase transition-all",
+                      "px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-display text-xs sm:text-sm tracking-widest uppercase transition-all",
                       selectedSession === "Sprint"
                         ? "bg-brand-blue-500 text-white shadow-[0_0_20px_rgba(59,130,246,0.6)]"
                         : "bg-black/40 text-white/60 hover:bg-black/60 hover:text-white backdrop-blur-md border border-white/10",
@@ -1425,8 +1428,8 @@ export function RacePage() {
                       year={parseInt(year)}
                       time={r[`Q${i + 1}`]}
                       fastestLap={r.FastestLap}
-                      layoutSmall={idx > 2}
-                      mobileSmall={idx > 2}
+                      layoutSmall={false}
+                      mobileSmall={false}
                       isRace={true}
                       speedUnit={speedUnit}
                     />
