@@ -54,5 +54,7 @@ export const locationMaps = {
     "abu dhabi": "yas_marina",
     "kuala lumpur": "sepang",
     "malaysia": "sepang",
-    "sepang": "sepang"
+    "sepang": "sepang",
+    "madrid": "madrid",
+    "madring": "madrid"
 };

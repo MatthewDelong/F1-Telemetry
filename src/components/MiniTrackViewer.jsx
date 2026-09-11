@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import { buildTrackFromGPS } from "../utils/TrackBuilder";
+import { locationMaps } from "../utils/locationMaps";
 
 export function MiniTrackViewer({ circuitId }) {
   const mountRef = useRef(null);
@@ -48,8 +49,9 @@ export function MiniTrackViewer({ circuitId }) {
     trackGroupRef.current = trackGroup;
 
     // Load track geometry data
-    console.log("[MiniTrackViewer] Fetching track for circuitId:", circuitId);
-    fetch(`/trackdata/${circuitId}.json`)
+    const canonicalId = locationMaps[circuitId.toLowerCase()] || circuitId.toLowerCase();
+    console.log("[MiniTrackViewer] Fetching track for circuitId:", canonicalId);
+    fetch(`/trackdata/${canonicalId}.json`)
       .then((res) => {
         if (!res.ok) throw new Error("Track not found");
         return res.json();

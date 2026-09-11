@@ -10,6 +10,7 @@ import {
   updateTrackColors,
 } from "../utils/TrackBuilder";
 import sectorBoundaries from "../config/f1/sectorBoundaries.json";
+import { locationMaps } from "../utils/locationMaps";
 import { Loading } from "./Loading";
 import DriverCarDetails from "./DriverCarDetails";
 import RangeSlider from "./RangeSlider";
@@ -114,7 +115,8 @@ export const ThreeCanvas = ({
   // Handle color updates
   useEffect(() => {
     if (mapRef.current && trackCurveRef.current) {
-      const bounds = sectorBoundaries[circuitId] || [0.333, 0.666];
+      const canonicalId = locationMaps[circuitId?.toLowerCase()] || circuitId?.toLowerCase();
+      const bounds = sectorBoundaries[canonicalId] || sectorBoundaries[circuitId] || [0.333, 0.666];
       updateTrackColors(
         mapRef.current,
         trackCurveRef.current,

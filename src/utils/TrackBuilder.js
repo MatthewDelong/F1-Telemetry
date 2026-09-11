@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import sectorBoundaries from "../config/f1/sectorBoundaries.json";
+import { locationMaps } from "./locationMaps";
 
 /**
  * TrackBuilder: Procedural 3D Track Generator
@@ -16,14 +17,14 @@ const TRACK_RESOLUTION = 600;       // Points sampled along spline
 const RUNOFF_WIDTH = 1.5;           // Wider ground plane around track
 const KERB_WIDTH = 0.1;
 const SECTOR_COLORS = [
-  new THREE.Color(0.35, 0.02, 0.02),   // Sector 1 — deep red
-  new THREE.Color(0.02, 0.02, 0.35),   // Sector 2 — deep blue
-  new THREE.Color(0.32, 0.28, 0.02),   // Sector 3 — deep gold
+  new THREE.Color(0.85, 0.10, 0.10),   // Sector 1 — Vibrant red
+  new THREE.Color(0.10, 0.45, 0.95),   // Sector 2 — Vibrant blue
+  new THREE.Color(0.95, 0.75, 0.05),   // Sector 3 — Vibrant gold
 ];
 const SECTOR_EMISSIVE = [
-  new THREE.Color(0.6, 0.0, 0.0),
-  new THREE.Color(0.0, 0.0, 0.6),
-  new THREE.Color(0.6, 0.5, 0.0),
+  new THREE.Color(1.0, 0.15, 0.15),
+  new THREE.Color(0.15, 0.60, 1.0),
+  new THREE.Color(1.0, 0.85, 0.1),
 ];
 
 // ─── Helpers ─────────────────────────────────────────────────────────
@@ -49,9 +50,33 @@ function normalizeGPSPoints(rawPoints, targetSize = 20) {
     }
   }
 
+  // Safety check: If the point stream contains multiple laps, trim to 1 single lap loop
+  let singleLapPoints = deduped;
+  if (deduped.length > 500) {
+    const startPoint = deduped[0];
+    let bestLoopIndex = -1;
+    let minLoopDist = Infinity;
+    for (let i = 150; i < deduped.length; i++) {
+      const dx = deduped[i].x - startPoint.x;
+      const dy = deduped[i].y - startPoint.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < minLoopDist) {
+        minLoopDist = dist;
+        bestLoopIndex = i;
+      }
+      if (i > 200 && dist < 60) {
+        bestLoopIndex = i;
+        break;
+      }
+    }
+    if (bestLoopIndex > 150) {
+      singleLapPoints = deduped.slice(0, bestLoopIndex + 1);
+    }
+  }
+
   // Compute bounds
   let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-  for (const p of deduped) {
+  for (const p of singleLapPoints) {
     if (p.x < minX) minX = p.x;
     if (p.x > maxX) maxX = p.x;
     if (p.y < minY) minY = p.y;
@@ -66,7 +91,7 @@ function normalizeGPSPoints(rawPoints, targetSize = 20) {
   const maxRange = Math.max(rangeX, rangeY);
   const scaleFactor = targetSize / maxRange;
 
-  const points = deduped.map(p => new THREE.Vector2(
+  const points = singleLapPoints.map(p => new THREE.Vector2(
     (p.x - cx) * scaleFactor,
     (p.y - cy) * scaleFactor,
   ));
@@ -360,38 +385,93 @@ function createCornerLabels(curve, numCorners = 0) {
 
   const group = new THREE.Group();
   const trackPoints = curve.getSpacedPoints(TRACK_RESOLUTION);
+  const len = trackPoints.length;
 
-  // Detect corners by finding points of high curvature
-  const curvatures = [];
-  for (let i = 0; i < trackPoints.length; i++) {
-    const prev = trackPoints[(i - 3 + trackPoints.length) % trackPoints.length];
+  // 1. Calculate raw curvature and turn direction at each point
+  const rawCurvatures = [];
+  for (let i = 0; i < len; i++) {
+    const prev = trackPoints[(i - 3 + len) % len];
     const curr = trackPoints[i];
-    const next = trackPoints[(i + 3) % trackPoints.length];
+    const next = trackPoints[(i + 3) % len];
 
     const v1 = new THREE.Vector3().subVectors(curr, prev);
     const v2 = new THREE.Vector3().subVectors(next, curr);
-    const angle = v1.angleTo(v2);
+    let angle = 0;
+    if (v1.lengthSq() > 0 && v2.lengthSq() > 0) {
+      angle = v1.angleTo(v2);
+    }
     const crossZ = v1.x * v2.y - v1.y * v2.x;
-    curvatures.push({ index: i, curvature: angle, point: curr, isLeftTurn: crossZ > 0 });
+    rawCurvatures.push({ index: i, curvature: angle, point: curr, isLeftTurn: crossZ > 0 });
   }
 
-  // Sort by curvature and pick top N
-  curvatures.sort((a, b) => b.curvature - a.curvature);
+  // 2. Smooth curvature over a 7-point moving window
+  const smoothed = [];
+  for (let i = 0; i < len; i++) {
+    let sum = 0;
+    for (let j = -3; j <= 3; j++) {
+      sum += rawCurvatures[(i + j + len) % len].curvature;
+    }
+    smoothed.push({
+      ...rawCurvatures[i],
+      curvature: sum / 7,
+    });
+  }
 
-  // Filter to ensure labels aren't too close together (minimum 15 points apart)
-  const selectedCorners = [];
-  for (const c of curvatures) {
-    if (selectedCorners.length >= numCorners) break;
-    const tooClose = selectedCorners.some(s =>
-      Math.abs(s.index - c.index) < 15 ||
-      Math.abs(s.index - c.index) > trackPoints.length - 15
-    );
-    if (!tooClose && c.curvature > 0.02) {
-      selectedCorners.push(c);
+  // 3. Detect LOCAL MAXIMA (peaks) representing corner apexes
+  const peaks = [];
+  const windowRadius = 3;
+  for (let i = 0; i < len; i++) {
+    const c = smoothed[i];
+    if (c.curvature < 0.008) continue; // Lower threshold to capture all turn apexes
+
+    let isPeak = true;
+    for (let w = -windowRadius; w <= windowRadius; w++) {
+      if (w === 0) continue;
+      const neighbor = smoothed[(i + w + len) % len];
+      if (neighbor.curvature > c.curvature) {
+        isPeak = false;
+        break;
+      }
+    }
+    if (isPeak) {
+      peaks.push(c);
     }
   }
 
-  // Sort by track position
+  // 4. Enforce minimum index separation distance between selected corner peaks
+  const minSeparation = Math.max(10, Math.floor(len / (numCorners * 1.5)));
+  peaks.sort((a, b) => b.curvature - a.curvature);
+
+  const selectedCorners = [];
+  for (const peak of peaks) {
+    if (selectedCorners.length >= numCorners) break;
+    const tooClose = selectedCorners.some(s => {
+      const diff = Math.abs(s.index - peak.index);
+      return diff < minSeparation || diff > len - minSeparation;
+    });
+    if (!tooClose) {
+      selectedCorners.push(peak);
+    }
+  }
+
+  // Fallback pass with smaller separation if track has high target corner count
+  if (selectedCorners.length < numCorners) {
+    const fallbackSeparation = Math.max(6, Math.floor(minSeparation / 1.8));
+    for (const peak of peaks) {
+      if (selectedCorners.length >= numCorners) break;
+      const alreadySelected = selectedCorners.some(s => s.index === peak.index);
+      if (alreadySelected) continue;
+      const tooClose = selectedCorners.some(s => {
+        const diff = Math.abs(s.index - peak.index);
+        return diff < fallbackSeparation || diff > len - fallbackSeparation;
+      });
+      if (!tooClose) {
+        selectedCorners.push(peak);
+      }
+    }
+  }
+
+  // Sort by track position around the lap so corner numbers are sequential (T1, T2, T3...)
   selectedCorners.sort((a, b) => a.index - b.index);
 
   selectedCorners.forEach((corner, idx) => {
@@ -400,13 +480,11 @@ function createCornerLabels(curve, numCorners = 0) {
     else tangent.normalize();
     
     const normal = new THREE.Vector3(-tangent.y, tangent.x, 0);
-    // Standard normal points left of the tangent. For a left turn, this points INSIDE.
-    // We want the label/cone on the OUTSIDE of the turn, so we flip it for left turns.
     if (corner.isLeftTurn) {
       normal.multiplyScalar(-1);
     }
-    const labelOffset = TRACK_WIDTH * 2.0; // Moved further out for visibility
-    const coneOffset = TRACK_WIDTH * 1.4; // Moved further out to keep off track
+    const labelOffset = TRACK_WIDTH * 2.2;
+    const coneOffset = TRACK_WIDTH * 1.4;
 
     const canvas = document.createElement("canvas");
     canvas.width = 64;
@@ -417,7 +495,7 @@ function createCornerLabels(curve, numCorners = 0) {
     ctx.font = "bold 36px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillStyle = "rgba(255,255,255,0.9)";
+    ctx.fillStyle = "rgba(255,255,255,0.95)";
     ctx.fillText(`${idx + 1}`, 32, 32);
 
     const texture = new THREE.CanvasTexture(canvas);
@@ -430,12 +508,12 @@ function createCornerLabels(curve, numCorners = 0) {
     sprite.position.set(
       corner.point.x + normal.x * labelOffset,
       corner.point.y + normal.y * labelOffset,
-      0.8, // Lowered to 0.8 so it's perfectly in the FOV of the halo camera
+      0.8,
     );
-    sprite.scale.set(1.0, 1.0, 1); // slightly smaller scale to match being closer
+    sprite.scale.set(1.0, 1.0, 1);
     group.add(sprite);
 
-    // Create a small cone pointing at the corner
+    // Small direction cone pointing at corner apex
     const coneGeom = new THREE.ConeGeometry(TRACK_WIDTH * 0.15, TRACK_WIDTH * 0.4, 8);
     const coneMat = new THREE.MeshBasicMaterial({ color: 0xeeeeee, transparent: true, opacity: 0.9 });
     const cone = new THREE.Mesh(coneGeom, coneMat);
@@ -443,14 +521,11 @@ function createCornerLabels(curve, numCorners = 0) {
     cone.position.set(
       corner.point.x + normal.x * coneOffset,
       corner.point.y + normal.y * coneOffset,
-      0.05 // Hover just slightly above track to avoid clipping
+      0.05
     );
     
-    // Mathematically perfect orientation for a 2D plane:
-    // Set the up vector to +Z to prevent gimbal lock on XY plane targets
     cone.up.set(0, 0, 1);
     cone.lookAt(corner.point.x, corner.point.y, 0.05);
-    // Rotate the cone's tip (+Y) by 90 degrees so it perfectly points TOWARDS the target
     cone.rotateX(Math.PI / 2);
     
     group.add(cone);
@@ -549,10 +624,8 @@ const CORNER_COUNTS = {
   jeddah: 27, losail: 16, marina_bay: 23, miami: 19,
   monaco: 19, monza: 11, red_bull_ring: 10, rodriguez: 17,
   shanghai: 16, silverstone: 18, spa: 19, suzuka: 18,
-  vegas: 17, villeneuve: 14, yas_marina: 16, zandvoort: 14, sepang: 15,
+  vegas: 17, villeneuve: 14, yas_marina: 16, zandvoort: 14, sepang: 15, madrid: 22, madring: 22,
 };
-
-// ─── Main Export ─────────────────────────────────────────────────────
 
 // ─── Main Export ─────────────────────────────────────────────────────
 
@@ -564,10 +637,11 @@ const CORNER_COUNTS = {
  * @returns {{ group: THREE.Group, curve: CatmullRomCurve3, center: Vector2, scale: number } | null}
  */
 export function buildTrackFromGPS(rawGPSPoints, circuitId) {
+  const canonicalId = circuitId ? (locationMaps[String(circuitId).toLowerCase()] || String(circuitId).toLowerCase()) : "";
   let sectorBounds = [0.333, 0.666];
-  if (circuitId && sectorBoundaries[circuitId]) {
-    sectorBounds = sectorBoundaries[circuitId];
-    console.log(`[TrackBuilder] Using true sector bounds for ${circuitId}: ${sectorBounds}`);
+  if (canonicalId && sectorBoundaries[canonicalId]) {
+    sectorBounds = sectorBoundaries[canonicalId];
+    console.log(`[TrackBuilder] Using true sector bounds for ${canonicalId}: ${sectorBounds}`);
   }
 
   const normalized = normalizeGPSPoints(rawGPSPoints, 18);
@@ -597,7 +671,7 @@ export function buildTrackFromGPS(rawGPSPoints, circuitId) {
   group.add(trackMesh);
 
   // 3. Track edge lines (kerbs with sector glow)
-  const [leftEdge, rightEdge] = createEdgeLines(curve, TRACK_WIDTH, TRACK_RESOLUTION);
+  const [leftEdge, rightEdge] = createEdgeLines(curve, TRACK_WIDTH, TRACK_RESOLUTION, sectorBounds);
   leftEdge.name = "LeftEdge";
   rightEdge.name = "RightEdge";
   group.add(leftEdge, rightEdge);
@@ -629,7 +703,7 @@ export function buildTrackFromGPS(rawGPSPoints, circuitId) {
   group.add(kerbs);
 
   // 8. Corner labels
-  const numCorners = CORNER_COUNTS[circuitId] || 14;
+  const numCorners = CORNER_COUNTS[canonicalId] || CORNER_COUNTS[circuitId] || 14;
   const cornerLabels = createCornerLabels(curve, numCorners);
   cornerLabels.name = "CornerLabels";
   group.add(cornerLabels);

@@ -17,13 +17,13 @@ const delay = ms => new Promise(r => setTimeout(r, ms));
   
   if(!fs.existsSync('public/trackdata')) fs.mkdirSync('public/trackdata', {recursive:true});
   
-  const circuitsMapping = {
+    const circuitsMapping = {
     10: 'albert_park', 2: 'silverstone', 15: 'catalunya', 22: 'monaco',
     14: 'interlagos', 39: 'monza', 7: 'spa', 46: 'suzuka', 55: 'zandvoort',
     4: 'hungaroring', 61: 'marina_bay', 9: 'cota', 144: 'baku',
     23: 'villeneuve', 70: 'yas_marina', 63: 'bahrain', 6: 'imola',
     149: 'jeddah', 19: 'red_bull_ring', 151: 'miami', 152: 'vegas',
-    150: 'losail', 49: 'shanghai', 65: 'rodriguez'
+    150: 'losail', 49: 'shanghai', 65: 'rodriguez', 153: 'madrid'
   };
 
   for (const session of sessions) {

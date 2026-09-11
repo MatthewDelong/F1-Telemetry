@@ -388,160 +388,163 @@ export function RacePage() {
           }
         }
 
-        const raceSession = [...sessionsData]
-          .reverse()
-          .find((session) => session.session_name === "Race");
-        if (!raceSession) throw new Error("Race session not found");
-        const sessionKey = raceSession.session_key;
-        setSelectedSessionKey(sessionKey);
+        const raceSession = Array.isArray(sessionsData)
+          ? [...sessionsData].reverse().find((session) => session.session_name === "Race")
+          : null;
 
-        // Fetch data sequentially with small stagger to avoid 429 rate limiting
-        const driverDetailsData = await fetchWithPersistentCache(
-          `${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`,
-        ).catch(() => []);
+        let sessionKey = null;
+        if (raceSession) {
+          sessionKey = raceSession.session_key;
+          setSelectedSessionKey(sessionKey);
 
-        await new Promise((r) => setTimeout(r, 250));
-        const raceControlData = await fetchRaceControl(sessionKey).catch(
-          () => [],
-        );
-        setRaceControlMessages(raceControlData);
+          // Fetch data sequentially with small stagger to avoid 429 rate limiting
+          const driverDetailsData = await fetchWithPersistentCache(
+            `${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`,
+          ).catch(() => []);
 
-        await new Promise((r) => setTimeout(r, 250));
-        const startingGridData = await fetchWithPersistentCache(
-          `${buildOpenF1Url("/position")}?session_key=${sessionKey}`,
-        ).catch(() => []);
-        setPos(startingGridData);
+          await new Promise((r) => setTimeout(r, 250));
+          const raceControlData = await fetchRaceControl(sessionKey).catch(
+            () => [],
+          );
+          setRaceControlMessages(raceControlData);
 
-        await new Promise((r) => setTimeout(r, 250));
-        const driversData = await fetchDriversAndTires(sessionKey).catch(
-          () => [],
-        );
+          await new Promise((r) => setTimeout(r, 250));
+          const startingGridData = await fetchWithPersistentCache(
+            `${buildOpenF1Url("/position")}?session_key=${sessionKey}`,
+          ).catch(() => []);
+          setPos(startingGridData);
 
-        await new Promise((r) => setTimeout(r, 250));
-        const lapsData = await fetchOpenF1FullSessionData("/laps", sessionKey);
+          await new Promise((r) => setTimeout(r, 250));
+          const driversData = await fetchDriversAndTires(sessionKey).catch(
+            () => [],
+          );
 
-        console.log(`[RacePage] Session Key: ${sessionKey}`);
-        console.log(
-          `[RacePage] Drivers fetched: ${driverDetailsData?.length || 0}`,
-        );
-        console.log(`[RacePage] Laps fetched: ${lapsData?.length || 0}`);
-        console.log(
-          `[RacePage] Pos data fetched: ${startingGridData?.length || 0}`,
-        );
+          await new Promise((r) => setTimeout(r, 250));
+          const lapsData = await fetchOpenF1FullSessionData("/laps", sessionKey);
 
-        if (startingGridData && startingGridData.length > 0) {
-          const uniqueDriversInPos = [
-            ...new Set(startingGridData.map((p) => p.driver_number)),
-          ];
+          console.log(`[RacePage] Session Key: ${sessionKey}`);
           console.log(
-            `[RacePage] Unique Drivers in Pos data:`,
-            uniqueDriversInPos,
+            `[RacePage] Drivers fetched: ${driverDetailsData?.length || 0}`,
+          );
+          console.log(`[RacePage] Laps fetched: ${lapsData?.length || 0}`);
+          console.log(
+            `[RacePage] Pos data fetched: ${startingGridData?.length || 0}`,
+          );
+
+          if (startingGridData && startingGridData.length > 0) {
+            const uniqueDriversInPos = [
+              ...new Set(startingGridData.map((p) => p.driver_number)),
+            ];
+            console.log(
+              `[RacePage] Unique Drivers in Pos data:`,
+              uniqueDriversInPos,
+            );
+          }
+
+          const driverDetailsMap = (driverDetailsData || []).reduce(
+            (acc, driver) => ({
+              ...acc,
+              [driver.driver_number]: driver.name_acronym,
+            }),
+            {},
+          );
+
+          // Fallback: If OpenF1 /drivers is empty or missing drivers, use the session results
+          if (sessionResults && sessionResults.length > 0) {
+            sessionResults.forEach((r) => {
+              const num = parseInt(r.number || r.Driver?.number, 10);
+              const code = r.Driver?.code || r.Driver?.driverId;
+              if (num && code && !driverDetailsMap[num]) {
+                driverDetailsMap[num] = code;
+              }
+            });
+          }
+
+          setDriversDetails(driverDetailsMap);
+
+          // Fallback 2: Generate dummy results for live sessions
+          if (
+            (!sessionResults || sessionResults.length === 0) &&
+            driverDetailsData &&
+            driverDetailsData.length > 0
+          ) {
+            sessionResults = generateFallbackResults(driverDetailsData);
+            setRaceResults(sessionResults);
+          }
+
+          const driverColorMap = (driverDetailsData || []).reduce(
+            (acc, driver) => ({
+              ...acc,
+              [driver.name_acronym]: driver.team_colour,
+            }),
+            {},
+          );
+
+          setDriversColor(driverColorMap);
+
+          // Always use session start time if available to ensure we cover the whole race
+          const startTimeValue =
+            raceSession?.date_start || startingGridData[0]?.date || "";
+          const endTimeValue =
+            raceSession?.date_end ||
+            startingGridData[startingGridData.length - 1]?.date ||
+            "";
+
+          setStartTime(startTimeValue);
+          setEndTime(endTimeValue);
+
+          // ALWAYS use official race results for the starting grid if available
+          let filteredStartingGrid = [];
+          if (sessionResults && sessionResults.length > 0) {
+            filteredStartingGrid = sessionResults
+              .map((r) => ({
+                driver_number: parseInt(r.number || r.Driver?.number, 10),
+                driver_acronym: r.Driver?.code || r.Driver?.driverId,
+                position:
+                  r.grid === "PL" ? "PL" : parseInt(r.grid || r.position, 10),
+                date: startTimeValue,
+              }))
+              .filter((r) => r.position === "PL" || r.position > 0);
+          } else if (raceResults && raceResults.length > 0) {
+            filteredStartingGrid = raceResults
+              .map((r) => ({
+                driver_number: parseInt(r.number || r.Driver?.number, 10),
+                driver_acronym: r.Driver?.code || r.Driver?.driverId,
+                position: r.grid === "PL" ? "PL" : parseInt(r.grid, 10),
+                date: startTimeValue,
+              }))
+              .filter((r) => r.position === "PL" || r.position > 0);
+          } else {
+            const uniqueDrivers = new Map();
+            const sortedPosData = [...startingGridData].sort(
+              (a, b) => new Date(a.date) - new Date(b.date),
+            );
+            sortedPosData.forEach((item) => {
+              if (!uniqueDrivers.has(item.driver_number)) {
+                uniqueDrivers.set(item.driver_number, {
+                  ...item,
+                  driver_acronym: driverDetailsMap[item.driver_number],
+                });
+              }
+            });
+            filteredStartingGrid = Array.from(uniqueDrivers.values());
+          }
+
+          setStartingGrid(filteredStartingGrid);
+          setDrivers(driversData);
+          setLaps(
+            lapsData.map((lap) => ({
+              ...lap,
+              driver_acronym: driverDetailsMap[lap.driver_number],
+            })),
+          );
+
+          setIsSessionLive(
+            !raceSession.date_end || new Date() < new Date(raceSession.date_end),
           );
         }
 
-        const driverDetailsMap = (driverDetailsData || []).reduce(
-          (acc, driver) => ({
-            ...acc,
-            [driver.driver_number]: driver.name_acronym,
-          }),
-          {},
-        );
-
-        // Fallback: If OpenF1 /drivers is empty or missing drivers, use the session results
-        if (sessionResults && sessionResults.length > 0) {
-          sessionResults.forEach((r) => {
-            const num = parseInt(r.number || r.Driver?.number, 10);
-            const code = r.Driver?.code || r.Driver?.driverId;
-            if (num && code && !driverDetailsMap[num]) {
-              driverDetailsMap[num] = code;
-            }
-          });
-        }
-
-        setDriversDetails(driverDetailsMap);
-
-        // Fallback 2: Generate dummy results for live sessions
-        if (
-          (!sessionResults || sessionResults.length === 0) &&
-          driverDetailsData &&
-          driverDetailsData.length > 0
-        ) {
-          sessionResults = generateFallbackResults(driverDetailsData);
-          setRaceResults(sessionResults);
-        }
-
-        const driverColorMap = (driverDetailsData || []).reduce(
-          (acc, driver) => ({
-            ...acc,
-            [driver.name_acronym]: driver.team_colour,
-          }),
-          {},
-        );
-
-        setDriversColor(driverColorMap);
-
-        // Always use session start time if available to ensure we cover the whole race
-        const startTimeValue =
-          raceSession?.date_start || startingGridData[0]?.date || "";
-        const endTimeValue =
-          raceSession?.date_end ||
-          startingGridData[startingGridData.length - 1]?.date ||
-          "";
-
-        setStartTime(startTimeValue);
-        setEndTime(endTimeValue);
-
-        // ALWAYS use official race results for the starting grid if available
-        let filteredStartingGrid = [];
-        if (sessionResults && sessionResults.length > 0) {
-          filteredStartingGrid = sessionResults
-            .map((r) => ({
-              driver_number: parseInt(r.number || r.Driver?.number, 10),
-              driver_acronym: r.Driver?.code || r.Driver?.driverId,
-              position:
-                r.grid === "PL" ? "PL" : parseInt(r.grid || r.position, 10),
-              date: startTimeValue,
-            }))
-            .filter((r) => r.position === "PL" || r.position > 0);
-        } else if (raceResults && raceResults.length > 0) {
-          filteredStartingGrid = raceResults
-            .map((r) => ({
-              driver_number: parseInt(r.number || r.Driver?.number, 10),
-              driver_acronym: r.Driver?.code || r.Driver?.driverId,
-              position: r.grid === "PL" ? "PL" : parseInt(r.grid, 10),
-              date: startTimeValue,
-            }))
-            .filter((r) => r.position === "PL" || r.position > 0);
-        } else {
-          const uniqueDrivers = new Map();
-          const sortedPosData = [...startingGridData].sort(
-            (a, b) => new Date(a.date) - new Date(b.date),
-          );
-          sortedPosData.forEach((item) => {
-            if (!uniqueDrivers.has(item.driver_number)) {
-              uniqueDrivers.set(item.driver_number, {
-                ...item,
-                driver_acronym: driverDetailsMap[item.driver_number],
-              });
-            }
-          });
-          filteredStartingGrid = Array.from(uniqueDrivers.values());
-        }
-
-        setStartingGrid(filteredStartingGrid);
-        setDrivers(driversData);
-        setLaps(
-          lapsData.map((lap) => ({
-            ...lap,
-            driver_acronym: driverDetailsMap[lap.driver_number],
-          })),
-        );
-
-        setIsSessionLive(
-          !raceSession.date_end || new Date() < new Date(raceSession.date_end),
-        );
-
-        // Fetch track reference GPS data non-blockingly at the end
+        // Fetch track reference GPS data non-blockingly at the end (always!)
         fetchTrackReferenceData(sessionKey, circuitId)
           .then((refData) => {
             if (refData && refData.length > 0) {

@@ -3,6 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import { buildTrackFromGPS } from '../utils/TrackBuilder';
+import { locationMaps } from '../utils/locationMaps';
 
 function TrackGeometry({ trackKey }) {
   const [trackGroup, setTrackGroup] = useState(null);
@@ -14,7 +15,8 @@ function TrackGeometry({ trackKey }) {
       return;
     }
     
-    fetch(`/trackdata/${trackKey}.json`)
+    const canonicalKey = locationMaps[trackKey.toLowerCase()] || trackKey.toLowerCase();
+    fetch(`/trackdata/${canonicalKey}.json`)
       .then(res => {
         if (!res.ok) throw new Error("Track data not found");
         return res.json();
@@ -29,7 +31,7 @@ function TrackGeometry({ trackKey }) {
             pts = rawPoints[0].telemetry.map(t => ({ x: t.x, y: t.y }));
         }
         
-        const result = buildTrackFromGPS(pts, trackKey);
+        const result = buildTrackFromGPS(pts, canonicalKey);
         if (result && result.group) {
           setTrackGroup(result.group);
         }

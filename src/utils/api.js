@@ -972,17 +972,16 @@ export const fetchSprintResultsByCircuit = async(year, circuitId, raceName = "")
  * Returns raw {x, y} points (NOT scaled) suitable for TrackBuilder.
  */
 export async function fetchTrackReferenceData(sessionKey, circuitId = null) {
-  if (!sessionKey) return [];
-
   // 0. Check for local static track shape to bypass OpenF1 completely
   if (circuitId) {
     try {
-      const localUrl = `/trackdata/${circuitId.toLowerCase()}.json`;
+      const canonicalId = locationMaps[circuitId.toLowerCase()] || circuitId.toLowerCase();
+      const localUrl = `/trackdata/${canonicalId}.json`;
       const res = await fetch(localUrl);
       if (res.ok) {
         const data = await res.json();
         if (data && data.length > 0) {
-          console.log(`[API] Track reference loaded from local static file for ${circuitId}`);
+          console.log(`[API] Track reference loaded from local static file for ${canonicalId}`);
           return data;
         }
       }
@@ -990,6 +989,8 @@ export async function fetchTrackReferenceData(sessionKey, circuitId = null) {
       console.warn("[API] Failed to load local static track file:", e);
     }
   }
+
+  if (!sessionKey) return [];
 
   const cacheKey = `${CACHE_PREFIX}trackref_${sessionKey}`;
 
