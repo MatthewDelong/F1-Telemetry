@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const RaceCalendar = () => {
   const RACES_DATA = {
@@ -56,7 +56,7 @@ const RaceCalendar = () => {
       track: "Japan.webp",
       direction: "cw",
     },
-    
+
     "Miami Grand Prix": {
       round: 4,
       raceKey: "f1.races.miami",
@@ -286,7 +286,7 @@ const RaceCalendar = () => {
       country: "Malaysia",
       lat: 2.7608,
       lng: 101.7383,
-      displayName: "Bahrain",
+      displayName: "Bahrain GP in Malaysia",
       countDownDate: "2026-10-04T07:00:00Z",
       flag: "my.webp",
       track: "Bahrain.webp",
@@ -423,7 +423,7 @@ const RaceCalendar = () => {
   const racesData = RACES_DATA;
   // Convert object to array and sort by round
   const racesList = Object.values(racesData).sort((a, b) => a.round - b.round);
-  
+
   // Split into left and right columns (11 on left, 12 on right for 23 total)
   const midpoint = 11;
   const leftColumn = racesList.slice(0, midpoint);
@@ -431,20 +431,33 @@ const RaceCalendar = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }).toUpperCase();
+    return date
+      .toLocaleDateString("en-GB", { day: "2-digit", month: "short" })
+      .toUpperCase();
   };
 
   const renderRaceRow = (race) => (
-    <div key={race.round} className="flex items-center bg-white/5 hover:bg-white/10 rounded-lg py-4 px-8 transition-all duration-200 border-l-[3px] border-transparent hover:border-[#e10600] hover:translate-x-1 cursor-pointer">
+    <div
+      key={race.round}
+      className="flex items-center bg-white/5 hover:bg-white/10 rounded-lg py-4 px-8 transition-all duration-200 border-l-[3px] border-transparent hover:border-[#e10600] hover:translate-x-1 cursor-pointer"
+    >
       <div className="w-[30px] font-black text-[0.75rem] text-[#e10600]">
         <span>R{race.round}</span>
       </div>
       <div className="w-[30px] flex items-center justify-center">
-        <img src={`/images/flags/${race.flag}`} alt={race.country} className="w-[20px] rounded-[2px] shadow-[0_1px_3px_rgba(0,0,0,0.5)] border border-white/20" />
+        <img
+          src={`/images/flags/${race.flag}`}
+          alt={race.country}
+          className="w-[20px] rounded-[2px] shadow-[0_1px_3px_rgba(0,0,0,0.5)] border border-white/20"
+        />
       </div>
       <div className="flex-1 font-bold text-[0.75rem] tracking-wide pl-8 whitespace-nowrap overflow-hidden text-ellipsis text-white">
         {race.displayName.toUpperCase()}
-        {race.isNew && <span className="ml-8 font-black text-[0.65rem] text-blue-500 bg-blue-500/10 px-4 py-[1px] rounded-[3px] align-middle">NEW</span>}
+        {race.isNew && (
+          <span className="ml-8 font-black text-[0.65rem] text-blue-500 bg-blue-500/10 px-4 py-[1px] rounded-[3px] align-middle">
+            NEW
+          </span>
+        )}
       </div>
       <div className="font-semibold text-[0.7rem] text-neutral-400 text-right min-w-[50px]">
         {formatDate(race.date)}
@@ -454,12 +467,16 @@ const RaceCalendar = () => {
 
   return (
     <div className="w-full bg-glow-dark border border-white/5 rounded-[2.4rem] p-16 md:p-24 shadow-xl relative overflow-hidden group">
-      <div 
+      <div
         className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-20"
-        style={{ background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 70%)` }}
+        style={{
+          background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 70%)`,
+        }}
       />
       <div className="text-center mb-16 border-b-2 border-[#e10600] pb-8 relative z-10">
-        <h2 className="text-[1.1rem] font-black tracking-widest text-white uppercase m-0">FORMULA 1 2026 CALENDAR</h2>
+        <h2 className="text-[1.1rem] font-black tracking-widest text-white uppercase m-0">
+          FORMULA 1 2026 CALENDAR
+        </h2>
       </div>
       <div className="flex flex-col md:flex-row w-full gap-16 md:gap-24 relative z-10">
         <div className="flex-1 flex flex-col gap-4">
