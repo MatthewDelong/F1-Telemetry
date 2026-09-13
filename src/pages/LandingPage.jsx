@@ -187,7 +187,8 @@ export function LandingPage() {
     if (!constructorId) return "#ffffff";
     const yearColors =
       teamColorsData[String(selectedYear)] || teamColorsData["2025"] || {};
-    const key = constructorId.toLowerCase().replace(/\s+/g, "_");
+    let key = constructorId.toLowerCase().replace(/\s+/g, "_");
+    if (key === "red_bull_racing") key = "red_bull";
     return yearColors[key] ? `#${yearColors[key]}` : "#ffffff";
   };
 
@@ -291,7 +292,9 @@ export function LandingPage() {
           style={{
             width: "100%",
             height: "20px",
-            background: "linear-gradient(180deg, #666 0%, #3a3a3a 100%)",
+            background: color !== "#ffffff" 
+              ? `linear-gradient(180deg, color-mix(in srgb, ${color} 40%, #666) 0%, color-mix(in srgb, ${color} 10%, #3a3a3a) 100%)` 
+              : "linear-gradient(180deg, #666 0%, #3a3a3a 100%)",
             transform: "perspective(300px) rotateX(45deg)",
             transformOrigin: "bottom",
             borderTop: "1px solid rgba(255,255,255,0.4)",
@@ -303,7 +306,12 @@ export function LandingPage() {
           style={{
             width: "100%",
             minHeight: driver.position === 1 ? "115px" : "95px",
-            background: "linear-gradient(180deg, #2a2a2a 0%, #0a0a0a 100%)",
+            background: color !== "#ffffff" 
+              ? `radial-gradient(circle at 50% 100%, color-mix(in srgb, ${color} 30%, transparent) 0%, rgba(0,0,0,0) 80%), linear-gradient(180deg, #2a2a2a 0%, #0a0a0a 100%)`
+              : "linear-gradient(180deg, #2a2a2a 0%, #0a0a0a 100%)",
+            boxShadow: color !== "#ffffff" 
+              ? `inset 0 -5px 15px color-mix(in srgb, ${color} 20%, transparent)` 
+              : undefined,
             borderLeft: "1px solid rgba(255,255,255,0.05)",
             borderRight: "1px solid rgba(255,255,255,0.05)",
             padding: "8px 4px",

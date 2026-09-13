@@ -22,16 +22,22 @@ export function RaceResultsPage({ selectedYear }) {
         let resultsForRace = [];
 
         if (race.results && race.results.length > 0) {
-          resultsForRace = race.results.slice(0, 3).map(res => ({
-            number: res.number,
-            driver: res.driver || res.Driver,
-            driverColor: res.Constructor ? teamColors[selectedYear]?.[res.Constructor.constructorId] : undefined,
+          resultsForRace = race.results.slice(0, 3).map(res => {
+            const con = res.Constructor || (typeof res.constructor !== 'function' ? res.constructor : undefined);
+            let conId = con ? (con.constructorId || con.name || "").toLowerCase().replace(/\s+/g, "_") : "";
+            if (conId === "red_bull_racing") conId = "red_bull";
+            
+            return {
+              number: res.number,
+              driver: res.driver || res.Driver,
+              driverColor: conId ? (teamColors[String(selectedYear)]?.[conId] || teamColors["2025"]?.[conId]) : undefined,
             fastestLap: res.fastestLap || res.FastestLap,
             grid: res.grid,
             position: res.position,
             status: res.status,
             time: res.time || (res.Time && res.Time.time)
-          }));
+            };
+          });
 
           // Augment fastest lap if missing
           const hasFastestLap = resultsForRace.some(r => r.fastestLap?.rank === "1" || r.fastestLap?.rank === 1);

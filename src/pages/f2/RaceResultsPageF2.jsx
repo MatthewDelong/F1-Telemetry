@@ -4,6 +4,7 @@ import {
   fetchCircuitData,
 } from "../../utils/apiF1a";
 import { fetchRaceDetails } from "../../utils/api";
+import teamColors from "../../utils/teamColors.json";
 
 import { RaceResultItem, Loading, Button } from "../../components";
 import { NavLink } from "react-router-dom";
@@ -68,6 +69,7 @@ const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel, circuitRa
                     className={`race-results__list__item-${index + 1}`}
                     carNumber={result.number}
                     driver={result.Driver}
+                    driverColor={result.Constructor ? teamColors[year]?.[result.Constructor.constructorId] : undefined}
                     fastestLap={result.FastestLap || result.fastestLap}
                     startPosition={parseInt(result.grid, 10)}
                     key={index}
@@ -98,6 +100,7 @@ const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel, circuitRa
                     className={`race-results__list__item-${index + 1}`}
                     carNumber={result.number}
                     driver={result.Driver}
+                    driverColor={result.Constructor ? teamColors[year]?.[result.Constructor.constructorId] : undefined}
                     fastestLap={result.FastestLap || result.fastestLap}
                     startPosition={parseInt(result.grid, 10)}
                     key={index}
@@ -124,6 +127,7 @@ const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel, circuitRa
                     className={`race-results__list__item-${index + 1}`}
                     carNumber={result.number}
                     driver={result.Driver}
+                    driverColor={result.Constructor ? teamColors[year]?.[result.Constructor.constructorId] : undefined}
                     fastestLap={result.FastestLap || result.fastestLap}
                     startPosition={parseInt(result.grid, 10)}
                     key={index}
