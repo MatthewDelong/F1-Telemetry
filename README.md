@@ -126,10 +126,22 @@ npm run preview   # preview the production build locally
 
 F1-Telemetry features dynamic, procedural 3D tracks powered by `Three.js` and `@react-three/fiber`. 
 
-- **Data Pipeline**: Raw X/Y telemetry positional coordinates are fetched via JSON (recorded from OpenF1) and processed directly into a 3D spline (`THREE.CatmullRomCurve3`).
-- **Generation**: `src/utils/TrackBuilder.js` triangulates this spline into a 3D ribbon geometry, automatically determining the width, corners, and straightaways. 
-- **Features**: Sector times map directly onto track segments to color-code the track layout. Procedural grandstands, low-poly tree scatter (`InstancedMesh`), and alternating red/white apex kerbs are dynamically placed around corner vertices using vector math.
-- **Component Usage**: A slow-rotating procedural background canvas (`ProceduralTrackBackground`) is used seamlessly behind key components, while interactive variants with `OrbitControls` are provided in modals.
+- **Downloading / Regenerating Track Data**:
+  Run the automated downloading script to pull single-lap spatial telemetry from OpenF1 for all 2026/2025 calendar circuits:
+  ```bash
+  node scripts/downloadAllTracks.js
+  ```
+  This creates clean single-lap coordinate data in `public/trackdata/<canonicalId>.json` (such as `madrid.json`, `monaco.json`, `silverstone.json`), trimmed to avoid multi-lap overlap.
+
+- **3D Geometry & Curvature Math (`src/utils/TrackBuilder.js`)**:
+  - Raw X/Y telemetry positional coordinates are smoothed using a moving-average filter and fitted to a 3D Catmull-Rom spline (`THREE.CatmullRomCurve3`).
+  - **Apex & Corner Detection**: Peak curvature calculations automatically locate circuit apexes, enforcing minimum corner separation and matching exact FIA/official corner counts (e.g. 22 corners for Madrid / Madring).
+  - **Ribbon Geometry**: Triangulates extruded 3D track ribbons with dynamic width, elevated curbs, sector color coding (Sector 1 red, Sector 2 blue, Sector 3 yellow), and dynamic start/finish line markers.
+  - **Environment Scatter**: Instanced low-poly tree assets (`InstancedMesh`) and grandstand geometry are procedurally placed along track perimeters using normal vector math offsets.
+
+- **Component Integration**:
+  - `ProceduralTrackBackground`: Rotates 3D tracks seamlessly as ambient backdrop headers.
+  - `MiniTrackViewer` & `TrackModel`: Provide interactive OrbitControls and modal 3D track visualization.
 
 </details>
 
