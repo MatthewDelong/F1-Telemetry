@@ -11,6 +11,8 @@ on:
 jobs:
   update-f1-data:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     
     steps:
       - name: Checkout repository
@@ -19,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # using a modern node version
+          node-version: '24'
 
       - name: Install dependencies
         working-directory: ./backend
