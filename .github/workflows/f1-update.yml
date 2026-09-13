@@ -46,10 +46,23 @@ jobs:
               });
           "
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Python dependencies
+        run: pip install requests numpy
+
+      - name: Run Python F1 API Update Script
+        working-directory: ./src/config/f1
+        run: python3 api_update.py
+
       - name: Commit and Push database changes
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add -f backend/database.sqlite
-          git commit -m "Automated F1 data update" || echo "No changes to commit"
+          git add src/config/f1/
+          git commit -m "Automated F1 data update (Database + JSON files)" || echo "No changes to commit"
           git push
