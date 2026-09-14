@@ -1,8 +1,13 @@
 [
     {
-        "driverId": "ayumu_iwasa",
-        "givenName": "Ayumu",
-        "familyName": "Iwasa"
+        "driverId": "max_verstappen",
+        "permanentNumber": "3",
+        "code": "VER",
+        "url": "http://en.wikipedia.org/wiki/Max_Verstappen",
+        "givenName": "Max",
+        "familyName": "Verstappen",
+        "dateOfBirth": "1997-09-30",
+        "nationality": "Dutch"
     },
     {
         "driverId": "lawson",
@@ -15,16 +20,6 @@
         "nationality": "New Zealander"
     },
     {
-        "driverId": "arvid_lindblad",
-        "permanentNumber": "41",
-        "code": "LIN",
-        "url": "https://en.wikipedia.org/wiki/Arvid_Lindblad",
-        "givenName": "Arvid",
-        "familyName": "Lindblad",
-        "dateOfBirth": "2007-08-08",
-        "nationality": "British"
-    },
-    {
         "driverId": "tsunoda",
         "permanentNumber": "22",
         "code": "TSU",
@@ -35,13 +30,18 @@
         "nationality": "Japanese"
     },
     {
-        "driverId": "max_verstappen",
-        "permanentNumber": "3",
-        "code": "VER",
-        "url": "http://en.wikipedia.org/wiki/Max_Verstappen",
-        "givenName": "Max",
-        "familyName": "Verstappen",
-        "dateOfBirth": "1997-09-30",
-        "nationality": "Dutch"
+        "driverId": "ayumu_iwasa",
+        "givenName": "Ayumu",
+        "familyName": "Iwasa"
+    },
+    {
+        "driverId": "arvid_lindblad",
+        "permanentNumber": "41",
+        "code": "LIN",
+        "url": "https://en.wikipedia.org/wiki/Arvid_Lindblad",
+        "givenName": "Arvid",
+        "familyName": "Lindblad",
+        "dateOfBirth": "2007-08-08",
+        "nationality": "British"
     }
 ]
