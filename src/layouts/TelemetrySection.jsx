@@ -32,9 +32,8 @@ const TelemetrySection = ({ layoutMobile, onClick, container }) => {
         >
           <motion.div
             className={classNames(
-              "p-32 md:py-32 md:pr-32 md:pl-64 md:ml-[-100px] md:rounded-xlarge max-md:text-small max-md:text-center",
+              "p-16 md:py-32 md:pr-32 md:pl-64 md:ml-[-100px] md:rounded-xlarge max-md:text-small max-md:text-center",
               "w-full md:w-1/3 flex flex-col max-md:items-center gap-8 relative z-10",
-              "md:bg-gradient-to-b md:from-neutral-900 md:to-neutral-900/10",
             )}
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -42,20 +41,37 @@ const TelemetrySection = ({ layoutMobile, onClick, container }) => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             style={{ y: yTextContent }}
           >
-            <p className="uppercase font-semibold tracking-xs gradient-text-electric-blue">
-              Select a Driver
-            </p>
-            <p className="mb-12">Monitor their race progress lap by lap.</p>
-            <p className="uppercase tracking-xs gradient-text-electric-blue">
-              Multiple Camera Views
-            </p>
-            <p className="mb-12">
-              Get closer to the action with various perspectives.
-            </p>
-            <p className="uppercase tracking-xs gradient-text-electric-blue">
-              Detailed Telemetry Data
-            </p>
-            <p className="mb-12">Analyze every aspect of driver performance.</p>
+            <div className="w-full flex flex-col gap-12 mb-12">
+              <div className="p-24 rounded-[1.6rem] bg-black/40 backdrop-blur-md border border-white/10 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] transition-all duration-300 relative group overflow-hidden text-left">
+                <div className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-20 rounded-[1.6rem]" style={{ background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 70%)` }} />
+                <div className="relative z-10">
+                  <p className="uppercase font-semibold tracking-xs gradient-text-electric-blue mb-4 text-sm md:text-base">
+                    Select a Driver
+                  </p>
+                  <p className="text-neutral-300">Monitor their race progress lap by lap.</p>
+                </div>
+              </div>
+              
+              <div className="p-24 rounded-[1.6rem] bg-black/40 backdrop-blur-md border border-white/10 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] transition-all duration-300 relative group overflow-hidden text-left">
+                <div className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-20 rounded-[1.6rem]" style={{ background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 70%)` }} />
+                <div className="relative z-10">
+                  <p className="uppercase tracking-xs gradient-text-electric-blue mb-4 text-sm md:text-base">
+                    Multiple Camera Views
+                  </p>
+                  <p className="text-neutral-300">Get closer to the action with various perspectives.</p>
+                </div>
+              </div>
+              
+              <div className="p-24 rounded-[1.6rem] bg-black/40 backdrop-blur-md border border-white/10 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] transition-all duration-300 relative group overflow-hidden text-left">
+                <div className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-20 rounded-[1.6rem]" style={{ background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 70%)` }} />
+                <div className="relative z-10">
+                  <p className="uppercase tracking-xs gradient-text-electric-blue mb-4 text-sm md:text-base">
+                    Detailed Telemetry Data
+                  </p>
+                  <p className="text-neutral-300">Analyze every aspect of driver performance.</p>
+                </div>
+              </div>
+            </div>
             <Button
               as="button"
               onClick={onClick}

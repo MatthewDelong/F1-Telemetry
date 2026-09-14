@@ -262,13 +262,13 @@ export function AboutPage() {
         className="min-h-screen snap-start overflow-hidden flex flex-col items-center justify-center py-72"
       >
         <motion.div
-          className="max-w-none mx-auto text-center mb-64"
+          className="max-w-3xl mx-auto text-center mb-64 bg-black/40 backdrop-blur-md border border-white/10 p-12 sm:p-16 rounded-[2.4rem] shadow-[0_0_40px_rgba(255,255,255,0.05)]"
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <h2 className="heading-3 mb-16">
+          <h2 className="heading-3 mb-0 gradient-text-white drop-shadow-xl">
             Stay Updated with the Latest <br /> F1 Academy and Formula 2 Results
           </h2>
         </motion.div>

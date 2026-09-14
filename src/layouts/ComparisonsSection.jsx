@@ -76,17 +76,16 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
       <div className="divider-glow-dark mb-32" />
       {/* Heading Animates in & Scrolls */}
       <motion.div
-        className="max-w-screen-xl mx-auto text-center"
+        className="max-w-3xl mx-auto text-center bg-black/40 backdrop-blur-md border border-white/10 p-12 sm:p-16 rounded-[2.4rem] shadow-[0_0_40px_rgba(255,255,255,0.05)] relative z-10"
         initial={{ opacity: 0, scale: 0.8 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        // style={{ y: yHeading }}
       >
-        <h2 className="heading-3 mb-16 px-16">
+        <h2 className="heading-3 mb-12 gradient-text-white drop-shadow-xl">
           Driver and Teammate Comparisons
         </h2>
-        <p>
+        <p className="text-neutral-300">
           Compare teammates directly, evaluating their performances in the same
           car during specific seasons or extend your analysis beyond teammates
           to include any driver from any team throughout F1 history.

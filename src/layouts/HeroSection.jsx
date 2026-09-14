@@ -45,16 +45,18 @@ const HeroSection = ({ layoutMobile, container }) => {
       />
 
       {/* Animated Title (Triggers when in view, moves on scroll) */}
-      <motion.h1
+      <motion.div
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-20% 0px" }}
         style={{ y: yTitle }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="text-center heading-1 absolute top-[14%] sm:top-[18%] mx-auto w-3/4 z-10"
+        className="text-center absolute top-[14%] sm:top-[18%] mx-auto w-[90%] max-w-4xl z-10 bg-black/40 backdrop-blur-md border border-white/10 p-8 sm:p-12 rounded-[2.4rem] shadow-[0_0_40px_rgba(255,255,255,0.05)]"
       >
-        Your Ultimate Destination for F1 Data and Analysis
-      </motion.h1>
+        <h1 className="heading-1 gradient-text-white drop-shadow-2xl">
+          Your Ultimate Destination for F1 Data and Analysis
+        </h1>
+      </motion.div>
 
       {/* Left Decoration (Triggers when in view, moves on scroll) */}
       <motion.img
