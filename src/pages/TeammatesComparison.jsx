@@ -556,7 +556,7 @@ const GridRow = (label, driver1, driver2, title) => {
   return (
     <div className='global-container min-h-[40rem] pb-64'>
 
-      <div className="flex items-center justify-center gap-8">
+      <div className="flex items-center justify-center gap-8 relative z-50">
         <ReactSelectComponent
           placeholder="Select Year"
           options={yearOptions}
@@ -580,7 +580,7 @@ const GridRow = (label, driver1, driver2, title) => {
       {showDriverSelectors && (
       <div className="flex flex-col items-center justify-center gap-8">
         <p className="pt-24 pb-16">This team had more than 2 drivers competing this season. Please select two drivers to compare.</p>
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-8 relative z-40">
           <ReactSelectComponent
             placeholder="Select Driver 1"
             options={driverOptions.map(driver => ({ ...driver, isDisabled: driver.value === selectedDriver2 }))}
