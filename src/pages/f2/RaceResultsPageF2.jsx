@@ -144,8 +144,9 @@ const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel, circuitRa
           )}
         </div>
         <Button
+          buttonStyle="hollow"
           size="sm"
-          className="opacity-100 lg:opacity-0 lg:group-hover:opacity-100 absolute bottom-[-4rem] left-1/2 -translate-x-1/2 pointer-events-none"
+          className="opacity-100 lg:opacity-0 lg:group-hover:opacity-100 absolute bottom-[-1.2rem] left-1/2 -translate-x-1/2 pointer-events-none rounded-full px-16 py-8 tracking-widest uppercase !bg-black/60 !backdrop-blur-md !border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] transition-all duration-300 font-display"
         >
           View Race Details
         </Button>
@@ -182,7 +183,14 @@ export function RaceResultsPageF2({ selectedYear, championshipLevel }) {
 
   return (
     <div className="standard-scroll-container">
-      <div className="race-results max-w-[120rem] m-auto mt-32">
+      <div className="race-results max-w-[120rem] m-auto mt-32 mb-64 px-4 sm:px-8">
+        {selectedYear.toString() === "2026" && (
+          <div className="relative w-full max-w-[600px] mx-auto mb-32 drop-shadow-2xl hover:scale-[1.02] transition-transform duration-500 cursor-pointer">
+            <div className="rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_40px_rgba(29,78,216,0.15)] bg-black/20 backdrop-blur-sm">
+              <img src="/images/2026/F2-Dates.png" alt="Formula 2 Dates" className="w-full h-auto object-cover" />
+            </div>
+          </div>
+        )}
         {isLoading ? (
           <Loading
             className="mt-[20rem] mb-[20rem]"

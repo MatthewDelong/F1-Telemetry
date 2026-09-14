@@ -120,7 +120,7 @@ export const Header = () => {
       <header
         className={classNames("global-header max-md:transition-all", {
           "!top-[-58px]": !headerOpen && collapsible,
-          "!absolute": location === "/" || location === "/about-us",
+          "!absolute": location === "/" || location === "/features",
         })}
         ref={headerRef}
       >
@@ -170,10 +170,10 @@ export const Header = () => {
             </div>
             <div className="relative w-max uppercase text-lg ">
               <Link
-                to="/about-us"
+                to="/features"
                 className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs"
               >
-                About
+                Features
               </Link>
             </div>
             <div className="relative w-max text-lg" ref={resultsRef}>
@@ -355,11 +355,11 @@ export const Header = () => {
             </Link>
             <div className="divider-glow-dark mt-4 border-t border-neutral-700" />
             <Link
-              to="/about-us"
+              to="/features"
               className="w-full flex justify-between items-center py-4 px-8 tracking-sm uppercase text-lg hover:text-brand-blue-400 transition-colors"
               onClick={toggleOpen}
             >
-              About
+              Features
             </Link>
             <div className="divider-glow-dark mt-4 border-t border-neutral-700" />
             <div className="flex flex-col">

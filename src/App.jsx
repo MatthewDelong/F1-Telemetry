@@ -20,7 +20,7 @@ import {
   DriverComparison,
   TeammatesComparison,
   LandingPage,
-  AboutPage,
+  FeaturesPage,
   ARViewer,
   RaceResultsPage,
   RacePage,
@@ -160,7 +160,7 @@ function MainContent({
     <>
       <div
         className={classNames("grow", {
-          "pt-[64px]": location !== "/" && location !== "/about-us",
+          "pt-[64px]": location !== "/" && location !== "/features",
         })}
       >
         {validPaths.includes(location) && (
@@ -192,7 +192,7 @@ function MainContent({
             path="/"
             element={<LandingPage setResultPagePath={setResultPagePath} />}
           />
-          <Route path="/about-us" element={<AboutPage />} />
+          <Route path="/features" element={<FeaturesPage />} />
           <Route
             path="/race-results"
             element={<RaceResultsPage selectedYear={selectedYear} />}
@@ -288,7 +288,7 @@ function MainContent({
           <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </div>
-      {location !== "/" && location !== "/about-us" && <Footer />}
+      {location !== "/" && location !== "/features" && <Footer />}
     </>
   );
 }

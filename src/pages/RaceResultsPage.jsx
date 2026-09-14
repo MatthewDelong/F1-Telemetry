@@ -163,9 +163,10 @@ export function RaceResultsPage({ selectedYear }) {
                   </div>
                 </div>
                 <Button
+                  buttonStyle="hollow"
                   size="sm"
                   disabled={!races[race.raceName]?.["meeting_key"]}
-                  className="opacity-100 lg:opacity-0 lg:group-hover:opacity-100 absolute bottom-[-1.2rem] left-1/2 -translate-x-1/2 rounded-full px-8 tracking-widest uppercase border border-white/10 shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.6)]"
+                  className="opacity-100 lg:opacity-0 lg:group-hover:opacity-100 absolute bottom-[-1.2rem] left-1/2 -translate-x-1/2 rounded-full px-16 py-8 tracking-widest uppercase !bg-black/60 !backdrop-blur-md !border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] transition-all duration-300 hover:!bg-black/80 hover:shadow-[0_0_30px_rgba(255,255,255,0.1)] font-display"
                 >
                   View Race Data
                 </Button>

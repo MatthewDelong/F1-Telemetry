@@ -476,7 +476,8 @@ export function LandingPage() {
           <Button
             as="button"
             onClick={() => navigateToRaceResult(raceData)}
-            className="mb-48 -mt-24 mx-auto"
+            className="mb-48 -mt-24 mx-auto !bg-black/40 !backdrop-blur-md !border-white/10 !shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:!bg-black/60 font-display tracking-wide uppercase"
+            buttonStyle="hollow"
             size="md"
           >
             View Full Race Details
