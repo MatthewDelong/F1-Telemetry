@@ -36,9 +36,9 @@
 
 ## About
 
-F1-Telemetry is a fork of the original [f1nsight](https://github.com/adityakotha03/F1nsight) project, refactored to **React 19** and **Vite 8** with additional features and enhancements. It's an interactive web application built for motorsport fans who want to go deeper than the broadcast — providing detailed race analytics, real-time telemetry visualisation, driver comparisons, and a 3D race viewer across **Formula 1**, **Formula 2**, and **F1 Academy**. It now also fully integrates the **Formula1-Live** dashboard for real-time live timing, track limits, and race control monitoring.
+F1-Telemetry is an interactive web application built for motorsport fans who want to go deeper than the broadcast — providing detailed race analytics, real-time telemetry visualisation, driver comparisons, and a 3D race viewer across **Formula 1**, **Formula 2**, and **F1 Academy**. It now also fully integrates the **Formula1-Live** dashboard for real-time live timing, track limits, and race control monitoring.
 
-> **Attribution** — This project builds upon the work of the original f1nsight developers. Data is now powered by the official **[OpenF1 API](https://openf1.org)** and **[Jolpica API](https://jolpi.ca/)**.
+> **Attribution** — Data is powered by the official **[OpenF1 API](https://openf1.org)** and **[Jolpica API](https://jolpi.ca/)**.
 
 **New Feature**: The 3D Telemetry Viewer now includes **Procedural 3D Tracks**, which automatically generate accurate, rotating 3D track geometries from real GPS telemetry data, complete with dynamic racing lines, kerbs, and surrounding environments using React Three Fiber.
 

@@ -16,7 +16,7 @@ async function fetchWikipediaImage(wikiUrl) {
         const apiUrl = `https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=original&titles=${title}`;
         const response = await fetch(apiUrl, {
             headers: {
-                'User-Agent': 'F1nsightApp/2.0 (github.com/f1nsight)'
+                'User-Agent': 'F1TelemetryApp/1.0'
             }
         });
         
@@ -76,7 +76,7 @@ async function run() {
         try {
             const imgRes = await fetch(imageUrl, {
                 headers: {
-                    'User-Agent': 'F1nsightApp/2.0 (github.com/f1nsight)'
+                    'User-Agent': 'F1TelemetryApp/1.0'
                 }
             });
             

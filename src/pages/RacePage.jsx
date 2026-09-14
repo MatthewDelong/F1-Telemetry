@@ -1217,7 +1217,7 @@ export function RacePage() {
                       className={classNames(
                         "flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-full font-display uppercase tracking-widest text-xs transition-all duration-300 border border-transparent",
                         !isPaused
-                          ? "bg-brand-blue-500 text-white shadow-[0_0_20px_rgba(59,130,246,0.5)]"
+                          ? "bg-white/20 text-white shadow-[0_4px_30px_rgba(0,0,0,0.15)] border-white/40 backdrop-blur-md"
                           : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border-white/10"
                       )}
                       onClick={() => setIsPaused(!isPaused)}
@@ -1290,7 +1290,7 @@ export function RacePage() {
                     className={classNames(
                       "px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-display text-xs sm:text-sm tracking-widest uppercase transition-all",
                       selectedSession === "Race"
-                        ? "bg-brand-blue-500 text-white shadow-[0_0_20px_rgba(59,130,246,0.6)]"
+                        ? "bg-white/20 text-white shadow-[0_4px_30px_rgba(0,0,0,0.15)] border-white/40 backdrop-blur-md"
                         : "bg-black/40 text-white/60 hover:bg-black/60 hover:text-white backdrop-blur-md border border-white/10",
                     )}
                     onClick={() => setSelectedSession("Race")}
@@ -1303,7 +1303,7 @@ export function RacePage() {
                     className={classNames(
                       "px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-display text-xs sm:text-sm tracking-widest uppercase transition-all",
                       selectedSession === "Qualifying"
-                        ? "bg-brand-blue-500 text-white shadow-[0_0_20px_rgba(59,130,246,0.6)]"
+                        ? "bg-white/20 text-white shadow-[0_4px_30px_rgba(0,0,0,0.15)] border-white/40 backdrop-blur-md"
                         : "bg-black/40 text-white/60 hover:bg-black/60 hover:text-white backdrop-blur-md border border-white/10",
                     )}
                     onClick={() => setSelectedSession("Qualifying")}
@@ -1316,7 +1316,7 @@ export function RacePage() {
                     className={classNames(
                       "px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-display text-xs sm:text-sm tracking-widest uppercase transition-all",
                       selectedSession === "Sprint"
-                        ? "bg-brand-blue-500 text-white shadow-[0_0_20px_rgba(59,130,246,0.6)]"
+                        ? "bg-white/20 text-white shadow-[0_4px_30px_rgba(0,0,0,0.15)] border-white/40 backdrop-blur-md"
                         : "bg-black/40 text-white/60 hover:bg-black/60 hover:text-white backdrop-blur-md border border-white/10",
                     )}
                     onClick={() => setSelectedSession("Sprint")}

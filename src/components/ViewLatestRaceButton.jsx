@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
+import { Button } from "./Button";
 
 export function ViewLatestRaceButton({
   meetingKey,
@@ -29,7 +30,9 @@ export function ViewLatestRaceButton({
   const navigateToLatestRace = () => {
     if (!meetingKey) return;
     navigate(targetPath);
-    trackButtonClick(`Home/Click/F1/View Full Results - ${targetPath}`);
+    if (typeof window.trackButtonClick === "function") {
+      window.trackButtonClick(`Home/Click/F1/View Full Results - ${targetPath}`);
+    }
   };
 
   return (
@@ -55,23 +58,13 @@ export function ViewLatestRaceButton({
         ))}
       </div>
 
-      <button
-        type="button"
+      <Button
         onClick={navigateToLatestRace}
         disabled={!meetingKey}
-        className={classNames(
-          "rounded px-24 py-8 text-white transition-all duration-200 font-display",
-          meetingKey
-            ? "bg-black/40 backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:bg-black/60"
-            : "bg-black/20 backdrop-blur-sm border border-white/5 cursor-not-allowed",
-        )}
-        style={
-          isHovered
-            ? {
-                boxShadow: `inset 0 0 2.4rem 0 rgba(0, 0, 0, .75), 0 0 2.4rem 0 #ffffff`,
-              }
-            : undefined
-        }
+        className="font-display"
+        size="md"
+        active={!!meetingKey}
+        title={meetingKey ? `View Race ${meetingKey}` : "No latest race available"}
       >
         <div
           className={classNames(
@@ -79,9 +72,9 @@ export function ViewLatestRaceButton({
             isHovered ? "scale-95" : "scale-100",
           )}
         >
-          View Latest Race
+          {meetingKey ? "View Latest Race" : "Loading Race..."}
         </div>
-      </button>
+      </Button>
     </div>
   );
 }

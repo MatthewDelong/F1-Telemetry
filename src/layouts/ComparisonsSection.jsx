@@ -121,7 +121,7 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
               />
             </div>
             {links(
-              "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[130%] max-w-[100vw] flex flex-row justify-between items-center gap-8 max-sm:hidden px-8",
+              "absolute top-[80%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[130%] max-w-[100vw] flex flex-row justify-between items-center gap-8 max-sm:hidden px-8",
             )}
           </motion.div>
           {links(

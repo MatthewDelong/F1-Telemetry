@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import teamColorsByYear from "../utils/teamColors.json";
+import { Button } from "./Button";
 
 const DEFAULT_YEAR = 2026;
 const TEAMMATE_TEAMS = [
@@ -143,12 +144,10 @@ export function TeammateComparisonButton({ year = DEFAULT_YEAR, className }) {
         ))}
       </div>
 
-      <button
-        type="button"
+      <Button
         onClick={navigateToSelectedTeam}
-        className={classNames(
-          "rounded px-24 py-8 text-white transition-all duration-200 font-display bg-black/40 backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:bg-black/60",
-        )}
+        className="font-display"
+        size="md"
         style={
           isHovered
             ? {
@@ -166,7 +165,7 @@ export function TeammateComparisonButton({ year = DEFAULT_YEAR, className }) {
         >
           Teammate Comparison
         </div>
-      </button>
+      </Button>
     </div>
   );
 }

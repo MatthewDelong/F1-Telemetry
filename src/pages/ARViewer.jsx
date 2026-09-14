@@ -64,8 +64,7 @@ export const ARViewer = () => {
   const teamHistoryData = team?.teamHistory || [];
   const constructorTitlesCount = team?.constructorTitles?.length || 0;
   const driversChampionshipsCount = team?.driversChampionships?.length || 0;
-  const isGarageCollectionCar =
-    team?.name === "F1Nsight" || team?.name === "apx";
+  const isGarageCollectionCar = team?.name === "apx";
 
   const setTeamModelByYear = (teamNameValue, modelYear) => {
     const validYears = getAvailableYearsForTeam(teamNameValue);
@@ -104,33 +103,6 @@ export const ARViewer = () => {
       imagePath: "/images/2024/cars/apx.png",
       team: { name: "apx", color: "#AE7D0E" },
       trackingId: "team-viewer-apx",
-    },
-    {
-      id: "f1nsight2024",
-      label: "F1NSIGHT 2024",
-      color: "#7500AD",
-      glbPath: "/ArFiles/glbs/2024/f1nsight2024.glb?v=v2_ultra",
-      imagePath: "/images/2024/cars/F1Nsight.png",
-      team: { name: "F1Nsight", color: "#7500AD" },
-      trackingId: "team-viewer-f1nsight2024",
-    },
-    {
-      id: "f1nsight2025",
-      label: "F1NSIGHT 2025",
-      color: "#7500AD",
-      glbPath: "/ArFiles/glbs/2025/f1nsight2025.glb?v=v2_ultra",
-      imagePath: "/images/2025/cars/F1Nsight.png",
-      team: { name: "F1Nsight", color: "#7500AD" },
-      trackingId: "team-viewer-f1nsight2025",
-    },
-    {
-      id: "f1nsight2026",
-      label: "F1NSIGHT 2026",
-      color: "#7500AD",
-      glbPath: "/ArFiles/glbs/2026/f1nsight2026.glb?v=v2_ultra",
-      imagePath: "/images/2026/cars/F1Nsight.png",
-      team: { name: "F1Nsight", color: "#7500AD" },
-      trackingId: "team-viewer-f1nsight2026",
     },
   ];
 
@@ -466,7 +438,7 @@ export const ARViewer = () => {
         <div className="divider-glow-dark mb-48 mx-auto w-[80%]" />
 
         <h2 className="tracking-wide uppercase  gradient-text-light text-center text-12 mb-32 opacity-80">
-          F1NSIGHT.com Dedication
+          Special Editions
         </h2>
 
         <div className="flex flex-row justify-center flex-wrap gap-12 p-32">

@@ -127,12 +127,12 @@ export const StartingGrid = (props) => {
                   src={
                     parseInt(year, 10) >= 2023
                       ? `/images/${parseInt(year, 10) === 2023 ? "2024" : year}/carTopView/${getCarTopView(currentDriverAcronym, gridPosition.driver_number)}.png`
-                      : "/images/f1nsight-topview.png"
+                      : `/images/${year}/carTopView/mclaren.png`
                   }
                   onError={(e) => {
                     // Final fallback if the specific car image is missing
-                    if (e.target.src.indexOf('f1nsight-topview.png') === -1) {
-                        e.target.src = "/images/2024/carTopView/VER.png";
+                    if (e.target.src.indexOf('mclaren.png') === -1) {
+                        e.target.src = `/images/${year}/carTopView/mclaren.png`;
                     }
                   }}
                   width={56}
