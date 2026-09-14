@@ -28,6 +28,18 @@
     grid-area: item-1;
     margin-bottom: -0.4rem;
     z-index: 1;
+    transition: transform 0.3s cubic-bezier(0.17, 0.55, 0.55, 1);
+    
+    &:hover {
+        transform: translateY(-1rem);
+        .driver-headshot {
+            transform: translateX(-50%) scale(1.15);
+        }
+        .stand {
+            box-shadow: inset 0 -15px 30px color-mix(in srgb, var(--driver-color) 40%, transparent) !important;
+        }
+    }
+
     .stand {
         padding-bottom: 0.8rem;
         padding-top: 1.6rem;
@@ -35,6 +47,7 @@
         backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.05);
         border-bottom: none;
+        transition: box-shadow 0.3s ease;
     }
     .driver-headshot {
         position: absolute;
@@ -43,6 +56,7 @@
         transform: translateX(-50%);
         height: 9rem;
         width: 9rem;
+        transition: transform 0.3s cubic-bezier(0.17, 0.55, 0.55, 1);
     }
 }
 
@@ -80,6 +94,18 @@
 
 .race-results__list__item-2 {
     grid-area: item-2;
+    transition: transform 0.3s cubic-bezier(0.17, 0.55, 0.55, 1);
+
+    &:hover {
+        transform: translateY(-0.8rem);
+        .driver-headshot {
+            transform: scale(1.15);
+        }
+        .stand {
+            box-shadow: inset 0 -10px 25px color-mix(in srgb, var(--driver-color) 35%, transparent) !important;
+        }
+    }
+
     .stand {
         padding-bottom: 0.4rem;
         padding-top: 0.8rem;
@@ -87,11 +113,13 @@
         backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.05);
         border-bottom: none;
+        transition: box-shadow 0.3s ease;
     }
     .driver-headshot {
         position: absolute;
         bottom: 6.4rem;
         left: 1.6rem;
+        transition: transform 0.3s cubic-bezier(0.17, 0.55, 0.55, 1);
     }
 }
 .race-results__list__item-2:after {
@@ -104,6 +132,18 @@
 
 .race-results__list__item-3 {
     grid-area: item-3;
+    transition: transform 0.3s cubic-bezier(0.17, 0.55, 0.55, 1);
+
+    &:hover {
+        transform: translateY(-0.8rem);
+        .driver-headshot {
+            transform: scale(1.15);
+        }
+        .stand {
+            box-shadow: inset 0 -10px 25px color-mix(in srgb, var(--driver-color) 35%, transparent) !important;
+        }
+    }
+
     .stand {
         padding-bottom: 0.4rem;
         padding-top: 0.4rem;
@@ -111,11 +151,13 @@
         backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.05);
         border-bottom: none;
+        transition: box-shadow 0.3s ease;
     }
     .driver-headshot {
         position: absolute;
         bottom: 6rem;
         left: 1.6rem;
+        transition: transform 0.3s cubic-bezier(0.17, 0.55, 0.55, 1);
     }
 }
 .race-results__list__item-3:after {

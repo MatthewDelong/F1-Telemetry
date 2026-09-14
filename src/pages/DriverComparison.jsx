@@ -151,19 +151,17 @@ export function DriverComparison(){
     // Determine which years to display
     const yearsToDisplay = displayCompetingYears && competingYears.length > 0 ? competingYears : allYears;
 
-    const handleCompare = () => {
-        const encodedDriver1 = encodeURIComponent(inputdriver1.value);
-        const encodedDriver2 = encodeURIComponent(inputdriver2.value);
-    
-        navigate(`/driver-comparison/${encodedDriver1}/${encodedDriver2}`, { replace: true });
-        
-        setDriver1(inputdriver1.value);
-        setDriver2(inputdriver2.value);
-        
-        setInputDriver1('');
-        setInputDriver2('');
-    };
-    
+    useEffect(() => {
+        if (inputdriver1 && inputdriver2 && inputdriver1.value && inputdriver2.value) {
+            // Auto-navigate if the selected drivers differ from the current URL
+            if (inputdriver1.value !== urlDriver1 || inputdriver2.value !== urlDriver2) {
+                const encodedDriver1 = encodeURIComponent(inputdriver1.value);
+                const encodedDriver2 = encodeURIComponent(inputdriver2.value);
+                navigate(`/driver-comparison/${encodedDriver1}/${encodedDriver2}`, { replace: true });
+            }
+        }
+    }, [inputdriver1, inputdriver2, urlDriver1, urlDriver2, navigate]);
+
 
     const renderFinalStandings = () => {
         return (
@@ -254,7 +252,7 @@ export function DriverComparison(){
         return (
           <img 
             alt="Driver" 
-            className="w-[15rem] md:w-[22rem] object-contain"
+            className="w-[15rem] md:w-[22rem] object-contain object-bottom"
             src={imageUrl}
             data-fallback-step="0"
             onError={handleError}
@@ -370,8 +368,6 @@ export function DriverComparison(){
                             onChange={(selectedOption) => setInputDriver2(selectedOption)}
                         />
                     </div>
-
-                    <Button className="mx-auto block mt-16" onClick={handleCompare} buttonStyle="solid" type='submit'>Compare</Button>
 
                     {driver1Data && driver2Data && (
                         <div>

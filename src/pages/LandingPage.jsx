@@ -259,8 +259,9 @@ export function LandingPage() {
     const color = getTeamColor(driver.constructorId);
     return (
       <div
-        className="flex flex-col items-center"
-        style={{ position: "relative" }}
+        className="flex flex-col items-center group transition-transform duration-300 ease-[cubic-bezier(0.17,0.55,0.55,1)] hover:-translate-y-[1rem] cursor-pointer"
+        style={{ position: "relative", "--driver-color": color !== "#ffffff" ? color : "rgba(255,255,255,0.5)" }}
+        onClick={() => navigateToRaceResult(raceData)}
       >
         {/* Headshot */}
         <div
@@ -275,6 +276,7 @@ export function LandingPage() {
           <img
             src={driver.headshot}
             alt={driver.code}
+            className="transition-transform duration-300 ease-[cubic-bezier(0.17,0.55,0.55,1)] group-hover:scale-110"
             onError={(e) => {
               e.target.src = "/images/wildcardicon.png";
             }}
@@ -302,7 +304,7 @@ export function LandingPage() {
         />
         {/* Box front */}
         <div
-          className="flex flex-col items-center justify-center"
+          className="flex flex-col items-center justify-center transition-all duration-300 group-hover:!shadow-[inset_0_-15px_30px_color-mix(in_srgb,var(--driver-color)_40%,transparent)]"
           style={{
             width: "100%",
             minHeight: driver.position === 1 ? "115px" : "95px",

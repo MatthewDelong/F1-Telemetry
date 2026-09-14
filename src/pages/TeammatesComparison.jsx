@@ -111,20 +111,25 @@ export const TeammatesComparison = () => {
     try {
       const response = await axios.get(`${BASE_F1_URL}constructors/${year}/${selectedTeam}.json`);
       const fetchedDrivers = response.data;
-      setDrivers(fetchedDrivers);
+      const sortedDrivers = [...fetchedDrivers].sort((a, b) => {
+        if (a.permanentNumber && !b.permanentNumber) return -1;
+        if (!a.permanentNumber && b.permanentNumber) return 1;
+        return 0;
+      });
+      setDrivers(sortedDrivers);
 
       setTeamColor(teamColors[year]?.[selectedTeam] || '5F0B84');
 
-      if (fetchedDrivers.length > 2) {
-        setSelectedDriver1(fetchedDrivers[0].driverId);
-        setSelectedDriver2(fetchedDrivers[1].driverId);
-        fetchDriverData([fetchedDrivers[0], fetchedDrivers[1]]);
+      if (sortedDrivers.length > 2) {
+        setSelectedDriver1(sortedDrivers[0].driverId);
+        setSelectedDriver2(sortedDrivers[1].driverId);
+        fetchDriverData([sortedDrivers[0], sortedDrivers[1]]);
         setShowDriverSelectors(true);
         setRenderHead(true);
       } else {
-        setSelectedDriver1(fetchedDrivers[0]?.driverId || '');
-        setSelectedDriver2(fetchedDrivers[1]?.driverId || '');
-        fetchDriverData(fetchedDrivers);
+        setSelectedDriver1(sortedDrivers[0]?.driverId || '');
+        setSelectedDriver2(sortedDrivers[1]?.driverId || '');
+        fetchDriverData(sortedDrivers);
         setShowDriverSelectors(false);
         setRenderHead(true);
       }

@@ -139,8 +139,16 @@ export function RaceResultsPage({ selectedYear }) {
                     ))}
                   </ul>
                 ) : (
-                  <div className="flex justify-center -mt-48">
-                    <img alt="" src="/images/podium.png" width={324} />
+                  <div className="flex flex-col items-center justify-center -mt-[5.5rem] mb-[2.5rem] w-full min-h-[16rem] relative">
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/10 to-transparent opacity-30 rounded-[2rem] pointer-events-none"></div>
+                    <div className="flex flex-col items-center justify-center p-12 backdrop-blur-sm bg-white/5 border border-white/10 rounded-3xl shadow-[0_0_20px_rgba(255,255,255,0.03)] w-[90%] max-w-[30rem] z-10 transition-transform duration-300 group-hover:scale-[1.02]">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-[4.2rem] w-[4.2rem] text-brand-blue-400 mb-6 drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span className="uppercase text-neutral-300 tracking-[0.3em] font-display text-xl mb-4 text-center gradient-text-light">Upcoming Race</span>
+                      <div className="h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent my-2 w-[80%]" />
+                      <span className="text-[1.3rem] text-neutral-400 text-center font-medium px-4 mt-2">Data will be available after the race completes.</span>
+                    </div>
                   </div>
                 )}
                 <div className="text-center mb-8 mt-12">
