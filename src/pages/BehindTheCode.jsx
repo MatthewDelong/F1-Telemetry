@@ -52,6 +52,21 @@ export function BehindTheCode() {
             From the real-time OpenF1 integration to the 3D track visualizations and the sleek glassmorphism UI, AI has been an invaluable co-pilot in bringing this vision to life.
           </p>
         </div>
+
+        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-[2.4rem] p-12 sm:p-24 shadow-xl relative overflow-hidden group">
+          <div className="absolute top-0 right-0 p-8 text-white/5 group-hover:text-white/10 transition-colors duration-500">
+            <FontAwesomeIcon icon="file-contract" size="8x" />
+          </div>
+          <h2 className="heading-3 mb-12 flex items-center gap-4 relative z-10">
+            Commercial Use &amp; Permissions
+          </h2>
+          <p className="text-neutral-300 leading-relaxed text-lg sm:text-xl mb-6 relative z-10">
+            F1 Telemetry is built as a non-commercial, open-source passion project. 
+          </p>
+          <p className="text-neutral-300 leading-relaxed text-lg sm:text-xl relative z-10">
+            In accordance with the original F1nsight project terms, if you wish to use this software (or any of the original excluded components) for commercial purposes, you must contact the original creators at <a href="mailto:kothaaditya03@gmail.com" className="text-brand-yellow-500 hover:underline">kothaaditya03@gmail.com</a> or <a href="mailto:antonicommodore@gmail.com" className="text-brand-yellow-500 hover:underline">antonicommodore@gmail.com</a> to negotiate terms. Approval must be granted in writing before proceeding with any commercial activities.
+          </p>
+        </div>
         
         <div className="flex justify-center mt-24">
           <Button to="/" size="md" className="font-display uppercase tracking-widest px-32">
