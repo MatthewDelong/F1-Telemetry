@@ -415,25 +415,26 @@ export const fetchRaceMeetingKeys = async (selectedYear) => {
 // Header
 export const fetchRacesAndSessions = async (selectedYear) => {
   try {
-      // Fetch races
-      const racesData = await fetchWithPersistentCache(`${buildOpenF1Url("/meetings")}?year=${selectedYear}`);
-
-      // Filter out cancelled races for 2026
-      let filteredRacesData = Array.isArray(racesData) ? racesData : [];
+      let filteredRacesData = [];
       
-      // Fallback if OpenF1 API is restricted (returns object) or empty
-      if (filteredRacesData.length === 0) {
-        console.warn("[API] OpenF1 /meetings returned empty or restricted data. Falling back to fetchRaceMeetingKeys.");
-        const meetingKeysObj = await fetchRaceMeetingKeys(selectedYear);
-        if (meetingKeysObj) {
-            filteredRacesData = Object.entries(meetingKeysObj).map(([name, data]) => ({
-                meeting_name: name,
-                meeting_key: data.meeting_key,
-                location: data.location
-            }));
-        }
+      // PRIORITY 1: Fetch from our local/GitHub races.json first (fast, avoids OpenF1 rate limits, uses api_cache/f1 on Ionos)
+      console.log("[API] Prioritizing local races.json for meetings...");
+      const meetingKeysObj = await fetchRaceMeetingKeys(selectedYear);
+      
+      if (meetingKeysObj && Object.keys(meetingKeysObj).length > 0) {
+          filteredRacesData = Object.entries(meetingKeysObj).map(([name, data]) => ({
+              meeting_name: name,
+              meeting_key: data.meeting_key,
+              location: data.location
+          }));
+      } else {
+          // PRIORITY 2: Fallback to OpenF1 if races.json is empty or missing
+          console.warn("[API] Local races.json empty, falling back to OpenF1 /meetings...");
+          const racesData = await fetchWithPersistentCache(`${buildOpenF1Url("/meetings")}?year=${selectedYear}`);
+          filteredRacesData = Array.isArray(racesData) ? racesData : [];
       }
 
+      // Filter out cancelled races for 2026
       if (Number(selectedYear) === 2026) {
         filteredRacesData = filteredRacesData.filter(race => 
           !CANCELLED_RACES_2026.includes(race.meeting_name) &&
@@ -441,20 +442,10 @@ export const fetchRacesAndSessions = async (selectedYear) => {
         );
       }
 
-      // Fetch sessions (using cached sessionsData if possible, but specifically for 'Race' filter)
-      const f1apiMeetingSessionsList = await fetchWithPersistentCache(`${buildOpenF1Url("/sessions")}?year=${selectedYear}&session_name=Race`);
-
-      // Filter races based on meeting_key presence in sessions, ONLY if sessions fetched successfully
-      let filteredRaces = filteredRacesData;
-      if (Array.isArray(f1apiMeetingSessionsList) && f1apiMeetingSessionsList.length > 0) {
-          filteredRaces = filteredRacesData.filter(race => 
-              f1apiMeetingSessionsList.some(session => session.meeting_key === race.meeting_key)
-          );
-      } else {
-          console.warn("[API] OpenF1 /sessions returned empty or restricted data. Skipping session filter.");
-      }
+      // Note: We no longer fetch /sessions from OpenF1 to filter the meetings.
+      // races.json only contains valid races, so we don't need to cross-reference with /sessions anymore, saving an OpenF1 request!
       
-      return filteredRaces;
+      return filteredRacesData;
   } catch (error) {
       console.error('Error fetching data:', error);
       return [];
