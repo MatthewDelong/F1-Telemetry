@@ -17,7 +17,7 @@ const TelemetrySection = ({ layoutMobile, onClick, container }) => {
   const yTextContent = useTransform(
     scrollYProgress,
     [0, 1],
-    layoutMobile ? [0, 0] : [50, -50],
+    layoutMobile ? [0, 0] : [0, -100],
   );
 
   return (
@@ -72,14 +72,16 @@ const TelemetrySection = ({ layoutMobile, onClick, container }) => {
                 </div>
               </div>
             </div>
-            <Button
-              as="button"
-              onClick={onClick}
-              size="sm"
-              className="shadow-xl w-fit"
-            >
-              View Latest F1 Race
-            </Button>
+            <div className="w-full flex justify-center">
+              <Button
+                as="button"
+                onClick={onClick}
+                size="sm"
+                className="shadow-xl w-fit"
+              >
+                View Latest F1 Race
+              </Button>
+            </div>
           </motion.div>
           <motion.div
             className="w-full sm:w-2/3 ar-experience-section__phone z-10 md:ml-[-40px]"

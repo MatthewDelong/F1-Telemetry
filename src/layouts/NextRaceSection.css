@@ -45,19 +45,11 @@
 
 /* ===== NEXT RACE CARD STYLES ===== */
 .f1-next-race {
-  background: linear-gradient(
-    135deg,
-    rgba(10, 10, 10, 0.9) 0%,
-    rgba(20, 20, 20, 0.95) 100%
-  );
-  border: 2px solid #4f63e3;
-  border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
   width: 100%;
   max-width: 1024px; /* Matches max-w-5xl in DatesSection */
   margin: 0 auto;
-  backdrop-filter: blur(10px);
 }
 
 .next-race-header {

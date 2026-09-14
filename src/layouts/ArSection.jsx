@@ -68,10 +68,10 @@ const ArSection = ({ layoutMobile, container }) => {
               </Button>
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8 mt-8 border-t border-white/10 pt-12">
                 <div className="flex-1">
-                  <p className="text-base text-neutral-400 mb-2">
+                  <p className="text-lg sm:text-xl text-neutral-400 mb-2">
                     Scan QR code to go to the full AR Experience on your mobile device
                   </p>
-                  <p className="text-sm text-neutral-500 font-mono">
+                  <p className="text-base sm:text-lg text-neutral-500 font-mono">
                     Don't forget to tag @F1-Telemetry_uk #F1-Telemetry_uk
                   </p>
                 </div>

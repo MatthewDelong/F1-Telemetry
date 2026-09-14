@@ -62,8 +62,8 @@ export function ViewLatestRaceButton({
         className={classNames(
           "rounded px-24 py-8 text-white transition-all duration-200 font-display",
           meetingKey
-            ? "max-sm:bg-brand-blue-500 bg-glow-dark"
-            : "bg-glow-dark/60 cursor-not-allowed",
+            ? "bg-black/40 backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:bg-black/60"
+            : "bg-black/20 backdrop-blur-sm border border-white/5 cursor-not-allowed",
         )}
         style={
           isHovered

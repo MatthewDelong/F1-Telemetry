@@ -432,19 +432,21 @@ const NextRaceSection = () => {
   return (
     <section className="min-h-screen snap-start flex flex-col items-center justify-center px-16 bg-black relative pt-[100px] pb-16 overflow-hidden border-t border-neutral-900">
       {/* Background with blurred image and gradient overlay */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#4f63e3] rounded-full blur-[150px] opacity-20"></div>
+        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-[#00d2be] rounded-full blur-[150px] opacity-20"></div>
+        
         <img
-          src="/images/bg.png"
-          className="w-full h-full object-cover opacity-40 mix-blend-overlay"
+          src="/images/plusPatterns.png"
+          className="absolute inset-0 w-full h-full object-cover opacity-10 mix-blend-screen"
           alt=""
         />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.8)_100%)]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-60" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-80" />
       </div>
 
       <div className="max-w-5xl w-full mx-auto z-10">
         <motion.div
-          className="f1-next-race"
+          className="f1-next-race bg-black/40 backdrop-blur-md border border-white/10 rounded-[2.4rem] shadow-[0_0_40px_rgba(255,255,255,0.05)] px-4 py-8 sm:p-12"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

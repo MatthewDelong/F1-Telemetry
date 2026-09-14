@@ -309,13 +309,16 @@ export function LandingPage() {
             width: "100%",
             minHeight: driver.position === 1 ? "115px" : "95px",
             background: color !== "#ffffff" 
-              ? `radial-gradient(circle at 50% 100%, color-mix(in srgb, ${color} 30%, transparent) 0%, rgba(0,0,0,0) 80%), linear-gradient(180deg, #2a2a2a 0%, #0a0a0a 100%)`
-              : "linear-gradient(180deg, #2a2a2a 0%, #0a0a0a 100%)",
+              ? `radial-gradient(circle at 50% 100%, color-mix(in srgb, ${color} 30%, transparent) 0%, rgba(0,0,0,0) 80%), linear-gradient(180deg, rgba(42,42,42,0.4) 0%, rgba(10,10,10,0.6) 100%)`
+              : "linear-gradient(180deg, rgba(42,42,42,0.4) 0%, rgba(10,10,10,0.6) 100%)",
             boxShadow: color !== "#ffffff" 
               ? `inset 0 -5px 15px color-mix(in srgb, ${color} 20%, transparent)` 
               : undefined,
-            borderLeft: "1px solid rgba(255,255,255,0.05)",
-            borderRight: "1px solid rgba(255,255,255,0.05)",
+            borderLeft: "1px solid rgba(255,255,255,0.1)",
+            borderRight: "1px solid rgba(255,255,255,0.1)",
+            borderBottom: "1px solid rgba(255,255,255,0.1)",
+            borderRadius: "0 0 12px 12px",
+            backdropFilter: "blur(12px)",
             padding: "8px 4px",
           }}
         >
@@ -518,18 +521,18 @@ export function LandingPage() {
           }}
         />
 
-        <div className="mx-auto text-center px-16 relative z-10">
+        <div className="mx-auto text-center px-8 sm:px-16 py-12 relative z-10 bg-black/40 backdrop-blur-md border border-white/10 rounded-[2.4rem] shadow-[0_0_40px_rgba(255,255,255,0.05)] w-[90%] max-w-4xl">
           <h1 className="heading-1 mb-16 leading-none">
             Read the Race. <br />
             Not Just the Results.
           </h1>
-          <p className="text-neutral-300 text-3xl mb-24 mx-auto leading-none flex flex-col gap-12">
+          <p className="text-neutral-300 text-base sm:text-3xl mb-12 sm:mb-24 mx-auto leading-tight sm:leading-none flex flex-col gap-4 sm:gap-12">
             <span>
               Telemetry, driver battles, and full race breakdowns for F1
             </span>
             <span>plus complete results for F2 and F1 Academy</span>
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-12 mt-48 sm:mt-96">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 mt-12 sm:mt-24">
             <ViewLatestRaceButton
               meetingKey={raceData?.meetingKey}
               driverCodes={topThreeDriverCodes}
