@@ -2,8 +2,9 @@ name: F1 Data Auto-Update
 
 on:
   schedule:
-    # Runs at 09:00 UTC every Monday (10:00 AM BST / 9:00 AM GMT)
-    - cron: '0 9 * * 1'
+    # Runs at 09:15 UTC every Monday (10:15 AM BST / 9:15 AM GMT)
+    # Using an odd minute (:15) prevents GitHub from delaying or dropping the job due to top-of-the-hour server overload
+    - cron: '15 9 * * 1'
   
   # Allows you to trigger this manually from the Actions tab in GitHub
   workflow_dispatch: 
