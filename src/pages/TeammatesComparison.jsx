@@ -508,7 +508,7 @@ const driverLockup = (driverCode, driverId, driverName) => {
             e.target.src = fallbackChain[nextStep];
           }
         }}
-        className={classNames("w-[10rem] md:w-[15rem] object-contain -mt-32 relative z-[1]", {"group-[:first-of-type]:scale-x-[-1]" : year <= 2023 })}
+        className={classNames("w-[10rem] md:w-[15rem] max-h-[10rem] md:max-h-[15rem] object-contain object-bottom -mt-32 relative z-[1]", {"group-[:first-of-type]:scale-x-[-1]" : year <= 2023 })}
       />
       <div className="absolute top-full leading-none w-full mt-8 relative z-[1]">
         <div className="text-sm tracking-sm uppercase text-gradient-light">{driverSplitName[0]}</div>

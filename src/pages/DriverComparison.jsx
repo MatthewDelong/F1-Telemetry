@@ -252,7 +252,7 @@ export function DriverComparison(){
         return (
           <img 
             alt="Driver" 
-            className="w-[15rem] md:w-[22rem] object-contain object-bottom"
+            className="w-[15rem] md:w-[22rem] max-h-[15rem] md:max-h-[22rem] object-contain object-bottom"
             src={imageUrl}
             data-fallback-step="0"
             onError={handleError}
