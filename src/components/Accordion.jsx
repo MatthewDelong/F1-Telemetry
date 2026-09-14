@@ -1,3 +1,4 @@
+import { Button } from "./Button";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FaChevronDown } from "react-icons/fa";
@@ -10,7 +11,7 @@ const Accordion = ({ title, children, className, contentClasses, titleClassName,
     <>
     <div className={classNames(className, "")}>
       {/* Header */}
-      <button
+      <Button
         className={classNames("w-full flex justify-between items-center py-4 px-8 tracking-sm uppercase hover:text-brand-blue-300 transition-colors duration-300", titleClassName)}
         style={{ letterSpacing: '0.2rem', color: 'rgba(255, 255, 255, 0.7)' }}
         onClick={() => setIsOpen(!isOpen)}
@@ -19,7 +20,7 @@ const Accordion = ({ title, children, className, contentClasses, titleClassName,
         <FaChevronDown
           className={`transform transition-transform duration-300 ${isOpen ? "rotate-180 text-brand-blue-400" : "text-neutral-500"}`}
         />
-      </button>
+      </Button>
 
       {/* Collapsible Content */}
       <motion.div

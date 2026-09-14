@@ -1,3 +1,4 @@
+import { Button } from "./Button";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect } from 'react';
 
@@ -36,9 +37,9 @@ export const Modal = ({ isOpen, onClose, children, title, footer }) => {
                             </h2>
                         )}
                     </div>
-                    <button className="modal-close p-8" onClick={onClose}>
+                    <Button className="modal-close p-8" onClick={onClose}>
                         <FontAwesomeIcon icon="xmark" className="fa-lg" />
-                    </button>
+                    </Button>
                 </div>
                 <div 
                     className={classNames(

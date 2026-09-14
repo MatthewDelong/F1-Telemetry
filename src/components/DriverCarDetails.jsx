@@ -1,3 +1,4 @@
+import { Button } from "./Button";
 import React from "react";
 import classNames from "classnames";
 import { nationalityToFlag } from "../utils/nationalityToFlag";
@@ -74,12 +75,12 @@ const DriverCarDetails = ({ driverDetails, speedUnit, selectedDriverData, onTogg
                     </p>
                     <div className="flex items-center gap-8 uppercase text-[1rem] tracking-xs opacity-60">
                         {displayUnit}
-                        <button 
+                        <Button 
                             onClick={onToggleUnit}
                             className="bg-white/10 hover:bg-white/20 px-6 py-2 rounded text-[8px] transition-colors border border-white/5"
                         >
                             Toggle
-                        </button>
+                        </Button>
                     </div>
                     <p
                         className={classNames(

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import { fetchWithPersistentCache } from "../utils/api";
 import { buildOpenF1Url } from "../config/openf1";
+import { Button } from "./Button";
 
 export function WeatherDetails({ sessionKey, speedUnit = "mph" }) {
   const [weatherData, setWeatherData] = useState(null);
@@ -62,7 +63,7 @@ export function WeatherDetails({ sessionKey, speedUnit = "mph" }) {
           <span className="text-neutral-400 text-sm bg-neutral-900 px-8 py-2 rounded-full border border-neutral-800">{condition}</span>
         </div>
         <div className="flex bg-neutral-900 rounded-sm p-[2px] border border-neutral-800">
-          <button
+          <Button
             onClick={() => setTempUnit("C")}
             className={classNames("px-8 py-4 rounded-sm text-xs font-display transition-all leading-none", {
               "bg-white text-black": tempUnit === "C",
@@ -70,8 +71,8 @@ export function WeatherDetails({ sessionKey, speedUnit = "mph" }) {
             })}
           >
             °C
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => setTempUnit("F")}
             className={classNames("px-8 py-4 rounded-sm text-xs font-display transition-all leading-none", {
               "bg-white text-black": tempUnit === "F",
@@ -79,7 +80,7 @@ export function WeatherDetails({ sessionKey, speedUnit = "mph" }) {
             })}
           >
             °F
-          </button>
+          </Button>
         </div>
       </div>
       <div className="p-24">

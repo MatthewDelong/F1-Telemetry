@@ -45,6 +45,7 @@ const REFRESH_INTERVAL = 10000; // 10 seconds
 const years = getAvailableYears();
 
 import "./LiveDashboard.css";
+import { Button } from "../../components/Button";
 
 export default function LiveDashboard() {
   // ===== State =====
@@ -423,35 +424,35 @@ export default function LiveDashboard() {
             <span className="refresh-countdown">{countdown}s</span>
           </div>
           <div style={{ display: 'flex', gap: '4px' }}>
-            <button
+            <Button
               className="btn btn-sm"
               onClick={() => setUseCelsius(!useCelsius)}
               title="Toggle Temperature Unit"
             >
               🌡️ {useCelsius ? "°C" : "°F"}
-            </button>
-            <button
+            </Button>
+            <Button
               className="btn btn-sm"
               onClick={() => setUseKmh(!useKmh)}
               title="Toggle Speed Unit"
             >
               💨 {useKmh ? "km/h" : "mph"}
-            </button>
+            </Button>
           </div>
-          <button
+          <Button
             className="btn btn-sm"
             onClick={() => setAutoRefresh(!autoRefresh)}
             title={autoRefresh ? "Pause auto-refresh" : "Resume auto-refresh"}
           >
             {autoRefresh ? "⏸" : "▶️"} {autoRefresh ? "Auto" : "Paused"}
-          </button>
-          <button
+          </Button>
+          <Button
             className="btn btn-sm btn-primary"
             onClick={loadData}
             title="Refresh now"
           >
             🔄 Refresh
-          </button>
+          </Button>
           <div className="connection-status">
             <span className={`connection-dot ${connectionStatus}`} />
             <span style={{ color: "var(--text-tertiary)" }}>
@@ -545,63 +546,63 @@ export default function LiveDashboard() {
         <div className="content-area">
           {/* Tabs */}
           <div className="tabs">
-            <button
+            <Button
               className={`tab ${activeTab === "timing" ? "active" : ""}`}
               onClick={() => setActiveTab("timing")}
             >
               ⏱️ Live Timing
-            </button>
-            <button
+            </Button>
+            <Button
               className={`tab ${activeTab === "gaps" ? "active" : ""}`}
               onClick={() => setActiveTab("gaps")}
             >
               📊 Gaps &amp; Intervals
-            </button>
-            <button
+            </Button>
+            <Button
               className={`tab ${activeTab === "charts" ? "active" : ""}`}
               onClick={() => setActiveTab("charts")}
             >
               📈 Charts
-            </button>
-            <button
+            </Button>
+            <Button
               className={`tab ${activeTab === "strategy" ? "active" : ""}`}
               onClick={() => setActiveTab("strategy")}
             >
               🔄 Strategy
-            </button>
-            <button
+            </Button>
+            <Button
               className={`tab ${activeTab === "racecontrol" ? "active" : ""}`}
               onClick={() => setActiveTab("racecontrol")}
             >
               📡 Race Control
-            </button>
-            <button
+            </Button>
+            <Button
               className={`tab ${activeTab === "standings" ? "active" : ""}`}
               onClick={() => setActiveTab("standings")}
             >
               🏆 Standings
-            </button>
-            <button
+            </Button>
+            <Button
               className={`tab ${activeTab === "teamradio" ? "active" : ""}`}
               onClick={() => setActiveTab("teamradio")}
             >
               📻 Team Radio
-            </button>
+            </Button>
             {isLive && (
-              <button
+              <Button
                 className={`tab ${activeTab === "telemetry" ? "active" : ""}`}
                 onClick={() => setActiveTab("telemetry")}
               >
                 🏎️ Telemetry
-              </button>
+              </Button>
             )}
             {isLive && (
-              <button
+              <Button
                 className={`tab ${activeTab === "trackmap" ? "active" : ""}`}
                 onClick={() => setActiveTab("trackmap")}
               >
                 🗺️ Track Map
-              </button>
+              </Button>
             )}
           </div>
 
@@ -635,13 +636,13 @@ export default function LiveDashboard() {
                 >
                   {dataError}
                 </div>
-                <button
+                <Button
                   className="btn btn-primary"
                   onClick={loadData}
                   style={{ marginTop: "1rem" }}
                 >
                   Try Again
-                </button>
+                </Button>
               </div>
             </div>
           )}

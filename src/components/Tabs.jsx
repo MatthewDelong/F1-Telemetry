@@ -1,3 +1,4 @@
+import { Button } from "./Button";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import classNames from "classnames";
 import "./Tabs.scss";
@@ -58,7 +59,7 @@ export const Tabs = ({
                 role="tablist"
             >
                 {visibleTabs.map((tab) => (
-                    <button
+                    <Button
                         key={tab.id}
                         data-tab-id={tab.id}
                         type="button"
@@ -71,7 +72,7 @@ export const Tabs = ({
                         onClick={() => setActiveTabId(tab.id)}
                     >
                         {tab.label}
-                    </button>
+                    </Button>
                 ))}
                 <div
                     className="glass-tab-indicator"

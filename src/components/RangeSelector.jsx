@@ -40,13 +40,13 @@ export const RangeSelector = (props) => {
 
     return (
         <><div className={classNames(className,"flex flex-col items-center z-[2] relative bg-glow-dark p-16 rounded-lg mb-48")}>
-            <button 
+            <Button 
                 onClick={toggleOpen}
                 className="flex items-center gap-8 text-lg font-semibold"
             >
                 <span>Select Range</span>
                 {isOpen ? <FaChevronUp /> : <FaChevronDown />}
-            </button>
+            </Button>
             
             <div 
                 className={`transition-all duration-300 ease-in-out ${isOpen ? 'max-h-screen' : 'max-h-[0] overflow-hidden'}`}

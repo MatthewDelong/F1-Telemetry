@@ -1,3 +1,4 @@
+import { Button } from "./Button";
 import React, { useRef, useEffect, useState } from "react";
 import classNames from "classnames";
 import * as THREE from "three";
@@ -479,7 +480,7 @@ export const ThreeCanvas = ({
 
       {/* Floating Track Color Toggle */}
       <div className="absolute top-8 left-1/2 -translate-x-1/2 z-[60]">
-        <button
+        <Button
           onClick={() =>
             setTrackColorMode((prev) =>
               prev === "sectors" ? "heatmap" : "sectors",
@@ -491,7 +492,7 @@ export const ThreeCanvas = ({
           {trackColorMode === "sectors"
             ? "Switch to Speed Heatmap"
             : "Switch to Sector Colors"}
-        </button>
+        </Button>
       </div>
 
       {driverSelected && (

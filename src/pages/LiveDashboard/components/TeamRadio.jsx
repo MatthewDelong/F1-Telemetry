@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { formatTime, getTeamColor } from '../utils/f1Utils';
+import { Button } from "../../../components/Button";
 
 export default function TeamRadio({ radios, drivers }) {
   const [errorMsg, setErrorMsg] = useState(null);
@@ -70,13 +71,13 @@ export default function TeamRadio({ radios, drivers }) {
               </div>
 
               <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-                <button 
+                <Button 
                   className="btn btn-secondary" 
                   onClick={() => handlePlay(radio.recording_url?.trim())}
                   style={{ padding: '6px 12px', display: 'flex', alignItems: 'center', gap: '6px', minWidth: '80px', justifyContent: 'center' }}
                 >
                   <span>▶️</span> Play
-                </button>
+                </Button>
               </div>
             </div>
           );

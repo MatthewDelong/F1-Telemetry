@@ -1,3 +1,4 @@
+import { Button } from "../components/Button";
 import React, { useEffect, useState, useRef } from "react";
 import "@google/model-viewer/";
 import classNames from "classnames";
@@ -147,7 +148,7 @@ export const ARViewer = () => {
     imageAlt,
     label,
   }) => (
-    <button
+    <Button
       style={{ backgroundColor }}
       className={classNames(
         "text-white p-2 rounded inline-flex flex-col items-center text-center bg-glow-dark mt-16 max-md:w-[45%] group transition-transform duration-300 hover:scale-95",
@@ -162,7 +163,7 @@ export const ARViewer = () => {
       <p className="font-display text-2xl transition-transform duration-300 group-hover:scale-95">
         {label}
       </p>
-    </button>
+    </Button>
   );
 
   useEffect(() => {
@@ -228,7 +229,7 @@ export const ARViewer = () => {
             <div className="progress-bar" slot="progress-bar">
               <div className="update-bar" />
             </div>
-            <button
+            <Button
               slot="ar-button"
               className="ar-button shadow-md absolute left-1/2 translate-x-[-50%] w-[90%] flex justify-center items-center rounded-b-lg"
               style={{
@@ -239,7 +240,7 @@ export const ARViewer = () => {
             >
               <img src={"/APX/3diconWhite.png"} alt="AR icon" />
               Launch AR
-            </button>
+            </Button>
           </model-viewer>
 
           <div className="ar-badge leading-none text-sm">
@@ -264,7 +265,7 @@ export const ARViewer = () => {
                 zIndex: 50,
               }}
             >
-              <button
+              <Button
                 className="w-full flex justify-center items-center py-8 mb-8 group"
                 onClick={() => {
                   setTeamSelectionOpen(!teamSelectionOpen);
@@ -288,7 +289,7 @@ export const ARViewer = () => {
                     { "rotate-180": !teamSelectionOpen },
                   )}
                 />
-              </button>
+              </Button>
 
               <div className="team-stats flex flex-col gap-8 text-left pb-16">
                 <div className="divider-glow-dark w-full mb-8" />
@@ -312,7 +313,7 @@ export const ARViewer = () => {
                     const isSelected = selectedTeamName === teamItem.name;
 
                     return (
-                      <button
+                      <Button
                         key={teamItem.name}
                         type="button"
                         onClick={() => handleTeamSelection(teamItem.name)}
@@ -325,7 +326,7 @@ export const ARViewer = () => {
                         style={{ backgroundColor: teamButtonColor }}
                       >
                         {teamItem.name.replace(/_/g, " ")}
-                      </button>
+                      </Button>
                     );
                   })}
                 </div>

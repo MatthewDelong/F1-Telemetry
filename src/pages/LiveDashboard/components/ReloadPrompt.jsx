@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 import './ReloadPrompt.css';
+import { Button } from "../../../components/Button";
 
 function ReloadPrompt() {
   const {
@@ -34,13 +35,13 @@ function ReloadPrompt() {
         </div>
         <div className="ReloadPrompt-buttons">
           {needRefresh && (
-            <button className="ReloadPrompt-toast-button btn-primary" onClick={() => updateServiceWorker(true)}>
+            <Button className="ReloadPrompt-toast-button btn-primary" onClick={() => updateServiceWorker(true)}>
               Reload
-            </button>
+            </Button>
           )}
-          <button className="ReloadPrompt-toast-button" onClick={() => close()}>
+          <Button className="ReloadPrompt-toast-button" onClick={() => close()}>
             Close
-          </button>
+          </Button>
         </div>
       </div>
     </div>

@@ -1,3 +1,4 @@
+import { Button } from "../components/Button";
 import classNames from "classnames";
 import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -918,7 +919,7 @@ export function RacePage() {
   const driverButtons = (layoutSmall) => (
     <ul className="flex flex-col max-sm:p-8 sm:p-16">
       {fullRaceResults.map((result, index) => (
-        <button
+        <Button
           key={index}
           className="block w-full mb-2 sm:mb-2 max-sm:mb-8 relative transition-all"
           onClick={() => {
@@ -942,7 +943,7 @@ export function RacePage() {
             isRace={true}
             speedUnit={speedUnit}
           />
-        </button>
+        </Button>
       ))}
     </ul>
   );
@@ -1080,7 +1081,7 @@ export function RacePage() {
                 title="Playback Speed"
                 contentClasses="flex flex-col gap-8 items-start"
               >
-                <button
+                <Button
                   className={classNames("tracking-sm uppercase block", {
                     "text-brand-blue-300": speedFactor !== 4,
                   })}
@@ -1090,8 +1091,8 @@ export function RacePage() {
                   }}
                 >
                   Normal
-                </button>
-                <button
+                </Button>
+                <Button
                   className={classNames("tracking-sm uppercase block", {
                     "text-brand-blue-300": speedFactor !== 1.5,
                   })}
@@ -1101,8 +1102,8 @@ export function RacePage() {
                   }}
                 >
                   Push Push
-                </button>
-                <button
+                </Button>
+                <Button
                   className={classNames("tracking-sm uppercase block", {
                     "text-brand-blue-300": speedFactor !== 0.2,
                   })}
@@ -1112,13 +1113,13 @@ export function RacePage() {
                   }}
                 >
                   {parseInt(year) >= 2026 ? "ERS Boost" : "DRS"}
-                </button>
+                </Button>
               </Accordion>
               <Accordion
                 title="Camera Angle"
                 contentClasses="flex flex-col gap-8 items-start"
               >
-                <button
+                <Button
                   className={classNames("tracking-sm uppercase block", {
                     "text-brand-blue-300": !haloView && !topFollowView,
                   })}
@@ -1129,8 +1130,8 @@ export function RacePage() {
                   }}
                 >
                   Sky View
-                </button>
-                <button
+                </Button>
+                <Button
                   className={classNames("tracking-sm uppercase block", {
                     "text-brand-blue-300": haloView,
                   })}
@@ -1141,8 +1142,8 @@ export function RacePage() {
                   }}
                 >
                   Halo View
-                </button>
-                <button
+                </Button>
+                <Button
                   className={classNames("tracking-sm uppercase block", {
                     "text-brand-blue-300": topFollowView,
                   })}
@@ -1153,7 +1154,7 @@ export function RacePage() {
                   }}
                 >
                   Top Follow View
-                </button>
+                </Button>
               </Accordion>
             </>
           )}
@@ -1162,7 +1163,7 @@ export function RacePage() {
             title="Units"
             contentClasses="flex flex-col gap-8 items-start"
           >
-            <button
+            <Button
               className={classNames("tracking-sm uppercase block", {
                 "text-brand-blue-300": speedUnit === "kph",
               })}
@@ -1172,8 +1173,8 @@ export function RacePage() {
               }}
             >
               KPH
-            </button>
-            <button
+            </Button>
+            <Button
               className={classNames("tracking-sm uppercase block", {
                 "text-brand-blue-300": speedUnit === "mph",
               })}
@@ -1183,7 +1184,7 @@ export function RacePage() {
               }}
             >
               MPH
-            </button>
+            </Button>
           </Accordion>
         </Drawer>
 
@@ -1213,7 +1214,7 @@ export function RacePage() {
                 {driverSelected && (
                   <div className="flex items-center bg-gradient-to-r from-black/80 to-black/40 border border-white/10 rounded-[2rem] p-2 backdrop-blur-2xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] pointer-events-auto">
                     {/* Play/Pause Combo */}
-                    <button
+                    <Button
                       className={classNames(
                         "flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-full font-display uppercase tracking-widest text-xs transition-all duration-300 border border-transparent",
                         !isPaused
@@ -1224,13 +1225,13 @@ export function RacePage() {
                     >
                       <FontAwesomeIcon icon={isPaused ? "play" : "pause"} className="text-sm" />
                       <span>{isPaused ? "Play" : "Live"}</span>
-                    </button>
+                    </Button>
 
                     <div className="w-[1px] h-6 sm:h-8 bg-white/10 mx-2 sm:mx-4"></div>
 
                     {/* Tools */}
                     <div className="flex items-center gap-1 sm:gap-2 pr-1 sm:pr-2">
-                      <button
+                      <Button
                         className={classNames(
                           "flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 rounded-full transition-all duration-300 font-display uppercase tracking-widest text-[10px]",
                           showCameraControls
@@ -1241,8 +1242,8 @@ export function RacePage() {
                       >
                         <FontAwesomeIcon icon="camera-rotate" className="text-sm" />
                         <span className="max-sm:hidden">Camera</span>
-                      </button>
-                      <button
+                      </Button>
+                      <Button
                         className={classNames(
                           "flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 rounded-full transition-all duration-300 font-display uppercase tracking-widest text-[10px]",
                           showCarDetails
@@ -1253,23 +1254,23 @@ export function RacePage() {
                       >
                         <FontAwesomeIcon icon="gauge" className="text-sm" />
                         <span className="max-sm:hidden">Telemetry</span>
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 )}
                 <div className="flex items-center gap-4 sm:gap-6 pointer-events-auto">
-                  <button
+                  <Button
                     className="w-10 h-10 sm:w-12 sm:h-12 bg-black/40 border border-white/10 text-white/50 hover:bg-white/10 hover:text-white rounded-xl backdrop-blur-md flex items-center justify-center transition-all shadow-lg sm:hidden"
                     onClick={() => setDriverDrawerOpen(true)}
                   >
                     <FontAwesomeIcon icon="user" className="text-lg sm:text-xl" />
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     className="w-10 h-10 sm:w-12 sm:h-12 bg-black/40 border border-white/10 text-white/50 hover:bg-white/10 hover:text-white rounded-xl backdrop-blur-md flex items-center justify-center transition-all shadow-lg"
                     onClick={() => setIsDrawerOpen(true)}
                   >
                     <FontAwesomeIcon icon="gear" className="text-lg sm:text-xl" />
-                  </button>
+                  </Button>
                 </div>
               </div>
 
@@ -1286,7 +1287,7 @@ export function RacePage() {
               {/* Session Selectors */}
               <div className="flex gap-4 sm:gap-6 pointer-events-auto">
                 {hasRaceSession && (
-                  <button
+                  <Button
                     className={classNames(
                       "px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-display text-xs sm:text-sm tracking-widest uppercase transition-all",
                       selectedSession === "Race"
@@ -1296,10 +1297,10 @@ export function RacePage() {
                     onClick={() => setSelectedSession("Race")}
                   >
                     Race
-                  </button>
+                  </Button>
                 )}
                 {hasQualifyingSession && (
-                  <button
+                  <Button
                     className={classNames(
                       "px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-display text-xs sm:text-sm tracking-widest uppercase transition-all",
                       selectedSession === "Qualifying"
@@ -1309,10 +1310,10 @@ export function RacePage() {
                     onClick={() => setSelectedSession("Qualifying")}
                   >
                     Qualifying
-                  </button>
+                  </Button>
                 )}
                 {hasSprintSession && (
-                  <button
+                  <Button
                     className={classNames(
                       "px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-display text-xs sm:text-sm tracking-widest uppercase transition-all",
                       selectedSession === "Sprint"
@@ -1322,7 +1323,7 @@ export function RacePage() {
                     onClick={() => setSelectedSession("Sprint")}
                   >
                     Sprint
-                  </button>
+                  </Button>
                 )}
               </div>
             </div>
@@ -1388,13 +1389,13 @@ export function RacePage() {
 
       <div className="race-page__scroll-container">
         {selectedSession === "Qualifying" && (
-          <button
+          <Button
             className="text-xs tracking-xs uppercase mb-16 bg-glow rounded-sm p-4 ml-8"
             onClick={() => setSelectedSession("Race")}
           >
             <FontAwesomeIcon icon="chevron-left" className="mr-16" />
             race
-          </button>
+          </Button>
         )}
         <div className="mb-40 flex flex-col gap-4 items-center uppercase">
           <p className="text-sm tracking-sm">{year}</p>
@@ -1457,7 +1458,7 @@ export function RacePage() {
                 />
               )}
               <div className="flex flex-row gap-4 sm:hidden max-sm:mb-16">
-                <button
+                <Button
                   className={classNames(
                     "flex-1 text-center py-[10px] transition-all rounded-sm font-display text-[13px] uppercase tracking-wider leading-none",
                     showStartingGrid
@@ -1467,8 +1468,8 @@ export function RacePage() {
                   onClick={() => setShowStartingGrid(true)}
                 >
                   Starting Grid
-                </button>
-                <button
+                </Button>
+                <Button
                   className={classNames(
                     "flex-1 text-center py-[10px] transition-all rounded-sm font-display text-[13px] uppercase tracking-wider leading-none",
                     !showStartingGrid
@@ -1478,12 +1479,12 @@ export function RacePage() {
                   onClick={() => setShowStartingGrid(false)}
                 >
                   Race Results
-                </button>
+                </Button>
               </div>
               <div className="max-sm:hidden flex justify-center">
-                <button className="text-neutral-400 font-display sm:text-xl sm:mb-16 leading-none">
+                <Button className="text-neutral-400 font-display sm:text-xl sm:mb-16 leading-none">
                   Starting Grid
-                </button>
+                </Button>
               </div>
               <div className="flex flex-col sm:hidden mb-24 w-full">
                 {showStartingGrid ? (

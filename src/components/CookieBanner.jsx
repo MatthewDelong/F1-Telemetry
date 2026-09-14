@@ -1,3 +1,4 @@
+import { Button } from "./Button";
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { initializeGoogleAnalytics } from "../utils/analytics";
@@ -46,12 +47,12 @@ const CookieBanner = () => {
           </p>
         </div>
         <div className="privacy-actions">
-          <button onClick={handleReject} className="privacy-btn reject">
+          <Button onClick={handleReject} className="privacy-btn reject">
             Reject
-          </button>
-          <button onClick={handleAccept} className="privacy-btn accept">
+          </Button>
+          <Button onClick={handleAccept} className="privacy-btn accept">
             Accept
-          </button>
+          </Button>
         </div>
       </div>
     </div>,
