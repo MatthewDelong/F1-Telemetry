@@ -321,6 +321,7 @@ Contributions are welcome! Whether it's improving the codebase, adding features,
 
 ## Acknowledgements
 
+- **Inspiration:** This project was originally inspired by and built as a successor to the [F1nsight](https://github.com/adityakotha03/F1nsight) project by [Aditya Kotha](https://github.com/adityakotha03).
 - Special thanks to data providers and API service [OpenF1](https://openf1.org/) that enable access to current and historical F1 data.
 - [Flagpedia](https://flagpedia.net/) — High-quality country flag WebP images used for race locations and driver nationalities.
 - This work is based on "basic Lowpoly F1 Car V1" by arthihalder, available under a Creative Commons Attribution 4.0 International license. [View the model on Sketchfab](https://sketchfab.com/3d-models/basic-lowpoly-f1-car-v1-b4c6a1cfe0154f4d86b39ff3b7f955a1). License details can be found at [CC-BY-4.0](http://creativecommons.org/licenses/by/4.0/).
@@ -329,7 +330,7 @@ Contributions are welcome! Whether it's improving the codebase, adding features,
 
 ## License
 
-This project is available under a [custom open-source license](LICENSE.md) — free for non-commercial use with attribution.
+This project is available under the [MIT License](LICENSE).
 
 ---
 

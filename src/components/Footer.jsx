@@ -183,6 +183,14 @@ export const Footer = ({ className }) => {
                   >
                     TRADEMARKS
                   </Link>
+                  <Link
+                    to="/behind-the-code"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-brand-yellow-500 hover:scale-105 transition-all duration-300"
+                  >
+                    BEHIND THE CODE
+                  </Link>
                 </div>
               </div>
             </div>

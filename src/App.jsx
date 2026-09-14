@@ -38,6 +38,7 @@ import {
   Trademarks,
   AdminPage,
   LiveDashboard,
+  BehindTheCode,
 } from "./pages";
 import { ScrollToTop } from "./utils/ScrollToTop";
 import { getCurrentYear } from "./utils/currentYear";
@@ -285,6 +286,7 @@ function MainContent({
           <Route path="/social-media" element={<SocialMedia />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/trademarks" element={<Trademarks />} />
+          <Route path="/behind-the-code" element={<BehindTheCode />} />
           <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </div>
