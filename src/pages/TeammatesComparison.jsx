@@ -489,30 +489,34 @@ const driverLockup = (driverCode, driverId, driverName) => {
   fallbackChain.push('/images/2024/drivers/default_driver.png');
   
   return (
-    <div 
-      className="flex justify-center relative text-center group rounded-[2.4rem] px-16 bg-glow-dark border border-white/5 shadow-xl hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] transition-all duration-300"
-    >
+    <div>
       <div 
-          className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-20 rounded-[2.4rem] overflow-hidden"
-          style={{ background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 70%)` }}
-      />
-      <img 
-        alt="" 
-        src={fallbackChain[0]}
-        data-fallback-step="0"
-        onError={(e) => {
-          const currentStep = parseInt(e.target.dataset.fallbackStep || '0', 10);
-          const nextStep = currentStep + 1;
-          if (nextStep < fallbackChain.length) {
-            e.target.dataset.fallbackStep = nextStep;
-            e.target.src = fallbackChain[nextStep];
-          }
-        }}
-        className={classNames("w-[10rem] md:w-[15rem] max-h-[10rem] md:max-h-[15rem] object-contain object-bottom -mt-32 relative z-[1]", {"group-[:first-of-type]:scale-x-[-1]" : year <= 2023 })}
-      />
-      <div className="absolute top-full leading-none w-full mt-8 relative z-[1]">
-        <div className="text-sm tracking-sm uppercase text-gradient-light">{driverSplitName[0]}</div>
-        <div className="font-display text-gradient-light">{driverSplitName[1]}</div>
+        className="flex flex-col items-center max-w-[16rem] md:max-w-[25rem] bg-glow-dark border border-white/5 rounded-[2.4rem] shadow-xl hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] transition-all duration-300 relative group"
+      >
+        <div 
+            className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-20 rounded-[2.4rem] overflow-hidden"
+            style={{ background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 70%)` }}
+        />
+        <div className="-mt-32 z-[1] relative">
+          <img 
+            alt="" 
+            src={fallbackChain[0]}
+            data-fallback-step="0"
+            onError={(e) => {
+              const currentStep = parseInt(e.target.dataset.fallbackStep || '0', 10);
+              const nextStep = currentStep + 1;
+              if (nextStep < fallbackChain.length) {
+                e.target.dataset.fallbackStep = nextStep;
+                e.target.src = fallbackChain[nextStep];
+              }
+            }}
+            className={classNames("w-[15rem] md:w-[22rem] max-h-[15rem] md:max-h-[22rem] object-contain object-bottom", {"group-[:first-of-type]:scale-x-[-1]" : year <= 2023 })}
+          />
+        </div>
+        <div className="constructor-stand bg-glow-md py-8 md:py-16 mt-4 w-[110%] text-center relative z-[1]">
+          <p className="gradient-text-light uppercase tracking-xs -mb-8">{driverSplitName[0]}</p>
+          <h2 className="font-display md:text-[3.2rem] gradient-text-white">{driverSplitName[1]}</h2>
+        </div>
       </div>
     </div>
   )
