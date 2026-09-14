@@ -109,7 +109,7 @@ export const TeammatesComparison = () => {
 
   const submit = async (selectedTeam) => {
     try {
-      const response = await axios.get(`${BASE_F1_URL}constructors/${year}/${selectedTeam}.json`);
+      const response = await axios.get(`${BASE_F1_URL}constructors/${year}/${selectedTeam}.json?refresh=true&v=3`);
       const fetchedDrivers = response.data;
       const sortedDrivers = [...fetchedDrivers].sort((a, b) => {
         if (a.permanentNumber && !b.permanentNumber) return -1;
