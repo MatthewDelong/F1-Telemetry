@@ -1,4 +1,3 @@
-import { Button } from "../components/Button";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -136,20 +135,20 @@ export const AdminPage = () => {
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-4xl font-bold">Admin Dashboard</h1>
         <div className="flex gap-4">
-          <Button 
+          <button 
             onClick={clearCache}
             disabled={loading}
             className="bg-yellow-600 hover:bg-yellow-700 disabled:bg-gray-600 text-white font-bold py-2 px-6 rounded shadow-lg transition-colors"
           >
             Clear Local Cache
-          </Button>
-          <Button 
+          </button>
+          <button 
             onClick={clearLiveCache}
             disabled={loading}
             className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 text-white font-bold py-2 px-6 rounded shadow-lg transition-colors"
           >
             Clear LIVE Cache
-          </Button>
+          </button>
         </div>
       </div>
       
@@ -160,13 +159,13 @@ export const AdminPage = () => {
           <p className="text-gray-400 mb-4">
             Last Updated: <span className="text-white">{formatDate(status?.f1?.lastUpdated)}</span>
           </p>
-          <Button 
+          <button 
             onClick={() => handleUpdate('f1')}
             disabled={loading}
             className="w-full bg-red-600 hover:bg-red-700 disabled:bg-gray-600 text-white font-bold py-3 px-4 rounded transition-colors"
           >
             Run api_update.py
-          </Button>
+          </button>
         </div>
 
         {/* F2 Section */}
@@ -182,13 +181,13 @@ export const AdminPage = () => {
             value={f2Url}
             onChange={(e) => setF2Url(e.target.value)}
           />
-          <Button 
+          <button 
             onClick={() => handleUpdate('f2', f2Url)}
             disabled={loading}
             className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white font-bold py-3 px-4 rounded transition-colors"
           >
             Run api_update.py
-          </Button>
+          </button>
         </div>
 
         {/* F1A Section */}
@@ -204,13 +203,13 @@ export const AdminPage = () => {
             value={f1aUrl}
             onChange={(e) => setF1aUrl(e.target.value)}
           />
-          <Button 
+          <button 
             onClick={() => handleUpdate('f1a', f1aUrl)}
             disabled={loading}
             className="w-full bg-pink-600 hover:bg-pink-700 disabled:bg-gray-600 text-white font-bold py-3 px-4 rounded transition-colors"
           >
             Run api_update.py
-          </Button>
+          </button>
         </div>
       </div>
 

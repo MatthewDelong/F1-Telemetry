@@ -1,4 +1,3 @@
-import { Button } from "../components/Button";
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import "./NextRaceSection.css";
@@ -475,18 +474,18 @@ const NextRaceSection = () => {
 
               <div className="race-datetime flex flex-col items-center gap-4">
                 <div className="time-toggle mb-2">
-                  <Button
+                  <button
                     className={`time-toggle-btn ${showTrackTime ? "active" : ""}`}
                     onClick={() => setShowTrackTime(true)}
                   >
                     Track Time
-                  </Button>
-                  <Button
+                  </button>
+                  <button
                     className={`time-toggle-btn ${!showTrackTime ? "active" : ""}`}
                     onClick={() => setShowTrackTime(false)}
                   >
                     Your Time
-                  </Button>
+                  </button>
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center gap-10">

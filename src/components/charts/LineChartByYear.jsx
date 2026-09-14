@@ -1,4 +1,3 @@
-import { Button } from "../Button";
 import classNames from 'classnames';
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -79,9 +78,9 @@ export const LineChartByYear = ({ driver1Name, driver2Name, driver1Data, driver2
     <div className="bg-glow-large rounded-lg mb-96 p-8 md:px-32 md:pt-16 md:pb-32">
       <div className="flex justify-center flex-wrap">
         {competingYears.map(year => (
-          <Button key={year} onClick={() => setSelectedYear(year)} className={classNames("py-4 px-8 rounded", year === selectedYear ? 'bg-glow-sm' : '')}>
+          <button key={year} onClick={() => setSelectedYear(year)} className={classNames("py-4 px-8 rounded", year === selectedYear ? 'bg-glow-sm' : '')}>
             {year}
-          </Button>
+          </button>
         ))}
       </div>
       <ResponsiveContainer width="100%" height={400}>

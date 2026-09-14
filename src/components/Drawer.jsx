@@ -1,4 +1,3 @@
-import { Button } from "./Button";
 import React, { useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import classNames from "classnames";
@@ -62,12 +61,12 @@ const Drawer = ({ isOpen, onClose, children }) => {
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           >
             {/* Close Button */}
-            <Button
+            <button
               className="absolute top-16 right-16 z-10 w-32 h-32 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors"
               onClick={onClose}
             >
               <FontAwesomeIcon icon="xmark" className="fa-lg text-white" />
-            </Button>
+            </button>
 
             {/* Drawer Content */}
             <div 

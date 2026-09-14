@@ -1,4 +1,3 @@
-import { Button } from "./Button";
 import React, { useState, useEffect } from "react";
 import { fetchRaceResultsByCircuit } from "../utils/api";
 import { trackLengths } from "../utils/trackLengths";
@@ -140,12 +139,12 @@ export const SelectedDriverStats = (props) => {
                     <div>
                         <div className="flex items-center gap-8">
                             <span className="uppercase tracking-xs text-xs">avg speed</span>
-                            <Button 
+                            <button 
                                 onClick={props.onToggleUnit}
                                 className="text-[10px] bg-neutral-800 hover:bg-neutral-700 px-8 py-1 rounded border border-neutral-700 transition-colors uppercase tracking-widest text-neutral-400 hover:text-white"
                             >
                                 {isMph ? "To KPH" : "To MPH"}
-                            </Button>
+                            </button>
                         </div>
                         <div className="mt-4">
                             <span className="font-display">

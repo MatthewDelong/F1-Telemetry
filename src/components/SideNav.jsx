@@ -1,4 +1,3 @@
-import { Button } from "./Button";
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -158,17 +157,17 @@ export const Header = ({ setResultPage, setResultPagePath }) => {
                 </div>
 
                 {/* Mobile */}
-                <Button className="md:hidden p-8" onClick={toggleOpen}>
+                <button className="md:hidden p-8" onClick={toggleOpen}>
                     <FontAwesomeIcon icon="bars" className="fa-2x" />
-                </Button>
+                </button>
                 
                 {/* Desktop */}
                 <div className="flex items-center gap-16 max-md:hidden">
                     <div className="relative group w-max uppercase tracking-xs text-sm ">
-                        <Button className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase">
+                        <button className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase">
                             Results
                             <FontAwesomeIcon icon="chevron-down" className='global-header__main-nav__button__icon opacity-0 group-hover:opacity-100' />
-                        </Button>
+                        </button>
                         <div className="absolute right-1 -mt-2 pt-12 w-max hidden group-hover:block">
                             <div className="flex flex-col gap-8 p-16 rounded-md bg-glow bg-neutral-800 shadow-lg">
                                 {resultsContent}
@@ -176,10 +175,10 @@ export const Header = ({ setResultPage, setResultPagePath }) => {
                         </div>
                     </div>
                     <div className="relative group w-max uppercase tracking-xs text-sm ">
-                        <Button className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase">
+                        <button className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase">
                             Comparisons
                             <FontAwesomeIcon icon="chevron-down" className='global-header__main-nav__button__icon opacity-0 group-hover:opacity-100' />
-                        </Button>
+                        </button>
                         <div className="absolute right-1 -mt-2 pt-12 w-max hidden group-hover:block">
                             <div className="flex flex-col gap-8 p-16 rounded-md bg-glow bg-neutral-800 shadow-lg">
                                 {comparisonContent}
@@ -187,10 +186,10 @@ export const Header = ({ setResultPage, setResultPagePath }) => {
                         </div>
                     </div>
                     <div className="relative w-max" ref={raceViewerRef}>
-                        <Button className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs text-sm " onClick={() => setRaceViewerDropdownOpen(!raceViewerDropdownOpen)}>
+                        <button className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs text-sm " onClick={() => setRaceViewerDropdownOpen(!raceViewerDropdownOpen)}>
                             Race Viewer
                             <FontAwesomeIcon icon="chevron-down" className={classNames('global-header__main-nav__button__icon opacity-0', {"opacity-100": raceViewerDropdownOpen})} />
-                        </Button>
+                        </button>
                         <div className={classNames("absolute right-1 -mt-2 pt-12 w-max min-w-[20rem]", raceViewerDropdownOpen ? 'block' : 'hidden' )}>
                             <div className="flex flex-col p-16 rounded-md bg-glow bg-neutral-800 shadow-lg">
                                 {raceSelectorContent}
@@ -204,9 +203,9 @@ export const Header = ({ setResultPage, setResultPagePath }) => {
         {/* Mobile */}
         {isOpen && (
             <div className="fixed top-[0] left-[0] w-full h-full bg-glow bg-neutral-900/95 backdrop-blur-sm md:hidden z-[1001] text-[2rem]">
-                <Button className="absolute top-8 right-16 p-8" onClick={toggleOpen}>
+                <button className="absolute top-8 right-16 p-8" onClick={toggleOpen}>
                     <FontAwesomeIcon icon="xmark" className="fa-2x" />
-                </Button>
+                </button>
                 <div className="pt-64 px-32">
                     <p className="font-display tracking-xs my-16">Results</p>
                     <div className="flex flex-col gap-16 ml-8">

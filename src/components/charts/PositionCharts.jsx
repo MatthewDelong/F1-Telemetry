@@ -1,4 +1,3 @@
-import { Button } from "../Button";
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -208,14 +207,14 @@ export const PositionCharts = ({ laps, pos, startGrid, driversDetails, driversCo
         {!driverCode && (
           <div className="flex flex-wrap justify-center gap-4 mt-4 sm:max-w-[80%] sm:mx-auto">
             {sortedDriverAcronyms.map((acronym, index) => (
-              <Button
+              <button
                 key={index}
                 className={`py-1 px-4 text-white font-semibold rounded font-display`}
                 onClick={() => handleDriverVisibilityChange(acronym)}
                 style={{backgroundColor: driverVisibility[acronym] ? `${newDriversColor[acronym]}` : '#333333'}}
               >
                 {acronym}
-              </Button>
+              </button>
             ))}
           </div>
         )}

@@ -1,4 +1,3 @@
-import { Button } from "./Button";
 import React, { useMemo, useState } from "react";
 import { DEFAULT_RACE_KEY_LABELS } from "../utils/pointsByRace";
 
@@ -30,7 +29,7 @@ export const PointsByRaceDropdown = ({
 
   return (
     <div className="mt-8 bg-glow-dark rounded-lg px-12 py-10">
-      <Button
+      <button
         className="w-full flex items-center justify-between"
         onClick={() => setOpen((v) => !v)}
       >
@@ -40,7 +39,7 @@ export const PointsByRaceDropdown = ({
         <span className="text-xs text-neutral-400">
           {open ? "Hide" : "Show"}
         </span>
-      </Button>
+      </button>
 
       {open && (
         <div className="mt-6 overflow-x-scroll">

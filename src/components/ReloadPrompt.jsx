@@ -1,4 +1,3 @@
-import { Button } from "./Button";
 import React, { useEffect, useRef } from "react";
 import { useRegisterSW } from "virtual:pwa-register/react";
 import "./ReloadPrompt.css";
@@ -91,16 +90,16 @@ function ReloadPrompt() {
         </div>
         <div className="ReloadPrompt-actions">
           {needRefresh && (
-            <Button
+            <button
               className="ReloadPrompt-toast-button primary"
               onClick={handleReload}
             >
               Reload
-            </Button>
+            </button>
           )}
-          <Button className="ReloadPrompt-toast-button" onClick={close}>
+          <button className="ReloadPrompt-toast-button" onClick={close}>
             Close
-          </Button>
+          </button>
         </div>
       </div>
     </div>

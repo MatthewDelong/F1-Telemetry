@@ -1,4 +1,3 @@
-import { Button } from "./Button";
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -57,12 +56,12 @@ const RaceControl = ({ messages, isLive = false }) => {
           )}
           
           {hasMore && (
-            <Button 
+            <button 
               onClick={() => setIsExpanded(!isExpanded)}
               className="text-xs uppercase tracking-wider text-brand-blue-400 hover:text-brand-blue-300 font-bold transition-colors"
             >
               {isExpanded ? 'Show Less' : 'View All'}
-            </Button>
+            </button>
           )}
         </div>
       </div>
