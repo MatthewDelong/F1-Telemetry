@@ -57,39 +57,35 @@ const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel, circuitRa
           </div>
         </div>
         <div className="flex flex-col md:flex-row items-center md:justify-center gap-16">
-          <div>
-            <p className="uppercase text-sm text-center text-neutral-400 tracking-sm leading-none mb-24">
-              {hasResults && top3RaceResults3.length > 0 ? "Opening Race" : "Reverse Grid Race"}
-            </p>
-            {hasResults ? (
-              <ul className="bg-glow-dark rounded-[2.4rem] race-results__list">
-                {top3RaceResults.map((result, index) => (
-                  <RaceResultItem
-                    className={`race-results__list__item-${index + 1}`}
-                    carNumber={result.number}
-                    driver={result.Driver}
-                    driverColor={result.Constructor ? teamColors[year]?.[result.Constructor.constructorId] : undefined}
-                    fastestLap={result.FastestLap || result.fastestLap}
-                    startPosition={parseInt(result.grid, 10)}
-                    key={index}
-                    index={index}
-                    endPosition={parseInt(result.position, 10)}
-                    status={result.status}
-                    time={result.Time?.time || result.status}
-                    year={year}
-                    wireframe={result.length === 0}
-                    championshipLevel={championshipLevel}
-                    // hasHover={false}
-                  />
-                ))}
-              </ul>
-            ) : (
-              <div className="flex justify-center">
-                <img alt="" src={`${"/images/f1a-podium.png"}`} width={324} />
+          {hasResults ? (
+            <>
+              <div>
+                <p className="uppercase text-sm text-center text-neutral-400 tracking-sm leading-none mb-24">
+                  {hasResults && top3RaceResults3.length > 0 ? "Opening Race" : "Reverse Grid Race"}
+                </p>
+                <ul className="bg-glow-dark rounded-[2.4rem] race-results__list">
+                  {top3RaceResults.map((result, index) => (
+                    <RaceResultItem
+                      className={`race-results__list__item-${index + 1}`}
+                      carNumber={result.number}
+                      driver={result.Driver}
+                      driverColor={result.Constructor ? teamColors[year]?.[result.Constructor.constructorId] : undefined}
+                      fastestLap={result.FastestLap || result.fastestLap}
+                      startPosition={parseInt(result.grid, 10)}
+                      key={index}
+                      index={index}
+                      endPosition={parseInt(result.position, 10)}
+                      status={result.status}
+                      time={result.Time?.time || result.status}
+                      year={year}
+                      wireframe={result.length === 0}
+                      championshipLevel={championshipLevel}
+                      // hasHover={false}
+                    />
+                  ))}
+                </ul>
               </div>
-            )}
-          </div>
-          {hasResults && top3RaceResults2.length > 1 && (
+              {top3RaceResults2.length > 1 && (
             <div>
               <p className="uppercase text-sm text-center text-neutral-400 tracking-sm leading-none mb-24">
                 {hasResults && top3RaceResults3.length > 0 ? "Reverse Grid Race" : "Feature Race"}
@@ -141,6 +137,20 @@ const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel, circuitRa
                   />
                 ))}
               </ul>
+            </div>
+          )}
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center my-12 w-full min-h-[16rem] relative">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/10 to-transparent opacity-30 rounded-[2rem] pointer-events-none"></div>
+              <div className="flex flex-col items-center justify-center p-32 backdrop-blur-sm bg-white/5 border border-white/10 rounded-3xl shadow-[0_0_20px_rgba(255,255,255,0.03)] w-[90%] max-w-[30rem] z-10 transition-transform duration-300 group-hover:scale-[1.02]">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-[4.2rem] w-[4.2rem] text-brand-blue-400 mb-6 drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span className="uppercase text-neutral-300 tracking-[0.3em] font-display text-xl mb-4 text-center gradient-text-light">Upcoming Race</span>
+                <div className="h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent my-2 w-[80%]" />
+                <span className="text-[1.3rem] text-neutral-400 text-center font-medium px-4 mt-2">Data will be available after the race completes.</span>
+              </div>
             </div>
           )}
         </div>
