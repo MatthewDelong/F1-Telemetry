@@ -1209,7 +1209,7 @@ export function RacePage() {
             {/* ─── Bottom Controls, Titles, and Session Selectors ─── */}
             <div className="absolute bottom-4 sm:bottom-[40px] w-full flex flex-col items-center z-[20] pointer-events-none gap-3 sm:gap-6 px-4">
               {/* Controls Bar */}
-              <div className="w-full flex justify-between sm:justify-end items-center gap-4 px-2 sm:px-8">
+              <div className="w-full flex justify-end items-center gap-4 px-2 sm:px-8">
                 {driverSelected && (
                   <div className="flex items-center bg-gradient-to-r from-black/80 to-black/40 border border-white/10 rounded-[2rem] p-2 backdrop-blur-2xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] pointer-events-auto">
                     {/* Play/Pause Combo */}
@@ -1257,7 +1257,7 @@ export function RacePage() {
                     </div>
                   </div>
                 )}
-                <div className="flex items-center gap-4 sm:gap-6 ml-auto pointer-events-auto">
+                <div className="flex items-center gap-4 sm:gap-6 pointer-events-auto">
                   <button
                     className="w-10 h-10 sm:w-12 sm:h-12 bg-black/40 border border-white/10 text-white/50 hover:bg-white/10 hover:text-white rounded-xl backdrop-blur-md flex items-center justify-center transition-all shadow-lg sm:hidden"
                     onClick={() => setDriverDrawerOpen(true)}
