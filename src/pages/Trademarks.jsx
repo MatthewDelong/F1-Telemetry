@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Button } from "../components";
 import "./Trademarks.scss";
 
 const Trademarks = () => {
@@ -113,11 +114,17 @@ const Trademarks = () => {
 
         <div className="divider-glow-dark my-48" />
 
-        <p className="text-neutral-500 text-[11px] uppercase tracking-widest leading-relaxed font-light opacity-80">
+        <p className="text-neutral-500 text-[11px] uppercase tracking-widest leading-relaxed font-light opacity-80 mb-24">
           All trademarks, service marks, trade names, and logos referenced herein
           belong to their respective owners. F1-Telemetry has no affiliation
           with Formula One World Championship Limited or the FIA.
         </p>
+
+        <div className="flex justify-center mt-24">
+          <Button to="/" size="md" className="font-display uppercase tracking-widest px-32">
+            Back to Landing Page
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Button } from "../components";
 import "./PrivacyPolicy.scss";
 
 const PrivacyPolicy = () => {
@@ -111,10 +112,16 @@ const PrivacyPolicy = () => {
 
         <div className="divider-glow-dark my-48" />
 
-        <p className="text-neutral-500 text-[11px] uppercase tracking-widest leading-relaxed font-light opacity-80">
+        <p className="text-neutral-500 text-[11px] uppercase tracking-widest leading-relaxed font-light opacity-80 mb-24">
           Disclaimer: This website is an unofficial fan-made project and is not
           associated in any way with the Formula 1 or Formula 2 companies.
         </p>
+
+        <div className="flex justify-center mt-24">
+          <Button to="/" size="md" className="font-display uppercase tracking-widest px-32">
+            Back to Landing Page
+          </Button>
+        </div>
       </div>
     </div>
   );

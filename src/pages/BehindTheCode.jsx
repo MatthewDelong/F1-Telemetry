@@ -1,5 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button } from '../components';
 
 export function BehindTheCode() {
   return (
@@ -50,6 +51,12 @@ export function BehindTheCode() {
           <p className="text-neutral-300 leading-relaxed text-lg sm:text-xl relative z-10">
             From the real-time OpenF1 integration to the 3D track visualizations and the sleek glassmorphism UI, AI has been an invaluable co-pilot in bringing this vision to life.
           </p>
+        </div>
+        
+        <div className="flex justify-center mt-24">
+          <Button to="/" size="md" className="font-display uppercase tracking-widest px-32">
+            Back to Landing Page
+          </Button>
         </div>
       </div>
     </div>
