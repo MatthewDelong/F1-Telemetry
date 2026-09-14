@@ -1,4 +1,3 @@
-import { Button } from "./Button";
 import React, { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -140,12 +139,12 @@ export const Header = () => {
           </div>
 
           {/* Mobile */}
-          <Button className="md:hidden p-8" onClick={toggleOpen}>
+          <button className="md:hidden p-8" onClick={toggleOpen}>
             <FontAwesomeIcon icon="bars" className="fa-2x" />
-          </Button>
+          </button>
 
           {collapsible && (
-            <Button
+            <button
               className="absolute top-full right-20 bg-glow-large py-2 px-10 rounded-b-sm md:hidden"
               onClick={() => setHeaderOpen(!headerOpen)}
             >
@@ -155,7 +154,7 @@ export const Header = () => {
                   "transform rotate-180": headerOpen,
                 })}
               />
-            </Button>
+            </button>
           )}
 
           {/* Desktop */}
@@ -178,7 +177,7 @@ export const Header = () => {
               </Link>
             </div>
             <div className="relative w-max text-lg" ref={resultsRef}>
-              <Button
+              <button
                 className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs"
                 onClick={() => {
                   setResultsDropdownOpen(!resultsDropdownOpen);
@@ -194,7 +193,7 @@ export const Header = () => {
                     { "opacity-100": resultsDropdownOpen },
                   )}
                 />
-              </Button>
+              </button>
               <div
                 className={classNames(
                   "absolute right-1 -mt-2 pt-12 w-max animate-fade-in-down",
@@ -230,7 +229,7 @@ export const Header = () => {
               </div>
             </div>
             <div className="relative w-max text-lg" ref={comparisonsRef}>
-              <Button
+              <button
                 className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs"
                 onClick={() => {
                   setComparisonsDropdownOpen(!comparisonsDropdownOpen);
@@ -246,7 +245,7 @@ export const Header = () => {
                     { "opacity-100": comparisonsDropdownOpen },
                   )}
                 />
-              </Button>
+              </button>
               <div
                 className={classNames(
                   "absolute right-1 -mt-2 pt-12 w-max animate-fade-in-down",
@@ -294,7 +293,7 @@ export const Header = () => {
               </div>
             </div>
             <div className="relative w-max" ref={raceViewerRef}>
-              <Button
+              <button
                 className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs text-lg "
                 onClick={() => {
                   setRaceViewerDropdownOpen(!raceViewerDropdownOpen);
@@ -312,7 +311,7 @@ export const Header = () => {
                     },
                   )}
                 />
-              </Button>
+              </button>
               <div
                 className={classNames(
                   "absolute right-1 -mt-2 pt-12 w-max animate-fade-in-down",
