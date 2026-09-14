@@ -434,8 +434,8 @@ function createSectorMarkers(curve, trackWidth) {
 
 const MANUAL_CORNERS = {
   baku: [
-    27, 61, 149, 171, 205, 211, 251, 271, 274, 280, 282, 286, 328, 363, 378, 
-    408, 430, 465, 503, 568
+    27, 61, 149, 171, 205, 211, 251, 271, 274, 280, 282, 286, 328, 363, 378,
+    408, 430, 465, 503, 568,
   ],
 };
 
@@ -448,6 +448,10 @@ function createCornerLabels(curve, numCorners = 0, circuitId = "") {
   const group = new THREE.Group();
   const trackPoints = curve.getSpacedPoints(TRACK_RESOLUTION);
   const len = trackPoints.length;
+
+  console.log(
+    `[createCornerLabels] Called with circuitId: ${circuitId}, numCorners: ${numCorners}`,
+  );
 
   let selectedCorners = [];
   const canonicalId = circuitId
@@ -536,7 +540,7 @@ function createCornerLabels(curve, numCorners = 0, circuitId = "") {
     const minSeparation = Math.max(10, Math.floor(len / (numCorners * 1.5)));
     peaks.sort((a, b) => b.curvature - a.curvature);
 
-    const selectedCorners = [];
+    selectedCorners = [];
     for (const peak of peaks) {
       if (selectedCorners.length >= numCorners) break;
       const tooClose = selectedCorners.some((s) => {
@@ -571,6 +575,10 @@ function createCornerLabels(curve, numCorners = 0, circuitId = "") {
   // Sort by track position around the lap so corner numbers are sequential (T1, T2, T3...)
   selectedCorners.sort((a, b) => a.index - b.index);
 
+  console.log(
+    `[createCornerLabels] Selected ${selectedCorners.length} corners to render`,
+  );
+
   selectedCorners.forEach((corner, idx) => {
     let tangent = curve.getTangentAt(corner.index / TRACK_RESOLUTION);
     if (tangent.lengthSq() < 0.000001) tangent = new THREE.Vector3(1, 0, 0);
@@ -592,10 +600,11 @@ function createCornerLabels(curve, numCorners = 0, circuitId = "") {
     ctx.font = "bold 36px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillStyle = "rgba(255,255,255,0.95)";
+    ctx.fillStyle = "white";
     ctx.fillText(`${idx + 1}`, 32, 32);
 
     const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
     const spriteMat = new THREE.SpriteMaterial({
       map: texture,
       transparent: true,
@@ -605,7 +614,7 @@ function createCornerLabels(curve, numCorners = 0, circuitId = "") {
     sprite.position.set(
       corner.point.x + normal.x * labelOffset,
       corner.point.y + normal.y * labelOffset,
-      0.05,
+      0.1,
     );
     sprite.scale.set(1.0, 1.0, 1);
     group.add(sprite);
@@ -628,7 +637,6 @@ function createCornerLabels(curve, numCorners = 0, circuitId = "") {
       corner.point.y + normal.y * coneOffset,
       0.05,
     );
-
     cone.up.set(0, 0, 1);
     cone.lookAt(corner.point.x, corner.point.y, 0.05);
     cone.rotateX(Math.PI / 2);
@@ -800,7 +808,7 @@ export function buildTrackFromGPS(rawGPSPoints, circuitId) {
     // Force exact sector boundaries for Baku
     // Sector 1 ends after T4 (arc 171). T5 is arc 205. Bound = 188/600 = 0.313
     // Sector 2 ends right at T16 (arc 408). Bound = 408/600 = 0.680
-    sectorBounds = [0.313, 0.680];
+    sectorBounds = [0.313, 0.68];
   }
 
   const isBaku = canonicalId === "baku";
@@ -833,7 +841,7 @@ export function buildTrackFromGPS(rawGPSPoints, circuitId) {
     TRACK_RESOLUTION,
     SECTOR_COLORS,
     sectorBounds,
-    canonicalId
+    canonicalId,
   );
   const trackMesh = new THREE.Mesh(
     trackGeom,
@@ -853,7 +861,7 @@ export function buildTrackFromGPS(rawGPSPoints, circuitId) {
     trackWidth,
     TRACK_RESOLUTION,
     sectorBounds,
-    canonicalId
+    canonicalId,
   );
   leftEdge.name = "LeftEdge";
   rightEdge.name = "RightEdge";
