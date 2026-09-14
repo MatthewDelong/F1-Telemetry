@@ -17,7 +17,7 @@ const TelemetrySection = ({ layoutMobile, onClick, container }) => {
   const yTextContent = useTransform(
     scrollYProgress,
     [0, 1],
-    layoutMobile ? [0, 0] : [126, -74],
+    layoutMobile ? [0, 0] : [50, -50],
   );
 
   return (
