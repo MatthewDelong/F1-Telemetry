@@ -452,10 +452,10 @@ const NextRaceSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="next-race-header text-center py-10">
-            <h3>
-              <i className="bi bi-calendar-event me-2"></i> Next Race
-            </h3>
+          <div className="next-race-header text-center py-10 mb-8">
+            <h2 className="heading-2 uppercase">
+              <i className="bi bi-calendar-event me-2 text-2xl relative -top-1"></i> Next Race
+            </h2>
           </div>
 
           <div className="next-race-content flex flex-col items-center text-center pt-6 pb-10">

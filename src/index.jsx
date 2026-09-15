@@ -11,10 +11,14 @@ if (typeof window !== 'undefined') {
   window.ModelViewerElement.meshoptDecoderLocation = '/decoders/meshopt/meshopt_decoder.js';
 }
 
+import { PreferencesProvider } from './contexts/PreferencesContext';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <PreferencesProvider>
+      <App />
+    </PreferencesProvider>
   </React.StrictMode>
 );
 

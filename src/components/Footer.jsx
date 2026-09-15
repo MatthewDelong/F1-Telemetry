@@ -18,7 +18,7 @@ export const Footer = ({ className }) => {
   return (
     <footer
       className={classNames(
-        "bg-neutral-900 text-white pb-10 w-full",
+        "bg-black border-t border-white/10 text-white pb-10 w-full relative z-20",
         className,
         {
           hidden: hideFooter,
@@ -26,9 +26,9 @@ export const Footer = ({ className }) => {
       )}
     >
       <div className="divider-glow-dark" />
-      <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center py-64 text-base max-md:text-center px-24 font-lato">
+      <div className="max-w-[1400px] mx-auto flex flex-col xl:flex-row justify-between items-center py-24 text-base max-xl:text-center px-12 md:px-24 font-lato">
         {/* Left side: Logo, tagline, and social links */}
-        <div className="flex flex-col items-center md:items-start gap-16 mb-24 md:mb-0">
+        <div className="flex flex-col items-center xl:items-start gap-12 mb-16 xl:mb-0">
           <a href="/">
             <Logo height={48} />
           </a>
@@ -67,10 +67,9 @@ export const Footer = ({ className }) => {
         </div>
 
         {/* Right side: Page path links */}
-        <div className="flex flex-col md:flex-row md:items-start gap-16 uppercase mt-16 md:mt-0">
+        <div className="flex flex-col md:flex-row md:items-start gap-6 uppercase mt-8 xl:mt-0 flex-wrap justify-center">
           <div
-            className="flex flex-col gap-8 p-16 rounded-lg glass-dark shadow-xl min-w-[250px]"
-            style={{ border: "1px solid #737373" }}
+            className="flex flex-col gap-8 p-12 rounded-2xl bg-white/5 backdrop-blur-md shadow-xl min-w-[220px] hover:bg-white/10 transition-colors duration-300 border border-white/10"
           >
             <a
               href="https://www.formula1.com/"
@@ -98,8 +97,7 @@ export const Footer = ({ className }) => {
           </div>
 
           <div
-            className="flex flex-col gap-8 p-16 rounded-lg glass-dark shadow-xl min-w-[250px]"
-            style={{ border: "1px solid #737373" }}
+            className="flex flex-col gap-8 p-12 rounded-2xl bg-white/5 backdrop-blur-md shadow-xl min-w-[220px] hover:bg-white/10 transition-colors duration-300 border border-white/10"
           >
             <a
               href="https://www.fiaformula2.com/"
@@ -127,8 +125,7 @@ export const Footer = ({ className }) => {
           </div>
 
           <div
-            className="flex flex-col gap-8 p-16 rounded-lg glass-dark shadow-xl min-w-[250px]"
-            style={{ border: "1px solid #737373" }}
+            className="flex flex-col gap-8 p-12 rounded-2xl bg-white/5 backdrop-blur-md shadow-xl min-w-[220px] hover:bg-white/10 transition-colors duration-300 border border-white/10"
           >
             <a
               href="https://www.f1academy.com/"
@@ -156,8 +153,7 @@ export const Footer = ({ className }) => {
           </div>
 
           <div
-            className="flex flex-col gap-8 p-16 rounded-lg glass-dark shadow-xl min-w-[200px]"
-            style={{ border: "1px solid #737373" }}
+            className="flex flex-col gap-8 p-12 rounded-2xl bg-white/5 backdrop-blur-md shadow-xl min-w-[200px] hover:bg-white/10 transition-colors duration-300 border border-white/10"
           >
             <div className="flex flex-col items-center gap-4 mt-2 mb-4">
               <div className="flex items-center justify-center h-[20px] lg:h-[28px] mb-1">
@@ -199,7 +195,7 @@ export const Footer = ({ className }) => {
       </div>
 
       {/* Footer Bottom: Year and Copyright */}
-      <div className="text-center text-neutral-500 mt-6 bg-gradient-to-b from-neutral-950/40 to-neutral-950/10 px-24 pb-24 text-[11px] uppercase tracking-widest leading-relaxed glass-dark">
+      <div className="text-center text-neutral-500 mt-6 px-24 pb-24 text-[11px] uppercase tracking-widest leading-relaxed">
         <div className="divider-glow-dark mb-16 opacity-30" />
         <p className="max-w-[900px] mx-auto mb-8 font-light">
           This website is unofficial and not associated with Formula One

@@ -39,27 +39,7 @@ export function RaceResultsPage({ selectedYear }) {
             };
           });
 
-          // Augment fastest lap if missing
-          const hasFastestLap = resultsForRace.some(r => r.fastestLap?.rank === "1" || r.fastestLap?.rank === 1);
-          const meetingKey = racesMK[race.raceName]?.["meeting_key"];
-          
-          if (!hasFastestLap && meetingKey) {
-            try {
-              console.log(`[RaceResultsPage] FastestLap missing for ${race.raceName}, augmenting from OpenF1...`);
-              const oF1Results = await fetchOpenF1Podium(meetingKey);
-              if (oF1Results && oF1Results.length > 0) {
-                resultsForRace = resultsForRace.map(r => {
-                  const of1Driver = oF1Results.find(o => parseInt(o.position, 10) === parseInt(r.position, 10));
-                  if (of1Driver && of1Driver.fastestLap) {
-                    return { ...r, fastestLap: of1Driver.fastestLap };
-                  }
-                  return r;
-                });
-              }
-            } catch (e) {
-              console.error("Error augmenting fastest lap:", e);
-            }
-          }
+
         }
 
         return {

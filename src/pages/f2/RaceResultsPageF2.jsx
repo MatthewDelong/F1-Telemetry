@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
-  fetchRaceResultsByCircuit,
   fetchCircuitData,
+  fetchAllRaceResults
 } from "../../utils/apiF1a";
 import { fetchRaceDetails } from "../../utils/api";
 import teamColors from "../../utils/teamColors.json";
@@ -11,30 +11,25 @@ import { NavLink } from "react-router-dom";
 import classNames from "classnames";
 import { formatDate } from "../../utils/formatDate";
 
-const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel, circuitRaceName, f1Date, f1Time }) => {
+const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel, circuitRaceName, f1Date, f1Time, raceData }) => {
   const [raceName, setRaceName] = useState("");
   const [top3RaceResults, setTop3RaceResults] = useState([]);
   const [top3RaceResults2, setTop3RaceResults2] = useState([]);
   const [top3RaceResults3, setTop3RaceResults3] = useState([]);
-  // console.log(year, circuitId);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const results = await fetchRaceResultsByCircuit(
-        year,
-        circuitId,
-        true,
-        championshipLevel,
-      );
-      // console.log('results', results);
-      setRaceName(results.raceName || circuitRaceName || "");
-      setTop3RaceResults(results.race1);
-      results.race2 && setTop3RaceResults2(results.race2);
-      results.race3 && setTop3RaceResults3(results.race3);
-    };
-
-    fetchData();
-  }, [year, circuitId, championshipLevel, circuitRaceName]);
+    if (raceData) {
+      setRaceName(raceData.raceName || circuitRaceName || "");
+      
+      const filterTop3 = (results) => results ? [...results].sort((a,b) => parseInt(a.position,10) - parseInt(b.position,10)).slice(0,3) : [];
+      
+      setTop3RaceResults(filterTop3(raceData.race1));
+      if (raceData.race2) setTop3RaceResults2(filterTop3(raceData.race2));
+      if (raceData.race3) setTop3RaceResults3(filterTop3(raceData.race3));
+    } else {
+      setRaceName(circuitRaceName || "");
+    }
+  }, [raceData, circuitRaceName]);
 
   const hasResults = top3RaceResults && top3RaceResults.length > 0;
 
@@ -166,18 +161,21 @@ const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel, circuitRa
 };
 
 export function RaceResultsPageF2({ selectedYear, championshipLevel }) {
-  const [filteredCircuits, setFilteredCircuits] = useState([]);
   const [f1Races, setF1Races] = useState([]);
+  const [allResults, setAllResults] = useState([]);
+  const [filteredCircuits, setFilteredCircuits] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const [data, f1Details] = await Promise.all([
+      const [data, f1Details, allRaceRes] = await Promise.all([
         fetchCircuitData(championshipLevel),
-        fetchRaceDetails(selectedYear)
+        fetchRaceDetails(selectedYear),
+        fetchAllRaceResults(selectedYear, championshipLevel)
       ]);
       setF1Races(f1Details);
+      setAllResults(allRaceRes || []);
       setFilteredCircuits(
         Object.entries(data)
           .filter(([key, circuit]) => circuit.year === selectedYear.toString())
@@ -203,7 +201,6 @@ export function RaceResultsPageF2({ selectedYear, championshipLevel }) {
         )}
         {isLoading ? (
           <Loading
-            className="mt-[20rem] mb-[20rem]"
             message={`Loading ${selectedYear} Race Results`}
           />
         ) : (
@@ -214,6 +211,7 @@ export function RaceResultsPageF2({ selectedYear, championshipLevel }) {
               r.circuitId === circuit.circuitId ||
               normalize(r.raceName) === normalize(circuit.raceName)
             );
+            const rData = allResults.find(r => r.circuitId === circuit.circuitId);
             return (
               <Top3Drivers
                 key={circuit.circuitId}
@@ -224,6 +222,7 @@ export function RaceResultsPageF2({ selectedYear, championshipLevel }) {
                 championshipLevel={championshipLevel}
                 f1Date={f1Race?.date}
                 f1Time={f1Race?.time}
+                raceData={rData}
               />
             );
           })

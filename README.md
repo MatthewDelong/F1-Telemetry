@@ -321,6 +321,7 @@ Contributions are welcome! Whether it's improving the codebase, adding features,
 
 ## Acknowledgements
 
+- **Development & AI Collaboration:** This project is actively developed by **Matthew Delong**, in extensive pair-programming collaboration with **Antigravity**, an agentic AI coding assistant developed by Google DeepMind.
 - **Inspiration:** This project was originally inspired by and built as a successor to the [F1nsight](https://github.com/adityakotha03/F1nsight) project by [Aditya Kotha](https://github.com/adityakotha03).
 - Special thanks to data providers and API service [OpenF1](https://openf1.org/) that enable access to current and historical F1 data.
 - [Flagpedia](https://flagpedia.net/) — High-quality country flag WebP images used for race locations and driver nationalities.
