@@ -74,6 +74,7 @@ export default function LiveDashboard() {
     weather,
     raceControl,
     pitStops,
+    teamRadio,
     dataLoading,
     dataError,
     lastUpdated,

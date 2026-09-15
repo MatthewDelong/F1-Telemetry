@@ -71,23 +71,13 @@ export function useLiveTelemetry(selectedYear) {
               bestSession = liveSession;
               setIsLive(true);
             } else {
-              const upcomingSession = chronological.find((s) => now < new Date(s.date_start));
-              const pastSessions = chronological.filter((s) => now > new Date(s.date_end));
-              const lastCompleted = pastSessions.length > 0 ? pastSessions[pastSessions.length - 1] : null;
-
-              if (upcomingSession && lastCompleted) {
-                const hoursSinceEnd = (now - new Date(lastCompleted.date_end)) / (1000 * 60 * 60);
-                const sameWeekend = upcomingSession.meeting_key === lastCompleted.meeting_key;
-
-                if (sameWeekend || hoursSinceEnd < 4) {
-                  bestSession = lastCompleted;
-                } else {
-                  bestSession = upcomingSession;
-                }
-              } else if (lastCompleted) {
-                bestSession = lastCompleted;
-              } else if (upcomingSession) {
-                bestSession = upcomingSession;
+              const pastSessions = chronological.filter((s) => now > new Date(s.date_start));
+              const lastStarted = pastSessions.length > 0 ? pastSessions[pastSessions.length - 1] : null;
+              
+              if (lastStarted) {
+                bestSession = lastStarted;
+              } else {
+                bestSession = chronological[0]; // fallback to first session if none started
               }
               setIsLive(false);
             }
