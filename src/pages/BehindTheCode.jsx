@@ -58,13 +58,13 @@ export function BehindTheCode() {
             <FontAwesomeIcon icon="file-contract" size="8x" />
           </div>
           <h2 className="heading-3 mb-12 flex items-center gap-4 relative z-10">
-            Commercial Use &amp; Permissions
+            Open Source &amp; Permissions
           </h2>
           <p className="text-neutral-300 leading-relaxed text-lg sm:text-xl mb-6 relative z-10">
             F1 Telemetry is built as a non-commercial, open-source passion project. 
           </p>
           <p className="text-neutral-300 leading-relaxed text-lg sm:text-xl relative z-10">
-            In accordance with the original F1nsight project terms, if you wish to use this software (or any of the original excluded components) for commercial purposes, you must contact the original creators at <a href="mailto:kothaaditya03@gmail.com" className="text-brand-yellow-500 hover:underline">kothaaditya03@gmail.com</a> or <a href="mailto:antonicommodore@gmail.com" className="text-brand-yellow-500 hover:underline">antonicommodore@gmail.com</a> to negotiate terms. Approval must be granted in writing before proceeding with any commercial activities.
+            While originally inspired by F1nsight, this completely rewritten and self-contained codebase is now protected under our own MIT License. We extend our sincere thanks to the original creators, Aditya Kotha and Antoni Commodore, who have explicitly waived their original license constraints and granted permission for this project's independent, continued development.
           </p>
         </div>
         
