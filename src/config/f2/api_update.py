@@ -285,6 +285,25 @@ def main():
     for i, r in enumerate(results):
         if r.get('season') == season and r.get('Circuit', {}).get('circuitId') == circuit_id:
             new_round["round"] = r.get("round", round_number)
+            
+            # Preserve existing FastestLap data
+            for race_key in ["race1", "race2"]:
+                if race_key in r.get("Results", {}):
+                    old_race = r["Results"][race_key]
+                    new_race = new_round["Results"].get(race_key, [])
+                    
+                    # Create a map of driver number to their FastestLap data
+                    fl_map = {
+                        str(driver.get("number")): driver.get("FastestLap") 
+                        for driver in old_race if driver.get("FastestLap")
+                    }
+                    
+                    # Re-apply to new data
+                    for new_driver in new_race:
+                        driver_num = str(new_driver.get("number"))
+                        if driver_num in fl_map:
+                            new_driver["FastestLap"] = fl_map[driver_num]
+                            
             results[i] = new_round
             replaced = True
             break

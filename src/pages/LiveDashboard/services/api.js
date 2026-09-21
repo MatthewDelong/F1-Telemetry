@@ -132,10 +132,15 @@ export async function getRaceControl(sessionKey) {
 }
 
 // ===== CAR DATA (telemetry) =====
-export async function getCarData(sessionKey, driverNumber) {
-  const params = { session_key: sessionKey };
+export async function getCarData(sessionKey, driverNumber, extraParams = {}) {
+  const params = { session_key: sessionKey, ...extraParams };
   if (driverNumber) params.driver_number = driverNumber;
   return fetchAPI('/car_data', params);
+}
+
+// ===== LOCATION =====
+export async function getLocation(params = {}) {
+  return fetchAPI('/location', params);
 }
 
 // ===== INTERVALS =====
@@ -187,6 +192,7 @@ export default {
   getPitStops,
   getRaceControl,
   getCarData,
+  getLocation,
   getIntervals,
   getTeamRadio,
   getMeetings,

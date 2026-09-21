@@ -4,6 +4,7 @@ import {
   fetchAllRaceResults
 } from "../../utils/apiF1a";
 import { fetchRaceDetails } from "../../utils/api";
+import { getFastestDriverCode } from "../../utils/raceUtils";
 import teamColors from "../../utils/teamColors.json";
 
 import { RaceResultItem, Loading, Button } from "../../components";
@@ -66,7 +67,14 @@ const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel, circuitRa
                       carNumber={result.number}
                       driver={result.Driver}
                       driverColor={result.Constructor ? teamColors[year]?.[result.Constructor.constructorId] : undefined}
-                      fastestLap={result.FastestLap || result.fastestLap}
+                      fastestLap={{
+                        ...result.FastestLap,
+                        rank:
+                          result.FastestLap?.rank ||
+                          (result.Driver?.code === getFastestDriverCode(raceData?.race1)
+                            ? "1"
+                            : undefined),
+                      }}
                       startPosition={parseInt(result.grid, 10)}
                       key={index}
                       index={index}
@@ -92,7 +100,14 @@ const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel, circuitRa
                         carNumber={result.number}
                         driver={result.Driver}
                         driverColor={result.Constructor ? teamColors[year]?.[result.Constructor.constructorId] : undefined}
-                        fastestLap={result.FastestLap || result.fastestLap}
+                        fastestLap={{
+                          ...result.FastestLap,
+                          rank:
+                            result.FastestLap?.rank ||
+                            (result.Driver?.code === getFastestDriverCode(raceData?.race2)
+                              ? "1"
+                              : undefined),
+                        }}
                         startPosition={parseInt(result.grid, 10)}
                         key={index}
                         index={index}
@@ -119,7 +134,14 @@ const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel, circuitRa
                         carNumber={result.number}
                         driver={result.Driver}
                         driverColor={result.Constructor ? teamColors[year]?.[result.Constructor.constructorId] : undefined}
-                        fastestLap={result.FastestLap || result.fastestLap}
+                        fastestLap={{
+                          ...result.FastestLap,
+                          rank:
+                            result.FastestLap?.rank ||
+                            (result.Driver?.code === getFastestDriverCode(raceData?.race3)
+                              ? "1"
+                              : undefined),
+                        }}
                         startPosition={parseInt(result.grid, 10)}
                         key={index}
                         index={index}

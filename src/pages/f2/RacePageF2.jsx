@@ -121,7 +121,7 @@ export function RacePageF2({ championshipLevel }) {
                 fastestLap={{
                   ...result.FastestLap,
                   rank:
-                    result.FastestLap?.rank ??
+                    result.FastestLap?.rank ||
                     (result.Driver?.code === fastestRace1DriverCode
                       ? "1"
                       : undefined),
@@ -161,7 +161,7 @@ export function RacePageF2({ championshipLevel }) {
                   fastestLap={{
                     ...result.FastestLap,
                     rank:
-                      result.FastestLap?.rank ??
+                      result.FastestLap?.rank ||
                       (result.Driver?.code === fastestRace2DriverCode
                         ? "1"
                         : undefined),

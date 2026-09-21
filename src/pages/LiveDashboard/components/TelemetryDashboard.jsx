@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { getTeamColor } from '../utils/f1Utils';
+import { getCarData } from '../services/api';
 
-export default function TelemetryDashboard({ sessionKey, drivers, year = 2026 }) {
+export default function TelemetryDashboard({ sessionKey, drivers, year = 2026, isLive = true }) {
   const [selectedDriver, setSelectedDriver] = useState('');
   const [telemetry, setTelemetry] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -19,18 +20,28 @@ export default function TelemetryDashboard({ sessionKey, drivers, year = 2026 })
     
     let cancelled = false;
     let intervalId;
+    let timeoutId;
 
-    const fetchTelemetry = async () => {
-      setLoading(true);
+    const fetchTelemetry = async (isInitial = false) => {
+      if (isInitial) setLoading(true);
       try {
-        // Fetch only the latest car data (ideally we'd filter by time, but for now fetch and take last)
-        // To be safe on bandwidth, we'll just do it every 10 seconds
-        const res = await fetch(`https://api.openf1.org/v1/car_data?session_key=${sessionKey}&driver_number=${selectedDriver}`);
-        if (!res.ok) throw new Error('Network error');
-        const data = await res.json();
+        let params = {};
+        if (!isLive && playbackTime) {
+          params['date<='] = new Date(playbackTime).toISOString();
+          params['date>='] = new Date(playbackTime - 5000).toISOString(); // last 5 seconds to ensure we get a data point
+        }
+        const data = await getCarData(sessionKey, selectedDriver, params);
         
         if (!cancelled && data && data.length > 0) {
-          setTelemetry(data[data.length - 1]);
+          // get the point closest to playbackTime without going over
+          const validPoints = data.filter(d => !playbackTime || new Date(d.date).getTime() <= playbackTime);
+          if (validPoints.length > 0) {
+            setTelemetry(validPoints[validPoints.length - 1]);
+          } else {
+            setTelemetry(data[data.length - 1]);
+          }
+        } else if (!cancelled && (!data || data.length === 0)) {
+          // if no data in this tiny window, maybe clear it? We'll leave the old data on screen
         }
       } catch (err) {
         console.error("Telemetry fetch error:", err);
@@ -39,14 +50,20 @@ export default function TelemetryDashboard({ sessionKey, drivers, year = 2026 })
       }
     };
 
-    fetchTelemetry();
-    intervalId = setInterval(fetchTelemetry, 10000); // 10s refresh
+    if (isLive) {
+      fetchTelemetry(true);
+      intervalId = setInterval(() => fetchTelemetry(false), 10000); // 10s refresh
+    } else {
+      // Debounce the fetch for archive mode so we don't spam when scrubbing
+      timeoutId = setTimeout(() => fetchTelemetry(true), 150);
+    }
 
     return () => {
       cancelled = true;
-      clearInterval(intervalId);
+      if (intervalId) clearInterval(intervalId);
+      if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [sessionKey, selectedDriver]);
+  }, [sessionKey, selectedDriver, isLive, playbackTime]);
 
   const drv = drivers?.find(d => parseInt(d.driver_number) === parseInt(selectedDriver));
   const color = drv ? getTeamColor(drv.team_name, drv.team_colour) : '#666';
@@ -55,7 +72,18 @@ export default function TelemetryDashboard({ sessionKey, drivers, year = 2026 })
   const drsLabel = parseInt(year) >= 2026 ? "ERS" : "DRS";
 
   return (
-    <div className="panel">
+    <div className="panel relative">
+      {!isLive && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm rounded-lg">
+          <div className="text-center p-8 border border-white/10 bg-neutral-900 rounded shadow-xl">
+            <h3 className="text-xl font-display font-bold uppercase tracking-widest text-f1-red mb-2">🏁 Session Finished</h3>
+            <p className="text-neutral-300 font-display text-sm tracking-wider">Live telemetry is offline.</p>
+            <p className="text-neutral-500 font-display text-xs mt-4">Head over to the <strong>3D Replay</strong> tab to view historical telemetry.</p>
+          </div>
+        </div>
+      )}
+
+      {/* Header */}
       <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div className="panel-title">🏎️ Live Telemetry Dashboard</div>
         <select 

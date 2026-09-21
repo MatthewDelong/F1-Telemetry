@@ -42,7 +42,9 @@ import TrackMap from "./components/TrackMap.jsx";
 import SpeedComparison from "./components/SpeedComparison.jsx";
 import PositionChart from "./components/PositionChart.jsx";
 import PitStopTable from "./components/PitStopTable.jsx";
+import MiniSectorMap from "./components/MiniSectorMap.jsx";
 import ReloadPrompt from "./components/ReloadPrompt.jsx";
+import PlaybackScrubber from "./components/PlaybackScrubber.jsx";
 const REFRESH_INTERVAL = 10000; // 10 seconds
 const years = getAvailableYears();
 
@@ -54,6 +56,9 @@ export default function LiveDashboard() {
   const [activeTab, setActiveTab] = useState("timing");
 
   const { useCelsius, useKmh, toggleCelsius, toggleKmh } = usePreferences();
+
+  // Time Machine State
+  const [playbackTime, setPlaybackTime] = useState(null);
 
   const telemetry = useLiveTelemetry(selectedYear);
   const {
@@ -124,19 +129,47 @@ export default function LiveDashboard() {
     return groups;
   }, [sessions]);
 
-  // Get current flag from race control
+  // Time Machine Data Filtering
+  const sessionStart = selectedSession?.date_start ? new Date(selectedSession.date_start).getTime() : null;
+  const sessionEnd = selectedSession?.date_end ? new Date(selectedSession.date_end).getTime() : null;
+
+  const currentPlaybackTime = (!isLive && playbackTime !== null) ? playbackTime : new Date().getTime();
+
+  // Helper to safely parse dates for filtering
+  const filterByTime = (arr, dateField = "date") => {
+    if (isLive) return arr; // Don't filter if it's live
+    return arr.filter(item => {
+      if (!item[dateField]) return true; // keep if no date
+      return new Date(item[dateField]).getTime() <= currentPlaybackTime;
+    });
+  };
+
+  const filteredLaps = filterByTime(laps, "date_start");
+  const filteredPitStops = filterByTime(pitStops, "date");
+  const filteredPositions = filterByTime(positions, "date");
+  const filteredIntervals = filterByTime(intervals, "date");
+  const filteredRaceControl = filterByTime(raceControl, "date");
+  const filteredTeamRadio = filterByTime(teamRadio, "date");
+  // Weather usually has 'date' too
+  const currentFilteredWeather = !isLive && weather ? filterByTime([weather], "date")[0] : weather;
+
   const currentFlag = useMemo(() => {
-    if (!raceControl || raceControl.length === 0) return null;
-    const flags = raceControl.filter((m) => m.category === "Flag" || m.flag);
-    if (flags.length === 0) return null;
-    return flags[flags.length - 1];
-  }, [raceControl]);
+    // If a CHEQUERED flag was ever shown, it supersedes subsequent CLEAR messages
+    const hasChequered = filteredRaceControl.some(m => m.flag === "CHEQUERED");
+    if (hasChequered) return { flag: "CHEQUERED" };
+
+    const msgs = filteredRaceControl.filter(
+      (m) => m.flag === "CLEAR" || m.flag === "GREEN" || m.flag === "YELLOW" || m.flag === "RED" || m.flag === "DOUBLE YELLOW" || m.category === "Flag" || m.flag
+    );
+    return msgs.length > 0 ? msgs[msgs.length - 1] : null;
+  }, [filteredRaceControl]);
 
   const flagClass = useMemo(() => {
     if (!currentFlag) return "flag-green";
     const f = currentFlag.flag || "";
     if (f === "RED") return "flag-red";
     if (f === "YELLOW" || f === "DOUBLE YELLOW") return "flag-yellow";
+    if (f === "CHEQUERED") return "flag-chequered";
     if (f.includes("SAFETY")) return "flag-sc";
     return "flag-green";
   }, [currentFlag]);
@@ -252,6 +285,15 @@ export default function LiveDashboard() {
           </div>
         </div>
       </header>
+      
+      {/* Playback Scrubber for Archive Mode */}
+      <PlaybackScrubber 
+        sessionStart={sessionStart}
+        sessionEnd={sessionEnd}
+        playbackTime={playbackTime}
+        setPlaybackTime={setPlaybackTime}
+        isLive={isLive}
+      />
 
       {/* Auto-update progress bar */}
       {autoRefresh && (
@@ -295,18 +337,18 @@ export default function LiveDashboard() {
             {formatDate(selectedSession?.date_start)}
           </span>
         </div>
-        {weather && (
+        {currentFilteredWeather && (
           <>
             <div className="status-item">
               <span className="status-icon">🌡️</span>
               <span className="status-value">
-                {useCelsius ? weather.air_temperature : Math.round(weather.air_temperature * 9/5 + 32)}°{useCelsius ? 'C' : 'F'}
+                {useCelsius ? currentFilteredWeather.air_temperature : Math.round(currentFilteredWeather.air_temperature * 9/5 + 32)}°{useCelsius ? 'C' : 'F'}
               </span>
             </div>
             <div className="status-item">
               <span className="status-icon">🛤️</span>
               <span className="status-value">
-                {useCelsius ? weather.track_temperature : Math.round(weather.track_temperature * 9/5 + 32)}°{useCelsius ? 'C' : 'F'}
+                {useCelsius ? currentFilteredWeather.track_temperature : Math.round(currentFilteredWeather.track_temperature * 9/5 + 32)}°{useCelsius ? 'C' : 'F'}
               </span>
             </div>
           </>
@@ -375,22 +417,18 @@ export default function LiveDashboard() {
             >
               📻 Team Radio
             </button>
-            {isLive && (
-              <button
-                className={`tab ${activeTab === "telemetry" ? "active" : ""}`}
-                onClick={() => setActiveTab("telemetry")}
-              >
-                🏎️ Telemetry
-              </button>
-            )}
-            {isLive && (
-              <button
-                className={`tab ${activeTab === "trackmap" ? "active" : ""}`}
-                onClick={() => setActiveTab("trackmap")}
-              >
-                🗺️ Track Map
-              </button>
-            )}
+            <button
+              className={`tab ${activeTab === "telemetry" ? "active" : ""}`}
+              onClick={() => setActiveTab("telemetry")}
+            >
+              🏎️ Telemetry
+            </button>
+            <button
+              className={`tab ${activeTab === "trackmap" ? "active" : ""}`}
+              onClick={() => setActiveTab("trackmap")}
+            >
+              🗺️ Track Map
+            </button>
           </div>
 
           {/* Loading State */}
@@ -460,10 +498,10 @@ export default function LiveDashboard() {
                 <div className="panel-body">
                   <TimingTable
                     drivers={drivers}
-                    laps={laps}
+                    laps={filteredLaps}
                     stints={stints}
-                    positions={positions}
-                    intervals={intervals}
+                    positions={filteredPositions}
+                    intervals={filteredIntervals}
                     overallBestSectors={overallBestSectors}
                   />
                 </div>
@@ -519,7 +557,7 @@ export default function LiveDashboard() {
                     <div className="panel-title">🌤️ Weather Conditions</div>
                   </div>
                   <div className="panel-body">
-                    <WeatherWidget weather={weather} useCelsius={useCelsius} useKmh={useKmh} />
+                    <WeatherWidget weather={currentFilteredWeather} useCelsius={useCelsius} useKmh={useKmh} />
                   </div>
                 </div>
                 <div className="panel">
@@ -527,7 +565,7 @@ export default function LiveDashboard() {
                     <div className="panel-title">📡 Race Control</div>
                   </div>
                   <div className="panel-body">
-                    <RaceControlFeed messages={raceControl} drivers={drivers} />
+                    <RaceControlFeed messages={filteredRaceControl} drivers={drivers} />
                   </div>
                 </div>
               </div>
@@ -544,9 +582,9 @@ export default function LiveDashboard() {
                 <div className="panel-body">
                   <GapVisualization
                     drivers={drivers}
-                    positions={positions}
-                    intervals={intervals}
-                    laps={laps}
+                    positions={filteredPositions}
+                    intervals={filteredIntervals}
+                    laps={filteredLaps}
                   />
                 </div>
               </div>
@@ -557,8 +595,8 @@ export default function LiveDashboard() {
                 <div className="panel-body">
                   <SpeedComparison
                     drivers={drivers}
-                    laps={laps}
-                    positions={positions}
+                    laps={filteredLaps}
+                    positions={filteredPositions}
                   />
                 </div>
               </div>
@@ -573,7 +611,7 @@ export default function LiveDashboard() {
                   <div className="panel-title">📈 Lap Time Progression</div>
                 </div>
                 <div className="panel-body">
-                  <LapTimeChart drivers={drivers} laps={laps} />
+                  <LapTimeChart drivers={drivers} laps={filteredLaps} />
                 </div>
               </div>
               <div className="panel">
@@ -583,8 +621,8 @@ export default function LiveDashboard() {
                 <div className="panel-body">
                   <PositionChart
                     drivers={drivers}
-                    laps={laps}
-                    positions={positions}
+                    laps={filteredLaps}
+                    positions={filteredPositions}
                   />
                 </div>
               </div>
@@ -602,7 +640,7 @@ export default function LiveDashboard() {
                   <TireStrategy
                     drivers={drivers}
                     stints={stints}
-                    positions={positions}
+                    positions={filteredPositions}
                   />
                 </div>
               </div>
@@ -611,7 +649,7 @@ export default function LiveDashboard() {
                   <div className="panel-title">🔧 Pit Stop History</div>
                 </div>
                 <div className="panel-body">
-                  <PitStopTable drivers={drivers} pitStops={pitStops} />
+                  <PitStopTable drivers={drivers} pitStops={filteredPitStops} />
                 </div>
               </div>
             </div>
@@ -629,11 +667,11 @@ export default function LiveDashboard() {
                       color: "var(--text-tertiary)",
                     }}
                   >
-                    {raceControl.length} messages
+                    {filteredRaceControl.length} messages
                   </span>
                 </div>
                 <div className="panel-body">
-                  <RaceControlFeed messages={raceControl} drivers={drivers} />
+                  <RaceControlFeed messages={filteredRaceControl} drivers={drivers} />
                 </div>
               </div>
             </div>
@@ -647,19 +685,20 @@ export default function LiveDashboard() {
           {/* ===== TEAM RADIO TAB ===== */}
           {activeTab === "teamradio" && !dataLoading && (
             <div className="dashboard-grid fade-in">
-              <TeamRadio radios={teamRadio} drivers={drivers} />
+              <TeamRadio radios={filteredTeamRadio} drivers={drivers} />
             </div>
           )}
 
           {/* ===== TELEMETRY TAB ===== */}
-          {activeTab === "telemetry" && isLive && !dataLoading && (
+          {activeTab === "telemetry" && !dataLoading && (
             <div className="dashboard-grid fade-in">
-              <TelemetryDashboard sessionKey={selectedSessionKey} drivers={drivers} year={selectedYear} />
+              <TelemetryDashboard sessionKey={selectedSessionKey} drivers={drivers} year={selectedYear} isLive={isLive} playbackTime={currentPlaybackTime} />
+              <MiniSectorMap sessionKey={selectedSessionKey} drivers={drivers} laps={filteredLaps} />
             </div>
           )}
 
           {/* ===== TRACK MAP TAB ===== */}
-          {activeTab === "trackmap" && isLive && !dataLoading && (
+          {activeTab === "trackmap" && !dataLoading && (
             <div className="dashboard-grid fade-in">
               <TrackMap sessionKey={selectedSessionKey} drivers={drivers} />
             </div>

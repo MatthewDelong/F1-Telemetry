@@ -152,7 +152,7 @@ export const DriverCard = (props) => {
               "w-48 bg-neutral-700/80 py-[1px] text-center rounded-l-sm text-[10px] shadow-inner",
             )}
           >
-            P{isRace ? endPosition : index + 1}
+            {isRace && isNaN(endPosition) ? "DNF" : `P${isRace ? endPosition : index + 1}`}
           </p>
           <span className="pl-12 mr-6 text-[13px] text-white brightness-125 uppercase tracking-wider">
             {driver.code}
@@ -241,7 +241,7 @@ export const DriverCard = (props) => {
             "driver-card-position text-[18px] font-display px-6 py-1 bg-neutral-700/80 rounded-l-md flex items-center h-full min-h-[44px]",
           )}
         >
-          P{isRace ? endPosition : index + 1}
+          {isRace && isNaN(endPosition) ? "DNF" : `P${isRace ? endPosition : index + 1}`}
         </div>
         {driverImage}
         <div className="grow py-1 pl-[10px] pr-12 text-right flex flex-col justify-center relative">
@@ -290,7 +290,7 @@ export const DriverCard = (props) => {
         <div className="md:hidden">
           <div className="flex items-center text-xs font-display">
             <p className="w-24 bg-neutral-600 py-1 text-center rounded-tl-[.4rem]">
-              P{isRace ? endPosition : index + 1}
+              {isRace && isNaN(endPosition) ? "DNF" : `P${isRace ? endPosition : index + 1}`}
             </p>
             <p className="pl-8 pr-8 font-bold text-white">{driver.code}</p>
           </div>

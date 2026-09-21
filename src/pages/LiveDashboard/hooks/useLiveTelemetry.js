@@ -178,7 +178,7 @@ export function useLiveTelemetry(selectedYear) {
     if (intervalRef.current) clearInterval(intervalRef.current);
     if (countdownRef.current) clearInterval(countdownRef.current);
 
-    if (autoRefresh && selectedSessionKey) {
+    if (autoRefresh && selectedSessionKey && isLive) {
       intervalRef.current = setInterval(() => {
         if (sessionKeyRef.current === selectedSessionKey) {
           loadData();
@@ -194,7 +194,7 @@ export function useLiveTelemetry(selectedYear) {
       if (intervalRef.current) clearInterval(intervalRef.current);
       if (countdownRef.current) clearInterval(countdownRef.current);
     };
-  }, [autoRefresh, selectedSessionKey, refreshInterval, loadData]);
+  }, [autoRefresh, selectedSessionKey, refreshInterval, loadData, isLive]);
 
   const handleSessionChange = (key) => {
     setSelectedSessionKey(key);

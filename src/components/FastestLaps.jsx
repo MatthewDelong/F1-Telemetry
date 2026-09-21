@@ -1,4 +1,6 @@
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
 
 export const FastestLaps = (props) => {
   const { results, raceResults: propRaceResults, drivers = [] } = props;
@@ -76,8 +78,6 @@ export const FastestLaps = (props) => {
 export const FastestLapsF1A = (props) => {
   const { raceResults = [] } = props;
 
-  // console.log('FastestLaps', raceResults);
-
   // Create a copy to avoid mutating the prop and filter for valid data
   const sortedResults = [...raceResults]
     .filter((result) => result.FastestLap?.Time?.time)
@@ -86,6 +86,15 @@ export const FastestLapsF1A = (props) => {
       const timeB = parseFloat(b.FastestLap.Time.time.replace(":", ""));
       return timeA - timeB;
     });
+
+  // Keep only the absolute fastest lap
+  const fastestDriver = sortedResults.length > 0 
+    ? [sortedResults[0]] 
+    : [{
+        Driver: { code: "-" },
+        Constructor: { name: "" },
+        FastestLap: { Time: { time: "-" }, lap: "-" }
+      }];
 
   return (
     <>
@@ -100,17 +109,25 @@ export const FastestLapsF1A = (props) => {
         </div>
         <div className="divider-glow-medium" />
         <ul>
-          {sortedResults.map((result, index) => (
+          {fastestDriver.map((result, index) => (
             <React.Fragment key={index}>
               <li key={index} className="grid grid-cols-3 gap-4 mb-8">
                 <div>
-                  <span className="font-display">{result.Driver.code}</span>
+                  <span className="font-display">{result.Driver?.code || "-"}</span>
                   <span className="text-sm ml-8 text-neutral-400 tracking-xs max-sm:hidden">
-                    {result.Constructor.name}
+                    {result.Constructor?.name || ""}
                   </span>
                 </div>
-                <span className="text-left">{result.FastestLap.Time.time}</span>
-                <span className="text-center">{result.FastestLap.lap}</span>
+                <span className="text-left flex items-center gap-6">
+                  {result.FastestLap?.Time?.time || "-"}
+                  {result.FastestLap?.Time?.time && result.FastestLap?.Time?.time !== "-" && (
+                    <span className="fa-layers fa-fw fa-xs scale-90">
+                      <FontAwesomeIcon icon="circle" className="text-white" />
+                      <FontAwesomeIcon icon="clock" className="text-fastest-lap-plum" transform="shrink-2" />
+                    </span>
+                  )}
+                </span>
+                <span className="text-center">{result.FastestLap?.lap || "-"}</span>
               </li>
               <div className="divider-glow-medium" />
             </React.Fragment>
