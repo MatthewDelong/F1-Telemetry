@@ -2,16 +2,16 @@
     "driverId": "hamilton",
     "driverCode": "HAM",
     "driverNumber": "44",
-    "lastUpdate": "2026-09-14T11:30:52.370998",
+    "lastUpdate": "2026-09-21T23:02:17.269495",
     "totalWins": 106,
     "totalPodiums": 207,
     "totalPoles": 107,
     "totalDNFs": 35,
     "totalRaces": 392,
-    "winRate": 0.2697201017811705,
-    "podiumRate": 0.5267175572519084,
-    "poleRate": 0.272264631043257,
-    "dnfRate": 0.089058524173028,
+    "winRate": 0.26903553299492383,
+    "podiumRate": 0.5253807106598984,
+    "poleRate": 0.2715736040609137,
+    "dnfRate": 0.08883248730964467,
     "seasonWins": {
         "2007": 4,
         "2008": 5,
@@ -998,7 +998,8 @@
             "Belgian Grand Prix": "1:49.454",
             "Hungarian Grand Prix": "1:22.300",
             "Dutch Grand Prix": "1:14.566",
-            "Italian Grand Prix": "1:25.300"
+            "Italian Grand Prix": "1:25.300",
+            "Spanish Grand Prix": "1:39.839"
         }
     },
     "finalStandings": {
@@ -2380,6 +2381,9 @@
                 },
                 "Italian Grand Prix": {
                     "points": 191
+                },
+                "Spanish Grand Prix": {
+                    "points": 191
                 }
             }
         }
@@ -2855,7 +2859,8 @@
                 "Belgian Grand Prix": "4",
                 "Hungarian Grand Prix": "5",
                 "Dutch Grand Prix": "4",
-                "Italian Grand Prix": "6"
+                "Italian Grand Prix": "6",
+                "Spanish Grand Prix": "22"
             }
         }
     },
@@ -3330,7 +3335,8 @@
                 "Belgian Grand Prix": "5",
                 "Hungarian Grand Prix": "5",
                 "Dutch Grand Prix": "5",
-                "Italian Grand Prix": "4"
+                "Italian Grand Prix": "4",
+                "Spanish Grand Prix": "4"
             }
         }
     },
@@ -3766,7 +3772,8 @@
             "Belgian Grand Prix": 1,
             "Hungarian Grand Prix": 0,
             "Dutch Grand Prix": 1,
-            "Italian Grand Prix": -2
+            "Italian Grand Prix": -2,
+            "Spanish Grand Prix": -18
         }
     },
     "driverQualifyingTimes": {
@@ -5812,6 +5819,11 @@
                     "1:22.847",
                     "1:22.516",
                     "1:22.011"
+                ],
+                "Spanish Grand Prix": [
+                    "1:33.531",
+                    "1:32.710",
+                    "1:32.013"
                 ]
             }
         }
@@ -5836,7 +5848,7 @@
         "2023": 6.181818181818182,
         "2024": 6.958333333333333,
         "2025": 8.5,
-        "2026": 3.923076923076923
+        "2026": 5.214285714285714
     },
     "avgQualiPositions": {
         "2007": 2.6470588235294117,
@@ -5858,7 +5870,7 @@
         "2023": 6.363636363636363,
         "2024": 8.5,
         "2025": 9.041666666666666,
-        "2026": 4.384615384615385
+        "2026": 4.357142857142857
     },
     "rates": {
         "wins": {
@@ -5881,7 +5893,7 @@
             "2023": 0.0,
             "2024": 0.08333333333333333,
             "2025": 0.0,
-            "2026": 0.07692307692307693
+            "2026": 0.07142857142857142
         },
         "podiums": {
             "2007": 0.7058823529411765,
@@ -5903,7 +5915,7 @@
             "2023": 0.2727272727272727,
             "2024": 0.20833333333333334,
             "2025": 0.0,
-            "2026": 0.38461538461538464
+            "2026": 0.35714285714285715
         },
         "poles": {
             "2007": 0.29411764705882354,

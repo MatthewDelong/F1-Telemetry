@@ -2,7 +2,7 @@
     "driverId": "lawson",
     "driverCode": "LAW",
     "driverNumber": "30",
-    "lastUpdate": "2026-09-14T11:30:52.371090",
+    "lastUpdate": "2026-09-21T23:02:17.269202",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -11,7 +11,7 @@
     "winRate": 0.0,
     "podiumRate": 0.0,
     "poleRate": 0.0,
-    "dnfRate": 0.2708333333333333,
+    "dnfRate": 0.2653061224489796,
     "seasonWins": {
         "2023": 0,
         "2024": 0,
@@ -125,7 +125,8 @@
             "Belgian Grand Prix": "1:51.075",
             "Hungarian Grand Prix": "1:23.900",
             "Dutch Grand Prix": "1:15.435",
-            "Italian Grand Prix": "1:25.578"
+            "Italian Grand Prix": "1:25.578",
+            "Spanish Grand Prix": "1:36.846"
         }
     },
     "finalStandings": {
@@ -312,6 +313,9 @@
                 },
                 "Italian Grand Prix": {
                     "points": 59
+                },
+                "Spanish Grand Prix": {
+                    "points": 59
                 }
             }
         }
@@ -378,7 +382,8 @@
                 "Belgian Grand Prix": "12",
                 "Hungarian Grand Prix": "8",
                 "Dutch Grand Prix": "7",
-                "Italian Grand Prix": "14"
+                "Italian Grand Prix": "14",
+                "Spanish Grand Prix": "6"
             }
         }
     },
@@ -444,7 +449,8 @@
                 "Belgian Grand Prix": "9",
                 "Hungarian Grand Prix": "11",
                 "Dutch Grand Prix": "8",
-                "Italian Grand Prix": "22"
+                "Italian Grand Prix": "22",
+                "Spanish Grand Prix": "8"
             }
         }
     },
@@ -503,7 +509,8 @@
             "Belgian Grand Prix": -3,
             "Hungarian Grand Prix": 3,
             "Dutch Grand Prix": 1,
-            "Italian Grand Prix": 8
+            "Italian Grand Prix": 8,
+            "Spanish Grand Prix": 2
         }
     },
     "driverQualifyingTimes": {
@@ -760,6 +767,11 @@
                     "1:22.989",
                     "1:22.821",
                     "N/A"
+                ],
+                "Spanish Grand Prix": [
+                    "1:33.310",
+                    "1:32.780",
+                    "1:32.316"
                 ]
             }
         }
@@ -768,13 +780,13 @@
         "2023": 12.2,
         "2024": 13.5,
         "2025": 12.791666666666666,
-        "2026": 9.615384615384615
+        "2026": 9.357142857142858
     },
     "avgQualiPositions": {
         "2023": 14.2,
         "2024": 12.666666666666666,
         "2025": 12.541666666666666,
-        "2026": 11.23076923076923
+        "2026": 11.0
     },
     "rates": {
         "wins": {

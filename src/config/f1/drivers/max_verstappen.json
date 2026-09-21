@@ -2,16 +2,16 @@
     "driverId": "max_verstappen",
     "driverCode": "VER",
     "driverNumber": "3",
-    "lastUpdate": "2026-09-14T11:30:52.370969",
+    "lastUpdate": "2026-09-21T23:02:17.269156",
     "totalWins": 71,
-    "totalPodiums": 132,
+    "totalPodiums": 133,
     "totalPoles": 51,
     "totalDNFs": 33,
     "totalRaces": 245,
-    "winRate": 0.2886178861788618,
-    "podiumRate": 0.5365853658536586,
-    "poleRate": 0.2073170731707317,
-    "dnfRate": 0.13414634146341464,
+    "winRate": 0.2874493927125506,
+    "podiumRate": 0.5384615384615384,
+    "poleRate": 0.20647773279352227,
+    "dnfRate": 0.13360323886639677,
     "seasonWins": {
         "2015": 0,
         "2016": 1,
@@ -38,7 +38,7 @@
         "2023": 21,
         "2024": 14,
         "2025": 15,
-        "2026": 5
+        "2026": 6
     },
     "seasonPoles": {
         "2015": 0,
@@ -294,7 +294,8 @@
             "Austrian Grand Prix": "2",
             "Belgian Grand Prix": "3",
             "Hungarian Grand Prix": "2",
-            "Italian Grand Prix": "3"
+            "Italian Grand Prix": "3",
+            "Spanish Grand Prix": "2"
         }
     },
     "DNFs": {
@@ -623,7 +624,8 @@
             "Belgian Grand Prix": "1:49.618",
             "Hungarian Grand Prix": "1:23.433",
             "Dutch Grand Prix": -1,
-            "Italian Grand Prix": "1:24.242"
+            "Italian Grand Prix": "1:24.242",
+            "Spanish Grand Prix": "1:36.760"
         }
     },
     "finalStandings": {
@@ -1484,6 +1486,9 @@
                 },
                 "Italian Grand Prix": {
                     "points": 145
+                },
+                "Spanish Grand Prix": {
+                    "points": 145
                 }
             }
         }
@@ -1780,7 +1785,8 @@
                 "Belgian Grand Prix": "3",
                 "Hungarian Grand Prix": "2",
                 "Dutch Grand Prix": "22",
-                "Italian Grand Prix": "3"
+                "Italian Grand Prix": "3",
+                "Spanish Grand Prix": "2"
             }
         }
     },
@@ -2076,7 +2082,8 @@
                 "Hungarian Grand Prix": "4",
                 "Dutch Grand Prix": "7",
                 "Australian Grand Prix": "20",
-                "Italian Grand Prix": "5"
+                "Italian Grand Prix": "5",
+                "Spanish Grand Prix": "3"
             }
         }
     },
@@ -2349,7 +2356,8 @@
             "Belgian Grand Prix": -1,
             "Hungarian Grand Prix": 2,
             "Dutch Grand Prix": -15,
-            "Italian Grand Prix": 2
+            "Italian Grand Prix": 2,
+            "Spanish Grand Prix": 1
         }
     },
     "driverQualifyingTimes": {
@@ -3623,6 +3631,11 @@
                     "1:22.631",
                     "1:22.188",
                     "1:22.070"
+                ],
+                "Spanish Grand Prix": [
+                    "1:33.381",
+                    "1:32.431",
+                    "1:31.964"
                 ]
             }
         }
@@ -3639,7 +3652,7 @@
         "2023": 1.2727272727272727,
         "2024": 3.625,
         "2025": 3.6666666666666665,
-        "2026": 8.923076923076923
+        "2026": 8.428571428571429
     },
     "avgQualiPositions": {
         "2015": 11.0,
@@ -3653,7 +3666,7 @@
         "2023": 3.0,
         "2024": 2.9166666666666665,
         "2025": 3.5,
-        "2026": 6.461538461538462
+        "2026": 6.214285714285714
     },
     "rates": {
         "wins": {
@@ -3682,7 +3695,7 @@
             "2023": 0.9545454545454546,
             "2024": 0.5833333333333334,
             "2025": 0.625,
-            "2026": 0.38461538461538464
+            "2026": 0.42857142857142855
         },
         "poles": {
             "2015": 0.0,
@@ -3716,19 +3729,19 @@
     "consistency": {
         "mean": {
             "wins": 5.916666666666667,
-            "podiums": 11.0,
+            "podiums": 11.083333333333334,
             "poles": 4.25,
             "points": 299.125
         },
         "std": {
             "wins": 6.006362367430797,
-            "podiums": 6.027713773341708,
+            "podiums": 5.950606878480734,
             "poles": 4.602988159880492,
             "points": 148.88727909059256
         },
         "cv": {
             "wins": 1.015159836748867,
-            "podiums": 0.5479739793947007,
+            "podiums": 0.5368968612163068,
             "poles": 1.0830560376189393,
             "points": 0.4977426797846805
         }
