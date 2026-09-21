@@ -37,6 +37,7 @@ import {
   PitStopTimes,
   WeatherDetails,
   PenaltiesTrackLimits,
+  CircuitDetails,
 } from "../components";
 import Drawer from "../components/Drawer";
 import Accordion from "../components/Accordion";
@@ -1404,6 +1405,10 @@ export function RacePage() {
             <p className="text-sm tracking-sm">{selectedSession}</p>
           )}
           <div className="divider-glow-dark mt-32" />
+        </div>
+        
+        <div className="page-container-centered mb-32">
+          <CircuitDetails circuitId={location && locationMaps[location.toLowerCase()]} />
         </div>
 
         {selectedSession === "Qualifying" && (
