@@ -102,23 +102,23 @@ export const FastestLapsF1A = (props) => {
         Fastest Lap
       </h3>
       <div className="bg-glow-large h-fit p-32 mb-16 rounded-xlarge">
-        <div className="grid grid-cols-3 gap-4 mb-16 text-neutral-400">
-          <span className="tracking-xs uppercase">Driver</span>
-          <span className="tracking-xs uppercase text-left">Time</span>
-          <span className="tracking-xs uppercase text-center">Lap</span>
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-16 text-neutral-400 text-xs sm:text-base">
+          <span className="tracking-xs uppercase text-left">Driver</span>
+          <span className="tracking-xs uppercase text-center">Time</span>
+          <span className="tracking-xs uppercase text-right">Lap</span>
         </div>
         <div className="divider-glow-medium" />
         <ul>
           {fastestDriver.map((result, index) => (
             <React.Fragment key={index}>
-              <li key={index} className="grid grid-cols-3 gap-4 mb-8">
-                <div>
+              <li key={index} className="grid grid-cols-3 gap-2 sm:gap-4 mb-8 items-center text-sm sm:text-base">
+                <div className="text-left">
                   <span className="font-display">{result.Driver?.code || "-"}</span>
                   <span className="text-sm ml-8 text-neutral-400 tracking-xs max-sm:hidden">
                     {result.Constructor?.name || ""}
                   </span>
                 </div>
-                <span className="text-left flex items-center gap-6">
+                <div className="text-center flex justify-center items-center gap-2 sm:gap-6">
                   {result.FastestLap?.Time?.time || "-"}
                   {result.FastestLap?.Time?.time && result.FastestLap?.Time?.time !== "-" && (
                     <span className="fa-layers fa-fw fa-xs scale-90">
@@ -126,8 +126,8 @@ export const FastestLapsF1A = (props) => {
                       <FontAwesomeIcon icon="clock" className="text-fastest-lap-plum" transform="shrink-2" />
                     </span>
                   )}
-                </span>
-                <span className="text-center">{result.FastestLap?.lap || "-"}</span>
+                </div>
+                <span className="text-right">{result.FastestLap?.lap || "-"}</span>
               </li>
               <div className="divider-glow-medium" />
             </React.Fragment>
