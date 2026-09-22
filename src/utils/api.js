@@ -27,8 +27,20 @@ export function normalizeOpenF1Date(date) {
   return d.toISOString();
 }
 
-const CACHE_PREFIX = "f1_cache_v12_";
-const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
+const CACHE_PREFIX = "f1_cache_v13_";
+const CACHE_TTL = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+
+// Clean up stale cache entries from previous versions on load
+try {
+  const OLD_PREFIXES = ["f1_cache_v12_", "f1_cache_v11_", "f1_cache_v10_"];
+  Object.keys(localStorage).forEach((key) => {
+    if (OLD_PREFIXES.some((p) => key.startsWith(p))) {
+      localStorage.removeItem(key);
+    }
+  });
+} catch (e) {
+  // localStorage may be unavailable in some contexts
+}
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
