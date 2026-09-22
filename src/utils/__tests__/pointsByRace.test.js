@@ -17,9 +17,9 @@ describe("buildRacePointsMaps", () => {
   });
 
   it("uses raceName for race metadata", () => {
-    const data = [{ raceName: "Australian Grand Prix" }];
+    const data = [{ raceName: "Australia Grand Prix" }];
     const { racesMeta } = buildRacePointsMaps(data);
-    expect(racesMeta).toEqual([{ raceName: "Australian Grand Prix" }]);
+    expect(racesMeta).toEqual([{ raceName: "Australia Grand Prix" }]);
   });
 
   it("falls back to Circuit.circuitId when raceName is missing", () => {

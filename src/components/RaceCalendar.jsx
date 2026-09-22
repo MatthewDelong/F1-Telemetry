@@ -2,7 +2,7 @@ import React from "react";
 
 const RaceCalendar = () => {
   const RACES_DATA = {
-    "Australian Grand Prix": {
+    "Australia Grand Prix": {
       round: 1,
       raceKey: "f1.races.australia",
       circuitKey: "f1.circuits.albert_park",
@@ -14,13 +14,13 @@ const RaceCalendar = () => {
       country: "Australia",
       lat: -37.8497,
       lng: 144.968,
-      displayName: "Australian Grand Prix",
+      displayName: "Australia Grand Prix",
       countDownDate: "2026-03-08T04:00:00Z",
       flag: "au.webp",
       track: "Australia.webp",
       direction: "cw",
     },
-    "Chinese Grand Prix": {
+    "China Grand Prix": {
       round: 2,
       raceKey: "f1.races.china",
       circuitKey: "f1.circuits.shanghai",
@@ -32,13 +32,13 @@ const RaceCalendar = () => {
       country: "China",
       lat: 31.3389,
       lng: 121.2197,
-      displayName: "Chinese Grand Prix",
+      displayName: "China Grand Prix",
       countDownDate: "2026-03-15T07:00:00Z",
       flag: "cn.webp",
       track: "China.webp",
       direction: "cw",
     },
-    "Japanese Grand Prix": {
+    "Japan Grand Prix": {
       round: 3,
       raceKey: "f1.races.japan",
       circuitKey: "f1.circuits.suzuka",
@@ -75,7 +75,7 @@ const RaceCalendar = () => {
       track: "Miami.webp",
       direction: "ccw",
     },
-    "Canadian Grand Prix": {
+    "Canada Grand Prix": {
       round: 5,
       raceKey: "f1.races.canada",
       circuitKey: "f1.circuits.gilles_villeneuve",
@@ -87,7 +87,7 @@ const RaceCalendar = () => {
       country: "Canada",
       lat: 45.5,
       lng: -73.5228,
-      displayName: "Canadian Grand Prix",
+      displayName: "Canada Grand Prix",
       countDownDate: "2026-05-24T20:00:00Z",
       flag: "ca.webp",
       track: "Canada.webp",
@@ -111,7 +111,7 @@ const RaceCalendar = () => {
       track: "Monaco.webp",
       direction: "cw",
     },
-    "Spanish Grand Prix": {
+    "Spain Grand Prix": {
       round: 7,
       raceKey: "f1.races.spain",
       circuitKey: "f1.circuits.catalunya",
@@ -129,7 +129,7 @@ const RaceCalendar = () => {
       track: "Barcelona.webp",
       direction: "cw",
     },
-    "Austrian Grand Prix": {
+    "Austria Grand Prix": {
       round: 8,
       raceKey: "f1.races.austria",
       circuitKey: "f1.circuits.red_bull_ring",
@@ -141,13 +141,13 @@ const RaceCalendar = () => {
       country: "Austria",
       lat: 47.2197,
       lng: 14.7647,
-      displayName: "Austrian Grand Prix",
+      displayName: "Austria Grand Prix",
       countDownDate: "2026-06-28T13:00:00Z",
       flag: "at.webp",
       track: "Austria.webp",
       direction: "cw",
     },
-    "British Grand Prix": {
+    "Great Britain Grand Prix": {
       round: 9,
       raceKey: "f1.races.britain",
       circuitKey: "f1.circuits.silverstone",
@@ -159,13 +159,13 @@ const RaceCalendar = () => {
       country: "United Kingdom",
       lat: 52.0786,
       lng: -1.0169,
-      displayName: "British Grand Prix",
+      displayName: "Great Britain Grand Prix",
       countDownDate: "2026-07-05T14:00:00Z",
       flag: "gb.webp",
       track: "Silverstone.webp",
       direction: "cw",
     },
-    "Belgian Grand Prix": {
+    "Belgium Grand Prix": {
       round: 10,
       raceKey: "f1.races.belgium",
       circuitKey: "f1.circuits.spa",
@@ -177,13 +177,13 @@ const RaceCalendar = () => {
       country: "Belgium",
       lat: 50.4372,
       lng: 5.9714,
-      displayName: "Belgian Grand Prix",
+      displayName: "Belgium Grand Prix",
       countDownDate: "2026-07-19T13:00:00Z",
       flag: "be.webp",
       track: "Belgium.webp",
       direction: "cw",
     },
-    "Hungarian Grand Prix": {
+    "Hungary Grand Prix": {
       round: 11,
       raceKey: "f1.races.hungary",
       circuitKey: "f1.circuits.hungaroring",
@@ -195,13 +195,13 @@ const RaceCalendar = () => {
       country: "Hungary",
       lat: 47.5789,
       lng: 19.2486,
-      displayName: "Hungarian Grand Prix",
+      displayName: "Hungary Grand Prix",
       countDownDate: "2026-07-26T13:00:00Z",
       flag: "hu.webp",
       track: "Hungary.webp",
       direction: "cw",
     },
-    "Dutch Grand Prix": {
+    "Netherlands Grand Prix": {
       round: 12,
       raceKey: "f1.races.netherlands",
       circuitKey: "f1.circuits.zandvoort",
@@ -219,7 +219,7 @@ const RaceCalendar = () => {
       track: "Dutch.webp",
       direction: "cw",
     },
-    "Italian Grand Prix": {
+    "Italy Grand Prix": {
       round: 13,
       raceKey: "f1.races.italy",
       circuitKey: "f1.circuits.monza",
@@ -231,13 +231,13 @@ const RaceCalendar = () => {
       country: "Italy",
       lat: 45.6156,
       lng: 9.2811,
-      displayName: "Italian Grand Prix",
+      displayName: "Italy Grand Prix",
       countDownDate: "2026-09-06T13:00:00Z",
       flag: "it.webp",
       track: "Italy.webp",
       direction: "cw",
     },
-    "Spanish Grand Prix (Madrid)": {
+    "Spain Grand Prix (Madrid)": {
       round: 14,
       globeName: "Madrid Grand Prix",
       raceKey: "f1.races.spain_madrid",
@@ -250,7 +250,7 @@ const RaceCalendar = () => {
       country: "Spain",
       lat: 40.4168,
       lng: -3.7038,
-      displayName: "Spanish Grand Prix (Madrid)",
+      displayName: "Spain Grand Prix",
       countDownDate: "2026-09-13T13:00:00Z",
       flag: "es.webp",
       track: "Madrid-Spain.webp",
@@ -347,7 +347,7 @@ const RaceCalendar = () => {
       track: "Mexico.webp",
       direction: "cw",
     },
-    "Brazilian Grand Prix": {
+    "Brazil Grand Prix": {
       round: 20,
       raceKey: "f1.races.brazil",
       circuitKey: "f1.circuits.interlagos",
@@ -359,7 +359,7 @@ const RaceCalendar = () => {
       country: "Brazil",
       lat: -23.7036,
       lng: -46.6997,
-      displayName: "Brazilian Grand Prix",
+      displayName: "Brazil Grand Prix",
       countDownDate: "2026-11-08T17:00:00Z",
       flag: "br.webp",
       track: "Brazil.webp",

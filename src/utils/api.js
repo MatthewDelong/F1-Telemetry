@@ -3,7 +3,7 @@ import { buildOpenF1Url, OPENF1_API_BASE_URL } from "../config/openf1";
 import { trackLengths } from "./trackLengths";
 import { locationMaps } from "./locationMaps";
 
-const CANCELLED_RACES_2026 = ["Saudi Arabian Grand Prix"];
+const CANCELLED_RACES_2026 = ["Saudi Arabia Grand Prix"];
 const CANCELLED_MEETING_KEYS_2026 = [1282]; // Remove old Bahrain GP (Sakhir) since a new one was added
 
 export const BASE_F1_URL = import.meta.env.PROD
@@ -27,7 +27,7 @@ export function normalizeOpenF1Date(date) {
   return d.toISOString();
 }
 
-const CACHE_PREFIX = "f1_cache_v8_";
+const CACHE_PREFIX = "f1_cache_v12_";
 const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours in milliseconds
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
