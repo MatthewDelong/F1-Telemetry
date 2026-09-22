@@ -14,6 +14,9 @@ import { getCurrentYear } from "../utils/currentYear";
 import DatesSection from "../layouts/DatesSection";
 import NextRaceSection from "../layouts/NextRaceSection";
 import ProceduralTrackBackground from "../components/ProceduralTrackBackground";
+import F1GlobeWidget from "../components/F1GlobeWidget";
+import { RACES_DATA } from "../config/f1/globeRaces.js";
+import { RACES_DATA_2027 } from "../config/f1/globeRaces2027.js";
 import teamColorsData from "../utils/teamColors.json";
 import raceDetails from "../config/f1/raceDetails.json";
 
@@ -33,6 +36,7 @@ export function LandingPage() {
   const [raceData, setRaceData] = useState(null);
   const snapContainerRef = useRef(null);
   const [heroBgIndex, setHeroBgIndex] = useState(0);
+  const [globeYear, setGlobeYear] = useState(2026);
   const [isHeroImageVisible, setIsHeroImageVisible] = useState(true);
   const [isBelowLargeBreakpoint, setIsBelowLargeBreakpoint] = useState(
     typeof window !== "undefined"
@@ -546,6 +550,30 @@ export function LandingPage() {
       </section>
       <section className="h-[100dvh] snap-start relative flex items-center justify-center bg-neutral-950 bg-glow-dark-bottom overflow-hidden pt-[64px]">
         {latestResultsLayout()}
+      </section>
+
+      <section className="snap-start scroll-mt-24 relative bg-neutral-950 px-4 py-8 overflow-hidden w-full h-[100dvh] flex items-center justify-center flex-col">
+        <div className="absolute top-8 z-20 flex gap-4 bg-black/60 p-2 rounded-full backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)]">
+           <button onClick={() => setGlobeYear(2026)} className={`px-6 py-2 rounded-full text-sm font-bold tracking-wider uppercase transition-colors ${globeYear === 2026 ? 'bg-[#e10600] text-white' : 'text-neutral-400 hover:text-white'}`}>2026 Season</button>
+           <button onClick={() => setGlobeYear(2027)} className={`px-6 py-2 rounded-full text-sm font-bold tracking-wider uppercase transition-colors ${globeYear === 2027 ? 'bg-[#e10600] text-white' : 'text-neutral-400 hover:text-white'}`}>2027 Preview</button>
+        </div>
+        <div className="w-[95%] max-w-[1600px] mx-auto h-[80vh] mt-8">
+          <F1GlobeWidget
+            key={globeYear}
+            year={globeYear}
+            races={Object.entries(globeYear === 2026 ? RACES_DATA : RACES_DATA_2027)
+              .map(([name, data]) => ({
+                ...data,
+                name: data.globeName || name,
+                circuit: data.displayName || data.circuitKey,
+              }))
+              .sort((a, b) => {
+                 if (a.round === 'T') return -1;
+                 if (b.round === 'T') return 1;
+                 return a.round - b.round;
+              })}
+          />
+        </div>
       </section>
 
       <DatesSection />
