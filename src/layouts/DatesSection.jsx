@@ -1,54 +1,99 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import RaceCalendar from "../components/RaceCalendar";
+import RaceCalendar2027 from "../components/RaceCalendar2027";
 
 const DatesSection = () => {
   const sectionRef = useRef(null);
+  const section2027Ref = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const is2027InView = useInView(section2027Ref, { once: true, margin: "-100px" });
 
   return (
-    <section
-      ref={sectionRef}
-      className="min-h-screen snap-start scroll-mt-24 flex flex-col items-center max-md:justify-start md:justify-center px-4 md:px-16 bg-neutral-950 relative max-md:pt-[120px] max-md:pb-[80px] md:py-32"
-    >
-      <div className="max-w-[1200px] w-full mx-auto text-center z-10">
-        <motion.h2
-          className="heading-2 uppercase mb-8"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          2026 F1 Race Calendar
-        </motion.h2>
-        <motion.p
-          className="text-neutral-400 text-2xl mb-48 max-w-2xl mx-auto"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          Plan your season with the full 2026 F1 Race Calendar
-        </motion.p>
+    <>
+      {/* 2026 Calendar — own snap section */}
+      <section
+        ref={sectionRef}
+        className="min-h-screen snap-start scroll-mt-24 flex flex-col items-center max-md:justify-start md:justify-center px-4 md:px-16 bg-neutral-950 relative max-md:pt-[120px] max-md:pb-[80px] md:py-32"
+      >
+        <div className="max-w-[1200px] w-full mx-auto text-center z-10">
+          <motion.h2
+            className="heading-2 uppercase mb-8"
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+          >
+            2026 F1 Race Calendar
+          </motion.h2>
+          <motion.p
+            className="text-neutral-400 text-2xl mb-48 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Plan your season with the full 2026 F1 Race Calendar
+          </motion.p>
 
-        <motion.div
-          className="relative w-full max-w-5xl mx-auto rounded-2xl overflow-hidden bg-black/40 backdrop-blur-md border border-white/10 shadow-[0_0_40px_rgba(255,255,255,0.05)]"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          <RaceCalendar />
-        </motion.div>
-      </div>
+          <motion.div
+            className="relative w-full max-w-5xl mx-auto rounded-2xl overflow-hidden bg-black/40 backdrop-blur-md border border-white/10 shadow-[0_0_40px_rgba(255,255,255,0.05)]"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <RaceCalendar />
+          </motion.div>
+        </div>
 
-      {/* Subtle background decoration matches other sections */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
-        <img
-          className="w-[300px] absolute -left-[100px] top-64"
-          src="/images/plusPatterns.png"
-          alt=""
-        />
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,_rgba(255,0,0,0.05),_transparent_70%)]" />
-      </div>
-    </section>
+        {/* Subtle background decoration */}
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
+          <img
+            className="w-[300px] absolute -left-[100px] top-64"
+            src="/images/plusPatterns.png"
+            alt=""
+          />
+          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,_rgba(255,0,0,0.05),_transparent_70%)]" />
+        </div>
+      </section>
+
+      {/* 2027 Calendar — own snap section */}
+      <section
+        ref={section2027Ref}
+        className="min-h-screen snap-start scroll-mt-24 flex flex-col items-center max-md:justify-start md:justify-center px-4 md:px-16 bg-neutral-950 relative max-md:pt-[120px] max-md:pb-[80px] md:py-32"
+      >
+        <div className="max-w-[1200px] w-full mx-auto text-center z-10">
+          <motion.h2
+            className="heading-2 uppercase mb-8"
+            initial={{ opacity: 0, y: 30 }}
+            animate={is2027InView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+          >
+            2027 F1 Race Calendar
+          </motion.h2>
+          <motion.p
+            className="text-neutral-400 text-2xl mb-48 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 30 }}
+            animate={is2027InView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Look ahead — the provisional 2027 F1 Race Calendar
+          </motion.p>
+
+          <motion.div
+            className="relative w-full max-w-5xl mx-auto rounded-2xl overflow-hidden bg-black/40 backdrop-blur-md border border-white/10 shadow-[0_0_40px_rgba(255,255,255,0.05)]"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={is2027InView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <RaceCalendar2027 />
+          </motion.div>
+        </div>
+
+        {/* Subtle background decoration */}
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
+          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,_rgba(255,0,0,0.05),_transparent_70%)]" />
+        </div>
+      </section>
+    </>
   );
 };
 

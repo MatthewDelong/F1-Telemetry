@@ -436,37 +436,63 @@ const RaceCalendar = () => {
       .toUpperCase();
   };
 
+  const DATE_RANGES_2026 = {
+    1: "06-08 Mar",
+    2: "13-15 Mar",
+    3: "27-29 Mar",
+    4: "01-03 May",
+    5: "22-24 May",
+    6: "05-07 Jun",
+    7: "12-14 Jun",
+    8: "26-28 Jun",
+    9: "03-05 Jul",
+    10: "17-19 Jul",
+    11: "24-26 Jul",
+    12: "21-23 Aug",
+    13: "04-06 Sep",
+    14: "11-13 Sep",
+    15: "24-26 Sep",
+    16: "02-04 Oct",
+    17: "09-11 Oct",
+    18: "23-25 Oct",
+    19: "30 Oct-01 Nov",
+    20: "06-08 Nov",
+    21: "19-21 Nov",
+    22: "27-29 Nov",
+    23: "04-06 Dec",
+  };
+
   const renderRaceRow = (race) => (
     <div
       key={race.round}
-      className="flex items-center bg-white/5 rounded-lg py-4 px-8 border-l-[3px] border-transparent"
+      className="flex items-center bg-white/5 rounded-lg py-4 px-6 border-l-[3px] border-transparent"
     >
-      <div className="w-[30px] font-black text-[0.75rem] text-[#e10600]">
+      <div className="w-[28px] flex-shrink-0 font-black text-[0.7rem] text-[#e10600]">
         <span>R{race.round}</span>
       </div>
-      <div className="w-[30px] flex items-center justify-center">
+      <div className="w-[26px] flex-shrink-0 flex items-center justify-center">
         <img
           src={`/images/flags/${race.flag}`}
           alt={race.country}
-          className="w-[20px] rounded-[2px] shadow-[0_1px_3px_rgba(0,0,0,0.5)] border border-white/20"
+          className="w-[18px] rounded-[2px] shadow-[0_1px_3px_rgba(0,0,0,0.5)] border border-white/20"
         />
       </div>
-      <div className="flex-1 font-bold text-[0.75rem] tracking-wide pl-8 whitespace-nowrap overflow-hidden text-ellipsis text-white">
-        {race.displayName.toUpperCase()}
+      <div className="flex-1 font-bold text-[0.65rem] tracking-wide pl-6 text-white min-w-0">
+        <span className="whitespace-nowrap">{race.displayName.toUpperCase()}</span>
         {race.isNew && (
-          <span className="ml-8 font-black text-[0.65rem] text-blue-500 bg-blue-500/10 px-4 py-[1px] rounded-[3px] align-middle">
+          <span className="ml-4 font-black text-[0.55rem] text-blue-500 bg-blue-500/10 px-3 py-[1px] rounded-[3px] align-middle whitespace-nowrap">
             NEW
           </span>
         )}
       </div>
-      <div className="font-semibold text-[0.7rem] text-neutral-400 text-right min-w-[50px]">
-        {formatDate(race.date)}
+      <div className="font-semibold text-[0.65rem] text-neutral-400 text-right min-w-[70px] flex-shrink-0 pl-4 whitespace-nowrap">
+        {(DATE_RANGES_2026[race.round] || formatDate(race.date)).toUpperCase()}
       </div>
     </div>
   );
 
   return (
-    <div className="w-full bg-glow-dark border border-white/5 rounded-[2.4rem] p-16 md:p-24 shadow-xl relative overflow-hidden group">
+    <div className="w-full bg-glow-dark border border-white/5 rounded-[2.4rem] p-16 md:p-24 shadow-xl relative group">
       <div
         className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-20"
         style={{
@@ -479,10 +505,10 @@ const RaceCalendar = () => {
         </h2>
       </div>
       <div className="flex flex-col md:flex-row w-full gap-16 md:gap-24 relative z-10">
-        <div className="flex-1 flex flex-col gap-4">
+        <div className="flex-1 min-w-0 flex flex-col gap-4">
           {leftColumn.map(renderRaceRow)}
         </div>
-        <div className="flex-1 flex flex-col gap-4">
+        <div className="flex-1 min-w-0 flex flex-col gap-4">
           {rightColumn.map(renderRaceRow)}
         </div>
       </div>
