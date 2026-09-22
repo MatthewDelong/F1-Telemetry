@@ -314,11 +314,6 @@ This project pulls data from four sources:
 
 ---
 
-## Contributing
-
-Contributions are welcome! Whether it's improving the codebase, adding features, or fixing bugs — feel free to fork the repo and open a pull request.
-
----
 
 ## Acknowledgements
 
