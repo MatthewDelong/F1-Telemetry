@@ -56,5 +56,9 @@ export const locationMaps = {
     "malaysia": "sepang",
     "sepang": "sepang",
     "madrid": "madrid",
-    "madring": "madrid"
+    "madring": "madrid",
+    "portugal": "portimao",
+    "portimão": "portimao",
+    "turkey": "istanbul",
+    "istanbul": "istanbul"
 };

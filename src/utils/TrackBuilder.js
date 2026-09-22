@@ -780,6 +780,8 @@ const CORNER_COUNTS = {
   sepang: 15,
   madrid: 22,
   madring: 22,
+  portimao: 15,
+  istanbul: 14,
 };
 
 // ─── Main Export ─────────────────────────────────────────────────────
