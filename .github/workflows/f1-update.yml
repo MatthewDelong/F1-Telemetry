@@ -59,6 +59,10 @@ jobs:
         working-directory: ./src/config/f1
         run: python3 api_update.py
 
+      - name: Standardize Race Names
+        working-directory: ./src/config
+        run: python3 update_race_names.py
+
       - name: Commit and Push database changes
         run: |
           git config --global user.name 'github-actions[bot]'
