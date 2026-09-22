@@ -46,20 +46,20 @@ F1-Telemetry is an interactive web application built for motorsport fans who wan
 
 ## Features
 
-| Feature                 | Description                                                                                              |
-| ----------------------- | -------------------------------------------------------------------------------------------------------- |
-| **Race Leaderboards**   | Comprehensive race results with position changes, intervals and gap analysis                             |
-| **Lap-Time Analysis**   | Lap-by-lap performance metrics for studying consistency and strategy                                     |
-| **Tire Strategies**     | Visual breakdown of compound choices and stint lengths across the grid                                   |
-| **Fastest Laps**        | Highlights of the quickest laps set during each session                                                  |
-| **Pit Stop Analytics**  | Scatter-chart visualisation of pit-stop durations per driver                                             |
-| **Driver Comparisons**  | Head-to-head telemetry overlays for any two drivers in a session                                         |
-| **3D Telemetry Viewer** | Follow drivers around the circuit in a synchronised 3D scene with multiple broadcast-style camera angles |
-| **Procedural Tracks**   | Automatically generated, accurate 3D track geometries from GPS data with dynamic kerbs and environment   |
-| **AR Car Viewer**       | High-fidelity 3D car models with Draco / Meshopt compression (90 MB → 23 MB)                             |
-| **Interactive Calendars** | Up-to-date 2026 schedule and 2027 preview schedule, linking seamlessly to circuit telemetry |
-| **Future Preview Mode** | Graceful fallback rendering 3D circuits and metadata for future races when telemetry is unavailable |
-| **Live Dashboard**      | A fully integrated, real-time live telemetry dashboard (formerly Formula1-Live) with race control feeds  |
+| Feature                   | Description                                                                                              |
+| ------------------------- | -------------------------------------------------------------------------------------------------------- |
+| **Race Leaderboards**     | Comprehensive race results with position changes, intervals and gap analysis                             |
+| **Lap-Time Analysis**     | Lap-by-lap performance metrics for studying consistency and strategy                                     |
+| **Tire Strategies**       | Visual breakdown of compound choices and stint lengths across the grid                                   |
+| **Fastest Laps**          | Highlights of the quickest laps set during each session                                                  |
+| **Pit Stop Analytics**    | Scatter-chart visualisation of pit-stop durations per driver                                             |
+| **Driver Comparisons**    | Head-to-head telemetry overlays for any two drivers in a session                                         |
+| **3D Telemetry Viewer**   | Follow drivers around the circuit in a synchronised 3D scene with multiple broadcast-style camera angles |
+| **Procedural Tracks**     | Automatically generated, accurate 3D track geometries from GPS data with dynamic kerbs and environment   |
+| **AR Car Viewer**         | High-fidelity 3D car models with Draco / Meshopt compression (90 MB → 23 MB)                             |
+| **Interactive Calendars** | Up-to-date 2026 schedule and 2027 preview schedule, linking seamlessly to circuit telemetry              |
+| **Future Preview Mode**   | Graceful fallback rendering 3D circuits and metadata for future races when telemetry is unavailable      |
+| **Live Dashboard**        | A fully integrated, real-time live telemetry dashboard (formerly Formula1-Live) with race control feeds  |
 
 ---
 
@@ -125,13 +125,15 @@ npm run preview   # preview the production build locally
 <details>
 <summary><strong>Procedural Tracks (React-Three-Fiber)</strong></summary>
 
-F1-Telemetry features dynamic, procedural 3D tracks powered by `Three.js` and `@react-three/fiber`. 
+F1-Telemetry features dynamic, procedural 3D tracks powered by `Three.js` and `@react-three/fiber`.
 
 - **Downloading / Regenerating Track Data**:
   Run the automated downloading script to pull single-lap spatial telemetry from OpenF1 for all 2026/2025 calendar circuits:
+
   ```bash
   node scripts/downloadAllTracks.js
   ```
+
   This creates clean single-lap coordinate data in `public/trackdata/<canonicalId>.json` (such as `madrid.json`, `monaco.json`, `silverstone.json`), trimmed to avoid multi-lap overlap.
 
 - **3D Geometry & Curvature Math (`src/utils/TrackBuilder.js`)**:
@@ -313,7 +315,6 @@ This project pulls data from four sources:
 - **Internal Gateway (`api.php`)** — A custom auto-caching proxy that seamlessly fetches all configuration and data files for F1, F2, and F1 Academy directly from this self-contained `F1-Telemetry` repository, fully eliminating the need for external data repositories.
 
 ---
-
 
 ## Acknowledgements
 
