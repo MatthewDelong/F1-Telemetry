@@ -32,7 +32,7 @@ export default defineConfig({
       ],
     }),
     VitePWA({
-      registerType: "prompt",
+      registerType: "autoUpdate",
       includeAssets: [
         "favicon.ico",
         "apple-touch-icon.png",
@@ -86,11 +86,13 @@ export default defineConfig({
       workbox: {
         maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
         cleanupOutdatedCaches: true,
-        skipWaiting: false,
-        clientsClaim: false,
+        skipWaiting: true,
+        clientsClaim: true,
         inlineWorkboxRuntime: true,
+        navigateFallback: "index.html",
         navigateFallbackDenylist: [
           /^\/openf1/,
+          /^\/api/,
           /^https:\/\/(www|region1)\.google-analytics\.com/,
           /^https:\/\/www\.googletagmanager\.com/,
         ],
@@ -102,6 +104,39 @@ export default defineConfig({
           {
             urlPattern: /^https:\/\/www\.googletagmanager\.com\/.*/i,
             handler: "NetworkOnly",
+          },
+          {
+            // API proxy and PHP data endpoints — always hit network first
+            urlPattern: /\/api\.php\?|\/api\/|\.json(\?|$)/i,
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "api-data-cache",
+              networkTimeoutSeconds: 10,
+              expiration: {
+                maxEntries: 200,
+                maxAgeSeconds: 60 * 60, // 1 hour fallback
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+          {
+            // External API calls (OpenF1, Ergast/Jolpi, GitHub raw)
+            urlPattern:
+              /^https:\/\/(api\.openf1\.org|api\.jolpi\.ca|raw\.githubusercontent\.com)\/.*/i,
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "external-api-cache",
+              networkTimeoutSeconds: 15,
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60, // 1 hour fallback
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
           },
           {
             urlPattern: /\.(?:png|jpg|jpeg|svg|webp|ico|glb|bin)$/,

@@ -1,26 +1,37 @@
-import React from 'react';
-import { useRegisterSW } from 'virtual:pwa-register/react';
-import './ReloadPrompt.css';
+import React, { useEffect } from "react";
+import { useRegisterSW } from "virtual:pwa-register/react";
+import "./ReloadPrompt.css";
 
+/**
+ * LiveDashboard-specific ReloadPrompt — autoUpdate mode.
+ * The new SW will skipWaiting + clientsClaim automatically.
+ */
 function ReloadPrompt() {
   const {
     offlineReady: [offlineReady, setOfflineReady],
-    needRefresh: [needRefresh, setNeedRefresh],
+    needRefresh: [needRefresh],
     updateServiceWorker,
   } = useRegisterSW({
-    onRegistered(r) {
-      // eslint-disable-next-line prefer-template
-      console.log('SW Registered: ' + r);
+    onRegisteredSW(swUrl, registration) {
+      if (!registration) return;
+      console.log("[SW] LiveDashboard Registered:", swUrl);
+
+      // Check for updates every 60 seconds
+      setInterval(() => {
+        registration.update().catch(() => {});
+      }, 60 * 1000);
     },
     onRegisterError(error) {
-      console.log('SW registration error', error);
+      console.error("[SW] Registration error:", error);
     },
   });
 
-  const close = () => {
-    setOfflineReady(false);
-    setNeedRefresh(false);
-  };
+  useEffect(() => {
+    if (offlineReady) {
+      const timer = setTimeout(() => setOfflineReady(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [offlineReady, setOfflineReady]);
 
   if (!offlineReady && !needRefresh) return null;
 
@@ -28,19 +39,11 @@ function ReloadPrompt() {
     <div className="ReloadPrompt-container">
       <div className="ReloadPrompt-toast">
         <div className="ReloadPrompt-message">
-          {offlineReady
-            ? <span>App ready to work offline</span>
-            : <span>New content available, click on reload button to update.</span>}
-        </div>
-        <div className="ReloadPrompt-buttons">
-          {needRefresh && (
-            <button className="ReloadPrompt-toast-button btn-primary" onClick={() => updateServiceWorker(true)}>
-              Reload
-            </button>
+          {needRefresh ? (
+            <span>Updating to the latest version…</span>
+          ) : (
+            <span>App ready to work offline</span>
           )}
-          <button className="ReloadPrompt-toast-button" onClick={() => close()}>
-            Close
-          </button>
         </div>
       </div>
     </div>
