@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   fetchCircuitData,
   fetchAllRaceResults
@@ -12,7 +12,7 @@ import { NavLink } from "react-router-dom";
 import classNames from "classnames";
 import { formatDate } from "../../utils/formatDate";
 
-const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel, circuitRaceName, f1Date, f1Time, raceData }) => {
+const Top3Drivers = React.forwardRef(({ year, circuitId, meetingKey, championshipLevel, circuitRaceName, f1Date, f1Time, raceData }, ref) => {
   const [raceName, setRaceName] = useState("");
   const [top3RaceResults, setTop3RaceResults] = useState([]);
   const [top3RaceResults2, setTop3RaceResults2] = useState([]);
@@ -35,7 +35,7 @@ const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel, circuitRa
   const hasResults = top3RaceResults && top3RaceResults.length > 0;
 
   return (
-    <div className="relative group w-fit m-auto">
+    <div className="relative group w-fit m-auto" ref={ref}>
       <NavLink
         to={`/race-${championshipLevel === "F1A" ? "f1a" : "f2"}/${meetingKey}`}
         className={classNames(
@@ -180,17 +180,20 @@ const Top3Drivers = ({ year, circuitId, meetingKey, championshipLevel, circuitRa
       </NavLink>
     </div>
   );
-};
+});
 
 export function RaceResultsPageF2({ selectedYear, championshipLevel }) {
   const [f1Races, setF1Races] = useState([]);
   const [allResults, setAllResults] = useState([]);
   const [filteredCircuits, setFilteredCircuits] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const circuitRefs = useRef([]);
+  const hasScrolled = useRef(false);
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
+      hasScrolled.current = false;
       const [data, f1Details, allRaceRes] = await Promise.all([
         fetchCircuitData(championshipLevel),
         fetchRaceDetails(selectedYear),
@@ -208,6 +211,32 @@ export function RaceResultsPageF2({ selectedYear, championshipLevel }) {
 
     fetchData();
   }, [selectedYear]);
+
+  // Auto-scroll to the current race after data loads
+  useEffect(() => {
+    if (isLoading || filteredCircuits.length === 0 || allResults.length === 0 || hasScrolled.current) return;
+
+    // Find the last circuit that has race results
+    let currentIndex = -1;
+    const lastWithResults = filteredCircuits.reduce((lastIdx, circuit, idx) => {
+      const rData = allResults.find(r => r.circuitId === circuit.circuitId);
+      return (rData && (rData.race1?.length > 0 || rData.race2?.length > 0)) ? idx : lastIdx;
+    }, -1);
+
+    if (lastWithResults >= 0) {
+      // Scroll to the next upcoming race, or the last completed if it's the final one
+      currentIndex = lastWithResults < filteredCircuits.length - 1 ? lastWithResults + 1 : lastWithResults;
+    } else {
+      currentIndex = 0;
+    }
+
+    if (currentIndex >= 0 && circuitRefs.current[currentIndex]) {
+      hasScrolled.current = true;
+      setTimeout(() => {
+        circuitRefs.current[currentIndex]?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 150);
+    }
+  }, [isLoading, filteredCircuits, allResults]);
 
   // console.log('filteredCircuits', filteredCircuits);
 
@@ -236,6 +265,7 @@ export function RaceResultsPageF2({ selectedYear, championshipLevel }) {
             const rData = allResults.find(r => r.circuitId === circuit.circuitId);
             return (
               <Top3Drivers
+                ref={el => circuitRefs.current[index] = el}
                 key={circuit.circuitId}
                 year={selectedYear}
                 meetingKey={circuit.meetingKey}
@@ -253,3 +283,4 @@ export function RaceResultsPageF2({ selectedYear, championshipLevel }) {
     </div>
   );
 }
+

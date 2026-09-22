@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { fetchRaceDetails, fetchRaceMeetingKeys, fetchOpenF1Podium, BASE_F1_URL } from "../utils/api";
 import teamColors from "../utils/teamColors.json";
 import classNames from "classnames";
@@ -11,10 +11,13 @@ export function RaceResultsPage({ selectedYear }) {
   const [raceDetails, setRaceDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [races, setRaces] = useState([]);
+  const raceRefs = useRef([]);
+  const hasScrolled = useRef(false);
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
+      hasScrolled.current = false;
       const details = await fetchRaceDetails(selectedYear);
       const racesMK = await fetchRaceMeetingKeys(selectedYear);
       // The details array from fetchRaceDetails already contains .results for past races
@@ -57,6 +60,34 @@ export function RaceResultsPage({ selectedYear }) {
     fetchData();
   }, [selectedYear]);
 
+  // Auto-scroll to the current race after data loads
+  useEffect(() => {
+    if (isLoading || raceDetails.length === 0 || hasScrolled.current) return;
+
+    const now = new Date();
+    // Find the index of the current race: last race with results, or first upcoming race
+    let currentIndex = -1;
+    const lastWithResults = raceDetails.reduce((lastIdx, race, idx) => {
+      return (race.results && race.results.length > 0) ? idx : lastIdx;
+    }, -1);
+
+    if (lastWithResults >= 0) {
+      // If the last race with results is the final race, scroll to it; otherwise scroll to the next upcoming
+      currentIndex = lastWithResults < raceDetails.length - 1 ? lastWithResults + 1 : lastWithResults;
+    } else {
+      // No races have results yet — find the first upcoming by date
+      currentIndex = raceDetails.findIndex(race => race.date && new Date(race.date) >= now);
+      if (currentIndex === -1) currentIndex = 0;
+    }
+
+    if (currentIndex >= 0 && raceRefs.current[currentIndex]) {
+      hasScrolled.current = true;
+      setTimeout(() => {
+        raceRefs.current[currentIndex]?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 150);
+    }
+  }, [isLoading, raceDetails]);
+
   let navigate = useNavigate();
   const navigateToRaceResult = (race) => {
     // console.log(race);
@@ -84,6 +115,7 @@ export function RaceResultsPage({ selectedYear }) {
           <ul className="race-result">
             {processedRaces.map((race, index) => (
               <li
+                ref={el => raceRefs.current[index] = el}
                 key={index}
                 className={classNames(
                   "bg-glow-dark border border-white/5 shadow-xl hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] rounded-[2.4rem] mt-56 px-32 group duration-300 transition-all ease-in-out relative",
