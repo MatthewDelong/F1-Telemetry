@@ -5,6 +5,7 @@ import { locationMaps } from '../utils/locationMaps';
 export default function CircuitDetails({ circuitId, trackReferenceData, mapPath }) {
   // Try to find circuit info from JSON
   const details = circuitDetails[circuitId];
+  console.log("CircuitDetails rendered with circuitId:", circuitId, "Location Map result:", details);
 
   if (!details) {
     return null; // Or some fallback text
