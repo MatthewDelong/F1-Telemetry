@@ -14,7 +14,7 @@ import { locationMaps } from "./locationMaps";
 // ─── Constants ───────────────────────────────────────────────────────
 const TRACK_WIDTH = 0.5;
 const BAKU_TRACK_WIDTH = 0.5; // Restored to thick aesthetic
-const TRACK_RESOLUTION = 600; // Points sampled along spline
+const TRACK_RESOLUTION = 1500; // Increased for smoother corners
 const RUNOFF_WIDTH = 1.5; // Wider ground plane around track
 const KERB_WIDTH = 0.1;
 const SECTOR_COLORS = [
@@ -59,11 +59,11 @@ function normalizeGPSPoints(rawPoints, targetSize = 20) {
 
   // Safety check: If the point stream contains multiple laps, trim to 1 single lap loop
   let singleLapPoints = deduped;
-  if (deduped.length > 500) {
+  if (deduped.length > 5000) {
     const startPoint = deduped[0];
     let bestLoopIndex = -1;
     let minLoopDist = Infinity;
-    for (let i = 150; i < deduped.length; i++) {
+    for (let i = 1500; i < deduped.length; i++) {
       const dx = deduped[i].x - startPoint.x;
       const dy = deduped[i].y - startPoint.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
@@ -71,15 +71,44 @@ function normalizeGPSPoints(rawPoints, targetSize = 20) {
         minLoopDist = dist;
         bestLoopIndex = i;
       }
-      if (i > 200 && dist < 60) {
+      if (i > 2000 && dist < 60) {
         bestLoopIndex = i;
         break;
       }
     }
-    if (bestLoopIndex > 150) {
+    if (bestLoopIndex > 1500) {
       singleLapPoints = deduped.slice(0, bestLoopIndex + 1);
     }
   }
+
+  // Smoothing pass to increase the radius of tight corners (hairpins).
+  // This prevents the CatmullRom normals from crossing and creating blocky/squared-off
+  // polygons when extruding the track ribbon.
+  let smoothedPoints = singleLapPoints.map(p => ({x: p.x, y: p.y}));
+  for (let iter = 0; iter < 10; iter++) {
+    const nextPts = [];
+    const len = smoothedPoints.length;
+    for (let i = 0; i < len; i++) {
+      const prev = smoothedPoints[(i - 1 + len) % len];
+      const curr = smoothedPoints[i];
+      const next = smoothedPoints[(i + 1) % len];
+      
+      const dPrev = Math.hypot(curr.x - prev.x, curr.y - prev.y);
+      const dNext = Math.hypot(next.x - curr.x, next.y - curr.y);
+      
+      // Only smooth if points are physically close (dense telemetry in slow corners)
+      if (dPrev < 30 && dNext < 30) {
+        nextPts.push({
+          x: curr.x * 0.5 + prev.x * 0.25 + next.x * 0.25,
+          y: curr.y * 0.5 + prev.y * 0.25 + next.y * 0.25
+        });
+      } else {
+        nextPts.push({ x: curr.x, y: curr.y });
+      }
+    }
+    smoothedPoints = nextPts;
+  }
+  singleLapPoints = smoothedPoints;
 
   // Compute bounds
   let minX = Infinity,
@@ -125,7 +154,11 @@ function safeTangent(next, prev) {
  */
 function buildSpline(points2D) {
   const pts3D = points2D.map((p) => new THREE.Vector3(p.x, p.y, 0));
-  return new THREE.CatmullRomCurve3(pts3D, false, "catmullrom", 0.3);
+  const curve = new THREE.CatmullRomCurve3(pts3D, true, "catmullrom", 0.2);
+  // Increase sampling resolution massively to ensure tight F1 hairpins 
+  // do not become blocky/squared off during arc-length calculation.
+  curve.arcLengthDivisions = 3000;
+  return curve;
 }
 
 /**
@@ -347,9 +380,9 @@ function createGroundPlane(curve, runoffWidth) {
 /**
  * Create a start/finish line marker.
  */
-function createStartFinishLine(curve, trackWidth) {
-  const startPoint = curve.getPointAt(0);
-  let startTangent = curve.getTangentAt(0);
+function createStartFinishLine(curve, trackWidth, offset = 0) {
+  const startPoint = curve.getPointAt(offset);
+  let startTangent = curve.getTangentAt(offset);
   if (startTangent.lengthSq() < 0.000001)
     startTangent = new THREE.Vector3(1, 0, 0);
   else startTangent.normalize();
@@ -359,25 +392,25 @@ function createStartFinishLine(curve, trackWidth) {
 
   // Checkerboard pattern using small quads
   const group = new THREE.Group();
-  const checkerSize = trackWidth / 8;
-  const lineWidth = checkerSize * 2;
+  const checkerSize = trackWidth / 6; // Increased size for visibility
+  const lineWidth = checkerSize * 4; // Make it 4 rows deep
 
-  for (let row = 0; row < 2; row++) {
-    for (let col = 0; col < 8; col++) {
+  for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 6; col++) {
       const isWhite = (row + col) % 2 === 0;
-      const geom = new THREE.PlaneGeometry(checkerSize, lineWidth / 2);
+      const geom = new THREE.PlaneGeometry(checkerSize, checkerSize);
       const mat = new THREE.MeshBasicMaterial({
         color: isWhite ? 0xffffff : 0x111111,
         side: THREE.DoubleSide,
       });
       const mesh = new THREE.Mesh(geom, mat);
 
-      const offset = (col - 3.5) * checkerSize;
-      const rowOffset = (row - 0.5) * (lineWidth / 2);
+      const offset = (col - 2.5) * checkerSize;
+      const rowOffset = (row - 1.5) * checkerSize;
       mesh.position.set(
         startPoint.x + normal.x * offset + startTangent.x * rowOffset,
         startPoint.y + normal.y * offset + startTangent.y * rowOffset,
-        0.02, // Just above track
+        0.03, // Raised higher above track and kerbs
       );
       mesh.rotation.z = Math.atan2(startTangent.y, startTangent.x);
       group.add(mesh);
@@ -434,9 +467,21 @@ function createSectorMarkers(curve, trackWidth) {
 
 const MANUAL_CORNERS = {
   baku: [
-    27, 61, 149, 171, 205, 211, 251, 271, 274, 280, 282, 286, 328, 363, 378,
-    408, 430, 465, 503, 568,
+    0.075, 0.1408, 0.3417, 0.3714, 0.4334, 0.4459, 0.5092, 0.5727, 0.5862, 0.6049,
+    0.609, 0.6164, 0.6995, 0.8217, 0.8834, 0.92, 0.94, 0.96, 0.98, 1.0
   ],
+  cota: [
+    0.1125, 0.1475, 0.2061, 0.2375, 0.2778, 0.3062, 0.3332, 0.3526, 0.3903, 0.4543,
+    0.4614, 0.681, 0.7265, 0.7549, 0.7756, 0.8296, 0.8481, 0.9116, 0.9654, 0.9928
+  ],
+  sepang: [
+    0.197, 0.213, 0.258, 0.354, 0.399, 0.422, 0.467, 0.530, 0.701, 0.730,
+    0.758, 0.782, 0.806, 0.828, 0.989
+  ],
+  bahrain: [
+    0.130, 0.145, 0.166, 0.275, 0.339, 0.349, 0.370, 0.409, 0.495, 0.510,
+    0.628, 0.640, 0.690, 0.897, 0.904
+  ]
 };
 
 /**
@@ -460,8 +505,11 @@ function createCornerLabels(curve, numCorners = 0, circuitId = "") {
     : "";
 
   if (MANUAL_CORNERS[canonicalId]) {
-    // Use manually defined corner indices
-    selectedCorners = MANUAL_CORNERS[canonicalId].map((idx, i) => {
+    // Use manually defined corner fractions
+    selectedCorners = MANUAL_CORNERS[canonicalId].map((frac, i) => {
+      let idx = Math.round(frac * TRACK_RESOLUTION);
+      if (idx >= len) idx = len - 1; // Safety fallback
+      
       // Need to determine point and normal
       const curr = trackPoints[idx];
       const prev = trackPoints[(idx - 3 + len) % len];
@@ -597,7 +645,17 @@ function createCornerLabels(curve, numCorners = 0, circuitId = "") {
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = "rgba(0,0,0,0)";
     ctx.fillRect(0, 0, 64, 64);
-    ctx.font = "bold 36px Arial";
+
+    // Draw a dark background circle for visibility
+    ctx.beginPath();
+    ctx.arc(32, 32, 24, 0, 2 * Math.PI);
+    ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
+    ctx.stroke();
+
+    ctx.font = "bold 24px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "white";
@@ -619,29 +677,18 @@ function createCornerLabels(curve, numCorners = 0, circuitId = "") {
     sprite.scale.set(1.0, 1.0, 1);
     group.add(sprite);
 
-    // Small direction cone pointing at corner apex
-    const coneGeom = new THREE.ConeGeometry(
-      TRACK_WIDTH * 0.15,
-      TRACK_WIDTH * 0.4,
-      8,
+    // Pointer stick connecting the track edge to the label
+    const stickLength = labelOffset - TRACK_WIDTH * 0.6;
+    const stickGeom = new THREE.PlaneGeometry(0.06, stickLength);
+    const stickMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.7 });
+    const stick = new THREE.Mesh(stickGeom, stickMat);
+    stick.position.set(
+      corner.point.x + normal.x * (TRACK_WIDTH * 0.6 + stickLength / 2),
+      corner.point.y + normal.y * (TRACK_WIDTH * 0.6 + stickLength / 2),
+      0.02
     );
-    const coneMat = new THREE.MeshBasicMaterial({
-      color: 0xeeeeee,
-      transparent: true,
-      opacity: 0.9,
-    });
-    const cone = new THREE.Mesh(coneGeom, coneMat);
-
-    cone.position.set(
-      corner.point.x + normal.x * coneOffset,
-      corner.point.y + normal.y * coneOffset,
-      0.05,
-    );
-    cone.up.set(0, 0, 1);
-    cone.lookAt(corner.point.x, corner.point.y, 0.05);
-    cone.rotateX(Math.PI / 2);
-
-    group.add(cone);
+    stick.rotation.z = Math.atan2(normal.y, normal.x) - Math.PI / 2;
+    group.add(stick);
   });
 
   return group;
@@ -755,6 +802,7 @@ function createApexKerbs(curve, trackWidth) {
 const CORNER_COUNTS = {
   albert_park: 14,
   americas: 20,
+  cota: 20,
   bahrain: 15,
   baku: 20,
   catalunya: 16,
@@ -876,7 +924,11 @@ export function buildTrackFromGPS(rawGPSPoints, circuitId) {
   group.add(centerLine);
 
   // 5. Start/finish line
-  const startFinish = createStartFinishLine(curve, trackWidth);
+  let finishOffset = 0;
+  if (canonicalId === "sepang") finishOffset = 0.087;
+  if (canonicalId === "bahrain") finishOffset = 0.017;
+
+  const startFinish = createStartFinishLine(curve, trackWidth, finishOffset);
   startFinish.name = "StartFinish";
   group.add(startFinish);
 
@@ -910,6 +962,13 @@ export function buildTrackFromGPS(rawGPSPoints, circuitId) {
   console.log(
     `[TrackBuilder] Procedural track built: ${points.length} control points, ${numCorners} corners`,
   );
+
+  // Fix physical GPS orientation to match official F1 track maps visually
+  if (canonicalId === "sepang") {
+    group.scale.y = -1; // Vertical flip
+  } else if (canonicalId === "bahrain") {
+    group.rotation.z = Math.PI; // 180 degree rotation
+  }
 
   return { group, curve, center, scale };
 }
@@ -1001,10 +1060,23 @@ export function updateTrackColors(
 function createProceduralGrandstands(curve, trackWidth) {
   const group = new THREE.Group();
 
-  // Create a few grandstand blocks along the main straight (u = 0.02 to 0.1)
+  // Find the longest straight to place the grandstands
+  const trackPoints = curve.getSpacedPoints(200);
+  let bestU = 0.01;
+  let maxStraightDist = 0;
+  for (let i = 0; i < 180; i += 5) {
+    const p1 = trackPoints[i];
+    const p2 = trackPoints[i + 15]; // look ahead ~7.5% of the track
+    const dist = p1.distanceTo(p2);
+    if (dist > maxStraightDist) {
+      maxStraightDist = dist;
+      bestU = i / 200;
+    }
+  }
+
   const numBlocks = 4;
-  const startU = 0.01;
-  const endU = 0.06;
+  const startU = bestU + 0.01;
+  const endU = bestU + 0.06;
 
   const standMaterial = new THREE.MeshStandardMaterial({
     color: 0x333333,
@@ -1017,12 +1089,10 @@ function createProceduralGrandstands(curve, trackWidth) {
     roughness: 0.6,
   });
 
-  const trackPoints = curve.getSpacedPoints(200);
-
   for (let i = 0; i < numBlocks; i++) {
     const u = startU + (i / numBlocks) * (endU - startU);
-    const point = curve.getPointAt(u);
-    let tangent = curve.getTangentAt(u);
+    const point = curve.getPointAt(u % 1);
+    let tangent = curve.getTangentAt(u % 1);
     if (tangent.lengthSq() < 0.000001) {
       tangent = new THREE.Vector3(1, 0, 0);
     } else {

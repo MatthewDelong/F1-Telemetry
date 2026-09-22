@@ -28,5 +28,4 @@ def fetch_track(year, name, file_name):
         print(f"Error processing {name}: {e}")
 
 if __name__ == "__main__":
-    fetch_track(2021, 'Portugal', 'portimao')
-    fetch_track(2021, 'Turkey', 'istanbul')
+    fetch_track(2017, 'Malaysia', 'sepang')

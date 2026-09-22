@@ -51,7 +51,7 @@ export function MiniTrackViewer({ circuitId }) {
     // Load track geometry data
     const canonicalId = locationMaps[circuitId.toLowerCase()] || circuitId.toLowerCase();
     console.log("[MiniTrackViewer] Fetching track for circuitId:", canonicalId);
-    fetch(`/trackdata/${canonicalId}.json`)
+    fetch(`/trackdata/${canonicalId}.json?v=${Date.now()}`)
       .then((res) => {
         if (!res.ok) throw new Error("Track not found");
         return res.json();

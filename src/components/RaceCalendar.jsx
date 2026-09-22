@@ -1,6 +1,7 @@
 import React from "react";
 
-const RaceCalendar = () => {
+
+const RaceCalendar = ({ onRaceClick }) => {
   const RACES_DATA = {
     "Australia Grand Prix": {
       round: 1,
@@ -22,6 +23,7 @@ const RaceCalendar = () => {
     },
     "China Grand Prix": {
       round: 2,
+      isSprint: true,
       raceKey: "f1.races.china",
       circuitKey: "f1.circuits.shanghai",
       date: "2026-03-15",
@@ -59,6 +61,7 @@ const RaceCalendar = () => {
 
     "Miami Grand Prix": {
       round: 4,
+      isSprint: true,
       raceKey: "f1.races.miami",
       circuitKey: "f1.circuits.miami",
       date: "2026-05-03",
@@ -167,6 +170,7 @@ const RaceCalendar = () => {
     },
     "Belgium Grand Prix": {
       round: 10,
+      isSprint: true,
       raceKey: "f1.races.belgium",
       circuitKey: "f1.circuits.spa",
       date: "2026-07-19",
@@ -313,6 +317,7 @@ const RaceCalendar = () => {
     },
     "United States Grand Prix": {
       round: 18,
+      isSprint: true,
       raceKey: "f1.races.usa",
       circuitKey: "f1.circuits.cota",
       date: "2026-10-25",
@@ -349,6 +354,7 @@ const RaceCalendar = () => {
     },
     "Brazil Grand Prix": {
       round: 20,
+      isSprint: true,
       raceKey: "f1.races.brazil",
       circuitKey: "f1.circuits.interlagos",
       date: "2026-11-08",
@@ -385,6 +391,7 @@ const RaceCalendar = () => {
     },
     "Qatar Grand Prix": {
       round: 22,
+      isSprint: true,
       raceKey: "f1.races.qatar",
       circuitKey: "f1.circuits.losail",
       date: "2026-11-29",
@@ -465,7 +472,13 @@ const RaceCalendar = () => {
   const renderRaceRow = (race) => (
     <div
       key={race.round}
-      className="flex items-center bg-white/5 rounded-lg py-4 px-6 border-l-[3px] border-transparent"
+      onClick={() => {
+        if (onRaceClick) {
+          const circuitKeyStr = race.circuitKey ? race.circuitKey.split('.').pop() : race.country;
+          onRaceClick(circuitKeyStr);
+        }
+      }}
+      className="group flex items-center bg-white/5 rounded-lg py-4 px-6 border-l-[3px] border-transparent cursor-pointer hover:bg-white/10 hover:border-white/20 transition-colors duration-200"
     >
       <div className="w-[28px] flex-shrink-0 font-black text-[0.7rem] text-[#e10600]">
         <span>R{race.round}</span>
@@ -479,14 +492,22 @@ const RaceCalendar = () => {
       </div>
       <div className="flex-1 font-bold text-[0.65rem] tracking-wide pl-6 text-white min-w-0">
         <span className="whitespace-nowrap">{race.displayName.toUpperCase()}</span>
+        {race.isSprint && (
+          <span className="ml-4 font-black text-[0.55rem] text-purple-400 bg-purple-500/10 px-3 py-[1px] rounded-[3px] align-middle whitespace-nowrap">
+            SPRINT
+          </span>
+        )}
         {race.isNew && (
           <span className="ml-4 font-black text-[0.55rem] text-blue-500 bg-blue-500/10 px-3 py-[1px] rounded-[3px] align-middle whitespace-nowrap">
             NEW
           </span>
         )}
       </div>
-      <div className="font-semibold text-[0.65rem] text-neutral-400 text-right min-w-[70px] flex-shrink-0 pl-4 whitespace-nowrap">
-        {(DATE_RANGES_2026[race.round] || formatDate(race.date)).toUpperCase()}
+      <div className="font-semibold text-[0.65rem] text-neutral-400 text-right min-w-[70px] flex-shrink-0 pl-4 whitespace-nowrap group-hover:text-white transition-colors duration-200 flex items-center justify-end gap-2">
+        <span>{(DATE_RANGES_2026[race.round] || formatDate(race.date)).toUpperCase()}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-neutral-600 group-hover:text-[#e10600] transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+        </svg>
       </div>
     </div>
   );
@@ -503,6 +524,9 @@ const RaceCalendar = () => {
         <h2 className="text-[1.1rem] font-black tracking-widest text-white uppercase m-0">
           FORMULA 1 2026 CALENDAR
         </h2>
+        <p className="text-neutral-500 text-[0.65rem] font-bold uppercase tracking-widest mt-3">
+          Click any race to preview circuit details
+        </p>
       </div>
       <div className="flex flex-col md:flex-row w-full gap-16 md:gap-24 relative z-10">
         <div className="flex-1 min-w-0 flex flex-col gap-4">
@@ -511,6 +535,11 @@ const RaceCalendar = () => {
         <div className="flex-1 min-w-0 flex flex-col gap-4">
           {rightColumn.map(renderRaceRow)}
         </div>
+      </div>
+      <div className="text-center mt-16 relative z-10">
+        <p className="text-[0.65rem] text-neutral-500 italic uppercase">
+          23 races • 20 countries • 6 sprint weekends
+        </p>
       </div>
     </div>
   );

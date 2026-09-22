@@ -432,7 +432,8 @@ export function LandingPage() {
   };
 
   const latestResultsLayout = () => {
-    const circuitIdToUse = raceData?.circuitId || raceData?.Circuit?.circuitId;
+    const circuitIdToUse = raceData?.circuitId || raceData?.Circuit?.circuitId || raceData?.location?.toLowerCase() || raceData?.country?.toLowerCase();
+    console.log("DEBUG: LandingPage latestResultsLayout", { raceData, circuitIdToUse });
     return (
       <>
         <div className="flex flex-col items-center z-10 w-full">

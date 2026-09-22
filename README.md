@@ -324,6 +324,7 @@ Contributions are welcome! Whether it's improving the codebase, adding features,
 - **Development & AI Collaboration:** This project is actively developed by **Matthew Delong**, in extensive pair-programming collaboration with **Antigravity**, an agentic AI coding assistant developed by Google DeepMind.
 - **Inspiration:** This project was originally inspired by and built as a successor to the [F1nsight](https://github.com/adityakotha03/F1nsight) project by [Aditya Kotha](https://github.com/adityakotha03).
 - Special thanks to data providers and API service [OpenF1](https://openf1.org/) that enable access to current and historical F1 data.
+- [FastF1](https://github.com/theOehrly/Fast-F1) — Used extensively for fetching and parsing the underlying raw coordinate data to generate our procedural 3D tracks.
 - [Flagpedia](https://flagpedia.net/) — High-quality country flag WebP images used for race locations and driver nationalities.
 - This work is based on "basic Lowpoly F1 Car V1" by arthihalder, available under a Creative Commons Attribution 4.0 International license. [View the model on Sketchfab](https://sketchfab.com/3d-models/basic-lowpoly-f1-car-v1-b4c6a1cfe0154f4d86b39ff3b7f955a1). License details can be found at [CC-BY-4.0](http://creativecommons.org/licenses/by/4.0/).
 

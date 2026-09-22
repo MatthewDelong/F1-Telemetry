@@ -16,7 +16,7 @@ function TrackGeometry({ trackKey }) {
     }
     
     const canonicalKey = locationMaps[trackKey.toLowerCase()] || trackKey.toLowerCase();
-    fetch(`/trackdata/${canonicalKey}.json`)
+    fetch(`/trackdata/${canonicalKey}.json?v=${Date.now()}`)
       .then(res => {
         if (!res.ok) throw new Error("Track data not found");
         return res.json();

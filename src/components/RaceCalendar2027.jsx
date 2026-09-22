@@ -1,6 +1,6 @@
 import React from "react";
 
-const RaceCalendar2027 = () => {
+const RaceCalendar2027 = ({ onRaceClick }) => {
   const RACES_DATA_2027 = [
     {
       round: "T",
@@ -250,10 +250,16 @@ const RaceCalendar2027 = () => {
   const renderRaceRow = (race) => (
     <div
       key={race.isTesting ? "testing" : race.round}
-      className={`flex items-center rounded-lg py-4 px-6 border-l-[3px] ${
+      onClick={() => {
+        if (onRaceClick) {
+          const cityName = race.city.split(',')[0].toLowerCase();
+          onRaceClick(cityName);
+        }
+      }}
+      className={`group flex items-center rounded-lg py-4 px-6 border-l-[3px] cursor-pointer hover:bg-white/10 transition-colors duration-200 ${
         race.isTesting
           ? "bg-amber-500/10 border-amber-500/50"
-          : "bg-white/5 border-transparent"
+          : "bg-white/5 border-transparent hover:border-white/20"
       }`}
     >
       <div className="w-[28px] flex-shrink-0 font-black text-[0.7rem] text-[#e10600]">
@@ -285,8 +291,11 @@ const RaceCalendar2027 = () => {
           </span>
         )}
       </div>
-      <div className="font-semibold text-[0.65rem] text-neutral-400 text-right min-w-[80px] flex-shrink-0 pl-4 whitespace-nowrap">
-        {race.dateRange.toUpperCase()}
+      <div className="font-semibold text-[0.65rem] text-neutral-400 text-right min-w-[80px] flex-shrink-0 pl-4 whitespace-nowrap group-hover:text-white transition-colors duration-200 flex items-center justify-end gap-2">
+        <span>{race.dateRange.toUpperCase()}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 text-neutral-600 group-hover:text-[#e10600] transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+        </svg>
       </div>
     </div>
   );
@@ -299,10 +308,13 @@ const RaceCalendar2027 = () => {
           background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 70%)`,
         }}
       />
-      <div className="text-center mb-8 border-b-2 border-[#e10600] pb-8 relative z-10">
+      <div className="text-center mb-16 border-b-2 border-[#e10600] pb-8 relative z-10">
         <h2 className="text-[1.1rem] font-black tracking-widest text-white uppercase m-0">
-          FORMULA 1 2027 CALENDAR
+          FORMULA 1 2027 CALENDAR <span className="text-amber-500/80 ml-2 text-[0.85rem]">(PREVIEW)</span>
         </h2>
+        <p className="text-neutral-500 text-[0.65rem] font-bold uppercase tracking-widest mt-3">
+          Click any race to preview circuit details
+        </p>
         <p className="text-[0.7rem] text-amber-400/90 mt-4 font-semibold tracking-wide">
           ⚠️ Subject to change due to Middle East conflict
         </p>

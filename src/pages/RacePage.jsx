@@ -143,9 +143,26 @@ export function RacePage() {
               : null,
           );
           setRaceName(response[raceId]["raceName"]);
+        } else if (isNaN(Number(raceId))) {
+          // Fallback for future races (preview mode without telemetry)
+          setYear(new Date().getFullYear() + (raceId === "madrid" ? 1 : 0));
+          setLocation(raceId.toLowerCase());
+          
+          // Capitalize race name (e.g., madrid -> Madrid Grand Prix)
+          const formattedName = raceId.charAt(0).toUpperCase() + raceId.slice(1) + " Grand Prix";
+          setRaceName(formattedName);
+        } else {
+          // Make sure it stops loading if not found
+          setIsLoading(false);
         }
       } catch (err) {
         console.error("Error fetching by meeting key:", err);
+      } finally {
+        // Only set false if we didn't successfully set raceName
+        // If we set raceName, fetchData() will take over and handle loading state
+        if (!response || (!response[raceId] && !isNaN(Number(raceId)))) {
+          setIsLoading(false);
+        }
       }
     };
 
@@ -192,6 +209,7 @@ export function RacePage() {
     "villeneuve",
     "yas_marina",
     "zandvoort",
+    "sepang",
   ];
 
   const supportedAnimatedMaps = [
@@ -213,8 +231,10 @@ export function RacePage() {
     "spa",
     "suzuka",
     "vegas",
+    "villeneuve",
     "yas_marina",
     "zandvoort",
+    "sepang",
   ];
 
   const selectedDriverData = drivers.find(
@@ -336,6 +356,12 @@ export function RacePage() {
       setTrackReferenceData([]); // CLEAR OLD TRACK
       setTrackLoadError(false);
 
+      const circuitId = location && locationMaps[location.toLowerCase()];
+      if (circuitId) {
+        const mapUrl = `/map/${circuitId}.gltf`;
+        setMapPath(mapUrl);
+      }
+
       const sessionsData = await fetchWithPersistentCache(
         `${buildOpenF1Url("/sessions")}?meeting_key=${meetingKey}`,
       );
@@ -350,7 +376,6 @@ export function RacePage() {
         return;
       }
 
-      const circuitId = location && locationMaps[location.toLowerCase()];
       const hasRaceSession = sessionsData.some(
         (session) => session.session_name === "Race",
       );
@@ -368,11 +393,6 @@ export function RacePage() {
 
       if (selectedSession === "Race") {
         setIsLoading(true);
-
-        if (circuitId) {
-          const mapUrl = `/map/${circuitId}.gltf`;
-          setMapPath(mapUrl);
-        }
 
         let sessionResults = [];
         if (circuitId) {
