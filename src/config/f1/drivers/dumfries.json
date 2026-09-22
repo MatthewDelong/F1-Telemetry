@@ -32,7 +32,6 @@
     },
     "DNFs": {
         "1986": {
-            "Spain Grand Prix": "Gearbox",
             "San Marino Grand Prix": "Wheel bearing",
             "Belgium Grand Prix": "Spun off",
             "Canada Grand Prix": "Accident",
@@ -40,13 +39,13 @@
             "German Grand Prix": "Radiator",
             "Austria Grand Prix": "Engine",
             "Italy Grand Prix": "Gearbox",
-            "Mexican Grand Prix": "Electrical"
+            "Mexico Grand Prix": "Electrical",
+            "Spain Grand Prix": "Gearbox"
         }
     },
     "fastLaps": {
         "1986": {
             "Brazil Grand Prix": -1,
-            "Spain Grand Prix": -1,
             "San Marino Grand Prix": -1,
             "Belgium Grand Prix": -1,
             "Canada Grand Prix": -1,
@@ -58,8 +57,9 @@
             "Austria Grand Prix": -1,
             "Italy Grand Prix": -1,
             "Portuguese Grand Prix": -1,
-            "Mexican Grand Prix": -1,
-            "Australia Grand Prix": -1
+            "Australia Grand Prix": -1,
+            "Mexico Grand Prix": -1,
+            "Spain Grand Prix": -1
         }
     },
     "finalStandings": {
@@ -74,9 +74,6 @@
             "year": "1986",
             "pos": {
                 "Brazil Grand Prix": {
-                    "points": 0
-                },
-                "Spain Grand Prix": {
                     "points": 0
                 },
                 "San Marino Grand Prix": {
@@ -112,11 +109,14 @@
                 "Portuguese Grand Prix": {
                     "points": 2
                 },
-                "Mexican Grand Prix": {
-                    "points": 2
-                },
                 "Australia Grand Prix": {
                     "points": 3
+                },
+                "Mexico Grand Prix": {
+                    "points": 2
+                },
+                "Spain Grand Prix": {
+                    "points": 0
                 }
             }
         }
@@ -125,7 +125,6 @@
         "1986": {
             "positions": {
                 "Brazil Grand Prix": "9",
-                "Spain Grand Prix": "9",
                 "San Marino Grand Prix": "23",
                 "Belgium Grand Prix": "21",
                 "Canada Grand Prix": "19",
@@ -137,8 +136,9 @@
                 "Austria Grand Prix": "22",
                 "Italy Grand Prix": "20",
                 "Portuguese Grand Prix": "9",
-                "Mexican Grand Prix": "17",
-                "Australia Grand Prix": "6"
+                "Australia Grand Prix": "6",
+                "Mexico Grand Prix": "17",
+                "Spain Grand Prix": "9"
             }
         }
     },
@@ -151,7 +151,6 @@
         "1986": {
             "positions": {
                 "Brazil Grand Prix": "2",
-                "Spain Grand Prix": "1",
                 "San Marino Grand Prix": "-6",
                 "Belgium Grand Prix": "-8",
                 "Canada Grand Prix": "-3",
@@ -163,8 +162,9 @@
                 "Austria Grand Prix": "-7",
                 "Italy Grand Prix": "-3",
                 "Portuguese Grand Prix": "6",
-                "Mexican Grand Prix": "0",
-                "Australia Grand Prix": "8"
+                "Australia Grand Prix": "8",
+                "Mexico Grand Prix": "0",
+                "Spain Grand Prix": "1"
             }
         }
     },

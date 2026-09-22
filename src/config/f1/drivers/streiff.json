@@ -64,14 +64,14 @@
             "South African Grand Prix": "Accident"
         },
         "1986": {
-            "Spain Grand Prix": "Engine",
             "San Marino Grand Prix": "Transmission",
             "French Grand Prix": "Heat shield fire",
             "German Grand Prix": "Engine",
             "Austria Grand Prix": "Engine",
             "Portuguese Grand Prix": "Engine",
-            "Mexican Grand Prix": "Turbo",
-            "Australia Grand Prix": "Out of fuel"
+            "Australia Grand Prix": "Out of fuel",
+            "Mexico Grand Prix": "Turbo",
+            "Spain Grand Prix": "Engine"
         },
         "1987": {
             "Monaco Grand Prix": "Accident",
@@ -90,8 +90,8 @@
             "German Grand Prix": "Throttle",
             "Hungary Grand Prix": "Collision",
             "Italy Grand Prix": "Clutch",
-            "Spain Grand Prix": "Engine",
-            "Australia Grand Prix": "Electrical"
+            "Australia Grand Prix": "Electrical",
+            "Spain Grand Prix": "Engine"
         }
     },
     "fastLaps": {
@@ -107,7 +107,6 @@
         },
         "1986": {
             "Brazil Grand Prix": -1,
-            "Spain Grand Prix": -1,
             "San Marino Grand Prix": -1,
             "Monaco Grand Prix": -1,
             "Belgium Grand Prix": -1,
@@ -120,8 +119,9 @@
             "Austria Grand Prix": -1,
             "Italy Grand Prix": -1,
             "Portuguese Grand Prix": -1,
-            "Mexican Grand Prix": -1,
-            "Australia Grand Prix": -1
+            "Australia Grand Prix": -1,
+            "Mexico Grand Prix": -1,
+            "Spain Grand Prix": -1
         },
         "1987": {
             "Brazil Grand Prix": -1,
@@ -136,16 +136,15 @@
             "Austria Grand Prix": -1,
             "Italy Grand Prix": -1,
             "Portuguese Grand Prix": -1,
-            "Spain Grand Prix": -1,
-            "Mexican Grand Prix": -1,
             "Japan Grand Prix": -1,
-            "Australia Grand Prix": -1
+            "Australia Grand Prix": -1,
+            "Mexico Grand Prix": -1,
+            "Spain Grand Prix": -1
         },
         "1988": {
             "Brazil Grand Prix": -1,
             "San Marino Grand Prix": -1,
             "Monaco Grand Prix": -1,
-            "Mexican Grand Prix": -1,
             "Canada Grand Prix": -1,
             "Detroit Grand Prix": -1,
             "French Grand Prix": -1,
@@ -155,9 +154,10 @@
             "Belgium Grand Prix": -1,
             "Italy Grand Prix": -1,
             "Portuguese Grand Prix": -1,
-            "Spain Grand Prix": -1,
             "Japan Grand Prix": -1,
-            "Australia Grand Prix": -1
+            "Australia Grand Prix": -1,
+            "Mexico Grand Prix": -1,
+            "Spain Grand Prix": -1
         }
     },
     "finalStandings": {
@@ -220,9 +220,6 @@
                 "Brazil Grand Prix": {
                     "points": 0
                 },
-                "Spain Grand Prix": {
-                    "points": 0
-                },
                 "San Marino Grand Prix": {
                     "points": 0
                 },
@@ -259,11 +256,14 @@
                 "Portuguese Grand Prix": {
                     "points": 1
                 },
-                "Mexican Grand Prix": {
-                    "points": 1
-                },
                 "Australia Grand Prix": {
                     "points": 3
+                },
+                "Mexico Grand Prix": {
+                    "points": 1
+                },
+                "Spain Grand Prix": {
+                    "points": 0
                 }
             }
         },
@@ -306,16 +306,16 @@
                 "Portuguese Grand Prix": {
                     "points": 4
                 },
-                "Spain Grand Prix": {
-                    "points": 4
-                },
-                "Mexican Grand Prix": {
-                    "points": 4
-                },
                 "Japan Grand Prix": {
                     "points": 4
                 },
                 "Australia Grand Prix": {
+                    "points": 4
+                },
+                "Mexico Grand Prix": {
+                    "points": 4
+                },
+                "Spain Grand Prix": {
                     "points": 4
                 }
             }
@@ -330,9 +330,6 @@
                     "points": 0
                 },
                 "Monaco Grand Prix": {
-                    "points": 0
-                },
-                "Mexican Grand Prix": {
                     "points": 0
                 },
                 "Canada Grand Prix": {
@@ -362,13 +359,16 @@
                 "Portuguese Grand Prix": {
                     "points": 0
                 },
-                "Spain Grand Prix": {
-                    "points": 0
-                },
                 "Japan Grand Prix": {
                     "points": 0
                 },
                 "Australia Grand Prix": {
+                    "points": 0
+                },
+                "Mexico Grand Prix": {
+                    "points": 0
+                },
+                "Spain Grand Prix": {
                     "points": 0
                 }
             }
@@ -392,7 +392,6 @@
         "1986": {
             "positions": {
                 "Brazil Grand Prix": "7",
-                "Spain Grand Prix": "17",
                 "San Marino Grand Prix": "13",
                 "Monaco Grand Prix": "11",
                 "Belgium Grand Prix": "12",
@@ -405,8 +404,9 @@
                 "Austria Grand Prix": "21",
                 "Italy Grand Prix": "9",
                 "Portuguese Grand Prix": "22",
-                "Mexican Grand Prix": "23",
-                "Australia Grand Prix": "5"
+                "Australia Grand Prix": "5",
+                "Mexico Grand Prix": "23",
+                "Spain Grand Prix": "17"
             }
         },
         "1987": {
@@ -423,10 +423,10 @@
                 "Austria Grand Prix": "26",
                 "Italy Grand Prix": "12",
                 "Portuguese Grand Prix": "12",
-                "Spain Grand Prix": "7",
-                "Mexican Grand Prix": "8",
                 "Japan Grand Prix": "12",
-                "Australia Grand Prix": "25"
+                "Australia Grand Prix": "25",
+                "Mexico Grand Prix": "8",
+                "Spain Grand Prix": "7"
             }
         },
         "1988": {
@@ -434,7 +434,6 @@
                 "Brazil Grand Prix": "15",
                 "San Marino Grand Prix": "10",
                 "Monaco Grand Prix": "26",
-                "Mexican Grand Prix": "12",
                 "Canada Grand Prix": "16",
                 "Detroit Grand Prix": "21",
                 "French Grand Prix": "25",
@@ -444,9 +443,10 @@
                 "Belgium Grand Prix": "10",
                 "Italy Grand Prix": "16",
                 "Portuguese Grand Prix": "9",
-                "Spain Grand Prix": "20",
                 "Japan Grand Prix": "8",
-                "Australia Grand Prix": "11"
+                "Australia Grand Prix": "11",
+                "Mexico Grand Prix": "12",
+                "Spain Grand Prix": "20"
             }
         }
     },
@@ -485,7 +485,6 @@
         "1986": {
             "positions": {
                 "Brazil Grand Prix": "11",
-                "Spain Grand Prix": "3",
                 "San Marino Grand Prix": "9",
                 "Monaco Grand Prix": "2",
                 "Belgium Grand Prix": "6",
@@ -498,8 +497,9 @@
                 "Austria Grand Prix": "-1",
                 "Italy Grand Prix": "14",
                 "Portuguese Grand Prix": "1",
-                "Mexican Grand Prix": "-4",
-                "Australia Grand Prix": "5"
+                "Australia Grand Prix": "5",
+                "Mexico Grand Prix": "-4",
+                "Spain Grand Prix": "3"
             }
         },
         "1987": {
@@ -516,10 +516,10 @@
                 "Austria Grand Prix": "-1",
                 "Italy Grand Prix": "12",
                 "Portuguese Grand Prix": "9",
-                "Spain Grand Prix": "8",
-                "Mexican Grand Prix": "17",
                 "Japan Grand Prix": "13",
-                "Australia Grand Prix": "-7"
+                "Australia Grand Prix": "-7",
+                "Mexico Grand Prix": "17",
+                "Spain Grand Prix": "8"
             }
         },
         "1988": {
@@ -527,7 +527,6 @@
                 "Brazil Grand Prix": "4",
                 "San Marino Grand Prix": "3",
                 "Monaco Grand Prix": "-14",
-                "Mexican Grand Prix": "7",
                 "Canada Grand Prix": "-6",
                 "Detroit Grand Prix": "-10",
                 "French Grand Prix": "-8",
@@ -537,9 +536,10 @@
                 "Belgium Grand Prix": "8",
                 "Italy Grand Prix": "7",
                 "Portuguese Grand Prix": "12",
-                "Spain Grand Prix": "-7",
                 "Japan Grand Prix": "10",
-                "Australia Grand Prix": "5"
+                "Australia Grand Prix": "5",
+                "Mexico Grand Prix": "7",
+                "Spain Grand Prix": "-7"
             }
         }
     },

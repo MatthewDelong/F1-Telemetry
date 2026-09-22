@@ -93,10 +93,10 @@
         "1973": {},
         "1974": {
             "Argentine Grand Prix": "2",
-            "Spain Grand Prix": "1",
             "Belgium Grand Prix": "2",
             "Netherlands Grand Prix": "1",
-            "French Grand Prix": "2"
+            "French Grand Prix": "2",
+            "Spain Grand Prix": "1"
         },
         "1975": {
             "Monaco Grand Prix": "1",
@@ -112,11 +112,11 @@
             "Brazil Grand Prix": "1",
             "South African Grand Prix": "1",
             "United States Grand Prix West": "2",
-            "Spain Grand Prix": "2",
             "Belgium Grand Prix": "1",
             "Monaco Grand Prix": "1",
             "Swedish Grand Prix": "3",
             "Great Britain Grand Prix": "1",
+            "Spain Grand Prix": "2",
             "United States Grand Prix": "3"
         },
         "1977": {
@@ -170,19 +170,19 @@
             "Austria Grand Prix": "Handling"
         },
         "1972": {
-            "Spain Grand Prix": "Differential",
             "French Grand Prix": "Halfshaft",
-            "German Grand Prix": "Oil leak"
+            "German Grand Prix": "Oil leak",
+            "Spain Grand Prix": "Differential"
         },
         "1973": {
             "Argentine Grand Prix": "Oil pressure",
             "South African Grand Prix": "Engine",
-            "Spain Grand Prix": "Tyre",
             "Monaco Grand Prix": "Gearbox",
             "Netherlands Grand Prix": "Fuel pump",
             "German Grand Prix": "Accident",
             "Italy Grand Prix": "Accident",
             "Canada Grand Prix": "Transmission",
+            "Spain Grand Prix": "Tyre",
             "United States Grand Prix": "Fuel pump"
         },
         "1974": {
@@ -206,25 +206,24 @@
         },
         "1977": {
             "Argentine Grand Prix": "Fuel system",
-            "Spain Grand Prix": "Injured",
-            "Swedish Grand Prix": "Handling"
+            "Swedish Grand Prix": "Handling",
+            "Spain Grand Prix": "Injured"
         },
         "1978": {
             "South African Grand Prix": "Engine",
             "United States Grand Prix West": "Ignition",
             "Belgium Grand Prix": "Accident",
-            "Spain Grand Prix": "Engine",
             "French Grand Prix": "Engine",
             "German Grand Prix": "Engine",
             "Austria Grand Prix": "Accident",
-            "United States Grand Prix": "Engine",
-            "Canada Grand Prix": "Brakes"
+            "Canada Grand Prix": "Brakes",
+            "Spain Grand Prix": "Engine",
+            "United States Grand Prix": "Engine"
         },
         "1979": {
             "Argentine Grand Prix": "Fuel system",
             "Brazil Grand Prix": "Gearbox",
             "United States Grand Prix West": "Accident",
-            "Spain Grand Prix": "Water leak",
             "Belgium Grand Prix": "Engine",
             "Monaco Grand Prix": "Accident",
             "French Grand Prix": "Spun off",
@@ -232,7 +231,8 @@
             "German Grand Prix": "Engine",
             "Austria Grand Prix": "Engine",
             "Netherlands Grand Prix": "Withdrew",
-            "Canada Grand Prix": "Withdrew"
+            "Canada Grand Prix": "Withdrew",
+            "Spain Grand Prix": "Water leak"
         },
         "1982": {
             "Brazil Grand Prix": "Collision",
@@ -282,7 +282,6 @@
         "1972": {
             "Argentine Grand Prix": -1,
             "South African Grand Prix": -1,
-            "Spain Grand Prix": -1,
             "Monaco Grand Prix": -1,
             "Belgium Grand Prix": -1,
             "French Grand Prix": -1,
@@ -291,13 +290,13 @@
             "Austria Grand Prix": -1,
             "Italy Grand Prix": -1,
             "Canada Grand Prix": -1,
+            "Spain Grand Prix": -1,
             "United States Grand Prix": -1
         },
         "1973": {
             "Argentine Grand Prix": -1,
             "Brazil Grand Prix": -1,
             "South African Grand Prix": -1,
-            "Spain Grand Prix": -1,
             "Belgium Grand Prix": -1,
             "Monaco Grand Prix": -1,
             "Swedish Grand Prix": -1,
@@ -307,13 +306,13 @@
             "German Grand Prix": -1,
             "Italy Grand Prix": -1,
             "Canada Grand Prix": -1,
+            "Spain Grand Prix": -1,
             "United States Grand Prix": -1
         },
         "1974": {
             "Argentine Grand Prix": -1,
             "Brazil Grand Prix": -1,
             "South African Grand Prix": -1,
-            "Spain Grand Prix": -1,
             "Belgium Grand Prix": -1,
             "Monaco Grand Prix": -1,
             "Swedish Grand Prix": -1,
@@ -324,13 +323,13 @@
             "Austria Grand Prix": -1,
             "Italy Grand Prix": -1,
             "Canada Grand Prix": -1,
+            "Spain Grand Prix": -1,
             "United States Grand Prix": -1
         },
         "1975": {
             "Argentine Grand Prix": -1,
             "Brazil Grand Prix": -1,
             "South African Grand Prix": -1,
-            "Spain Grand Prix": -1,
             "Monaco Grand Prix": -1,
             "Belgium Grand Prix": -1,
             "Swedish Grand Prix": -1,
@@ -340,13 +339,13 @@
             "German Grand Prix": -1,
             "Austria Grand Prix": -1,
             "Italy Grand Prix": -1,
+            "Spain Grand Prix": -1,
             "United States Grand Prix": -1
         },
         "1976": {
             "Brazil Grand Prix": -1,
             "South African Grand Prix": -1,
             "United States Grand Prix West": -1,
-            "Spain Grand Prix": -1,
             "Belgium Grand Prix": -1,
             "Monaco Grand Prix": -1,
             "Swedish Grand Prix": -1,
@@ -355,15 +354,15 @@
             "German Grand Prix": -1,
             "Italy Grand Prix": -1,
             "Canada Grand Prix": -1,
-            "United States Grand Prix": -1,
-            "Japan Grand Prix": -1
+            "Japan Grand Prix": -1,
+            "Spain Grand Prix": -1,
+            "United States Grand Prix": -1
         },
         "1977": {
             "Argentine Grand Prix": -1,
             "Brazil Grand Prix": -1,
             "South African Grand Prix": -1,
             "United States Grand Prix West": -1,
-            "Spain Grand Prix": -1,
             "Monaco Grand Prix": -1,
             "Belgium Grand Prix": -1,
             "Swedish Grand Prix": -1,
@@ -373,6 +372,7 @@
             "Austria Grand Prix": -1,
             "Netherlands Grand Prix": -1,
             "Italy Grand Prix": -1,
+            "Spain Grand Prix": -1,
             "United States Grand Prix": -1
         },
         "1978": {
@@ -382,7 +382,6 @@
             "United States Grand Prix West": -1,
             "Monaco Grand Prix": -1,
             "Belgium Grand Prix": -1,
-            "Spain Grand Prix": -1,
             "Swedish Grand Prix": -1,
             "French Grand Prix": -1,
             "Great Britain Grand Prix": -1,
@@ -390,15 +389,15 @@
             "Austria Grand Prix": -1,
             "Netherlands Grand Prix": -1,
             "Italy Grand Prix": -1,
-            "United States Grand Prix": -1,
-            "Canada Grand Prix": -1
+            "Canada Grand Prix": -1,
+            "Spain Grand Prix": -1,
+            "United States Grand Prix": -1
         },
         "1979": {
             "Argentine Grand Prix": -1,
             "Brazil Grand Prix": -1,
             "South African Grand Prix": -1,
             "United States Grand Prix West": -1,
-            "Spain Grand Prix": -1,
             "Belgium Grand Prix": -1,
             "Monaco Grand Prix": -1,
             "French Grand Prix": -1,
@@ -407,7 +406,8 @@
             "Austria Grand Prix": -1,
             "Netherlands Grand Prix": -1,
             "Italy Grand Prix": -1,
-            "Canada Grand Prix": -1
+            "Canada Grand Prix": -1,
+            "Spain Grand Prix": -1
         },
         "1982": {
             "South African Grand Prix": -1,
@@ -559,9 +559,6 @@
                 "South African Grand Prix": {
                     "points": 0
                 },
-                "Spain Grand Prix": {
-                    "points": 0
-                },
                 "Monaco Grand Prix": {
                     "points": 0
                 },
@@ -586,6 +583,9 @@
                 "Canada Grand Prix": {
                     "points": 0
                 },
+                "Spain Grand Prix": {
+                    "points": 0
+                },
                 "United States Grand Prix": {
                     "points": 0
                 }
@@ -601,9 +601,6 @@
                     "points": 0
                 },
                 "South African Grand Prix": {
-                    "points": 0
-                },
-                "Spain Grand Prix": {
                     "points": 0
                 },
                 "Belgium Grand Prix": {
@@ -633,6 +630,9 @@
                 "Canada Grand Prix": {
                     "points": 2
                 },
+                "Spain Grand Prix": {
+                    "points": 0
+                },
                 "United States Grand Prix": {
                     "points": 2
                 }
@@ -649,9 +649,6 @@
                 },
                 "South African Grand Prix": {
                     "points": 6
-                },
-                "Spain Grand Prix": {
-                    "points": 15
                 },
                 "Belgium Grand Prix": {
                     "points": 21
@@ -683,6 +680,9 @@
                 "Canada Grand Prix": {
                     "points": 38
                 },
+                "Spain Grand Prix": {
+                    "points": 15
+                },
                 "United States Grand Prix": {
                     "points": 38
                 }
@@ -698,9 +698,6 @@
                     "points": 3
                 },
                 "South African Grand Prix": {
-                    "points": 5
-                },
-                "Spain Grand Prix": {
                     "points": 5
                 },
                 "Monaco Grand Prix": {
@@ -730,6 +727,9 @@
                 "Italy Grand Prix": {
                     "points": 55
                 },
+                "Spain Grand Prix": {
+                    "points": 5
+                },
                 "United States Grand Prix": {
                     "points": 64
                 }
@@ -746,9 +746,6 @@
                 },
                 "United States Grand Prix West": {
                     "points": 24
-                },
-                "Spain Grand Prix": {
-                    "points": 30
                 },
                 "Belgium Grand Prix": {
                     "points": 39
@@ -774,10 +771,13 @@
                 "Canada Grand Prix": {
                     "points": 64
                 },
-                "United States Grand Prix": {
+                "Japan Grand Prix": {
                     "points": 68
                 },
-                "Japan Grand Prix": {
+                "Spain Grand Prix": {
+                    "points": 30
+                },
+                "United States Grand Prix": {
                     "points": 68
                 }
             }
@@ -795,9 +795,6 @@
                     "points": 13
                 },
                 "United States Grand Prix West": {
-                    "points": 19
-                },
-                "Spain Grand Prix": {
                     "points": 19
                 },
                 "Monaco Grand Prix": {
@@ -827,6 +824,9 @@
                 "Italy Grand Prix": {
                     "points": 69
                 },
+                "Spain Grand Prix": {
+                    "points": 19
+                },
                 "United States Grand Prix": {
                     "points": 72
                 }
@@ -853,9 +853,6 @@
                 "Belgium Grand Prix": {
                     "points": 16
                 },
-                "Spain Grand Prix": {
-                    "points": 16
-                },
                 "Swedish Grand Prix": {
                     "points": 25
                 },
@@ -877,10 +874,13 @@
                 "Italy Grand Prix": {
                     "points": 44
                 },
-                "United States Grand Prix": {
+                "Canada Grand Prix": {
                     "points": 44
                 },
-                "Canada Grand Prix": {
+                "Spain Grand Prix": {
+                    "points": 16
+                },
+                "United States Grand Prix": {
                     "points": 44
                 }
             }
@@ -898,9 +898,6 @@
                     "points": 1
                 },
                 "United States Grand Prix West": {
-                    "points": 1
-                },
-                "Spain Grand Prix": {
                     "points": 1
                 },
                 "Belgium Grand Prix": {
@@ -929,6 +926,9 @@
                 },
                 "Canada Grand Prix": {
                     "points": 4
+                },
+                "Spain Grand Prix": {
+                    "points": 1
                 }
             }
         },
@@ -1137,7 +1137,6 @@
             "positions": {
                 "Argentine Grand Prix": "11",
                 "South African Grand Prix": "7",
-                "Spain Grand Prix": "24",
                 "Monaco Grand Prix": "16",
                 "Belgium Grand Prix": "12",
                 "French Grand Prix": "24",
@@ -1146,6 +1145,7 @@
                 "Austria Grand Prix": "10",
                 "Italy Grand Prix": "13",
                 "Canada Grand Prix": "15",
+                "Spain Grand Prix": "24",
                 "United States Grand Prix": "19"
             }
         },
@@ -1154,7 +1154,6 @@
                 "Argentine Grand Prix": "15",
                 "Brazil Grand Prix": "8",
                 "South African Grand Prix": "19",
-                "Spain Grand Prix": "17",
                 "Belgium Grand Prix": "5",
                 "Monaco Grand Prix": "22",
                 "Swedish Grand Prix": "13",
@@ -1164,6 +1163,7 @@
                 "German Grand Prix": "21",
                 "Italy Grand Prix": "18",
                 "Canada Grand Prix": "21",
+                "Spain Grand Prix": "17",
                 "United States Grand Prix": "20"
             }
         },
@@ -1172,7 +1172,6 @@
                 "Argentine Grand Prix": "2",
                 "Brazil Grand Prix": "24",
                 "South African Grand Prix": "16",
-                "Spain Grand Prix": "1",
                 "Belgium Grand Prix": "2",
                 "Monaco Grand Prix": "12",
                 "Swedish Grand Prix": "13",
@@ -1183,6 +1182,7 @@
                 "Austria Grand Prix": "23",
                 "Italy Grand Prix": "13",
                 "Canada Grand Prix": "18",
+                "Spain Grand Prix": "1",
                 "United States Grand Prix": "18"
             }
         },
@@ -1191,7 +1191,6 @@
                 "Argentine Grand Prix": "6",
                 "Brazil Grand Prix": "5",
                 "South African Grand Prix": "5",
-                "Spain Grand Prix": "25",
                 "Monaco Grand Prix": "1",
                 "Belgium Grand Prix": "1",
                 "Swedish Grand Prix": "1",
@@ -1201,6 +1200,7 @@
                 "German Grand Prix": "3",
                 "Austria Grand Prix": "6",
                 "Italy Grand Prix": "3",
+                "Spain Grand Prix": "25",
                 "United States Grand Prix": "1"
             }
         },
@@ -1209,7 +1209,6 @@
                 "Brazil Grand Prix": "1",
                 "South African Grand Prix": "1",
                 "United States Grand Prix West": "2",
-                "Spain Grand Prix": "2",
                 "Belgium Grand Prix": "1",
                 "Monaco Grand Prix": "1",
                 "Swedish Grand Prix": "3",
@@ -1218,8 +1217,9 @@
                 "German Grand Prix": "24",
                 "Italy Grand Prix": "4",
                 "Canada Grand Prix": "8",
-                "United States Grand Prix": "3",
-                "Japan Grand Prix": "23"
+                "Japan Grand Prix": "23",
+                "Spain Grand Prix": "2",
+                "United States Grand Prix": "3"
             }
         },
         "1977": {
@@ -1228,7 +1228,6 @@
                 "Brazil Grand Prix": "3",
                 "South African Grand Prix": "1",
                 "United States Grand Prix West": "2",
-                "Spain Grand Prix": "25",
                 "Monaco Grand Prix": "2",
                 "Belgium Grand Prix": "2",
                 "Swedish Grand Prix": "22",
@@ -1238,6 +1237,7 @@
                 "Austria Grand Prix": "2",
                 "Netherlands Grand Prix": "1",
                 "Italy Grand Prix": "2",
+                "Spain Grand Prix": "25",
                 "United States Grand Prix": "4"
             }
         },
@@ -1249,7 +1249,6 @@
                 "United States Grand Prix West": "17",
                 "Monaco Grand Prix": "2",
                 "Belgium Grand Prix": "22",
-                "Spain Grand Prix": "19",
                 "Swedish Grand Prix": "1",
                 "French Grand Prix": "23",
                 "Great Britain Grand Prix": "2",
@@ -1257,8 +1256,9 @@
                 "Austria Grand Prix": "17",
                 "Netherlands Grand Prix": "3",
                 "Italy Grand Prix": "1",
-                "United States Grand Prix": "19",
-                "Canada Grand Prix": "20"
+                "Canada Grand Prix": "20",
+                "Spain Grand Prix": "19",
+                "United States Grand Prix": "19"
             }
         },
         "1979": {
@@ -1267,7 +1267,6 @@
                 "Brazil Grand Prix": "21",
                 "South African Grand Prix": "6",
                 "United States Grand Prix West": "23",
-                "Spain Grand Prix": "15",
                 "Belgium Grand Prix": "17",
                 "Monaco Grand Prix": "14",
                 "French Grand Prix": "24",
@@ -1276,7 +1275,8 @@
                 "Austria Grand Prix": "11",
                 "Netherlands Grand Prix": "20",
                 "Italy Grand Prix": "4",
-                "Canada Grand Prix": "30"
+                "Canada Grand Prix": "30",
+                "Spain Grand Prix": "15"
             }
         },
         "1982": {
@@ -1405,7 +1405,6 @@
             "positions": {
                 "Argentine Grand Prix": "11",
                 "South African Grand Prix": "14",
-                "Spain Grand Prix": "1",
                 "Monaco Grand Prix": "6",
                 "Belgium Grand Prix": "13",
                 "French Grand Prix": "-3",
@@ -1414,6 +1413,7 @@
                 "Austria Grand Prix": "12",
                 "Italy Grand Prix": "7",
                 "Canada Grand Prix": "4",
+                "Spain Grand Prix": "1",
                 "United States Grand Prix": "6"
             }
         },
@@ -1422,7 +1422,6 @@
                 "Argentine Grand Prix": "-2",
                 "Brazil Grand Prix": "5",
                 "South African Grand Prix": "-9",
-                "Spain Grand Prix": "-6",
                 "Belgium Grand Prix": "9",
                 "Monaco Grand Prix": "-16",
                 "Swedish Grand Prix": "2",
@@ -1432,6 +1431,7 @@
                 "German Grand Prix": "-16",
                 "Italy Grand Prix": "-3",
                 "Canada Grand Prix": "-13",
+                "Spain Grand Prix": "-6",
                 "United States Grand Prix": "1"
             }
         },
@@ -1440,7 +1440,6 @@
                 "Argentine Grand Prix": "6",
                 "Brazil Grand Prix": "1",
                 "South African Grand Prix": "-15",
-                "Spain Grand Prix": "0",
                 "Belgium Grand Prix": "1",
                 "Monaco Grand Prix": "-11",
                 "Swedish Grand Prix": "-10",
@@ -1451,6 +1450,7 @@
                 "Austria Grand Prix": "-22",
                 "Italy Grand Prix": "-12",
                 "Canada Grand Prix": "-16",
+                "Spain Grand Prix": "0",
                 "United States Grand Prix": "-13"
             }
         },
@@ -1459,7 +1459,6 @@
                 "Argentine Grand Prix": "-2",
                 "Brazil Grand Prix": "-1",
                 "South African Grand Prix": "-1",
-                "Spain Grand Prix": "-24",
                 "Monaco Grand Prix": "0",
                 "Belgium Grand Prix": "0",
                 "Swedish Grand Prix": "4",
@@ -1469,6 +1468,7 @@
                 "German Grand Prix": "-2",
                 "Austria Grand Prix": "-5",
                 "Italy Grand Prix": "-2",
+                "Spain Grand Prix": "-24",
                 "United States Grand Prix": "0"
             }
         },
@@ -1477,7 +1477,6 @@
                 "Brazil Grand Prix": "1",
                 "South African Grand Prix": "1",
                 "United States Grand Prix West": "2",
-                "Spain Grand Prix": "0",
                 "Belgium Grand Prix": "0",
                 "Monaco Grand Prix": "0",
                 "Swedish Grand Prix": "2",
@@ -1486,8 +1485,9 @@
                 "German Grand Prix": "-22",
                 "Italy Grand Prix": "1",
                 "Canada Grand Prix": "-2",
-                "United States Grand Prix": "2",
-                "Japan Grand Prix": "-20"
+                "Japan Grand Prix": "-20",
+                "Spain Grand Prix": "0",
+                "United States Grand Prix": "2"
             }
         },
         "1977": {
@@ -1496,7 +1496,6 @@
                 "Brazil Grand Prix": "10",
                 "South African Grand Prix": "2",
                 "United States Grand Prix West": "-1",
-                "Spain Grand Prix": "-22",
                 "Monaco Grand Prix": "4",
                 "Belgium Grand Prix": "9",
                 "Swedish Grand Prix": "-7",
@@ -1506,6 +1505,7 @@
                 "Austria Grand Prix": "-1",
                 "Netherlands Grand Prix": "3",
                 "Italy Grand Prix": "3",
+                "Spain Grand Prix": "-22",
                 "United States Grand Prix": "3"
             }
         },
@@ -1517,7 +1517,6 @@
                 "United States Grand Prix West": "-14",
                 "Monaco Grand Prix": "1",
                 "Belgium Grand Prix": "-19",
-                "Spain Grand Prix": "-13",
                 "Swedish Grand Prix": "2",
                 "French Grand Prix": "-20",
                 "Great Britain Grand Prix": "2",
@@ -1525,8 +1524,9 @@
                 "Austria Grand Prix": "-13",
                 "Netherlands Grand Prix": "0",
                 "Italy Grand Prix": "3",
-                "United States Grand Prix": "-14",
-                "Canada Grand Prix": "-13"
+                "Canada Grand Prix": "-13",
+                "Spain Grand Prix": "-13",
+                "United States Grand Prix": "-14"
             }
         },
         "1979": {
@@ -1535,7 +1535,6 @@
                 "Brazil Grand Prix": "-9",
                 "South African Grand Prix": "-2",
                 "United States Grand Prix West": "-12",
-                "Spain Grand Prix": "-9",
                 "Belgium Grand Prix": "-4",
                 "Monaco Grand Prix": "-10",
                 "French Grand Prix": "-18",
@@ -1543,7 +1542,8 @@
                 "German Grand Prix": "-9",
                 "Austria Grand Prix": "-7",
                 "Netherlands Grand Prix": "-11",
-                "Italy Grand Prix": "5"
+                "Italy Grand Prix": "5",
+                "Spain Grand Prix": "-9"
             }
         },
         "1982": {

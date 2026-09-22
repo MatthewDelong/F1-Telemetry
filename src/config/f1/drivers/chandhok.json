@@ -38,25 +38,25 @@
     },
     "DNFs": {
         "2010": {
-            "Bahrain Grand Prix": "Accident",
-            "Spain Grand Prix": "Suspension",
             "Monaco Grand Prix": "Collision",
-            "Turkish Grand Prix": "Fuel pump"
+            "Turkish Grand Prix": "Fuel pump",
+            "Bahrain Grand Prix": "Accident",
+            "Spain Grand Prix": "Suspension"
         },
         "2011": {}
     },
     "fastLaps": {
         "2010": {
-            "Bahrain Grand Prix": -1,
             "Australia Grand Prix": "1:35.045",
             "Malaysian Grand Prix": "1:44.790",
             "China Grand Prix": "1:48.788",
-            "Spain Grand Prix": "1:32.041",
             "Monaco Grand Prix": "1:19.553",
             "Turkish Grand Prix": "1:34.585",
             "Canada Grand Prix": "1:21.884",
             "European Grand Prix": "1:43.820",
-            "Great Britain Grand Prix": "1:38.798"
+            "Great Britain Grand Prix": "1:38.798",
+            "Bahrain Grand Prix": -1,
+            "Spain Grand Prix": "1:32.041"
         },
         "2011": {
             "German Grand Prix": "1:40.435"
@@ -78,9 +78,6 @@
         "2010": {
             "year": "2010",
             "pos": {
-                "Bahrain Grand Prix": {
-                    "points": 0
-                },
                 "Australia Grand Prix": {
                     "points": 0
                 },
@@ -88,9 +85,6 @@
                     "points": 0
                 },
                 "China Grand Prix": {
-                    "points": 0
-                },
-                "Spain Grand Prix": {
                     "points": 0
                 },
                 "Monaco Grand Prix": {
@@ -107,6 +101,12 @@
                 },
                 "Great Britain Grand Prix": {
                     "points": 0
+                },
+                "Bahrain Grand Prix": {
+                    "points": 0
+                },
+                "Spain Grand Prix": {
+                    "points": 0
                 }
             }
         },
@@ -122,16 +122,16 @@
     "racePosition": {
         "2010": {
             "positions": {
-                "Bahrain Grand Prix": "24",
                 "Australia Grand Prix": "14",
                 "Malaysian Grand Prix": "15",
                 "China Grand Prix": "17",
-                "Spain Grand Prix": "21",
                 "Monaco Grand Prix": "14",
                 "Turkish Grand Prix": "20",
                 "Canada Grand Prix": "18",
                 "European Grand Prix": "18",
-                "Great Britain Grand Prix": "19"
+                "Great Britain Grand Prix": "19",
+                "Bahrain Grand Prix": "24",
+                "Spain Grand Prix": "21"
             }
         },
         "2011": {
@@ -143,16 +143,16 @@
     "qualiPosition": {
         "2010": {
             "positions": {
-                "Bahrain Grand Prix": "24",
                 "Australia Grand Prix": "24",
                 "Malaysian Grand Prix": "22",
                 "China Grand Prix": "24",
-                "Spain Grand Prix": "23",
                 "Monaco Grand Prix": "23",
                 "Turkish Grand Prix": "24",
                 "Canada Grand Prix": "24",
                 "European Grand Prix": "23",
-                "Great Britain Grand Prix": "23"
+                "Great Britain Grand Prix": "23",
+                "Bahrain Grand Prix": "24",
+                "Spain Grand Prix": "23"
             }
         },
         "2011": {
@@ -164,16 +164,16 @@
     "positionsGainLost": {
         "2010": {
             "positions": {
-                "Bahrain Grand Prix": "0",
                 "Australia Grand Prix": "8",
                 "Malaysian Grand Prix": "7",
                 "China Grand Prix": "7",
-                "Spain Grand Prix": "3",
                 "Monaco Grand Prix": "9",
                 "Turkish Grand Prix": "4",
                 "Canada Grand Prix": "6",
                 "European Grand Prix": "5",
-                "Great Britain Grand Prix": "4"
+                "Great Britain Grand Prix": "4",
+                "Bahrain Grand Prix": "0",
+                "Spain Grand Prix": "3"
             }
         },
         "2011": {
@@ -185,11 +185,6 @@
     "driverQualifyingTimes": {
         "2010": {
             "QualiTimes": {
-                "Bahrain Grand Prix": [
-                    "2:04.904",
-                    "N/A",
-                    "N/A"
-                ],
                 "Australia Grand Prix": [
                     "1:30.613",
                     "N/A",
@@ -202,11 +197,6 @@
                 ],
                 "China Grand Prix": [
                     "1:40.578",
-                    "N/A",
-                    "N/A"
-                ],
-                "Spain Grand Prix": [
-                    "1:26.750",
                     "N/A",
                     "N/A"
                 ],
@@ -232,6 +222,16 @@
                 ],
                 "Great Britain Grand Prix": [
                     "1:36.576",
+                    "N/A",
+                    "N/A"
+                ],
+                "Bahrain Grand Prix": [
+                    "2:04.904",
+                    "N/A",
+                    "N/A"
+                ],
+                "Spain Grand Prix": [
+                    "1:26.750",
                     "N/A",
                     "N/A"
                 ]

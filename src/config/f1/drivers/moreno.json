@@ -83,19 +83,18 @@
             "San Marino Grand Prix": "Throttle"
         },
         "1991": {
-            "United States Grand Prix": "Collision",
             "San Marino Grand Prix": "Engine",
             "Canada Grand Prix": "Suspension",
             "French Grand Prix": "Physical",
             "Great Britain Grand Prix": "Gearbox",
-            "Italy Grand Prix": "Spun off"
+            "Italy Grand Prix": "Spun off",
+            "United States Grand Prix": "Collision"
         },
         "1992": {
             "Monaco Grand Prix": "Engine"
         },
         "1995": {
             "Brazil Grand Prix": "Spun off",
-            "Spain Grand Prix": "Overheating",
             "Monaco Grand Prix": "Brakes",
             "Canada Grand Prix": "Fuel system",
             "Great Britain Grand Prix": "Engine",
@@ -104,7 +103,8 @@
             "Italy Grand Prix": "Accident",
             "European Grand Prix": "Halfshaft",
             "Japan Grand Prix": "Gearbox",
-            "Australia Grand Prix": "Spun off"
+            "Australia Grand Prix": "Spun off",
+            "Spain Grand Prix": "Overheating"
         }
     },
     "fastLaps": {
@@ -120,19 +120,17 @@
             "Portuguese Grand Prix": -1
         },
         "1990": {
-            "United States Grand Prix": -1,
             "San Marino Grand Prix": -1,
-            "Mexican Grand Prix": -1,
             "Japan Grand Prix": -1,
-            "Australia Grand Prix": -1
+            "Australia Grand Prix": -1,
+            "Mexico Grand Prix": -1,
+            "United States Grand Prix": -1
         },
         "1991": {
-            "United States Grand Prix": -1,
             "Brazil Grand Prix": -1,
             "San Marino Grand Prix": -1,
             "Monaco Grand Prix": -1,
             "Canada Grand Prix": -1,
-            "Mexican Grand Prix": -1,
             "French Grand Prix": -1,
             "Great Britain Grand Prix": -1,
             "German Grand Prix": -1,
@@ -140,7 +138,9 @@
             "Belgium Grand Prix": -1,
             "Italy Grand Prix": -1,
             "Portuguese Grand Prix": -1,
-            "Australia Grand Prix": -1
+            "Australia Grand Prix": -1,
+            "Mexico Grand Prix": -1,
+            "United States Grand Prix": -1
         },
         "1992": {
             "Monaco Grand Prix": -1
@@ -149,7 +149,6 @@
             "Brazil Grand Prix": -1,
             "Argentine Grand Prix": -1,
             "San Marino Grand Prix": -1,
-            "Spain Grand Prix": -1,
             "Monaco Grand Prix": -1,
             "Canada Grand Prix": -1,
             "French Grand Prix": -1,
@@ -162,7 +161,8 @@
             "European Grand Prix": -1,
             "Pacific Grand Prix": -1,
             "Japan Grand Prix": -1,
-            "Australia Grand Prix": -1
+            "Australia Grand Prix": -1,
+            "Spain Grand Prix": -1
         }
     },
     "finalStandings": {
@@ -230,13 +230,7 @@
         "1990": {
             "year": "1990",
             "pos": {
-                "United States Grand Prix": {
-                    "points": 0
-                },
                 "San Marino Grand Prix": {
-                    "points": 0
-                },
-                "Mexican Grand Prix": {
                     "points": 0
                 },
                 "Japan Grand Prix": {
@@ -244,15 +238,18 @@
                 },
                 "Australia Grand Prix": {
                     "points": 6
+                },
+                "Mexico Grand Prix": {
+                    "points": 0
+                },
+                "United States Grand Prix": {
+                    "points": 0
                 }
             }
         },
         "1991": {
             "year": "1991",
             "pos": {
-                "United States Grand Prix": {
-                    "points": 0
-                },
                 "Brazil Grand Prix": {
                     "points": 0
                 },
@@ -264,9 +261,6 @@
                 },
                 "Canada Grand Prix": {
                     "points": 3
-                },
-                "Mexican Grand Prix": {
-                    "points": 5
                 },
                 "French Grand Prix": {
                     "points": 5
@@ -291,6 +285,12 @@
                 },
                 "Australia Grand Prix": {
                     "points": 8
+                },
+                "Mexico Grand Prix": {
+                    "points": 5
+                },
+                "United States Grand Prix": {
+                    "points": 0
                 }
             }
         },
@@ -312,9 +312,6 @@
                     "points": 0
                 },
                 "San Marino Grand Prix": {
-                    "points": 0
-                },
-                "Spain Grand Prix": {
                     "points": 0
                 },
                 "Monaco Grand Prix": {
@@ -355,6 +352,9 @@
                 },
                 "Australia Grand Prix": {
                     "points": 0
+                },
+                "Spain Grand Prix": {
+                    "points": 0
                 }
             }
         }
@@ -379,21 +379,19 @@
         },
         "1990": {
             "positions": {
-                "United States Grand Prix": "13",
                 "San Marino Grand Prix": "26",
-                "Mexican Grand Prix": "27",
                 "Japan Grand Prix": "2",
-                "Australia Grand Prix": "7"
+                "Australia Grand Prix": "7",
+                "Mexico Grand Prix": "27",
+                "United States Grand Prix": "13"
             }
         },
         "1991": {
             "positions": {
-                "United States Grand Prix": "15",
                 "Brazil Grand Prix": "7",
                 "San Marino Grand Prix": "13",
                 "Monaco Grand Prix": "4",
                 "Canada Grand Prix": "23",
-                "Mexican Grand Prix": "5",
                 "French Grand Prix": "13",
                 "Great Britain Grand Prix": "23",
                 "German Grand Prix": "8",
@@ -401,7 +399,9 @@
                 "Belgium Grand Prix": "4",
                 "Italy Grand Prix": "25",
                 "Portuguese Grand Prix": "10",
-                "Australia Grand Prix": "16"
+                "Australia Grand Prix": "16",
+                "Mexico Grand Prix": "5",
+                "United States Grand Prix": "15"
             }
         },
         "1992": {
@@ -414,7 +414,6 @@
                 "Brazil Grand Prix": "14",
                 "Argentine Grand Prix": "11",
                 "San Marino Grand Prix": "16",
-                "Spain Grand Prix": "21",
                 "Monaco Grand Prix": "23",
                 "Canada Grand Prix": "13",
                 "French Grand Prix": "16",
@@ -427,7 +426,8 @@
                 "European Grand Prix": "20",
                 "Pacific Grand Prix": "16",
                 "Japan Grand Prix": "22",
-                "Australia Grand Prix": "17"
+                "Australia Grand Prix": "17",
+                "Spain Grand Prix": "21"
             }
         }
     },
@@ -455,7 +455,6 @@
                 "Brazil Grand Prix": "23",
                 "Argentine Grand Prix": "24",
                 "San Marino Grand Prix": "25",
-                "Spain Grand Prix": "25",
                 "Monaco Grand Prix": "24",
                 "Canada Grand Prix": "23",
                 "French Grand Prix": "24",
@@ -468,7 +467,8 @@
                 "European Grand Prix": "23",
                 "Pacific Grand Prix": "22",
                 "Japan Grand Prix": "22",
-                "Australia Grand Prix": "20"
+                "Australia Grand Prix": "20",
+                "Spain Grand Prix": "25"
             }
         }
     },
@@ -492,20 +492,18 @@
         },
         "1990": {
             "positions": {
-                "United States Grand Prix": "3",
                 "San Marino Grand Prix": "-2",
                 "Japan Grand Prix": "6",
-                "Australia Grand Prix": "1"
+                "Australia Grand Prix": "1",
+                "United States Grand Prix": "3"
             }
         },
         "1991": {
             "positions": {
-                "United States Grand Prix": "-7",
                 "Brazil Grand Prix": "7",
                 "San Marino Grand Prix": "0",
                 "Monaco Grand Prix": "4",
                 "Canada Grand Prix": "-18",
-                "Mexican Grand Prix": "4",
                 "French Grand Prix": "-5",
                 "Great Britain Grand Prix": "-16",
                 "German Grand Prix": "1",
@@ -513,7 +511,9 @@
                 "Belgium Grand Prix": "4",
                 "Italy Grand Prix": "-16",
                 "Portuguese Grand Prix": "11",
-                "Australia Grand Prix": "2"
+                "Australia Grand Prix": "2",
+                "Mexico Grand Prix": "4",
+                "United States Grand Prix": "-7"
             }
         },
         "1992": {
@@ -526,7 +526,6 @@
                 "Brazil Grand Prix": "9",
                 "Argentine Grand Prix": "13",
                 "San Marino Grand Prix": "9",
-                "Spain Grand Prix": "4",
                 "Monaco Grand Prix": "1",
                 "Canada Grand Prix": "10",
                 "French Grand Prix": "8",
@@ -539,7 +538,8 @@
                 "European Grand Prix": "3",
                 "Pacific Grand Prix": "6",
                 "Japan Grand Prix": "-1",
-                "Australia Grand Prix": "3"
+                "Australia Grand Prix": "3",
+                "Spain Grand Prix": "4"
             }
         }
     },
@@ -576,11 +576,6 @@
                 ],
                 "San Marino Grand Prix": [
                     "1:36.065",
-                    "N/A",
-                    "N/A"
-                ],
-                "Spain Grand Prix": [
-                    "1:28.963",
                     "N/A",
                     "N/A"
                 ],
@@ -646,6 +641,11 @@
                 ],
                 "Australia Grand Prix": [
                     "N/A",
+                    "N/A",
+                    "N/A"
+                ],
+                "Spain Grand Prix": [
+                    "1:28.963",
                     "N/A",
                     "N/A"
                 ]

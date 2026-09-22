@@ -32,16 +32,16 @@
     },
     "DNFs": {
         "1992": {
-            "Mexican Grand Prix": "Spun off",
-            "Spain Grand Prix": "Spun off",
-            "French Grand Prix": "Accident"
+            "French Grand Prix": "Accident",
+            "Mexico Grand Prix": "Spun off",
+            "Spain Grand Prix": "Spun off"
         }
     },
     "fastLaps": {
         "1992": {
-            "Mexican Grand Prix": -1,
-            "Spain Grand Prix": -1,
-            "French Grand Prix": -1
+            "French Grand Prix": -1,
+            "Mexico Grand Prix": -1,
+            "Spain Grand Prix": -1
         }
     },
     "finalStandings": {
@@ -54,13 +54,13 @@
         "1992": {
             "year": "1992",
             "pos": {
-                "Mexican Grand Prix": {
+                "French Grand Prix": {
+                    "points": 0
+                },
+                "Mexico Grand Prix": {
                     "points": 0
                 },
                 "Spain Grand Prix": {
-                    "points": 0
-                },
-                "French Grand Prix": {
                     "points": 0
                 }
             }
@@ -69,9 +69,9 @@
     "racePosition": {
         "1992": {
             "positions": {
-                "Mexican Grand Prix": "16",
-                "Spain Grand Prix": "21",
-                "French Grand Prix": "26"
+                "French Grand Prix": "26",
+                "Mexico Grand Prix": "16",
+                "Spain Grand Prix": "21"
             }
         }
     },
@@ -83,9 +83,9 @@
     "positionsGainLost": {
         "1992": {
             "positions": {
-                "Mexican Grand Prix": "7",
-                "Spain Grand Prix": "-1",
-                "French Grand Prix": "0"
+                "French Grand Prix": "0",
+                "Mexico Grand Prix": "7",
+                "Spain Grand Prix": "-1"
             }
         }
     },

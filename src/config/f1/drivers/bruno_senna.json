@@ -44,32 +44,30 @@
     },
     "DNFs": {
         "2010": {
-            "Bahrain Grand Prix": "Overheating",
             "Australia Grand Prix": "Hydraulics",
-            "Spain Grand Prix": "Accident",
             "Monaco Grand Prix": "Hydraulics",
             "Turkish Grand Prix": "Fuel pressure",
             "Canada Grand Prix": "Hydraulics",
             "Belgium Grand Prix": "Retired",
             "Italy Grand Prix": "Retired",
-            "Singapore Grand Prix": "Accident"
+            "Singapore Grand Prix": "Accident",
+            "Bahrain Grand Prix": "Overheating",
+            "Spain Grand Prix": "Accident"
         },
         "2011": {},
         "2012": {
             "Australia Grand Prix": "Collision",
-            "Bahrain Grand Prix": "Vibrations",
-            "Spain Grand Prix": "Collision",
             "Singapore Grand Prix": "Retired",
-            "Brazil Grand Prix": "Collision"
+            "Brazil Grand Prix": "Collision",
+            "Bahrain Grand Prix": "Vibrations",
+            "Spain Grand Prix": "Collision"
         }
     },
     "fastLaps": {
         "2010": {
-            "Bahrain Grand Prix": "2:09.127",
             "Australia Grand Prix": "2:27.276",
             "Malaysian Grand Prix": "1:45.334",
             "China Grand Prix": "1:48.216",
-            "Spain Grand Prix": -1,
             "Monaco Grand Prix": "1:20.130",
             "Turkish Grand Prix": "1:34.247",
             "Canada Grand Prix": "1:24.524",
@@ -82,7 +80,9 @@
             "Japan Grand Prix": "1:40.329",
             "Korean Grand Prix": "1:59.290",
             "Brazil Grand Prix": "1:17.731",
-            "Abu Dhabi Grand Prix": "1:46.255"
+            "Abu Dhabi Grand Prix": "1:46.255",
+            "Bahrain Grand Prix": "2:09.127",
+            "Spain Grand Prix": -1
         },
         "2011": {
             "Belgium Grand Prix": "1:53.585",
@@ -98,8 +98,6 @@
             "Australia Grand Prix": "1:30.855",
             "Malaysian Grand Prix": "1:41.404",
             "China Grand Prix": "1:41.293",
-            "Bahrain Grand Prix": "1:38.087",
-            "Spain Grand Prix": "1:31.822",
             "Monaco Grand Prix": "1:19.187",
             "Canada Grand Prix": "1:17.817",
             "European Grand Prix": "1:44.111",
@@ -113,8 +111,10 @@
             "Korean Grand Prix": "1:43.411",
             "Indian Grand Prix": "1:28.431",
             "Abu Dhabi Grand Prix": "1:45.693",
-            "United States Grand Prix": "1:40.745",
-            "Brazil Grand Prix": -1
+            "Brazil Grand Prix": -1,
+            "Bahrain Grand Prix": "1:38.087",
+            "Spain Grand Prix": "1:31.822",
+            "United States Grand Prix": "1:40.745"
         }
     },
     "finalStandings": {
@@ -138,9 +138,6 @@
         "2010": {
             "year": "2010",
             "pos": {
-                "Bahrain Grand Prix": {
-                    "points": 0
-                },
                 "Australia Grand Prix": {
                     "points": 0
                 },
@@ -148,9 +145,6 @@
                     "points": 0
                 },
                 "China Grand Prix": {
-                    "points": 0
-                },
-                "Spain Grand Prix": {
                     "points": 0
                 },
                 "Monaco Grand Prix": {
@@ -190,6 +184,12 @@
                     "points": 0
                 },
                 "Abu Dhabi Grand Prix": {
+                    "points": 0
+                },
+                "Bahrain Grand Prix": {
+                    "points": 0
+                },
+                "Spain Grand Prix": {
                     "points": 0
                 }
             }
@@ -235,12 +235,6 @@
                 "China Grand Prix": {
                     "points": 14
                 },
-                "Bahrain Grand Prix": {
-                    "points": 14
-                },
-                "Spain Grand Prix": {
-                    "points": 14
-                },
                 "Monaco Grand Prix": {
                     "points": 15
                 },
@@ -280,10 +274,16 @@
                 "Abu Dhabi Grand Prix": {
                     "points": 30
                 },
-                "United States Grand Prix": {
+                "Brazil Grand Prix": {
                     "points": 31
                 },
-                "Brazil Grand Prix": {
+                "Bahrain Grand Prix": {
+                    "points": 14
+                },
+                "Spain Grand Prix": {
+                    "points": 14
+                },
+                "United States Grand Prix": {
                     "points": 31
                 }
             }
@@ -292,11 +292,9 @@
     "racePosition": {
         "2010": {
             "positions": {
-                "Bahrain Grand Prix": "19",
                 "Australia Grand Prix": "20",
                 "Malaysian Grand Prix": "16",
                 "China Grand Prix": "16",
-                "Spain Grand Prix": "23",
                 "Monaco Grand Prix": "17",
                 "Turkish Grand Prix": "21",
                 "Canada Grand Prix": "23",
@@ -309,7 +307,9 @@
                 "Japan Grand Prix": "15",
                 "Korean Grand Prix": "14",
                 "Brazil Grand Prix": "21",
-                "Abu Dhabi Grand Prix": "19"
+                "Abu Dhabi Grand Prix": "19",
+                "Bahrain Grand Prix": "19",
+                "Spain Grand Prix": "23"
             }
         },
         "2011": {
@@ -329,8 +329,6 @@
                 "Australia Grand Prix": "16",
                 "Malaysian Grand Prix": "6",
                 "China Grand Prix": "7",
-                "Bahrain Grand Prix": "22",
-                "Spain Grand Prix": "23",
                 "Monaco Grand Prix": "10",
                 "Canada Grand Prix": "17",
                 "European Grand Prix": "10",
@@ -344,19 +342,19 @@
                 "Korean Grand Prix": "15",
                 "Indian Grand Prix": "10",
                 "Abu Dhabi Grand Prix": "8",
-                "United States Grand Prix": "10",
-                "Brazil Grand Prix": "23"
+                "Brazil Grand Prix": "23",
+                "Bahrain Grand Prix": "22",
+                "Spain Grand Prix": "23",
+                "United States Grand Prix": "10"
             }
         }
     },
     "qualiPosition": {
         "2010": {
             "positions": {
-                "Bahrain Grand Prix": "23",
                 "Australia Grand Prix": "23",
                 "Malaysian Grand Prix": "23",
                 "China Grand Prix": "23",
-                "Spain Grand Prix": "24",
                 "Monaco Grand Prix": "22",
                 "Turkish Grand Prix": "22",
                 "Canada Grand Prix": "22",
@@ -369,7 +367,9 @@
                 "Japan Grand Prix": "23",
                 "Korean Grand Prix": "24",
                 "Brazil Grand Prix": "24",
-                "Abu Dhabi Grand Prix": "23"
+                "Abu Dhabi Grand Prix": "23",
+                "Bahrain Grand Prix": "23",
+                "Spain Grand Prix": "24"
             }
         },
         "2011": {
@@ -389,8 +389,6 @@
                 "Australia Grand Prix": "14",
                 "Malaysian Grand Prix": "13",
                 "China Grand Prix": "14",
-                "Bahrain Grand Prix": "15",
-                "Spain Grand Prix": "18",
                 "Monaco Grand Prix": "14",
                 "Canada Grand Prix": "16",
                 "European Grand Prix": "14",
@@ -404,19 +402,19 @@
                 "Korean Grand Prix": "18",
                 "Indian Grand Prix": "13",
                 "Abu Dhabi Grand Prix": "15",
-                "United States Grand Prix": "11",
-                "Brazil Grand Prix": "12"
+                "Brazil Grand Prix": "12",
+                "Bahrain Grand Prix": "15",
+                "Spain Grand Prix": "18",
+                "United States Grand Prix": "11"
             }
         }
     },
     "positionsGainLost": {
         "2010": {
             "positions": {
-                "Bahrain Grand Prix": "4",
                 "Australia Grand Prix": "1",
                 "Malaysian Grand Prix": "7",
                 "China Grand Prix": "7",
-                "Spain Grand Prix": "-2",
                 "Monaco Grand Prix": "5",
                 "Turkish Grand Prix": "1",
                 "Canada Grand Prix": "-1",
@@ -429,7 +427,9 @@
                 "Japan Grand Prix": "8",
                 "Korean Grand Prix": "10",
                 "Brazil Grand Prix": "3",
-                "Abu Dhabi Grand Prix": "4"
+                "Abu Dhabi Grand Prix": "4",
+                "Bahrain Grand Prix": "4",
+                "Spain Grand Prix": "-2"
             }
         },
         "2011": {
@@ -449,8 +449,6 @@
                 "Australia Grand Prix": "-2",
                 "Malaysian Grand Prix": "7",
                 "China Grand Prix": "7",
-                "Bahrain Grand Prix": "-7",
-                "Spain Grand Prix": "-6",
                 "Monaco Grand Prix": "3",
                 "Canada Grand Prix": "-1",
                 "European Grand Prix": "4",
@@ -464,19 +462,16 @@
                 "Korean Grand Prix": "2",
                 "Indian Grand Prix": "3",
                 "Abu Dhabi Grand Prix": "6",
-                "United States Grand Prix": "0",
-                "Brazil Grand Prix": "-12"
+                "Brazil Grand Prix": "-12",
+                "Bahrain Grand Prix": "-7",
+                "Spain Grand Prix": "-6",
+                "United States Grand Prix": "0"
             }
         }
     },
     "driverQualifyingTimes": {
         "2010": {
             "QualiTimes": {
-                "Bahrain Grand Prix": [
-                    "2:03.204",
-                    "N/A",
-                    "N/A"
-                ],
                 "Australia Grand Prix": [
                     "1:30.526",
                     "N/A",
@@ -489,11 +484,6 @@
                 ],
                 "China Grand Prix": [
                     "1:40.469",
-                    "N/A",
-                    "N/A"
-                ],
-                "Spain Grand Prix": [
-                    "1:27.122",
                     "N/A",
                     "N/A"
                 ],
@@ -561,6 +551,16 @@
                     "1:45.085",
                     "N/A",
                     "N/A"
+                ],
+                "Bahrain Grand Prix": [
+                    "2:03.204",
+                    "N/A",
+                    "N/A"
+                ],
+                "Spain Grand Prix": [
+                    "1:27.122",
+                    "N/A",
+                    "N/A"
                 ]
             }
         },
@@ -623,16 +623,6 @@
                 "China Grand Prix": [
                     "1:36.674",
                     "1:36.289",
-                    "N/A"
-                ],
-                "Bahrain Grand Prix": [
-                    "1:34.466",
-                    "1:34.017",
-                    "N/A"
-                ],
-                "Spain Grand Prix": [
-                    "1:24.981",
-                    "N/A",
                     "N/A"
                 ],
                 "Monaco Grand Prix": [
@@ -700,14 +690,24 @@
                     "1:42.330",
                     "N/A"
                 ],
-                "United States Grand Prix": [
-                    "1:37.520",
-                    "1:37.604",
-                    "N/A"
-                ],
                 "Brazil Grand Prix": [
                     "1:15.333",
                     "1:14.219",
+                    "N/A"
+                ],
+                "Bahrain Grand Prix": [
+                    "1:34.466",
+                    "1:34.017",
+                    "N/A"
+                ],
+                "Spain Grand Prix": [
+                    "1:24.981",
+                    "N/A",
+                    "N/A"
+                ],
+                "United States Grand Prix": [
+                    "1:37.520",
+                    "1:37.604",
                     "N/A"
                 ]
             }

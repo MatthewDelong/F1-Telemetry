@@ -51,12 +51,12 @@
         },
         "1975": {
             "Brazil Grand Prix": "Handling",
-            "Spain Grand Prix": "Accident",
             "Monaco Grand Prix": "Accident",
             "French Grand Prix": "Transmission",
             "Great Britain Grand Prix": "Accident",
             "German Grand Prix": "Tyre",
-            "Austria Grand Prix": "Accident"
+            "Austria Grand Prix": "Accident",
+            "Spain Grand Prix": "Accident"
         }
     },
     "fastLaps": {
@@ -71,7 +71,6 @@
             "Argentine Grand Prix": -1,
             "Brazil Grand Prix": -1,
             "South African Grand Prix": -1,
-            "Spain Grand Prix": -1,
             "Monaco Grand Prix": -1,
             "Belgium Grand Prix": -1,
             "Swedish Grand Prix": -1,
@@ -79,7 +78,8 @@
             "French Grand Prix": -1,
             "Great Britain Grand Prix": -1,
             "German Grand Prix": -1,
-            "Austria Grand Prix": -1
+            "Austria Grand Prix": -1,
+            "Spain Grand Prix": -1
         }
     },
     "finalStandings": {
@@ -130,9 +130,6 @@
                 "South African Grand Prix": {
                     "points": 0
                 },
-                "Spain Grand Prix": {
-                    "points": 0
-                },
                 "Monaco Grand Prix": {
                     "points": 0
                 },
@@ -156,6 +153,9 @@
                 },
                 "Austria Grand Prix": {
                     "points": 4
+                },
+                "Spain Grand Prix": {
+                    "points": 0
                 }
             }
         }
@@ -177,7 +177,6 @@
                 "Argentine Grand Prix": "7",
                 "Brazil Grand Prix": "20",
                 "South African Grand Prix": "8",
-                "Spain Grand Prix": "20",
                 "Monaco Grand Prix": "10",
                 "Belgium Grand Prix": "11",
                 "Swedish Grand Prix": "5",
@@ -185,7 +184,8 @@
                 "French Grand Prix": "24",
                 "Great Britain Grand Prix": "5",
                 "German Grand Prix": "23",
-                "Austria Grand Prix": "27"
+                "Austria Grand Prix": "27",
+                "Spain Grand Prix": "20"
             }
         }
     },
@@ -217,7 +217,6 @@
                 "Argentine Grand Prix": "9",
                 "Brazil Grand Prix": "-5",
                 "South African Grand Prix": "10",
-                "Spain Grand Prix": "-3",
                 "Monaco Grand Prix": "6",
                 "Belgium Grand Prix": "10",
                 "Swedish Grand Prix": "11",
@@ -225,7 +224,8 @@
                 "French Grand Prix": "-6",
                 "Great Britain Grand Prix": "10",
                 "German Grand Prix": "-4",
-                "Austria Grand Prix": "-7"
+                "Austria Grand Prix": "-7",
+                "Spain Grand Prix": "-3"
             }
         }
     },

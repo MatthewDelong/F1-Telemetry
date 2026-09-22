@@ -76,7 +76,6 @@
             "Argentine Grand Prix": -1,
             "San Marino Grand Prix": -1,
             "Monaco Grand Prix": -1,
-            "Spain Grand Prix": -1,
             "Canada Grand Prix": -1,
             "French Grand Prix": -1,
             "Great Britain Grand Prix": -1,
@@ -87,16 +86,17 @@
             "Austria Grand Prix": -1,
             "Luxembourg Grand Prix": -1,
             "Japan Grand Prix": -1,
-            "European Grand Prix": -1
+            "European Grand Prix": -1,
+            "Spain Grand Prix": -1
         },
         "1998": {
             "Australia Grand Prix": -1,
             "Brazil Grand Prix": -1,
             "Argentine Grand Prix": -1,
             "San Marino Grand Prix": -1,
-            "Spain Grand Prix": -1,
             "Monaco Grand Prix": -1,
-            "Canada Grand Prix": -1
+            "Canada Grand Prix": -1,
+            "Spain Grand Prix": -1
         }
     },
     "finalStandings": {
@@ -141,9 +141,6 @@
                 "Monaco Grand Prix": {
                     "points": 0
                 },
-                "Spain Grand Prix": {
-                    "points": 0
-                },
                 "Canada Grand Prix": {
                     "points": 0
                 },
@@ -176,6 +173,9 @@
                 },
                 "European Grand Prix": {
                     "points": 0
+                },
+                "Spain Grand Prix": {
+                    "points": 0
                 }
             }
         },
@@ -194,14 +194,14 @@
                 "San Marino Grand Prix": {
                     "points": 0
                 },
-                "Spain Grand Prix": {
-                    "points": 0
-                },
                 "Monaco Grand Prix": {
                     "points": 0
                 },
                 "Canada Grand Prix": {
                     "points": 1
+                },
+                "Spain Grand Prix": {
+                    "points": 0
                 }
             }
         }
@@ -219,7 +219,6 @@
                 "Argentine Grand Prix": "10",
                 "San Marino Grand Prix": "21",
                 "Monaco Grand Prix": "7",
-                "Spain Grand Prix": "13",
                 "Canada Grand Prix": "22",
                 "French Grand Prix": "18",
                 "Great Britain Grand Prix": "13",
@@ -230,7 +229,8 @@
                 "Austria Grand Prix": "16",
                 "Luxembourg Grand Prix": "15",
                 "Japan Grand Prix": "21",
-                "European Grand Prix": "9"
+                "European Grand Prix": "9",
+                "Spain Grand Prix": "13"
             }
         },
         "1998": {
@@ -239,9 +239,9 @@
                 "Brazil Grand Prix": "10",
                 "Argentine Grand Prix": "21",
                 "San Marino Grand Prix": "21",
-                "Spain Grand Prix": "12",
                 "Monaco Grand Prix": "17",
-                "Canada Grand Prix": "6"
+                "Canada Grand Prix": "6",
+                "Spain Grand Prix": "12"
             }
         }
     },
@@ -258,11 +258,11 @@
                 "Argentine Grand Prix": "15",
                 "San Marino Grand Prix": "16",
                 "Monaco Grand Prix": "19",
-                "Spain Grand Prix": "22",
                 "Canada Grand Prix": "21",
                 "French Grand Prix": "15",
                 "Great Britain Grand Prix": "15",
-                "German Grand Prix": "15"
+                "German Grand Prix": "15",
+                "Spain Grand Prix": "22"
             }
         },
         "1998": {
@@ -286,7 +286,6 @@
                 "Argentine Grand Prix": "5",
                 "San Marino Grand Prix": "-5",
                 "Monaco Grand Prix": "12",
-                "Spain Grand Prix": "9",
                 "Canada Grand Prix": "-1",
                 "French Grand Prix": "-3",
                 "Great Britain Grand Prix": "3",
@@ -297,7 +296,8 @@
                 "Austria Grand Prix": "-10",
                 "Luxembourg Grand Prix": "-3",
                 "Japan Grand Prix": "-7",
-                "European Grand Prix": "2"
+                "European Grand Prix": "2",
+                "Spain Grand Prix": "9"
             }
         },
         "1998": {
@@ -306,9 +306,9 @@
                 "Brazil Grand Prix": "6",
                 "Argentine Grand Prix": "1",
                 "San Marino Grand Prix": "-1",
-                "Spain Grand Prix": "6",
                 "Monaco Grand Prix": "0",
-                "Canada Grand Prix": "14"
+                "Canada Grand Prix": "14",
+                "Spain Grand Prix": "6"
             }
         }
     },
@@ -349,11 +349,6 @@
                     "N/A",
                     "N/A"
                 ],
-                "Spain Grand Prix": [
-                    "1:21.060",
-                    "N/A",
-                    "N/A"
-                ],
                 "Canada Grand Prix": [
                     "1:20.491",
                     "N/A",
@@ -371,6 +366,11 @@
                 ],
                 "German Grand Prix": [
                     "1:43.927",
+                    "N/A",
+                    "N/A"
+                ],
+                "Spain Grand Prix": [
+                    "1:21.060",
                     "N/A",
                     "N/A"
                 ]

@@ -102,13 +102,13 @@
         "2012": {},
         "2013": {},
         "2014": {
-            "Spain Grand Prix": "3",
             "Monaco Grand Prix": "3",
             "Canada Grand Prix": "1",
             "Great Britain Grand Prix": "3",
             "Hungary Grand Prix": "1",
             "Belgium Grand Prix": "1",
             "Singapore Grand Prix": "3",
+            "Spain Grand Prix": "3",
             "United States Grand Prix": "3"
         },
         "2015": {
@@ -122,11 +122,10 @@
             "Belgium Grand Prix": "2",
             "Singapore Grand Prix": "2",
             "Malaysian Grand Prix": "1",
-            "United States Grand Prix": "3",
-            "Mexican Grand Prix": "3"
+            "Mexico Grand Prix": "3",
+            "United States Grand Prix": "3"
         },
         "2017": {
-            "Spain Grand Prix": "3",
             "Monaco Grand Prix": "3",
             "Canada Grand Prix": "3",
             "Azerbaijan Grand Prix": "1",
@@ -134,7 +133,8 @@
             "Belgium Grand Prix": "3",
             "Singapore Grand Prix": "2",
             "Malaysian Grand Prix": "3",
-            "Japan Grand Prix": "3"
+            "Japan Grand Prix": "3",
+            "Spain Grand Prix": "3"
         },
         "2018": {
             "China Grand Prix": "1",
@@ -181,26 +181,26 @@
             "Australia Grand Prix": "Power Unit",
             "Russian Grand Prix": "Brakes",
             "Hungary Grand Prix": "Collision",
-            "United States Grand Prix": "Engine",
-            "Mexican Grand Prix": "Engine",
-            "Abu Dhabi Grand Prix": "Hydraulics"
+            "Abu Dhabi Grand Prix": "Hydraulics",
+            "Mexico Grand Prix": "Engine",
+            "United States Grand Prix": "Engine"
         },
         "2018": {
-            "Bahrain Grand Prix": "Electrical",
             "Azerbaijan Grand Prix": "Collision",
             "Austria Grand Prix": "Exhaust",
             "German Grand Prix": "Engine",
             "Belgium Grand Prix": "Retired",
             "Italy Grand Prix": "Engine",
-            "United States Grand Prix": "Battery",
-            "Mexican Grand Prix": "Engine"
+            "Mexico Grand Prix": "Engine",
+            "Bahrain Grand Prix": "Electrical",
+            "United States Grand Prix": "Battery"
         },
         "2019": {
             "Australia Grand Prix": "Damage",
-            "Bahrain Grand Prix": "Out of fuel",
             "Azerbaijan Grand Prix": "Collision",
             "German Grand Prix": "Exhaust",
-            "Russian Grand Prix": "Collision"
+            "Russian Grand Prix": "Collision",
+            "Bahrain Grand Prix": "Out of fuel"
         },
         "2020": {
             "Austria Grand Prix": "Overheating"
@@ -215,22 +215,22 @@
         },
         "2023": {
             "Hungary Grand Prix": "Lapped",
-            "United States Grand Prix": "Lapped",
-            "São Paulo Grand Prix": "Lapped"
+            "São Paulo Grand Prix": "Lapped",
+            "United States Grand Prix": "Lapped"
         },
         "2024": {
-            "Bahrain Grand Prix": "Lapped",
             "Saudi Arabia Grand Prix": "Lapped",
             "Australia Grand Prix": "Lapped",
             "Japan Grand Prix": "Retired",
             "China Grand Prix": "Retired",
             "Emilia Romagna Grand Prix": "Lapped",
             "Monaco Grand Prix": "Lapped",
-            "Spain Grand Prix": "Lapped",
             "Great Britain Grand Prix": "Lapped",
             "Hungary Grand Prix": "Lapped",
             "Netherlands Grand Prix": "Lapped",
-            "Singapore Grand Prix": "Lapped"
+            "Singapore Grand Prix": "Lapped",
+            "Bahrain Grand Prix": "Lapped",
+            "Spain Grand Prix": "Lapped"
         }
     },
     "fastLaps": {
@@ -251,8 +251,6 @@
             "Australia Grand Prix": "1:30.592",
             "Malaysian Grand Prix": "1:41.756",
             "China Grand Prix": "1:41.251",
-            "Bahrain Grand Prix": "1:37.903",
-            "Spain Grand Prix": "1:28.587",
             "Monaco Grand Prix": "1:19.752",
             "Canada Grand Prix": "1:16.609",
             "European Grand Prix": "1:43.674",
@@ -266,15 +264,15 @@
             "Korean Grand Prix": "1:43.148",
             "Indian Grand Prix": "1:29.440",
             "Abu Dhabi Grand Prix": "1:45.903",
-            "United States Grand Prix": "1:40.772",
-            "Brazil Grand Prix": "1:19.308"
+            "Brazil Grand Prix": "1:19.308",
+            "Bahrain Grand Prix": "1:37.903",
+            "Spain Grand Prix": "1:28.587",
+            "United States Grand Prix": "1:40.772"
         },
         "2013": {
             "Australia Grand Prix": "1:30.881",
             "Malaysian Grand Prix": "1:42.581",
             "China Grand Prix": "1:40.240",
-            "Bahrain Grand Prix": "1:39.579",
-            "Spain Grand Prix": "1:28.083",
             "Monaco Grand Prix": "1:19.426",
             "Canada Grand Prix": "1:18.257",
             "Great Britain Grand Prix": "1:35.927",
@@ -287,15 +285,15 @@
             "Japan Grand Prix": "1:35.020",
             "Indian Grand Prix": "1:28.831",
             "Abu Dhabi Grand Prix": "1:46.042",
-            "United States Grand Prix": "1:42.119",
-            "Brazil Grand Prix": "1:16.974"
+            "Brazil Grand Prix": "1:16.974",
+            "Bahrain Grand Prix": "1:39.579",
+            "Spain Grand Prix": "1:28.083",
+            "United States Grand Prix": "1:42.119"
         },
         "2014": {
             "Australia Grand Prix": -1,
             "Malaysian Grand Prix": "1:44.675",
-            "Bahrain Grand Prix": "1:39.269",
             "China Grand Prix": "1:41.473",
-            "Spain Grand Prix": "1:30.012",
             "Monaco Grand Prix": "1:19.252",
             "Canada Grand Prix": "1:18.640",
             "Austria Grand Prix": "1:13.060",
@@ -307,16 +305,16 @@
             "Singapore Grand Prix": "1:52.569",
             "Japan Grand Prix": "1:52.231",
             "Russian Grand Prix": "1:43.050",
-            "United States Grand Prix": "1:42.831",
             "Brazil Grand Prix": "1:15.387",
-            "Abu Dhabi Grand Prix": "1:44.496"
+            "Abu Dhabi Grand Prix": "1:44.496",
+            "Bahrain Grand Prix": "1:39.269",
+            "Spain Grand Prix": "1:30.012",
+            "United States Grand Prix": "1:42.831"
         },
         "2015": {
             "Australia Grand Prix": "1:32.797",
             "Malaysian Grand Prix": "1:45.312",
             "China Grand Prix": "1:43.245",
-            "Bahrain Grand Prix": "1:38.948",
-            "Spain Grand Prix": "1:31.124",
             "Monaco Grand Prix": "1:18.063",
             "Canada Grand Prix": "1:19.060",
             "Austria Grand Prix": "1:11.689",
@@ -327,17 +325,17 @@
             "Singapore Grand Prix": "1:50.041",
             "Japan Grand Prix": "1:38.898",
             "Russian Grand Prix": "1:41.888",
-            "United States Grand Prix": "1:41.980",
-            "Mexican Grand Prix": "1:21.625",
             "Brazil Grand Prix": "1:16.313",
-            "Abu Dhabi Grand Prix": "1:46.305"
+            "Abu Dhabi Grand Prix": "1:46.305",
+            "Mexico Grand Prix": "1:21.625",
+            "Bahrain Grand Prix": "1:38.948",
+            "Spain Grand Prix": "1:31.124",
+            "United States Grand Prix": "1:41.980"
         },
         "2016": {
             "Australia Grand Prix": "1:28.997",
-            "Bahrain Grand Prix": "1:36.064",
             "China Grand Prix": "1:41.015",
             "Russian Grand Prix": "1:41.179",
-            "Spain Grand Prix": "1:28.209",
             "Monaco Grand Prix": "1:18.294",
             "Canada Grand Prix": "1:16.506",
             "European Grand Prix": "1:47.736",
@@ -350,17 +348,17 @@
             "Singapore Grand Prix": "1:47.187",
             "Malaysian Grand Prix": "1:37.449",
             "Japan Grand Prix": "1:35.511",
-            "United States Grand Prix": "1:42.555",
-            "Mexican Grand Prix": "1:21.134",
             "Brazil Grand Prix": "1:25.532",
-            "Abu Dhabi Grand Prix": "1:44.889"
+            "Abu Dhabi Grand Prix": "1:44.889",
+            "Mexico Grand Prix": "1:21.134",
+            "Bahrain Grand Prix": "1:36.064",
+            "Spain Grand Prix": "1:28.209",
+            "United States Grand Prix": "1:42.555"
         },
         "2017": {
             "Australia Grand Prix": "1:29.447",
             "China Grand Prix": "1:36.791",
-            "Bahrain Grand Prix": "1:33.495",
             "Russian Grand Prix": "1:42.285",
-            "Spain Grand Prix": "1:23.686",
             "Monaco Grand Prix": "1:15.756",
             "Canada Grand Prix": "1:16.165",
             "Azerbaijan Grand Prix": "1:44.882",
@@ -372,17 +370,17 @@
             "Singapore Grand Prix": "1:45.301",
             "Malaysian Grand Prix": "1:34.770",
             "Japan Grand Prix": "1:33.694",
-            "United States Grand Prix": "1:40.102",
-            "Mexican Grand Prix": "1:22.789",
             "Brazil Grand Prix": "1:12.029",
-            "Abu Dhabi Grand Prix": "1:42.757"
+            "Abu Dhabi Grand Prix": "1:42.757",
+            "Mexico Grand Prix": "1:22.789",
+            "Bahrain Grand Prix": "1:33.495",
+            "Spain Grand Prix": "1:23.686",
+            "United States Grand Prix": "1:40.102"
         },
         "2018": {
             "Australia Grand Prix": "1:25.945",
-            "Bahrain Grand Prix": -1,
             "China Grand Prix": "1:35.785",
             "Azerbaijan Grand Prix": "1:45.419",
-            "Spain Grand Prix": "1:18.441",
             "Monaco Grand Prix": "1:15.562",
             "Canada Grand Prix": "1:14.159",
             "French Grand Prix": "1:35.382",
@@ -395,17 +393,17 @@
             "Singapore Grand Prix": "1:43.120",
             "Russian Grand Prix": "1:36.345",
             "Japan Grand Prix": "1:33.187",
-            "United States Grand Prix": "1:40.433",
-            "Mexican Grand Prix": "1:19.462",
             "Brazil Grand Prix": "1:11.343",
-            "Abu Dhabi Grand Prix": "1:41.249"
+            "Abu Dhabi Grand Prix": "1:41.249",
+            "Mexico Grand Prix": "1:19.462",
+            "Bahrain Grand Prix": -1,
+            "Spain Grand Prix": "1:18.441",
+            "United States Grand Prix": "1:40.433"
         },
         "2019": {
             "Australia Grand Prix": "1:29.848",
-            "Bahrain Grand Prix": "1:36.697",
             "China Grand Prix": "1:38.632",
             "Azerbaijan Grand Prix": "1:46.767",
-            "Spain Grand Prix": "1:20.615",
             "Monaco Grand Prix": "1:15.697",
             "Canada Grand Prix": "1:16.075",
             "French Grand Prix": "1:35.150",
@@ -418,10 +416,12 @@
             "Singapore Grand Prix": "1:45.915",
             "Russian Grand Prix": "1:41.284",
             "Japan Grand Prix": "1:33.481",
-            "Mexican Grand Prix": "1:20.146",
-            "United States Grand Prix": "1:40.564",
             "Brazil Grand Prix": "1:12.733",
-            "Abu Dhabi Grand Prix": "1:41.190"
+            "Abu Dhabi Grand Prix": "1:41.190",
+            "Mexico Grand Prix": "1:20.146",
+            "Bahrain Grand Prix": "1:36.697",
+            "Spain Grand Prix": "1:20.615",
+            "United States Grand Prix": "1:40.564"
         },
         "2020": {
             "Austria Grand Prix": "1:10.610",
@@ -429,7 +429,6 @@
             "Hungary Grand Prix": "1:19.532",
             "Great Britain Grand Prix": "1:29.482",
             "70th Anniversary Grand Prix": "1:31.168",
-            "Spain Grand Prix": "1:22.464",
             "Belgium Grand Prix": "1:47.483",
             "Italy Grand Prix": "1:23.898",
             "Tuscan Grand Prix": "1:20.426",
@@ -438,15 +437,13 @@
             "Portuguese Grand Prix": "1:20.906",
             "Emilia Romagna Grand Prix": "1:17.552",
             "Turkish Grand Prix": "1:40.677",
-            "Bahrain Grand Prix": "1:32.827",
+            "Abu Dhabi Grand Prix": "1:40.926",
             "Bahrain Grand Prix": "56.979",
-            "Abu Dhabi Grand Prix": "1:40.926"
+            "Spain Grand Prix": "1:22.464"
         },
         "2021": {
-            "Bahrain Grand Prix": "1:34.932",
             "Emilia Romagna Grand Prix": "1:19.341",
             "Portuguese Grand Prix": "1:21.987",
-            "Spain Grand Prix": "1:21.853",
             "Monaco Grand Prix": "1:14.578",
             "Azerbaijan Grand Prix": "1:45.713",
             "French Grand Prix": "1:38.324",
@@ -459,20 +456,20 @@
             "Italy Grand Prix": "1:24.812",
             "Russian Grand Prix": "1:39.124",
             "Turkish Grand Prix": "1:33.255",
-            "United States Grand Prix": "1:40.345",
             "Mexico Grand Prix": "1:21.069",
             "São Paulo Grand Prix": "1:14.443",
             "Qatar Grand Prix": "1:27.198",
             "Saudi Arabia Grand Prix": "1:32.716",
-            "Abu Dhabi Grand Prix": "1:28.723"
+            "Abu Dhabi Grand Prix": "1:28.723",
+            "Bahrain Grand Prix": "1:34.932",
+            "Spain Grand Prix": "1:21.853",
+            "United States Grand Prix": "1:40.345"
         },
         "2022": {
-            "Bahrain Grand Prix": "1:37.261",
             "Saudi Arabia Grand Prix": "1:34.487",
             "Australia Grand Prix": "1:22.451",
             "Emilia Romagna Grand Prix": "1:21.577",
             "Miami Grand Prix": "1:33.265",
-            "Spain Grand Prix": "1:27.285",
             "Monaco Grand Prix": "1:17.532",
             "Azerbaijan Grand Prix": "1:48.276",
             "Canada Grand Prix": "1:17.932",
@@ -485,22 +482,23 @@
             "Italy Grand Prix": "1:26.603",
             "Singapore Grand Prix": "1:51.006",
             "Japan Grand Prix": "1:47.843",
-            "United States Grand Prix": "1:42.420",
             "Mexico Grand Prix": "1:22.022",
             "São Paulo Grand Prix": -1,
-            "Abu Dhabi Grand Prix": "1:30.785"
+            "Abu Dhabi Grand Prix": "1:30.785",
+            "Bahrain Grand Prix": "1:37.261",
+            "Spain Grand Prix": "1:27.285",
+            "United States Grand Prix": "1:42.420"
         },
         "2023": {
             "Hungary Grand Prix": "1:23.934",
             "Belgium Grand Prix": "1:50.994",
-            "United States Grand Prix": "1:39.366",
             "Mexico Grand Prix": "1:22.679",
             "São Paulo Grand Prix": "1:13.866",
             "Las Vegas Grand Prix": "1:37.108",
-            "Abu Dhabi Grand Prix": "1:28.571"
+            "Abu Dhabi Grand Prix": "1:28.571",
+            "United States Grand Prix": "1:39.366"
         },
         "2024": {
-            "Bahrain Grand Prix": "1:35.163",
             "Saudi Arabia Grand Prix": "1:33.323",
             "Australia Grand Prix": "1:21.239",
             "Japan Grand Prix": -1,
@@ -509,7 +507,6 @@
             "Emilia Romagna Grand Prix": "1:21.569",
             "Monaco Grand Prix": "1:17.172",
             "Canada Grand Prix": "1:17.076",
-            "Spain Grand Prix": "1:19.450",
             "Austria Grand Prix": "1:10.426",
             "Great Britain Grand Prix": "1:30.735",
             "Hungary Grand Prix": "1:22.640",
@@ -517,7 +514,9 @@
             "Netherlands Grand Prix": "1:15.222",
             "Italy Grand Prix": "1:24.219",
             "Azerbaijan Grand Prix": "1:48.380",
-            "Singapore Grand Prix": "1:34.486"
+            "Singapore Grand Prix": "1:34.486",
+            "Bahrain Grand Prix": "1:35.163",
+            "Spain Grand Prix": "1:19.450"
         }
     },
     "finalStandings": {
@@ -643,12 +642,6 @@
                 "China Grand Prix": {
                     "points": 2
                 },
-                "Bahrain Grand Prix": {
-                    "points": 2
-                },
-                "Spain Grand Prix": {
-                    "points": 2
-                },
                 "Monaco Grand Prix": {
                     "points": 2
                 },
@@ -688,10 +681,16 @@
                 "Abu Dhabi Grand Prix": {
                     "points": 10
                 },
-                "United States Grand Prix": {
+                "Brazil Grand Prix": {
                     "points": 10
                 },
-                "Brazil Grand Prix": {
+                "Bahrain Grand Prix": {
+                    "points": 2
+                },
+                "Spain Grand Prix": {
+                    "points": 2
+                },
+                "United States Grand Prix": {
                     "points": 10
                 }
             }
@@ -707,12 +706,6 @@
                 },
                 "China Grand Prix": {
                     "points": 6
-                },
-                "Bahrain Grand Prix": {
-                    "points": 6
-                },
-                "Spain Grand Prix": {
-                    "points": 7
                 },
                 "Monaco Grand Prix": {
                     "points": 7
@@ -750,11 +743,17 @@
                 "Abu Dhabi Grand Prix": {
                     "points": 19
                 },
-                "United States Grand Prix": {
-                    "points": 19
-                },
                 "Brazil Grand Prix": {
                     "points": 20
+                },
+                "Bahrain Grand Prix": {
+                    "points": 6
+                },
+                "Spain Grand Prix": {
+                    "points": 7
+                },
+                "United States Grand Prix": {
+                    "points": 19
                 }
             }
         },
@@ -767,14 +766,8 @@
                 "Malaysian Grand Prix": {
                     "points": 0
                 },
-                "Bahrain Grand Prix": {
-                    "points": 12
-                },
                 "China Grand Prix": {
                     "points": 24
-                },
-                "Spain Grand Prix": {
-                    "points": 39
                 },
                 "Monaco Grand Prix": {
                     "points": 54
@@ -809,14 +802,20 @@
                 "Russian Grand Prix": {
                     "points": 199
                 },
-                "United States Grand Prix": {
-                    "points": 214
-                },
                 "Brazil Grand Prix": {
                     "points": 214
                 },
                 "Abu Dhabi Grand Prix": {
                     "points": 238
+                },
+                "Bahrain Grand Prix": {
+                    "points": 12
+                },
+                "Spain Grand Prix": {
+                    "points": 39
+                },
+                "United States Grand Prix": {
+                    "points": 214
                 }
             }
         },
@@ -831,12 +830,6 @@
                 },
                 "China Grand Prix": {
                     "points": 11
-                },
-                "Bahrain Grand Prix": {
-                    "points": 19
-                },
-                "Spain Grand Prix": {
-                    "points": 25
                 },
                 "Monaco Grand Prix": {
                     "points": 35
@@ -868,17 +861,23 @@
                 "Russian Grand Prix": {
                     "points": 73
                 },
-                "United States Grand Prix": {
-                    "points": 74
-                },
-                "Mexican Grand Prix": {
-                    "points": 84
-                },
                 "Brazil Grand Prix": {
                     "points": 84
                 },
                 "Abu Dhabi Grand Prix": {
                     "points": 92
+                },
+                "Mexico Grand Prix": {
+                    "points": 84
+                },
+                "Bahrain Grand Prix": {
+                    "points": 19
+                },
+                "Spain Grand Prix": {
+                    "points": 25
+                },
+                "United States Grand Prix": {
+                    "points": 74
                 }
             }
         },
@@ -888,17 +887,11 @@
                 "Australia Grand Prix": {
                     "points": 12
                 },
-                "Bahrain Grand Prix": {
-                    "points": 24
-                },
                 "China Grand Prix": {
                     "points": 36
                 },
                 "Russian Grand Prix": {
                     "points": 36
-                },
-                "Spain Grand Prix": {
-                    "points": 48
                 },
                 "Monaco Grand Prix": {
                     "points": 66
@@ -936,17 +929,23 @@
                 "Japan Grand Prix": {
                     "points": 212
                 },
-                "United States Grand Prix": {
-                    "points": 227
-                },
-                "Mexican Grand Prix": {
-                    "points": 242
-                },
                 "Brazil Grand Prix": {
                     "points": 246
                 },
                 "Abu Dhabi Grand Prix": {
                     "points": 256
+                },
+                "Mexico Grand Prix": {
+                    "points": 242
+                },
+                "Bahrain Grand Prix": {
+                    "points": 24
+                },
+                "Spain Grand Prix": {
+                    "points": 48
+                },
+                "United States Grand Prix": {
+                    "points": 227
                 }
             }
         },
@@ -959,14 +958,8 @@
                 "China Grand Prix": {
                     "points": 12
                 },
-                "Bahrain Grand Prix": {
-                    "points": 22
-                },
                 "Russian Grand Prix": {
                     "points": 22
-                },
-                "Spain Grand Prix": {
-                    "points": 37
                 },
                 "Monaco Grand Prix": {
                     "points": 52
@@ -1001,17 +994,23 @@
                 "Japan Grand Prix": {
                     "points": 192
                 },
-                "United States Grand Prix": {
-                    "points": 192
-                },
-                "Mexican Grand Prix": {
-                    "points": 192
-                },
                 "Brazil Grand Prix": {
                     "points": 200
                 },
                 "Abu Dhabi Grand Prix": {
                     "points": 200
+                },
+                "Mexico Grand Prix": {
+                    "points": 192
+                },
+                "Bahrain Grand Prix": {
+                    "points": 22
+                },
+                "Spain Grand Prix": {
+                    "points": 37
+                },
+                "United States Grand Prix": {
+                    "points": 192
                 }
             }
         },
@@ -1021,17 +1020,11 @@
                 "Australia Grand Prix": {
                     "points": 12
                 },
-                "Bahrain Grand Prix": {
-                    "points": 12
-                },
                 "China Grand Prix": {
                     "points": 37
                 },
                 "Azerbaijan Grand Prix": {
                     "points": 37
-                },
-                "Spain Grand Prix": {
-                    "points": 47
                 },
                 "Monaco Grand Prix": {
                     "points": 72
@@ -1069,17 +1062,23 @@
                 "Japan Grand Prix": {
                     "points": 146
                 },
-                "United States Grand Prix": {
-                    "points": 146
-                },
-                "Mexican Grand Prix": {
-                    "points": 146
-                },
                 "Brazil Grand Prix": {
                     "points": 158
                 },
                 "Abu Dhabi Grand Prix": {
                     "points": 170
+                },
+                "Mexico Grand Prix": {
+                    "points": 146
+                },
+                "Bahrain Grand Prix": {
+                    "points": 12
+                },
+                "Spain Grand Prix": {
+                    "points": 47
+                },
+                "United States Grand Prix": {
+                    "points": 146
                 }
             }
         },
@@ -1089,16 +1088,10 @@
                 "Australia Grand Prix": {
                     "points": 0
                 },
-                "Bahrain Grand Prix": {
-                    "points": 0
-                },
                 "China Grand Prix": {
                     "points": 6
                 },
                 "Azerbaijan Grand Prix": {
-                    "points": 6
-                },
-                "Spain Grand Prix": {
                     "points": 6
                 },
                 "Monaco Grand Prix": {
@@ -1137,17 +1130,23 @@
                 "Japan Grand Prix": {
                     "points": 34
                 },
-                "Mexican Grand Prix": {
-                    "points": 38
-                },
-                "United States Grand Prix": {
-                    "points": 46
-                },
                 "Brazil Grand Prix": {
                     "points": 54
                 },
                 "Abu Dhabi Grand Prix": {
                     "points": 54
+                },
+                "Mexico Grand Prix": {
+                    "points": 38
+                },
+                "Bahrain Grand Prix": {
+                    "points": 0
+                },
+                "Spain Grand Prix": {
+                    "points": 6
+                },
+                "United States Grand Prix": {
+                    "points": 46
                 }
             }
         },
@@ -1167,9 +1166,6 @@
                     "points": 20
                 },
                 "70th Anniversary Grand Prix": {
-                    "points": 20
-                },
-                "Spain Grand Prix": {
                     "points": 20
                 },
                 "Belgium Grand Prix": {
@@ -1196,31 +1192,25 @@
                 "Turkish Grand Prix": {
                     "points": 96
                 },
-                "Bahrain Grand Prix": {
-                    "points": 102
+                "Abu Dhabi Grand Prix": {
+                    "points": 119
                 },
                 "Bahrain Grand Prix": {
                     "points": 112
                 },
-                "Abu Dhabi Grand Prix": {
-                    "points": 119
+                "Spain Grand Prix": {
+                    "points": 20
                 }
             }
         },
         "2021": {
             "year": "2021",
             "pos": {
-                "Bahrain Grand Prix": {
-                    "points": 6
-                },
                 "Emilia Romagna Grand Prix": {
                     "points": 14
                 },
                 "Portuguese Grand Prix": {
                     "points": 16
-                },
-                "Spain Grand Prix": {
-                    "points": 24
                 },
                 "Monaco Grand Prix": {
                     "points": 24
@@ -1258,9 +1248,6 @@
                 "Turkish Grand Prix": {
                     "points": 94
                 },
-                "United States Grand Prix": {
-                    "points": 104
-                },
                 "Mexico Grand Prix": {
                     "points": 104
                 },
@@ -1275,15 +1262,21 @@
                 },
                 "Abu Dhabi Grand Prix": {
                     "points": 114
+                },
+                "Bahrain Grand Prix": {
+                    "points": 6
+                },
+                "Spain Grand Prix": {
+                    "points": 24
+                },
+                "United States Grand Prix": {
+                    "points": 104
                 }
             }
         },
         "2022": {
             "year": "2022",
             "pos": {
-                "Bahrain Grand Prix": {
-                    "points": 0
-                },
                 "Saudi Arabia Grand Prix": {
                     "points": 0
                 },
@@ -1294,9 +1287,6 @@
                     "points": 8
                 },
                 "Miami Grand Prix": {
-                    "points": 8
-                },
-                "Spain Grand Prix": {
                     "points": 8
                 },
                 "Monaco Grand Prix": {
@@ -1335,9 +1325,6 @@
                 "Japan Grand Prix": {
                     "points": 26
                 },
-                "United States Grand Prix": {
-                    "points": 26
-                },
                 "Mexico Grand Prix": {
                     "points": 32
                 },
@@ -1346,6 +1333,15 @@
                 },
                 "Abu Dhabi Grand Prix": {
                     "points": 34
+                },
+                "Bahrain Grand Prix": {
+                    "points": 0
+                },
+                "Spain Grand Prix": {
+                    "points": 8
+                },
+                "United States Grand Prix": {
+                    "points": 26
                 }
             }
         },
@@ -1356,9 +1352,6 @@
                     "points": 0
                 },
                 "Belgium Grand Prix": {
-                    "points": 0
-                },
-                "United States Grand Prix": {
                     "points": 0
                 },
                 "Mexico Grand Prix": {
@@ -1372,15 +1365,15 @@
                 },
                 "Abu Dhabi Grand Prix": {
                     "points": 6
+                },
+                "United States Grand Prix": {
+                    "points": 0
                 }
             }
         },
         "2024": {
             "year": "2024",
             "pos": {
-                "Bahrain Grand Prix": {
-                    "points": 0
-                },
                 "Saudi Arabia Grand Prix": {
                     "points": 0
                 },
@@ -1403,9 +1396,6 @@
                     "points": 0
                 },
                 "Canada Grand Prix": {
-                    "points": 4
-                },
-                "Spain Grand Prix": {
                     "points": 4
                 },
                 "Austria Grand Prix": {
@@ -1431,6 +1421,12 @@
                 },
                 "Singapore Grand Prix": {
                     "points": 7
+                },
+                "Bahrain Grand Prix": {
+                    "points": 0
+                },
+                "Spain Grand Prix": {
+                    "points": 4
                 }
             }
         }
@@ -1456,8 +1452,6 @@
                 "Australia Grand Prix": "9",
                 "Malaysian Grand Prix": "12",
                 "China Grand Prix": "17",
-                "Bahrain Grand Prix": "15",
-                "Spain Grand Prix": "13",
                 "Monaco Grand Prix": "17",
                 "Canada Grand Prix": "14",
                 "European Grand Prix": "11",
@@ -1471,8 +1465,10 @@
                 "Korean Grand Prix": "9",
                 "Indian Grand Prix": "13",
                 "Abu Dhabi Grand Prix": "10",
-                "United States Grand Prix": "12",
-                "Brazil Grand Prix": "13"
+                "Brazil Grand Prix": "13",
+                "Bahrain Grand Prix": "15",
+                "Spain Grand Prix": "13",
+                "United States Grand Prix": "12"
             }
         },
         "2013": {
@@ -1480,8 +1476,6 @@
                 "Australia Grand Prix": "19",
                 "Malaysian Grand Prix": "18",
                 "China Grand Prix": "7",
-                "Bahrain Grand Prix": "16",
-                "Spain Grand Prix": "10",
                 "Monaco Grand Prix": "18",
                 "Canada Grand Prix": "15",
                 "Great Britain Grand Prix": "8",
@@ -1494,17 +1488,17 @@
                 "Japan Grand Prix": "13",
                 "Indian Grand Prix": "10",
                 "Abu Dhabi Grand Prix": "16",
-                "United States Grand Prix": "11",
-                "Brazil Grand Prix": "10"
+                "Brazil Grand Prix": "10",
+                "Bahrain Grand Prix": "16",
+                "Spain Grand Prix": "10",
+                "United States Grand Prix": "11"
             }
         },
         "2014": {
             "positions": {
                 "Australia Grand Prix": "22",
                 "Malaysian Grand Prix": "16",
-                "Bahrain Grand Prix": "4",
                 "China Grand Prix": "4",
-                "Spain Grand Prix": "3",
                 "Monaco Grand Prix": "3",
                 "Canada Grand Prix": "1",
                 "Austria Grand Prix": "8",
@@ -1516,9 +1510,11 @@
                 "Singapore Grand Prix": "3",
                 "Japan Grand Prix": "4",
                 "Russian Grand Prix": "7",
-                "United States Grand Prix": "3",
                 "Brazil Grand Prix": "18",
-                "Abu Dhabi Grand Prix": "4"
+                "Abu Dhabi Grand Prix": "4",
+                "Bahrain Grand Prix": "4",
+                "Spain Grand Prix": "3",
+                "United States Grand Prix": "3"
             }
         },
         "2015": {
@@ -1526,8 +1522,6 @@
                 "Australia Grand Prix": "6",
                 "Malaysian Grand Prix": "10",
                 "China Grand Prix": "9",
-                "Bahrain Grand Prix": "6",
-                "Spain Grand Prix": "7",
                 "Monaco Grand Prix": "5",
                 "Canada Grand Prix": "13",
                 "Austria Grand Prix": "10",
@@ -1538,19 +1532,19 @@
                 "Singapore Grand Prix": "2",
                 "Japan Grand Prix": "15",
                 "Russian Grand Prix": "15",
-                "United States Grand Prix": "10",
-                "Mexican Grand Prix": "5",
                 "Brazil Grand Prix": "11",
-                "Abu Dhabi Grand Prix": "6"
+                "Abu Dhabi Grand Prix": "6",
+                "Mexico Grand Prix": "5",
+                "Bahrain Grand Prix": "6",
+                "Spain Grand Prix": "7",
+                "United States Grand Prix": "10"
             }
         },
         "2016": {
             "positions": {
                 "Australia Grand Prix": "4",
-                "Bahrain Grand Prix": "4",
                 "China Grand Prix": "4",
                 "Russian Grand Prix": "11",
-                "Spain Grand Prix": "4",
                 "Monaco Grand Prix": "2",
                 "Canada Grand Prix": "7",
                 "European Grand Prix": "7",
@@ -1563,19 +1557,19 @@
                 "Singapore Grand Prix": "2",
                 "Malaysian Grand Prix": "1",
                 "Japan Grand Prix": "6",
-                "United States Grand Prix": "3",
-                "Mexican Grand Prix": "3",
                 "Brazil Grand Prix": "8",
-                "Abu Dhabi Grand Prix": "5"
+                "Abu Dhabi Grand Prix": "5",
+                "Mexico Grand Prix": "3",
+                "Bahrain Grand Prix": "4",
+                "Spain Grand Prix": "4",
+                "United States Grand Prix": "3"
             }
         },
         "2017": {
             "positions": {
                 "Australia Grand Prix": "17",
                 "China Grand Prix": "4",
-                "Bahrain Grand Prix": "5",
                 "Russian Grand Prix": "17",
-                "Spain Grand Prix": "3",
                 "Monaco Grand Prix": "3",
                 "Canada Grand Prix": "3",
                 "Azerbaijan Grand Prix": "1",
@@ -1587,19 +1581,19 @@
                 "Singapore Grand Prix": "2",
                 "Malaysian Grand Prix": "3",
                 "Japan Grand Prix": "3",
-                "United States Grand Prix": "18",
-                "Mexican Grand Prix": "20",
                 "Brazil Grand Prix": "6",
-                "Abu Dhabi Grand Prix": "20"
+                "Abu Dhabi Grand Prix": "20",
+                "Mexico Grand Prix": "20",
+                "Bahrain Grand Prix": "5",
+                "Spain Grand Prix": "3",
+                "United States Grand Prix": "18"
             }
         },
         "2018": {
             "positions": {
                 "Australia Grand Prix": "4",
-                "Bahrain Grand Prix": "20",
                 "China Grand Prix": "1",
                 "Azerbaijan Grand Prix": "17",
-                "Spain Grand Prix": "5",
                 "Monaco Grand Prix": "1",
                 "Canada Grand Prix": "4",
                 "French Grand Prix": "4",
@@ -1612,19 +1606,19 @@
                 "Singapore Grand Prix": "6",
                 "Russian Grand Prix": "6",
                 "Japan Grand Prix": "4",
-                "United States Grand Prix": "16",
-                "Mexican Grand Prix": "17",
                 "Brazil Grand Prix": "4",
-                "Abu Dhabi Grand Prix": "4"
+                "Abu Dhabi Grand Prix": "4",
+                "Mexico Grand Prix": "17",
+                "Bahrain Grand Prix": "20",
+                "Spain Grand Prix": "5",
+                "United States Grand Prix": "16"
             }
         },
         "2019": {
             "positions": {
                 "Australia Grand Prix": "19",
-                "Bahrain Grand Prix": "18",
                 "China Grand Prix": "7",
                 "Azerbaijan Grand Prix": "20",
-                "Spain Grand Prix": "12",
                 "Monaco Grand Prix": "9",
                 "Canada Grand Prix": "6",
                 "French Grand Prix": "11",
@@ -1637,10 +1631,12 @@
                 "Singapore Grand Prix": "14",
                 "Russian Grand Prix": "19",
                 "Japan Grand Prix": "19",
-                "Mexican Grand Prix": "8",
-                "United States Grand Prix": "6",
                 "Brazil Grand Prix": "6",
-                "Abu Dhabi Grand Prix": "11"
+                "Abu Dhabi Grand Prix": "11",
+                "Mexico Grand Prix": "8",
+                "Bahrain Grand Prix": "18",
+                "Spain Grand Prix": "12",
+                "United States Grand Prix": "6"
             }
         },
         "2020": {
@@ -1650,7 +1646,6 @@
                 "Hungary Grand Prix": "8",
                 "Great Britain Grand Prix": "4",
                 "70th Anniversary Grand Prix": "14",
-                "Spain Grand Prix": "11",
                 "Belgium Grand Prix": "4",
                 "Italy Grand Prix": "6",
                 "Tuscan Grand Prix": "4",
@@ -1659,17 +1654,15 @@
                 "Portuguese Grand Prix": "9",
                 "Emilia Romagna Grand Prix": "3",
                 "Turkish Grand Prix": "10",
-                "Bahrain Grand Prix": "7",
+                "Abu Dhabi Grand Prix": "7",
                 "Bahrain Grand Prix": "5",
-                "Abu Dhabi Grand Prix": "7"
+                "Spain Grand Prix": "11"
             }
         },
         "2021": {
             "positions": {
-                "Bahrain Grand Prix": "7",
                 "Emilia Romagna Grand Prix": "6",
                 "Portuguese Grand Prix": "9",
-                "Spain Grand Prix": "6",
                 "Monaco Grand Prix": "12",
                 "Azerbaijan Grand Prix": "9",
                 "French Grand Prix": "6",
@@ -1682,22 +1675,22 @@
                 "Italy Grand Prix": "1",
                 "Russian Grand Prix": "4",
                 "Turkish Grand Prix": "13",
-                "United States Grand Prix": "5",
                 "Mexico Grand Prix": "12",
                 "São Paulo Grand Prix": "19",
                 "Qatar Grand Prix": "12",
                 "Saudi Arabia Grand Prix": "5",
-                "Abu Dhabi Grand Prix": "12"
+                "Abu Dhabi Grand Prix": "12",
+                "Bahrain Grand Prix": "7",
+                "Spain Grand Prix": "6",
+                "United States Grand Prix": "5"
             }
         },
         "2022": {
             "positions": {
-                "Bahrain Grand Prix": "14",
                 "Saudi Arabia Grand Prix": "17",
                 "Australia Grand Prix": "6",
                 "Emilia Romagna Grand Prix": "18",
                 "Miami Grand Prix": "13",
-                "Spain Grand Prix": "12",
                 "Monaco Grand Prix": "13",
                 "Azerbaijan Grand Prix": "8",
                 "Canada Grand Prix": "11",
@@ -1710,26 +1703,27 @@
                 "Italy Grand Prix": "17",
                 "Singapore Grand Prix": "5",
                 "Japan Grand Prix": "11",
-                "United States Grand Prix": "16",
                 "Mexico Grand Prix": "7",
                 "São Paulo Grand Prix": "20",
-                "Abu Dhabi Grand Prix": "9"
+                "Abu Dhabi Grand Prix": "9",
+                "Bahrain Grand Prix": "14",
+                "Spain Grand Prix": "12",
+                "United States Grand Prix": "16"
             }
         },
         "2023": {
             "positions": {
                 "Hungary Grand Prix": "13",
                 "Belgium Grand Prix": "16",
-                "United States Grand Prix": "15",
                 "Mexico Grand Prix": "7",
                 "São Paulo Grand Prix": "13",
                 "Las Vegas Grand Prix": "14",
-                "Abu Dhabi Grand Prix": "11"
+                "Abu Dhabi Grand Prix": "11",
+                "United States Grand Prix": "15"
             }
         },
         "2024": {
             "positions": {
-                "Bahrain Grand Prix": "13",
                 "Saudi Arabia Grand Prix": "16",
                 "Australia Grand Prix": "12",
                 "Japan Grand Prix": "19",
@@ -1738,7 +1732,6 @@
                 "Emilia Romagna Grand Prix": "13",
                 "Monaco Grand Prix": "12",
                 "Canada Grand Prix": "8",
-                "Spain Grand Prix": "15",
                 "Austria Grand Prix": "9",
                 "Great Britain Grand Prix": "13",
                 "Hungary Grand Prix": "12",
@@ -1746,7 +1739,9 @@
                 "Netherlands Grand Prix": "12",
                 "Italy Grand Prix": "13",
                 "Azerbaijan Grand Prix": "13",
-                "Singapore Grand Prix": "18"
+                "Singapore Grand Prix": "18",
+                "Bahrain Grand Prix": "13",
+                "Spain Grand Prix": "15"
             }
         }
     },
@@ -1771,8 +1766,6 @@
                 "Australia Grand Prix": "10",
                 "Malaysian Grand Prix": "15",
                 "China Grand Prix": "17",
-                "Bahrain Grand Prix": "6",
-                "Spain Grand Prix": "16",
                 "Monaco Grand Prix": "16",
                 "Canada Grand Prix": "14",
                 "European Grand Prix": "17",
@@ -1786,8 +1779,10 @@
                 "Korean Grand Prix": "16",
                 "Indian Grand Prix": "15",
                 "Abu Dhabi Grand Prix": "17",
-                "United States Grand Prix": "18",
-                "Brazil Grand Prix": "16"
+                "Brazil Grand Prix": "16",
+                "Bahrain Grand Prix": "6",
+                "Spain Grand Prix": "16",
+                "United States Grand Prix": "18"
             }
         },
         "2013": {
@@ -1795,8 +1790,6 @@
                 "Australia Grand Prix": "14",
                 "Malaysian Grand Prix": "13",
                 "China Grand Prix": "7",
-                "Bahrain Grand Prix": "13",
-                "Spain Grand Prix": "11",
                 "Monaco Grand Prix": "12",
                 "Canada Grand Prix": "10",
                 "Great Britain Grand Prix": "6",
@@ -1809,17 +1802,17 @@
                 "Japan Grand Prix": "16",
                 "Indian Grand Prix": "11",
                 "Abu Dhabi Grand Prix": "10",
-                "United States Grand Prix": "11",
-                "Brazil Grand Prix": "7"
+                "Brazil Grand Prix": "7",
+                "Bahrain Grand Prix": "13",
+                "Spain Grand Prix": "11",
+                "United States Grand Prix": "11"
             }
         },
         "2014": {
             "positions": {
                 "Australia Grand Prix": "2",
                 "Malaysian Grand Prix": "5",
-                "Bahrain Grand Prix": "3",
                 "China Grand Prix": "2",
-                "Spain Grand Prix": "3",
                 "Monaco Grand Prix": "3",
                 "Canada Grand Prix": "6",
                 "Austria Grand Prix": "5",
@@ -1831,8 +1824,10 @@
                 "Singapore Grand Prix": "3",
                 "Japan Grand Prix": "6",
                 "Russian Grand Prix": "7",
-                "United States Grand Prix": "5",
-                "Brazil Grand Prix": "9"
+                "Brazil Grand Prix": "9",
+                "Bahrain Grand Prix": "3",
+                "Spain Grand Prix": "3",
+                "United States Grand Prix": "5"
             }
         },
         "2015": {
@@ -1840,8 +1835,6 @@
                 "Australia Grand Prix": "7",
                 "Malaysian Grand Prix": "4",
                 "China Grand Prix": "7",
-                "Bahrain Grand Prix": "7",
-                "Spain Grand Prix": "10",
                 "Monaco Grand Prix": "4",
                 "Canada Grand Prix": "9",
                 "Austria Grand Prix": "14",
@@ -1852,19 +1845,19 @@
                 "Singapore Grand Prix": "2",
                 "Japan Grand Prix": "7",
                 "Russian Grand Prix": "10",
-                "United States Grand Prix": "3",
-                "Mexican Grand Prix": "5",
                 "Brazil Grand Prix": "9",
-                "Abu Dhabi Grand Prix": "5"
+                "Abu Dhabi Grand Prix": "5",
+                "Mexico Grand Prix": "5",
+                "Bahrain Grand Prix": "7",
+                "Spain Grand Prix": "10",
+                "United States Grand Prix": "3"
             }
         },
         "2016": {
             "positions": {
                 "Australia Grand Prix": "8",
-                "Bahrain Grand Prix": "5",
                 "China Grand Prix": "2",
                 "Russian Grand Prix": "6",
-                "Spain Grand Prix": "3",
                 "Monaco Grand Prix": "1",
                 "Canada Grand Prix": "4",
                 "European Grand Prix": "3",
@@ -1877,19 +1870,19 @@
                 "Singapore Grand Prix": "2",
                 "Malaysian Grand Prix": "4",
                 "Japan Grand Prix": "6",
-                "United States Grand Prix": "3",
-                "Mexican Grand Prix": "4",
                 "Brazil Grand Prix": "6",
-                "Abu Dhabi Grand Prix": "3"
+                "Abu Dhabi Grand Prix": "3",
+                "Mexico Grand Prix": "4",
+                "Bahrain Grand Prix": "5",
+                "Spain Grand Prix": "3",
+                "United States Grand Prix": "3"
             }
         },
         "2017": {
             "positions": {
                 "Australia Grand Prix": "10",
                 "China Grand Prix": "5",
-                "Bahrain Grand Prix": "4",
                 "Russian Grand Prix": "5",
-                "Spain Grand Prix": "6",
                 "Monaco Grand Prix": "5",
                 "Canada Grand Prix": "6",
                 "Azerbaijan Grand Prix": "10",
@@ -1901,19 +1894,19 @@
                 "Singapore Grand Prix": "3",
                 "Malaysian Grand Prix": "4",
                 "Japan Grand Prix": "4",
-                "United States Grand Prix": "4",
-                "Mexican Grand Prix": "7",
                 "Brazil Grand Prix": "5",
-                "Abu Dhabi Grand Prix": "4"
+                "Abu Dhabi Grand Prix": "4",
+                "Mexico Grand Prix": "7",
+                "Bahrain Grand Prix": "4",
+                "Spain Grand Prix": "6",
+                "United States Grand Prix": "4"
             }
         },
         "2018": {
             "positions": {
                 "Australia Grand Prix": "5",
-                "Bahrain Grand Prix": "5",
                 "China Grand Prix": "6",
                 "Azerbaijan Grand Prix": "4",
-                "Spain Grand Prix": "6",
                 "Monaco Grand Prix": "1",
                 "Canada Grand Prix": "6",
                 "French Grand Prix": "5",
@@ -1926,19 +1919,19 @@
                 "Singapore Grand Prix": "6",
                 "Russian Grand Prix": "12",
                 "Japan Grand Prix": "15",
-                "United States Grand Prix": "5",
-                "Mexican Grand Prix": "1",
                 "Brazil Grand Prix": "6",
-                "Abu Dhabi Grand Prix": "5"
+                "Abu Dhabi Grand Prix": "5",
+                "Mexico Grand Prix": "1",
+                "Bahrain Grand Prix": "5",
+                "Spain Grand Prix": "6",
+                "United States Grand Prix": "5"
             }
         },
         "2019": {
             "positions": {
                 "Australia Grand Prix": "12",
-                "Bahrain Grand Prix": "11",
                 "China Grand Prix": "7",
                 "Azerbaijan Grand Prix": "11",
-                "Spain Grand Prix": "10",
                 "Monaco Grand Prix": "7",
                 "Canada Grand Prix": "4",
                 "French Grand Prix": "8",
@@ -1951,10 +1944,12 @@
                 "Singapore Grand Prix": "20",
                 "Russian Grand Prix": "10",
                 "Japan Grand Prix": "16",
-                "Mexican Grand Prix": "13",
-                "United States Grand Prix": "9",
                 "Brazil Grand Prix": "12",
-                "Abu Dhabi Grand Prix": "8"
+                "Abu Dhabi Grand Prix": "8",
+                "Mexico Grand Prix": "13",
+                "Bahrain Grand Prix": "11",
+                "Spain Grand Prix": "10",
+                "United States Grand Prix": "9"
             }
         },
         "2020": {
@@ -1964,7 +1959,6 @@
                 "Hungary Grand Prix": "11",
                 "Great Britain Grand Prix": "8",
                 "70th Anniversary Grand Prix": "5",
-                "Spain Grand Prix": "13",
                 "Belgium Grand Prix": "4",
                 "Italy Grand Prix": "7",
                 "Tuscan Grand Prix": "8",
@@ -1973,17 +1967,15 @@
                 "Portuguese Grand Prix": "10",
                 "Emilia Romagna Grand Prix": "5",
                 "Turkish Grand Prix": "5",
-                "Bahrain Grand Prix": "6",
+                "Abu Dhabi Grand Prix": "12",
                 "Bahrain Grand Prix": "7",
-                "Abu Dhabi Grand Prix": "12"
+                "Spain Grand Prix": "13"
             }
         },
         "2021": {
             "positions": {
-                "Bahrain Grand Prix": "6",
                 "Emilia Romagna Grand Prix": "6",
                 "Portuguese Grand Prix": "16",
-                "Spain Grand Prix": "7",
                 "Monaco Grand Prix": "12",
                 "Azerbaijan Grand Prix": "13",
                 "French Grand Prix": "10",
@@ -1996,22 +1988,22 @@
                 "Italy Grand Prix": "5",
                 "Russian Grand Prix": "5",
                 "Turkish Grand Prix": "16",
-                "United States Grand Prix": "7",
                 "Mexico Grand Prix": "7",
                 "São Paulo Grand Prix": "9",
                 "Qatar Grand Prix": "14",
                 "Saudi Arabia Grand Prix": "11",
-                "Abu Dhabi Grand Prix": "10"
+                "Abu Dhabi Grand Prix": "10",
+                "Bahrain Grand Prix": "6",
+                "Spain Grand Prix": "7",
+                "United States Grand Prix": "7"
             }
         },
         "2022": {
             "positions": {
-                "Bahrain Grand Prix": "18",
                 "Saudi Arabia Grand Prix": "12",
                 "Australia Grand Prix": "7",
                 "Emilia Romagna Grand Prix": "6",
                 "Miami Grand Prix": "14",
-                "Spain Grand Prix": "9",
                 "Monaco Grand Prix": "14",
                 "Azerbaijan Grand Prix": "12",
                 "Canada Grand Prix": "9",
@@ -2024,26 +2016,27 @@
                 "Italy Grand Prix": "8",
                 "Singapore Grand Prix": "17",
                 "Japan Grand Prix": "11",
-                "United States Grand Prix": "17",
                 "Mexico Grand Prix": "11",
                 "São Paulo Grand Prix": "14",
-                "Abu Dhabi Grand Prix": "10"
+                "Abu Dhabi Grand Prix": "10",
+                "Bahrain Grand Prix": "18",
+                "Spain Grand Prix": "9",
+                "United States Grand Prix": "17"
             }
         },
         "2023": {
             "positions": {
                 "Hungary Grand Prix": "13",
                 "Belgium Grand Prix": "19",
-                "United States Grand Prix": "15",
                 "Mexico Grand Prix": "4",
                 "São Paulo Grand Prix": "17",
                 "Las Vegas Grand Prix": "15",
-                "Abu Dhabi Grand Prix": "15"
+                "Abu Dhabi Grand Prix": "15",
+                "United States Grand Prix": "15"
             }
         },
         "2024": {
             "positions": {
-                "Bahrain Grand Prix": "14",
                 "Saudi Arabia Grand Prix": "14",
                 "Australia Grand Prix": "18",
                 "Japan Grand Prix": "11",
@@ -2052,7 +2045,6 @@
                 "Emilia Romagna Grand Prix": "9",
                 "Monaco Grand Prix": "12",
                 "Canada Grand Prix": "5",
-                "Spain Grand Prix": "18",
                 "Austria Grand Prix": "11",
                 "Great Britain Grand Prix": "15",
                 "Hungary Grand Prix": "9",
@@ -2060,7 +2052,9 @@
                 "Netherlands Grand Prix": "15",
                 "Italy Grand Prix": "12",
                 "Azerbaijan Grand Prix": "15",
-                "Singapore Grand Prix": "16"
+                "Singapore Grand Prix": "16",
+                "Bahrain Grand Prix": "14",
+                "Spain Grand Prix": "18"
             }
         }
     },
@@ -2085,8 +2079,6 @@
                 "Australia Grand Prix": "1",
                 "Malaysian Grand Prix": "3",
                 "China Grand Prix": "0",
-                "Bahrain Grand Prix": "-9",
-                "Spain Grand Prix": "2",
                 "Monaco Grand Prix": "-2",
                 "Canada Grand Prix": "0",
                 "European Grand Prix": "6",
@@ -2100,8 +2092,10 @@
                 "Korean Grand Prix": "12",
                 "Indian Grand Prix": "2",
                 "Abu Dhabi Grand Prix": "6",
-                "United States Grand Prix": "6",
-                "Brazil Grand Prix": "2"
+                "Brazil Grand Prix": "2",
+                "Bahrain Grand Prix": "-9",
+                "Spain Grand Prix": "2",
+                "United States Grand Prix": "6"
             }
         },
         "2013": {
@@ -2109,8 +2103,6 @@
                 "Australia Grand Prix": "-5",
                 "Malaysian Grand Prix": "-5",
                 "China Grand Prix": "0",
-                "Bahrain Grand Prix": "-3",
-                "Spain Grand Prix": "1",
                 "Monaco Grand Prix": "-6",
                 "Canada Grand Prix": "-4",
                 "Great Britain Grand Prix": "-3",
@@ -2123,17 +2115,17 @@
                 "Japan Grand Prix": "3",
                 "Indian Grand Prix": "1",
                 "Abu Dhabi Grand Prix": "-7",
-                "United States Grand Prix": "-1",
-                "Brazil Grand Prix": "-3"
+                "Brazil Grand Prix": "-3",
+                "Bahrain Grand Prix": "-3",
+                "Spain Grand Prix": "1",
+                "United States Grand Prix": "-1"
             }
         },
         "2014": {
             "positions": {
                 "Australia Grand Prix": "-20",
                 "Malaysian Grand Prix": "-11",
-                "Bahrain Grand Prix": "9",
                 "China Grand Prix": "-2",
-                "Spain Grand Prix": "0",
                 "Monaco Grand Prix": "0",
                 "Canada Grand Prix": "5",
                 "Austria Grand Prix": "-3",
@@ -2145,9 +2137,11 @@
                 "Singapore Grand Prix": "0",
                 "Japan Grand Prix": "2",
                 "Russian Grand Prix": "-1",
-                "United States Grand Prix": "2",
                 "Brazil Grand Prix": "-9",
-                "Abu Dhabi Grand Prix": "16"
+                "Abu Dhabi Grand Prix": "16",
+                "Bahrain Grand Prix": "9",
+                "Spain Grand Prix": "0",
+                "United States Grand Prix": "2"
             }
         },
         "2015": {
@@ -2155,8 +2149,6 @@
                 "Australia Grand Prix": "0",
                 "Malaysian Grand Prix": "-6",
                 "China Grand Prix": "-2",
-                "Bahrain Grand Prix": "1",
-                "Spain Grand Prix": "3",
                 "Monaco Grand Prix": "-1",
                 "Canada Grand Prix": "-4",
                 "Austria Grand Prix": "8",
@@ -2167,19 +2159,19 @@
                 "Singapore Grand Prix": "0",
                 "Japan Grand Prix": "-8",
                 "Russian Grand Prix": "-5",
-                "United States Grand Prix": "-7",
-                "Mexican Grand Prix": "0",
                 "Brazil Grand Prix": "8",
-                "Abu Dhabi Grand Prix": "-1"
+                "Abu Dhabi Grand Prix": "-1",
+                "Mexico Grand Prix": "0",
+                "Bahrain Grand Prix": "1",
+                "Spain Grand Prix": "3",
+                "United States Grand Prix": "-7"
             }
         },
         "2016": {
             "positions": {
                 "Australia Grand Prix": "4",
-                "Bahrain Grand Prix": "1",
                 "China Grand Prix": "-2",
                 "Russian Grand Prix": "-6",
-                "Spain Grand Prix": "-1",
                 "Monaco Grand Prix": "-1",
                 "Canada Grand Prix": "-3",
                 "European Grand Prix": "-5",
@@ -2192,18 +2184,18 @@
                 "Singapore Grand Prix": "0",
                 "Malaysian Grand Prix": "3",
                 "Japan Grand Prix": "-2",
-                "United States Grand Prix": "0",
-                "Mexican Grand Prix": "1",
                 "Brazil Grand Prix": "-2",
-                "Abu Dhabi Grand Prix": "-2"
+                "Abu Dhabi Grand Prix": "-2",
+                "Mexico Grand Prix": "1",
+                "Bahrain Grand Prix": "1",
+                "Spain Grand Prix": "-1",
+                "United States Grand Prix": "0"
             }
         },
         "2017": {
             "positions": {
                 "China Grand Prix": "1",
-                "Bahrain Grand Prix": "-1",
                 "Russian Grand Prix": "-12",
-                "Spain Grand Prix": "3",
                 "Monaco Grand Prix": "2",
                 "Canada Grand Prix": "3",
                 "Azerbaijan Grand Prix": "9",
@@ -2215,19 +2207,19 @@
                 "Singapore Grand Prix": "1",
                 "Malaysian Grand Prix": "1",
                 "Japan Grand Prix": "0",
-                "United States Grand Prix": "-14",
-                "Mexican Grand Prix": "-4",
                 "Brazil Grand Prix": "8",
-                "Abu Dhabi Grand Prix": "-16"
+                "Abu Dhabi Grand Prix": "-16",
+                "Mexico Grand Prix": "-4",
+                "Bahrain Grand Prix": "-1",
+                "Spain Grand Prix": "3",
+                "United States Grand Prix": "-14"
             }
         },
         "2018": {
             "positions": {
                 "Australia Grand Prix": "4",
-                "Bahrain Grand Prix": "-16",
                 "China Grand Prix": "5",
                 "Azerbaijan Grand Prix": "-13",
-                "Spain Grand Prix": "1",
                 "Monaco Grand Prix": "0",
                 "Canada Grand Prix": "2",
                 "French Grand Prix": "1",
@@ -2240,19 +2232,19 @@
                 "Singapore Grand Prix": "0",
                 "Russian Grand Prix": "12",
                 "Japan Grand Prix": "11",
-                "United States Grand Prix": "-12",
-                "Mexican Grand Prix": "-16",
                 "Brazil Grand Prix": "7",
-                "Abu Dhabi Grand Prix": "1"
+                "Abu Dhabi Grand Prix": "1",
+                "Mexico Grand Prix": "-16",
+                "Bahrain Grand Prix": "-16",
+                "Spain Grand Prix": "1",
+                "United States Grand Prix": "-12"
             }
         },
         "2019": {
             "positions": {
                 "Australia Grand Prix": "-7",
-                "Bahrain Grand Prix": "-8",
                 "China Grand Prix": "0",
                 "Azerbaijan Grand Prix": "-10",
-                "Spain Grand Prix": "1",
                 "Monaco Grand Prix": "-3",
                 "Canada Grand Prix": "-2",
                 "French Grand Prix": "-3",
@@ -2265,10 +2257,12 @@
                 "Singapore Grand Prix": "6",
                 "Russian Grand Prix": "-9",
                 "Japan Grand Prix": "-3",
-                "Mexican Grand Prix": "5",
-                "United States Grand Prix": "3",
                 "Brazil Grand Prix": "5",
-                "Abu Dhabi Grand Prix": "-4"
+                "Abu Dhabi Grand Prix": "-4",
+                "Mexico Grand Prix": "5",
+                "Bahrain Grand Prix": "-8",
+                "Spain Grand Prix": "1",
+                "United States Grand Prix": "3"
             }
         },
         "2020": {
@@ -2278,7 +2272,6 @@
                 "Hungary Grand Prix": "3",
                 "Great Britain Grand Prix": "4",
                 "70th Anniversary Grand Prix": "-9",
-                "Spain Grand Prix": "2",
                 "Belgium Grand Prix": "0",
                 "Italy Grand Prix": "1",
                 "Tuscan Grand Prix": "4",
@@ -2287,17 +2280,15 @@
                 "Portuguese Grand Prix": "1",
                 "Emilia Romagna Grand Prix": "2",
                 "Turkish Grand Prix": "-5",
-                "Bahrain Grand Prix": "-1",
+                "Abu Dhabi Grand Prix": "4",
                 "Bahrain Grand Prix": "2",
-                "Abu Dhabi Grand Prix": "4"
+                "Spain Grand Prix": "2"
             }
         },
         "2021": {
             "positions": {
-                "Bahrain Grand Prix": "-1",
                 "Emilia Romagna Grand Prix": "0",
                 "Portuguese Grand Prix": "7",
-                "Spain Grand Prix": "1",
                 "Monaco Grand Prix": "0",
                 "Azerbaijan Grand Prix": "4",
                 "French Grand Prix": "4",
@@ -2310,22 +2301,22 @@
                 "Italy Grand Prix": "1",
                 "Russian Grand Prix": "1",
                 "Turkish Grand Prix": "7",
-                "United States Grand Prix": "1",
                 "Mexico Grand Prix": "-5",
                 "São Paulo Grand Prix": "-8",
                 "Qatar Grand Prix": "2",
                 "Saudi Arabia Grand Prix": "6",
-                "Abu Dhabi Grand Prix": "-2"
+                "Abu Dhabi Grand Prix": "-2",
+                "Bahrain Grand Prix": "-1",
+                "Spain Grand Prix": "1",
+                "United States Grand Prix": "1"
             }
         },
         "2022": {
             "positions": {
-                "Bahrain Grand Prix": "4",
                 "Saudi Arabia Grand Prix": "-3",
                 "Australia Grand Prix": "1",
                 "Emilia Romagna Grand Prix": "-12",
                 "Miami Grand Prix": "1",
-                "Spain Grand Prix": "-3",
                 "Monaco Grand Prix": "1",
                 "Azerbaijan Grand Prix": "4",
                 "Canada Grand Prix": "-2",
@@ -2338,26 +2329,27 @@
                 "Italy Grand Prix": "-13",
                 "Singapore Grand Prix": "11",
                 "Japan Grand Prix": "0",
-                "United States Grand Prix": "-1",
                 "Mexico Grand Prix": "4",
                 "São Paulo Grand Prix": "-9",
-                "Abu Dhabi Grand Prix": "4"
+                "Abu Dhabi Grand Prix": "4",
+                "Bahrain Grand Prix": "4",
+                "Spain Grand Prix": "-3",
+                "United States Grand Prix": "-1"
             }
         },
         "2023": {
             "positions": {
                 "Hungary Grand Prix": "0",
                 "Belgium Grand Prix": "3",
-                "United States Grand Prix": "-1",
                 "Mexico Grand Prix": "-3",
                 "São Paulo Grand Prix": "4",
                 "Las Vegas Grand Prix": "0",
-                "Abu Dhabi Grand Prix": "4"
+                "Abu Dhabi Grand Prix": "4",
+                "United States Grand Prix": "-1"
             }
         },
         "2024": {
             "positions": {
-                "Bahrain Grand Prix": "1",
                 "Saudi Arabia Grand Prix": "-2",
                 "Australia Grand Prix": "6",
                 "Japan Grand Prix": "-8",
@@ -2366,7 +2358,6 @@
                 "Emilia Romagna Grand Prix": "-4",
                 "Monaco Grand Prix": "0",
                 "Canada Grand Prix": "-3",
-                "Spain Grand Prix": "3",
                 "Austria Grand Prix": "2",
                 "Great Britain Grand Prix": "2",
                 "Hungary Grand Prix": "-3",
@@ -2374,7 +2365,9 @@
                 "Netherlands Grand Prix": "1",
                 "Italy Grand Prix": "-1",
                 "Azerbaijan Grand Prix": "1",
-                "Singapore Grand Prix": "-2"
+                "Singapore Grand Prix": "-2",
+                "Bahrain Grand Prix": "1",
+                "Spain Grand Prix": "3"
             }
         }
     },
@@ -2455,16 +2448,6 @@
                     "1:36.956",
                     "N/A"
                 ],
-                "Bahrain Grand Prix": [
-                    "1:33.988",
-                    "1:33.556",
-                    "1:32.912"
-                ],
-                "Spain Grand Prix": [
-                    "1:23.906",
-                    "1:23.442",
-                    "N/A"
-                ],
                 "Monaco Grand Prix": [
                     "1:16.360",
                     "1:15.878",
@@ -2530,14 +2513,24 @@
                     "1:42.765",
                     "N/A"
                 ],
-                "United States Grand Prix": [
-                    "1:39.114",
-                    "N/A",
-                    "N/A"
-                ],
                 "Brazil Grand Prix": [
                     "1:16.744",
                     "1:14.574",
+                    "N/A"
+                ],
+                "Bahrain Grand Prix": [
+                    "1:33.988",
+                    "1:33.556",
+                    "1:32.912"
+                ],
+                "Spain Grand Prix": [
+                    "1:23.906",
+                    "1:23.442",
+                    "N/A"
+                ],
+                "United States Grand Prix": [
+                    "1:39.114",
+                    "N/A",
                     "N/A"
                 ]
             }
@@ -2558,16 +2551,6 @@
                     "1:36.993",
                     "1:36.258",
                     "1:35.998"
-                ],
-                "Bahrain Grand Prix": [
-                    "1:34.120",
-                    "1:33.974",
-                    "N/A"
-                ],
-                "Spain Grand Prix": [
-                    "1:22.905",
-                    "1:22.127",
-                    "N/A"
                 ],
                 "Monaco Grand Prix": [
                     "1:24.852",
@@ -2629,15 +2612,25 @@
                     "1:40.852",
                     "1:41.111"
                 ],
-                "United States Grand Prix": [
-                    "1:38.882",
-                    "1:38.131",
-                    "N/A"
-                ],
                 "Brazil Grand Prix": [
                     "1:27.209",
                     "1:27.078",
                     "1:28.052"
+                ],
+                "Bahrain Grand Prix": [
+                    "1:34.120",
+                    "1:33.974",
+                    "N/A"
+                ],
+                "Spain Grand Prix": [
+                    "1:22.905",
+                    "1:22.127",
+                    "N/A"
+                ],
+                "United States Grand Prix": [
+                    "1:38.882",
+                    "1:38.131",
+                    "N/A"
                 ]
             }
         },
@@ -2653,20 +2646,10 @@
                     "2:00.147",
                     "2:00.541"
                 ],
-                "Bahrain Grand Prix": [
-                    "1:36.220",
-                    "1:34.592",
-                    "1:34.051"
-                ],
                 "China Grand Prix": [
                     "1:56.641",
                     "1:55.302",
                     "1:54.455"
-                ],
-                "Spain Grand Prix": [
-                    "1:28.053",
-                    "1:26.613",
-                    "1:26.285"
                 ],
                 "Monaco Grand Prix": [
                     "1:17.900",
@@ -2723,15 +2706,25 @@
                     "1:39.666",
                     "1:39.635"
                 ],
-                "United States Grand Prix": [
-                    "1:38.814",
-                    "1:37.873",
-                    "1:37.244"
-                ],
                 "Brazil Grand Prix": [
                     "1:11.593",
                     "1:11.208",
                     "1:11.075"
+                ],
+                "Bahrain Grand Prix": [
+                    "1:36.220",
+                    "1:34.592",
+                    "1:34.051"
+                ],
+                "Spain Grand Prix": [
+                    "1:28.053",
+                    "1:26.613",
+                    "1:26.285"
+                ],
+                "United States Grand Prix": [
+                    "1:38.814",
+                    "1:37.873",
+                    "1:37.244"
                 ]
             }
         },
@@ -2751,16 +2744,6 @@
                     "1:38.534",
                     "1:37.939",
                     "1:37.540"
-                ],
-                "Bahrain Grand Prix": [
-                    "1:34.691",
-                    "1:34.403",
-                    "1:33.832"
-                ],
-                "Spain Grand Prix": [
-                    "1:27.611",
-                    "1:26.692",
-                    "1:26.770"
                 ],
                 "Monaco Grand Prix": [
                     "1:17.254",
@@ -2812,16 +2795,6 @@
                     "1:39.005",
                     "1:39.728"
                 ],
-                "United States Grand Prix": [
-                    "1:56.495",
-                    "1:57.969",
-                    "N/A"
-                ],
-                "Mexican Grand Prix": [
-                    "1:21.166",
-                    "1:20.783",
-                    "1:20.399"
-                ],
                 "Brazil Grand Prix": [
                     "1:12.639",
                     "1:12.825",
@@ -2831,6 +2804,26 @@
                     "1:42.275",
                     "1:41.830",
                     "1:41.444"
+                ],
+                "Mexico Grand Prix": [
+                    "1:21.166",
+                    "1:20.783",
+                    "1:20.399"
+                ],
+                "Bahrain Grand Prix": [
+                    "1:34.691",
+                    "1:34.403",
+                    "1:33.832"
+                ],
+                "Spain Grand Prix": [
+                    "1:27.611",
+                    "1:26.692",
+                    "1:26.770"
+                ],
+                "United States Grand Prix": [
+                    "1:56.495",
+                    "1:57.969",
+                    "N/A"
                 ]
             }
         },
@@ -2841,11 +2834,6 @@
                     "1:25.599",
                     "1:25.589"
                 ],
-                "Bahrain Grand Prix": [
-                    "1:31.403",
-                    "1:31.122",
-                    "1:30.854"
-                ],
                 "China Grand Prix": [
                     "1:37.672",
                     "1:36.815",
@@ -2855,11 +2843,6 @@
                     "1:38.091",
                     "1:37.569",
                     "1:37.125"
-                ],
-                "Spain Grand Prix": [
-                    "1:23.749",
-                    "1:23.585",
-                    "1:22.680"
                 ],
                 "Monaco Grand Prix": [
                     "1:14.912",
@@ -2921,16 +2904,6 @@
                     "1:31.719",
                     "1:31.240"
                 ],
-                "United States Grand Prix": [
-                    "1:36.759",
-                    "1:36.255",
-                    "1:35.509"
-                ],
-                "Mexican Grand Prix": [
-                    "1:19.713",
-                    "1:19.553",
-                    "1:19.133"
-                ],
                 "Brazil Grand Prix": [
                     "1:12.409",
                     "1:12.047",
@@ -2940,6 +2913,26 @@
                     "1:41.002",
                     "1:40.429",
                     "1:39.589"
+                ],
+                "Mexico Grand Prix": [
+                    "1:19.713",
+                    "1:19.553",
+                    "1:19.133"
+                ],
+                "Bahrain Grand Prix": [
+                    "1:31.403",
+                    "1:31.122",
+                    "1:30.854"
+                ],
+                "Spain Grand Prix": [
+                    "1:23.749",
+                    "1:23.585",
+                    "1:22.680"
+                ],
+                "United States Grand Prix": [
+                    "1:36.759",
+                    "1:36.255",
+                    "1:35.509"
                 ]
             }
         },
@@ -2955,20 +2948,10 @@
                     "1:33.546",
                     "1:33.033"
                 ],
-                "Bahrain Grand Prix": [
-                    "1:31.667",
-                    "1:30.497",
-                    "1:29.545"
-                ],
                 "Russian Grand Prix": [
                     "1:35.560",
                     "1:35.483",
                     "1:34.905"
-                ],
-                "Spain Grand Prix": [
-                    "1:21.704",
-                    "1:20.855",
-                    "1:20.175"
                 ],
                 "Monaco Grand Prix": [
                     "1:13.219",
@@ -3025,16 +3008,6 @@
                     "1:28.935",
                     "1:28.306"
                 ],
-                "United States Grand Prix": [
-                    "1:35.991",
-                    "1:34.495",
-                    "1:33.577"
-                ],
-                "Mexican Grand Prix": [
-                    "1:18.208",
-                    "1:17.631",
-                    "1:17.447"
-                ],
                 "Brazil Grand Prix": [
                     "1:09.828",
                     "1:09.533",
@@ -3044,6 +3017,26 @@
                     "1:38.016",
                     "1:37.583",
                     "1:36.959"
+                ],
+                "Mexico Grand Prix": [
+                    "1:18.208",
+                    "1:17.631",
+                    "1:17.447"
+                ],
+                "Bahrain Grand Prix": [
+                    "1:31.667",
+                    "1:30.497",
+                    "1:29.545"
+                ],
+                "Spain Grand Prix": [
+                    "1:21.704",
+                    "1:20.855",
+                    "1:20.175"
+                ],
+                "United States Grand Prix": [
+                    "1:35.991",
+                    "1:34.495",
+                    "1:33.577"
                 ]
             }
         },
@@ -3054,11 +3047,6 @@
                     "1:22.897",
                     "1:22.152"
                 ],
-                "Bahrain Grand Prix": [
-                    "1:29.552",
-                    "1:28.962",
-                    "1:28.398"
-                ],
                 "China Grand Prix": [
                     "1:33.877",
                     "1:32.688",
@@ -3068,11 +3056,6 @@
                     "1:42.857",
                     "1:43.482",
                     "1:41.911"
-                ],
-                "Spain Grand Prix": [
-                    "1:17.623",
-                    "1:17.638",
-                    "1:16.818"
                 ],
                 "Monaco Grand Prix": [
                     "1:12.013",
@@ -3134,16 +3117,6 @@
                     "N/A",
                     "N/A"
                 ],
-                "United States Grand Prix": [
-                    "1:34.755",
-                    "1:34.185",
-                    "1:33.494"
-                ],
-                "Mexican Grand Prix": [
-                    "1:15.866",
-                    "1:15.845",
-                    "1:14.759"
-                ],
                 "Brazil Grand Prix": [
                     "1:08.544",
                     "1:08.055",
@@ -3153,6 +3126,26 @@
                     "1:37.117",
                     "1:36.964",
                     "1:35.401"
+                ],
+                "Mexico Grand Prix": [
+                    "1:15.866",
+                    "1:15.845",
+                    "1:14.759"
+                ],
+                "Bahrain Grand Prix": [
+                    "1:29.552",
+                    "1:28.962",
+                    "1:28.398"
+                ],
+                "Spain Grand Prix": [
+                    "1:17.623",
+                    "1:17.638",
+                    "1:16.818"
+                ],
+                "United States Grand Prix": [
+                    "1:34.755",
+                    "1:34.185",
+                    "1:33.494"
                 ]
             }
         },
@@ -3161,11 +3154,6 @@
                 "Australia Grand Prix": [
                     "1:22.921",
                     "1:22.570",
-                    "N/A"
-                ],
-                "Bahrain Grand Prix": [
-                    "1:29.859",
-                    "1:29.488",
                     "N/A"
                 ],
                 "China Grand Prix": [
@@ -3177,11 +3165,6 @@
                     "1:42.486",
                     "1:42.477",
                     "N/A"
-                ],
-                "Spain Grand Prix": [
-                    "1:18.385",
-                    "1:17.299",
-                    "1:18.106"
                 ],
                 "Monaco Grand Prix": [
                     "1:11.767",
@@ -3243,16 +3226,6 @@
                     "N/A",
                     "N/A"
                 ],
-                "Mexican Grand Prix": [
-                    "1:17.270",
-                    "1:16.933",
-                    "N/A"
-                ],
-                "United States Grand Prix": [
-                    "1:33.835",
-                    "1:33.608",
-                    "1:33.488"
-                ],
                 "Brazil Grand Prix": [
                     "1:09.086",
                     "1:08.903",
@@ -3262,6 +3235,26 @@
                     "1:37.106",
                     "1:36.785",
                     "1:36.456"
+                ],
+                "Mexico Grand Prix": [
+                    "1:17.270",
+                    "1:16.933",
+                    "N/A"
+                ],
+                "Bahrain Grand Prix": [
+                    "1:29.859",
+                    "1:29.488",
+                    "N/A"
+                ],
+                "Spain Grand Prix": [
+                    "1:18.385",
+                    "1:17.299",
+                    "1:18.106"
+                ],
+                "United States Grand Prix": [
+                    "1:33.835",
+                    "1:33.608",
+                    "1:33.488"
                 ]
             }
         },
@@ -3291,11 +3284,6 @@
                     "1:27.442",
                     "1:26.636",
                     "1:26.297"
-                ],
-                "Spain Grand Prix": [
-                    "1:17.667",
-                    "1:17.198",
-                    "N/A"
                 ],
                 "Belgium Grand Prix": [
                     "1:43.309",
@@ -3337,30 +3325,25 @@
                     "1:54.278",
                     "1:51.595"
                 ],
-                "Bahrain Grand Prix": [
-                    "1:29.005",
-                    "1:28.648",
-                    "1:28.417"
+                "Abu Dhabi Grand Prix": [
+                    "1:36.704",
+                    "1:36.406",
+                    "N/A"
                 ],
                 "Bahrain Grand Prix": [
                     "54.388",
                     "53.871",
                     "53.957"
                 ],
-                "Abu Dhabi Grand Prix": [
-                    "1:36.704",
-                    "1:36.406",
+                "Spain Grand Prix": [
+                    "1:17.667",
+                    "1:17.198",
                     "N/A"
                 ]
             }
         },
         "2021": {
             "QualiTimes": {
-                "Bahrain Grand Prix": [
-                    "1:30.795",
-                    "1:30.222",
-                    "1:29.927"
-                ],
                 "Emilia Romagna Grand Prix": [
                     "1:15.669",
                     "1:15.033",
@@ -3370,11 +3353,6 @@
                     "1:19.839",
                     "N/A",
                     "N/A"
-                ],
-                "Spain Grand Prix": [
-                    "1:18.264",
-                    "1:17.719",
-                    "1:17.622"
                 ],
                 "Monaco Grand Prix": [
                     "1:11.747",
@@ -3436,11 +3414,6 @@
                     "N/A",
                     "N/A"
                 ],
-                "United States Grand Prix": [
-                    "1:34.407",
-                    "1:34.643",
-                    "1:33.808"
-                ],
                 "Mexico Grand Prix": [
                     "1:17.719",
                     "1:17.092",
@@ -3465,16 +3438,26 @@
                     "1:23.829",
                     "1:23.448",
                     "1:23.409"
+                ],
+                "Bahrain Grand Prix": [
+                    "1:30.795",
+                    "1:30.222",
+                    "1:29.927"
+                ],
+                "Spain Grand Prix": [
+                    "1:18.264",
+                    "1:17.719",
+                    "1:17.622"
+                ],
+                "United States Grand Prix": [
+                    "1:34.407",
+                    "1:34.643",
+                    "1:33.808"
                 ]
             }
         },
         "2022": {
             "QualiTimes": {
-                "Bahrain Grand Prix": [
-                    "1:32.945",
-                    "N/A",
-                    "N/A"
-                ],
                 "Saudi Arabia Grand Prix": [
                     "1:30.009",
                     "1:29.773",
@@ -3494,11 +3477,6 @@
                     "1:30.583",
                     "1:30.310",
                     "N/A"
-                ],
-                "Spain Grand Prix": [
-                    "1:20.549",
-                    "1:20.287",
-                    "1:20.297"
                 ],
                 "Monaco Grand Prix": [
                     "1:13.338",
@@ -3560,11 +3538,6 @@
                     "1:30.659",
                     "N/A"
                 ],
-                "United States Grand Prix": [
-                    "1:37.046",
-                    "N/A",
-                    "N/A"
-                ],
                 "Mexico Grand Prix": [
                     "1:20.279",
                     "1:19.325",
@@ -3579,6 +3552,21 @@
                     "1:25.766",
                     "1:25.068",
                     "1:25.045"
+                ],
+                "Bahrain Grand Prix": [
+                    "1:32.945",
+                    "N/A",
+                    "N/A"
+                ],
+                "Spain Grand Prix": [
+                    "1:20.549",
+                    "1:20.287",
+                    "1:20.297"
+                ],
+                "United States Grand Prix": [
+                    "1:37.046",
+                    "N/A",
+                    "N/A"
                 ]
             }
         },
@@ -3592,11 +3580,6 @@
                 "Belgium Grand Prix": [
                     "2:02.159",
                     "N/A",
-                    "N/A"
-                ],
-                "United States Grand Prix": [
-                    "1:36.213",
-                    "1:35.974",
                     "N/A"
                 ],
                 "Mexico Grand Prix": [
@@ -3618,16 +3601,16 @@
                     "1:24.461",
                     "1:24.442",
                     "N/A"
+                ],
+                "United States Grand Prix": [
+                    "1:36.213",
+                    "1:35.974",
+                    "N/A"
                 ]
             }
         },
         "2024": {
             "QualiTimes": {
-                "Bahrain Grand Prix": [
-                    "1:30.562",
-                    "1:30.278",
-                    "N/A"
-                ],
                 "Saudi Arabia Grand Prix": [
                     "1:29.065",
                     "1:29.025",
@@ -3668,11 +3651,6 @@
                     "1:12.572",
                     "1:12.178"
                 ],
-                "Spain Grand Prix": [
-                    "1:13.075",
-                    "N/A",
-                    "N/A"
-                ],
                 "Austria Grand Prix": [
                     "1:05.569",
                     "1:05.289",
@@ -3710,6 +3688,16 @@
                 ],
                 "Singapore Grand Prix": [
                     "1:31.085",
+                    "N/A",
+                    "N/A"
+                ],
+                "Bahrain Grand Prix": [
+                    "1:30.562",
+                    "1:30.278",
+                    "N/A"
+                ],
+                "Spain Grand Prix": [
+                    "1:13.075",
                     "N/A",
                     "N/A"
                 ]

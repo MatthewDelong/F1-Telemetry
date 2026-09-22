@@ -66,11 +66,11 @@
             "Australia Grand Prix": "Safety belt",
             "Argentine Grand Prix": "Transmission",
             "Monaco Grand Prix": "Collision",
-            "Spain Grand Prix": "Collision",
             "Canada Grand Prix": "Collision",
             "Great Britain Grand Prix": "Gearbox",
             "Hungary Grand Prix": "Suspension",
-            "Italy Grand Prix": "Engine"
+            "Italy Grand Prix": "Engine",
+            "Spain Grand Prix": "Collision"
         }
     },
     "fastLaps": {
@@ -103,7 +103,6 @@
             "European Grand Prix": -1,
             "San Marino Grand Prix": -1,
             "Monaco Grand Prix": -1,
-            "Spain Grand Prix": -1,
             "Canada Grand Prix": -1,
             "French Grand Prix": -1,
             "Great Britain Grand Prix": -1,
@@ -112,7 +111,8 @@
             "Belgium Grand Prix": -1,
             "Italy Grand Prix": -1,
             "Portuguese Grand Prix": -1,
-            "Japan Grand Prix": -1
+            "Japan Grand Prix": -1,
+            "Spain Grand Prix": -1
         }
     },
     "finalStandings": {
@@ -219,9 +219,6 @@
                 "Monaco Grand Prix": {
                     "points": 0
                 },
-                "Spain Grand Prix": {
-                    "points": 0
-                },
                 "Canada Grand Prix": {
                     "points": 0
                 },
@@ -247,6 +244,9 @@
                     "points": 0
                 },
                 "Japan Grand Prix": {
+                    "points": 0
+                },
+                "Spain Grand Prix": {
                     "points": 0
                 }
             }
@@ -289,7 +289,6 @@
                 "European Grand Prix": "12",
                 "San Marino Grand Prix": "9",
                 "Monaco Grand Prix": "19",
-                "Spain Grand Prix": "20",
                 "Canada Grand Prix": "9",
                 "French Grand Prix": "12",
                 "Great Britain Grand Prix": "16",
@@ -298,7 +297,8 @@
                 "Belgium Grand Prix": "10",
                 "Italy Grand Prix": "13",
                 "Portuguese Grand Prix": "16",
-                "Japan Grand Prix": "12"
+                "Japan Grand Prix": "12",
+                "Spain Grand Prix": "20"
             }
         }
     },
@@ -374,7 +374,6 @@
                 "European Grand Prix": "7",
                 "San Marino Grand Prix": "9",
                 "Monaco Grand Prix": "0",
-                "Spain Grand Prix": "-2",
                 "Canada Grand Prix": "10",
                 "French Grand Prix": "6",
                 "Great Britain Grand Prix": "3",
@@ -383,7 +382,8 @@
                 "Belgium Grand Prix": "9",
                 "Italy Grand Prix": "5",
                 "Portuguese Grand Prix": "3",
-                "Japan Grand Prix": "6"
+                "Japan Grand Prix": "6",
+                "Spain Grand Prix": "-2"
             }
         }
     },

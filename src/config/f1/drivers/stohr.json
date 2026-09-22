@@ -35,9 +35,9 @@
             "Brazil Grand Prix": "Accident",
             "Belgium Grand Prix": "Collision",
             "Monaco Grand Prix": "Fuel system",
-            "Spain Grand Prix": "Ignition",
             "Great Britain Grand Prix": "Spun off",
-            "Austria Grand Prix": "Overheating"
+            "Austria Grand Prix": "Overheating",
+            "Spain Grand Prix": "Ignition"
         }
     },
     "fastLaps": {
@@ -46,11 +46,11 @@
             "Argentine Grand Prix": -1,
             "Belgium Grand Prix": -1,
             "Monaco Grand Prix": -1,
-            "Spain Grand Prix": -1,
             "Great Britain Grand Prix": -1,
             "German Grand Prix": -1,
             "Austria Grand Prix": -1,
-            "Netherlands Grand Prix": -1
+            "Netherlands Grand Prix": -1,
+            "Spain Grand Prix": -1
         }
     },
     "finalStandings": {
@@ -75,9 +75,6 @@
                 "Monaco Grand Prix": {
                     "points": 0
                 },
-                "Spain Grand Prix": {
-                    "points": 0
-                },
                 "Great Britain Grand Prix": {
                     "points": 0
                 },
@@ -88,6 +85,9 @@
                     "points": 0
                 },
                 "Netherlands Grand Prix": {
+                    "points": 0
+                },
+                "Spain Grand Prix": {
                     "points": 0
                 }
             }
@@ -100,11 +100,11 @@
                 "Argentine Grand Prix": "9",
                 "Belgium Grand Prix": "24",
                 "Monaco Grand Prix": "18",
-                "Spain Grand Prix": "20",
                 "Great Britain Grand Prix": "24",
                 "German Grand Prix": "12",
                 "Austria Grand Prix": "19",
-                "Netherlands Grand Prix": "7"
+                "Netherlands Grand Prix": "7",
+                "Spain Grand Prix": "20"
             }
         }
     },
@@ -120,11 +120,11 @@
                 "Argentine Grand Prix": "10",
                 "Belgium Grand Prix": "-11",
                 "Monaco Grand Prix": "-4",
-                "Spain Grand Prix": "3",
                 "Great Britain Grand Prix": "-6",
                 "German Grand Prix": "14",
                 "Austria Grand Prix": "5",
-                "Netherlands Grand Prix": "14"
+                "Netherlands Grand Prix": "14",
+                "Spain Grand Prix": "3"
             }
         }
     },

@@ -51,8 +51,6 @@
         "2015": {
             "Malaysian Grand Prix": -1,
             "China Grand Prix": "1:45.414",
-            "Bahrain Grand Prix": "1:41.759",
-            "Spain Grand Prix": "1:33.655",
             "Monaco Grand Prix": "1:22.693",
             "Canada Grand Prix": "1:20.707",
             "Austria Grand Prix": -1,
@@ -63,10 +61,12 @@
             "Singapore Grand Prix": "1:55.890",
             "Japan Grand Prix": "1:41.452",
             "Russian Grand Prix": "1:44.926",
-            "United States Grand Prix": -1,
-            "Mexican Grand Prix": "1:25.540",
             "Brazil Grand Prix": "1:19.098",
-            "Abu Dhabi Grand Prix": "1:49.610"
+            "Abu Dhabi Grand Prix": "1:49.610",
+            "Mexico Grand Prix": "1:25.540",
+            "Bahrain Grand Prix": "1:41.759",
+            "Spain Grand Prix": "1:33.655",
+            "United States Grand Prix": -1
         }
     },
     "finalStandings": {
@@ -99,12 +99,6 @@
                 "China Grand Prix": {
                     "points": 0
                 },
-                "Bahrain Grand Prix": {
-                    "points": 0
-                },
-                "Spain Grand Prix": {
-                    "points": 0
-                },
                 "Monaco Grand Prix": {
                     "points": 0
                 },
@@ -135,16 +129,22 @@
                 "Russian Grand Prix": {
                     "points": 0
                 },
-                "United States Grand Prix": {
-                    "points": 0
-                },
-                "Mexican Grand Prix": {
-                    "points": 0
-                },
                 "Brazil Grand Prix": {
                     "points": 0
                 },
                 "Abu Dhabi Grand Prix": {
+                    "points": 0
+                },
+                "Mexico Grand Prix": {
+                    "points": 0
+                },
+                "Bahrain Grand Prix": {
+                    "points": 0
+                },
+                "Spain Grand Prix": {
+                    "points": 0
+                },
+                "United States Grand Prix": {
                     "points": 0
                 }
             }
@@ -160,8 +160,6 @@
             "positions": {
                 "Malaysian Grand Prix": "20",
                 "China Grand Prix": "15",
-                "Bahrain Grand Prix": "16",
-                "Spain Grand Prix": "17",
                 "Monaco Grand Prix": "17",
                 "Canada Grand Prix": "17",
                 "Austria Grand Prix": "18",
@@ -172,10 +170,12 @@
                 "Singapore Grand Prix": "15",
                 "Japan Grand Prix": "19",
                 "Russian Grand Prix": "14",
-                "United States Grand Prix": "20",
-                "Mexican Grand Prix": "16",
                 "Brazil Grand Prix": "17",
-                "Abu Dhabi Grand Prix": "18"
+                "Abu Dhabi Grand Prix": "18",
+                "Mexico Grand Prix": "16",
+                "Bahrain Grand Prix": "16",
+                "Spain Grand Prix": "17",
+                "United States Grand Prix": "20"
             }
         }
     },
@@ -188,8 +188,6 @@
         "2015": {
             "positions": {
                 "China Grand Prix": "19",
-                "Bahrain Grand Prix": "18",
-                "Spain Grand Prix": "19",
                 "Monaco Grand Prix": "19",
                 "Canada Grand Prix": "19",
                 "Austria Grand Prix": "20",
@@ -200,10 +198,12 @@
                 "Singapore Grand Prix": "19",
                 "Japan Grand Prix": "19",
                 "Russian Grand Prix": "18",
-                "United States Grand Prix": "19",
-                "Mexican Grand Prix": "19",
                 "Brazil Grand Prix": "19",
-                "Abu Dhabi Grand Prix": "19"
+                "Abu Dhabi Grand Prix": "19",
+                "Mexico Grand Prix": "19",
+                "Bahrain Grand Prix": "18",
+                "Spain Grand Prix": "19",
+                "United States Grand Prix": "19"
             }
         }
     },
@@ -216,8 +216,6 @@
         "2015": {
             "positions": {
                 "China Grand Prix": "4",
-                "Bahrain Grand Prix": "2",
-                "Spain Grand Prix": "2",
                 "Monaco Grand Prix": "1",
                 "Canada Grand Prix": "0",
                 "Austria Grand Prix": "-1",
@@ -228,10 +226,12 @@
                 "Singapore Grand Prix": "4",
                 "Japan Grand Prix": "-1",
                 "Russian Grand Prix": "3",
-                "United States Grand Prix": "-1",
-                "Mexican Grand Prix": "1",
                 "Brazil Grand Prix": "1",
-                "Abu Dhabi Grand Prix": "1"
+                "Abu Dhabi Grand Prix": "1",
+                "Mexico Grand Prix": "1",
+                "Bahrain Grand Prix": "2",
+                "Spain Grand Prix": "2",
+                "United States Grand Prix": "-1"
             }
         }
     },
@@ -249,16 +249,6 @@
             "QualiTimes": {
                 "China Grand Prix": [
                     "1:42.091",
-                    "N/A",
-                    "N/A"
-                ],
-                "Bahrain Grand Prix": [
-                    "1:38.713",
-                    "N/A",
-                    "N/A"
-                ],
-                "Spain Grand Prix": [
-                    "1:31.200",
                     "N/A",
                     "N/A"
                 ],
@@ -312,16 +302,6 @@
                     "N/A",
                     "N/A"
                 ],
-                "United States Grand Prix": [
-                    "2:04.526",
-                    "N/A",
-                    "N/A"
-                ],
-                "Mexican Grand Prix": [
-                    "1:24.386",
-                    "N/A",
-                    "N/A"
-                ],
                 "Brazil Grand Prix": [
                     "1:16.283",
                     "N/A",
@@ -329,6 +309,26 @@
                 ],
                 "Abu Dhabi Grand Prix": [
                     "1:46.297",
+                    "N/A",
+                    "N/A"
+                ],
+                "Mexico Grand Prix": [
+                    "1:24.386",
+                    "N/A",
+                    "N/A"
+                ],
+                "Bahrain Grand Prix": [
+                    "1:38.713",
+                    "N/A",
+                    "N/A"
+                ],
+                "Spain Grand Prix": [
+                    "1:31.200",
+                    "N/A",
+                    "N/A"
+                ],
+                "United States Grand Prix": [
+                    "2:04.526",
                     "N/A",
                     "N/A"
                 ]

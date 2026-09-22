@@ -439,7 +439,7 @@ const RaceCalendar = () => {
   const renderRaceRow = (race) => (
     <div
       key={race.round}
-      className="flex items-center bg-white/5 hover:bg-white/10 rounded-lg py-4 px-8 transition-all duration-200 border-l-[3px] border-transparent hover:border-[#e10600] hover:translate-x-1 cursor-pointer"
+      className="flex items-center bg-white/5 rounded-lg py-4 px-8 border-l-[3px] border-transparent"
     >
       <div className="w-[30px] font-black text-[0.75rem] text-[#e10600]">
         <span>R{race.round}</span>

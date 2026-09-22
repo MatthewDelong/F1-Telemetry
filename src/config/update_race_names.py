@@ -5,6 +5,7 @@ mapping = {
     "Spanish Grand Prix (Madrid)": "Spain Grand Prix (Madrid)",
     "Madrid Grand Prix": "Spain Grand Prix (Madrid)",
     "Spanish Grand Prix": "Spain Grand Prix",
+    "Spain Grand Prix": "Spain Grand Prix",
     "Barcelona Grand Prix": "Spain Grand Prix",
     "Austrian Grand Prix": "Austria Grand Prix",
     "British Grand Prix": "Great Britain Grand Prix",
@@ -12,6 +13,7 @@ mapping = {
     "Hungarian Grand Prix": "Hungary Grand Prix",
     "Dutch Grand Prix": "Netherlands Grand Prix",
     "Italian Grand Prix": "Italy Grand Prix",
+    "Bahrain Grand Prix": "Bahrain Grand Prix",
     "Canadian Grand Prix": "Canada Grand Prix",
     "Japanese Grand Prix": "Japan Grand Prix",
     "Brazilian Grand Prix": "Brazil Grand Prix",
@@ -39,6 +41,16 @@ def standardize_names(file_path):
                 if k == "raceName" and isinstance(v, str):
                     for old_name, new_name in mapping.items():
                         if v == old_name:
+                            if new_name == "Spain Grand Prix":
+                                loc = obj.get("Circuit", {}).get("Location", {}).get("locality", "")
+                                circ_id = obj.get("Circuit", {}).get("circuitId", "")
+                                if loc == "Madrid" or circ_id in ["madrid", "madring"]:
+                                    new_name = "Spain Grand Prix (Madrid)"
+                            if new_name == "Bahrain Grand Prix":
+                                loc = obj.get("Circuit", {}).get("Location", {}).get("locality", "")
+                                circ_id = obj.get("Circuit", {}).get("circuitId", "")
+                                if loc == "Sepang" or circ_id == "sepang":
+                                    new_name = "Bahrain Grand Prix (Malaysia)"
                             obj[k] = new_name
                             modified = True
                             break
@@ -57,8 +69,10 @@ def standardize_names(file_path):
             
             for old_k, new_k in keys_to_change:
                 # Be careful not to overwrite a valid entry with duplicate like Spain
-                if new_k == "Spain Grand Prix" and obj[old_k].get("location") == "Madrid":
+                if new_k == "Spain Grand Prix" and isinstance(obj[old_k], dict) and obj[old_k].get("location") == "Madrid":
                     new_k = "Spain Grand Prix (Madrid)"
+                if new_k == "Bahrain Grand Prix" and isinstance(obj[old_k], dict) and (obj[old_k].get("location") == "Sepang" or obj[old_k].get("location") == "Kuala Lumpur"):
+                    new_k = "Bahrain Grand Prix (Malaysia)"
                 obj[new_k] = obj.pop(old_k)
                 modified = True
                 

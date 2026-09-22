@@ -50,14 +50,14 @@
             "French Grand Prix": -1
         },
         "1977": {
-            "Spain Grand Prix": -1,
             "Belgium Grand Prix": -1,
             "Swedish Grand Prix": -1,
             "Great Britain Grand Prix": -1,
             "Austria Grand Prix": -1,
             "Italy Grand Prix": -1,
-            "United States Grand Prix": -1,
-            "Canada Grand Prix": -1
+            "Canada Grand Prix": -1,
+            "Spain Grand Prix": -1,
+            "United States Grand Prix": -1
         }
     },
     "finalStandings": {
@@ -85,9 +85,6 @@
         "1977": {
             "year": "1977",
             "pos": {
-                "Spain Grand Prix": {
-                    "points": 0
-                },
                 "Belgium Grand Prix": {
                     "points": 0
                 },
@@ -103,10 +100,13 @@
                 "Italy Grand Prix": {
                     "points": 0
                 },
-                "United States Grand Prix": {
+                "Canada Grand Prix": {
                     "points": 0
                 },
-                "Canada Grand Prix": {
+                "Spain Grand Prix": {
+                    "points": 0
+                },
+                "United States Grand Prix": {
                     "points": 0
                 }
             }
@@ -121,14 +121,14 @@
         },
         "1977": {
             "positions": {
-                "Spain Grand Prix": "12",
                 "Belgium Grand Prix": "10",
                 "Swedish Grand Prix": "15",
                 "Great Britain Grand Prix": "10",
                 "Austria Grand Prix": "9",
                 "Italy Grand Prix": "7",
-                "United States Grand Prix": "18",
-                "Canada Grand Prix": "14"
+                "Canada Grand Prix": "14",
+                "Spain Grand Prix": "12",
+                "United States Grand Prix": "18"
             }
         }
     },
@@ -149,14 +149,14 @@
         },
         "1977": {
             "positions": {
-                "Spain Grand Prix": "10",
                 "Belgium Grand Prix": "14",
                 "Swedish Grand Prix": "5",
                 "Great Britain Grand Prix": "16",
                 "Austria Grand Prix": "13",
                 "Italy Grand Prix": "17",
-                "United States Grand Prix": "6",
-                "Canada Grand Prix": "7"
+                "Canada Grand Prix": "7",
+                "Spain Grand Prix": "10",
+                "United States Grand Prix": "6"
             }
         }
     },

@@ -39,7 +39,6 @@
     "DNFs": {
         "1989": {},
         "1990": {
-            "United States Grand Prix": "Gearbox",
             "Brazil Grand Prix": "Spun off",
             "Monaco Grand Prix": "Gearbox",
             "Canada Grand Prix": "Engine",
@@ -47,6 +46,7 @@
             "German Grand Prix": "Clutch",
             "Italy Grand Prix": "Engine",
             "Portuguese Grand Prix": "Alternator",
+            "United States Grand Prix": "Gearbox",
             "Spain Grand Prix": "Injured"
         }
     },
@@ -55,12 +55,10 @@
             "French Grand Prix": -1
         },
         "1990": {
-            "United States Grand Prix": -1,
             "Brazil Grand Prix": -1,
             "San Marino Grand Prix": -1,
             "Monaco Grand Prix": -1,
             "Canada Grand Prix": -1,
-            "Mexican Grand Prix": -1,
             "French Grand Prix": -1,
             "Great Britain Grand Prix": -1,
             "German Grand Prix": -1,
@@ -68,6 +66,8 @@
             "Belgium Grand Prix": -1,
             "Italy Grand Prix": -1,
             "Portuguese Grand Prix": -1,
+            "Mexico Grand Prix": -1,
+            "United States Grand Prix": -1,
             "Spain Grand Prix": -1
         }
     },
@@ -93,9 +93,6 @@
         "1990": {
             "year": "1990",
             "pos": {
-                "United States Grand Prix": {
-                    "points": 0
-                },
                 "Brazil Grand Prix": {
                     "points": 0
                 },
@@ -106,9 +103,6 @@
                     "points": 0
                 },
                 "Canada Grand Prix": {
-                    "points": 0
-                },
-                "Mexican Grand Prix": {
                     "points": 0
                 },
                 "French Grand Prix": {
@@ -132,6 +126,12 @@
                 "Portuguese Grand Prix": {
                     "points": 0
                 },
+                "Mexico Grand Prix": {
+                    "points": 0
+                },
+                "United States Grand Prix": {
+                    "points": 0
+                },
                 "Spain Grand Prix": {
                     "points": 0
                 }
@@ -146,12 +146,10 @@
         },
         "1990": {
             "positions": {
-                "United States Grand Prix": "26",
                 "Brazil Grand Prix": "16",
                 "San Marino Grand Prix": "8",
                 "Monaco Grand Prix": "23",
                 "Canada Grand Prix": "14",
-                "Mexican Grand Prix": "8",
                 "French Grand Prix": "12",
                 "Great Britain Grand Prix": "17",
                 "German Grand Prix": "23",
@@ -159,6 +157,8 @@
                 "Belgium Grand Prix": "12",
                 "Italy Grand Prix": "23",
                 "Portuguese Grand Prix": "22",
+                "Mexico Grand Prix": "8",
+                "United States Grand Prix": "26",
                 "Spain Grand Prix": "26"
             }
         }
@@ -179,19 +179,19 @@
         },
         "1990": {
             "positions": {
-                "United States Grand Prix": "-7",
                 "Brazil Grand Prix": "-2",
                 "San Marino Grand Prix": "3",
                 "Monaco Grand Prix": "-12",
                 "Canada Grand Prix": "-2",
-                "Mexican Grand Prix": "4",
                 "French Grand Prix": "5",
                 "Great Britain Grand Prix": "-3",
                 "German Grand Prix": "-3",
                 "Hungary Grand Prix": "11",
                 "Belgium Grand Prix": "10",
                 "Italy Grand Prix": "-12",
-                "Portuguese Grand Prix": "-7"
+                "Portuguese Grand Prix": "-7",
+                "Mexico Grand Prix": "4",
+                "United States Grand Prix": "-7"
             }
         }
     },

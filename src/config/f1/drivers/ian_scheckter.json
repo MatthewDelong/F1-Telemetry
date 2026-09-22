@@ -66,8 +66,8 @@
             "German Grand Prix": "Clutch",
             "Austria Grand Prix": "Accident",
             "Italy Grand Prix": "Transmission",
-            "United States Grand Prix": "Accident",
-            "Canada Grand Prix": "Engine"
+            "Canada Grand Prix": "Engine",
+            "United States Grand Prix": "Accident"
         }
     },
     "fastLaps": {
@@ -85,7 +85,6 @@
         "1977": {
             "Argentine Grand Prix": -1,
             "Brazil Grand Prix": -1,
-            "Spain Grand Prix": -1,
             "Belgium Grand Prix": -1,
             "Swedish Grand Prix": -1,
             "French Grand Prix": -1,
@@ -94,8 +93,9 @@
             "Austria Grand Prix": -1,
             "Netherlands Grand Prix": -1,
             "Italy Grand Prix": -1,
-            "United States Grand Prix": -1,
-            "Canada Grand Prix": -1
+            "Canada Grand Prix": -1,
+            "Spain Grand Prix": -1,
+            "United States Grand Prix": -1
         }
     },
     "finalStandings": {
@@ -156,9 +156,6 @@
                 "Brazil Grand Prix": {
                     "points": 0
                 },
-                "Spain Grand Prix": {
-                    "points": 0
-                },
                 "Belgium Grand Prix": {
                     "points": 0
                 },
@@ -183,10 +180,13 @@
                 "Italy Grand Prix": {
                     "points": 0
                 },
-                "United States Grand Prix": {
+                "Canada Grand Prix": {
                     "points": 0
                 },
-                "Canada Grand Prix": {
+                "Spain Grand Prix": {
+                    "points": 0
+                },
+                "United States Grand Prix": {
                     "points": 0
                 }
             }
@@ -214,7 +214,6 @@
             "positions": {
                 "Argentine Grand Prix": "8",
                 "Brazil Grand Prix": "21",
-                "Spain Grand Prix": "11",
                 "Belgium Grand Prix": "23",
                 "Swedish Grand Prix": "20",
                 "French Grand Prix": "14",
@@ -223,8 +222,9 @@
                 "Austria Grand Prix": "25",
                 "Netherlands Grand Prix": "10",
                 "Italy Grand Prix": "10",
-                "United States Grand Prix": "23",
-                "Canada Grand Prix": "18"
+                "Canada Grand Prix": "18",
+                "Spain Grand Prix": "11",
+                "United States Grand Prix": "23"
             }
         }
     },
@@ -264,7 +264,6 @@
             "positions": {
                 "Argentine Grand Prix": "9",
                 "Brazil Grand Prix": "-4",
-                "Spain Grand Prix": "6",
                 "Belgium Grand Prix": "-2",
                 "Swedish Grand Prix": "1",
                 "French Grand Prix": "6",
@@ -273,8 +272,9 @@
                 "Austria Grand Prix": "-1",
                 "Netherlands Grand Prix": "15",
                 "Italy Grand Prix": "7",
-                "United States Grand Prix": "-2",
-                "Canada Grand Prix": "0"
+                "Canada Grand Prix": "0",
+                "Spain Grand Prix": "6",
+                "United States Grand Prix": "-2"
             }
         }
     },

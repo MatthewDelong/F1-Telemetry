@@ -41,7 +41,6 @@
     },
     "fastLaps": {
         "1975": {
-            "Spain Grand Prix": -1,
             "Belgium Grand Prix": -1,
             "Swedish Grand Prix": -1,
             "Netherlands Grand Prix": -1,
@@ -50,6 +49,7 @@
             "German Grand Prix": -1,
             "Austria Grand Prix": -1,
             "Italy Grand Prix": -1,
+            "Spain Grand Prix": -1,
             "United States Grand Prix": -1
         }
     },
@@ -64,9 +64,6 @@
         "1975": {
             "year": "1975",
             "pos": {
-                "Spain Grand Prix": {
-                    "points": 0
-                },
                 "Belgium Grand Prix": {
                     "points": 0
                 },
@@ -91,6 +88,9 @@
                 "Italy Grand Prix": {
                     "points": 1
                 },
+                "Spain Grand Prix": {
+                    "points": 0
+                },
                 "United States Grand Prix": {
                     "points": 1
                 }
@@ -100,7 +100,6 @@
     "racePosition": {
         "1975": {
             "positions": {
-                "Spain Grand Prix": "7",
                 "Belgium Grand Prix": "19",
                 "Swedish Grand Prix": "6",
                 "Netherlands Grand Prix": "7",
@@ -109,6 +108,7 @@
                 "German Grand Prix": "13",
                 "Austria Grand Prix": "15",
                 "Italy Grand Prix": "23",
+                "Spain Grand Prix": "7",
                 "United States Grand Prix": "19"
             }
         }
@@ -121,7 +121,6 @@
     "positionsGainLost": {
         "1975": {
             "positions": {
-                "Spain Grand Prix": "11",
                 "Belgium Grand Prix": "-12",
                 "Swedish Grand Prix": "11",
                 "Netherlands Grand Prix": "0",
@@ -130,6 +129,7 @@
                 "German Grand Prix": "4",
                 "Austria Grand Prix": "1",
                 "Italy Grand Prix": "-17",
+                "Spain Grand Prix": "11",
                 "United States Grand Prix": "-2"
             }
         }

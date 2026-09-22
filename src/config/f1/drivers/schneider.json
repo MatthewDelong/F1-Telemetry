@@ -44,11 +44,11 @@
     },
     "DNFs": {
         "1988": {
-            "Mexican Grand Prix": "Engine",
             "French Grand Prix": "Gearbox",
             "Belgium Grand Prix": "Gearbox",
             "Italy Grand Prix": "Engine",
-            "Japan Grand Prix": "Driver unwell"
+            "Japan Grand Prix": "Driver unwell",
+            "Mexico Grand Prix": "Engine"
         },
         "1989": {
             "Brazil Grand Prix": "Collision",
@@ -58,12 +58,12 @@
     },
     "fastLaps": {
         "1988": {
-            "Mexican Grand Prix": -1,
             "French Grand Prix": -1,
             "German Grand Prix": -1,
             "Belgium Grand Prix": -1,
             "Italy Grand Prix": -1,
-            "Japan Grand Prix": -1
+            "Japan Grand Prix": -1,
+            "Mexico Grand Prix": -1
         },
         "1989": {
             "Brazil Grand Prix": -1,
@@ -91,9 +91,6 @@
         "1988": {
             "year": "1988",
             "pos": {
-                "Mexican Grand Prix": {
-                    "points": 0
-                },
                 "French Grand Prix": {
                     "points": 0
                 },
@@ -107,6 +104,9 @@
                     "points": 0
                 },
                 "Japan Grand Prix": {
+                    "points": 0
+                },
+                "Mexico Grand Prix": {
                     "points": 0
                 }
             }
@@ -134,12 +134,12 @@
     "racePosition": {
         "1988": {
             "positions": {
-                "Mexican Grand Prix": "21",
                 "French Grand Prix": "19",
                 "German Grand Prix": "12",
                 "Belgium Grand Prix": "13",
                 "Italy Grand Prix": "17",
-                "Japan Grand Prix": "26"
+                "Japan Grand Prix": "26",
+                "Mexico Grand Prix": "21"
             }
         },
         "1989": {
@@ -168,12 +168,12 @@
     "positionsGainLost": {
         "1988": {
             "positions": {
-                "Mexican Grand Prix": "-6",
                 "French Grand Prix": "2",
                 "German Grand Prix": "10",
                 "Belgium Grand Prix": "12",
                 "Italy Grand Prix": "-2",
-                "Japan Grand Prix": "-1"
+                "Japan Grand Prix": "-1",
+                "Mexico Grand Prix": "-6"
             }
         },
         "1989": {
