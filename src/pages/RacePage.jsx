@@ -135,16 +135,36 @@ export function RacePage() {
         const response = await fetchWithPersistentCache(
           `${BASE_F1_URL}races/racesbyMK.json`,
         );
-        if (response && response[raceId]) {
-          setYear(response[raceId]["year"]);
+
+        let targetMk = raceId;
+        
+        // If raceId is a string like "bahrain" or "americas", find the most recent meeting key using canonical locations
+        if (response && isNaN(Number(raceId))) {
+          const canonicalRaceId = locationMaps[raceId.toLowerCase()] || raceId.toLowerCase();
+          
+          const match = Object.entries(response).reverse().find(([mk, r]) => {
+            const loc = r.location ? r.location.toLowerCase() : "";
+            const canonicalLocation = locationMaps[loc] || loc;
+            return canonicalLocation === canonicalRaceId || 
+                   (r.raceName && r.raceName.toLowerCase().includes(raceId.replace(/_/g, " ")));
+          });
+          
+          if (match) {
+            targetMk = match[0];
+          }
+        }
+
+        if (response && response[targetMk]) {
+          setYear(response[targetMk]["year"]);
           setLocation(
-            response[raceId]["location"]
-              ? response[raceId]["location"].toLowerCase()
+            response[targetMk]["location"]
+              ? response[targetMk]["location"].toLowerCase()
               : null,
           );
-          setRaceName(response[raceId]["raceName"]);
+          setRaceName(response[targetMk]["raceName"]);
+          setMeetingKey(targetMk);
         } else if (isNaN(Number(raceId))) {
-          // Fallback for future races (preview mode without telemetry)
+          // Fallback for completely future/unknown races (e.g., madrid) - preview mode without telemetry
           setYear(new Date().getFullYear() + (raceId === "madrid" ? 1 : 0));
           setLocation(raceId.toLowerCase());
           
@@ -158,9 +178,7 @@ export function RacePage() {
       } catch (err) {
         console.error("Error fetching by meeting key:", err);
       } finally {
-        // Only set false if we didn't successfully set raceName
-        // If we set raceName, fetchData() will take over and handle loading state
-        if (!response || (!response[raceId] && !isNaN(Number(raceId)))) {
+        if (!response || (!response[raceId] && isNaN(Number(raceId)) && !meetingKey)) {
           setIsLoading(false);
         }
       }
