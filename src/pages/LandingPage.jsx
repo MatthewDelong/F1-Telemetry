@@ -553,11 +553,11 @@ export function LandingPage() {
       </section>
 
       <section className="snap-start scroll-mt-24 relative bg-neutral-950 px-4 py-8 overflow-hidden w-full h-[100dvh] flex items-center justify-center flex-col">
-        <div className="absolute top-8 z-20 flex gap-4 bg-black/60 p-2 rounded-full backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)]">
-           <button onClick={() => setGlobeYear(2026)} className={`px-6 py-2 rounded-full text-sm font-bold tracking-wider uppercase transition-colors ${globeYear === 2026 ? 'bg-[#e10600] text-white' : 'text-neutral-400 hover:text-white'}`}>2026 Season</button>
-           <button onClick={() => setGlobeYear(2027)} className={`px-6 py-2 rounded-full text-sm font-bold tracking-wider uppercase transition-colors ${globeYear === 2027 ? 'bg-[#e10600] text-white' : 'text-neutral-400 hover:text-white'}`}>2027 Preview</button>
-        </div>
-        <div className="w-[95%] max-w-[1600px] mx-auto h-[80vh] mt-8">
+        <div className="w-[95%] max-w-[1600px] mx-auto h-[80vh] mt-8 relative">
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 flex gap-4 bg-black/60 p-2 rounded-full backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)]">
+             <button onClick={() => setGlobeYear(2026)} className={`px-6 py-2 rounded-full text-sm font-bold tracking-wider uppercase transition-colors ${globeYear === 2026 ? 'bg-[#e10600] text-white' : 'text-neutral-400 hover:text-white'}`}>2026 Season</button>
+             <button onClick={() => setGlobeYear(2027)} className={`px-6 py-2 rounded-full text-sm font-bold tracking-wider uppercase transition-colors ${globeYear === 2027 ? 'bg-[#e10600] text-white' : 'text-neutral-400 hover:text-white'}`}>2027 Preview</button>
+          </div>
           <F1GlobeWidget
             key={globeYear}
             year={globeYear}

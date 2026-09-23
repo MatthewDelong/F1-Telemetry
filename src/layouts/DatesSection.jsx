@@ -58,19 +58,46 @@ const DatesSection = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
-                <div className="w-full h-full absolute inset-0">
-                  <ProceduralTrackBackground trackKey={selectedTrack2026} />
+                <div className="w-full h-full absolute inset-0 opacity-40">
+                  <ProceduralTrackBackground trackKey={selectedTrack2026.circuitKey ? selectedTrack2026.circuitKey.split('.').pop() : selectedTrack2026.country?.toLowerCase()} />
                 </div>
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-6 z-20">
-                  <div className="text-2xl md:text-4xl font-black italic tracking-widest text-[#e10600] uppercase drop-shadow-[0_4px_10px_rgba(0,0,0,1)] pointer-events-none">
-                    {selectedTrack2026.replace(/_/g, ' ')}
+                
+                <div className="absolute z-20 flex flex-col items-center w-full max-w-2xl px-4 pointer-events-none">
+                  <div className="flex items-center justify-center gap-6 mb-6">
+                    <img
+                      src={`/images/flags/${selectedTrack2026.flag}`}
+                      alt={selectedTrack2026.country}
+                      className="w-20 h-auto rounded shadow-[0_4px_12px_rgba(0,0,0,0.5)] border border-white/10"
+                    />
+                    <div className="text-4xl md:text-5xl font-black italic tracking-widest text-white uppercase drop-shadow-[0_4px_10px_rgba(0,0,0,1)]">
+                      {selectedTrack2026.displayName}
+                    </div>
                   </div>
+                  
+                  <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-neutral-300 font-bold text-lg md:text-xl uppercase tracking-widest bg-black/60 px-8 py-4 rounded-2xl backdrop-blur-md border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+                    <div className="flex items-center gap-3">
+                      <span className="text-[#e10600]">Date:</span> {selectedTrack2026.dateRange || selectedTrack2026.date}
+                    </div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-neutral-600"></div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-[#e10600]">Location:</span> {selectedTrack2026.city}
+                    </div>
+                    {selectedTrack2026.isSprint && (
+                       <>
+                         <div className="w-1.5 h-1.5 rounded-full bg-neutral-600"></div>
+                         <div className="text-purple-400 font-black">Sprint Weekend</div>
+                       </>
+                    )}
+                  </div>
+                </div>
+
+                <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-6 z-20">
                   <Link
-                    to={`/race/${selectedTrack2026.toLowerCase()}`}
-                    className="group flex items-center gap-3 px-8 py-4 bg-[#e10600] hover:bg-white text-white hover:text-[#e10600] font-black text-sm uppercase tracking-widest rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(225,6,0,0.4)] hover:shadow-[0_0_30px_rgba(255,255,255,0.6)]"
+                    to={`/race/${selectedTrack2026.circuitKey ? selectedTrack2026.circuitKey.split('.').pop() : selectedTrack2026.city.split(',')[0].toLowerCase().replace(/ /g, '_')}`}
+                    className="group flex items-center gap-3 px-10 py-5 bg-[#e10600] hover:bg-white text-white hover:text-[#e10600] font-black text-lg uppercase tracking-widest rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(225,6,0,0.4)] hover:shadow-[0_0_30px_rgba(255,255,255,0.6)] pointer-events-auto"
                   >
                     <span>Circuit Details</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
                   </Link>
@@ -136,19 +163,46 @@ const DatesSection = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
-                <div className="w-full h-full absolute inset-0">
-                  <ProceduralTrackBackground trackKey={selectedTrack2027} />
+                <div className="w-full h-full absolute inset-0 opacity-40">
+                  <ProceduralTrackBackground trackKey={selectedTrack2027.circuitKey ? selectedTrack2027.circuitKey.split('.').pop() : selectedTrack2027.city.split(',')[0].toLowerCase().replace(/ /g, "_")} />
                 </div>
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-6 z-20">
-                  <div className="text-2xl md:text-4xl font-black italic tracking-widest text-[#e10600] uppercase drop-shadow-[0_4px_10px_rgba(0,0,0,1)] pointer-events-none">
-                    {selectedTrack2027.replace(/_/g, ' ')}
+                
+                <div className="absolute z-20 flex flex-col items-center w-full max-w-2xl px-4 pointer-events-none">
+                  <div className="flex items-center justify-center gap-6 mb-6">
+                    <img
+                      src={`/images/flags/${selectedTrack2027.flag}`}
+                      alt={selectedTrack2027.country}
+                      className="w-20 h-auto rounded shadow-[0_4px_12px_rgba(0,0,0,0.5)] border border-white/10"
+                    />
+                    <div className="text-4xl md:text-5xl font-black italic tracking-widest text-white uppercase drop-shadow-[0_4px_10px_rgba(0,0,0,1)]">
+                      {selectedTrack2027.displayName}
+                    </div>
                   </div>
+                  
+                  <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-neutral-300 font-bold text-lg md:text-xl uppercase tracking-widest bg-black/60 px-8 py-4 rounded-2xl backdrop-blur-md border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+                    <div className="flex items-center gap-3">
+                      <span className="text-[#e10600]">Date:</span> {selectedTrack2027.dateRange || selectedTrack2027.date}
+                    </div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-neutral-600"></div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-[#e10600]">Location:</span> {selectedTrack2027.city}
+                    </div>
+                    {selectedTrack2027.isSprint && (
+                       <>
+                         <div className="w-1.5 h-1.5 rounded-full bg-neutral-600"></div>
+                         <div className="text-purple-400 font-black">Sprint Weekend</div>
+                       </>
+                    )}
+                  </div>
+                </div>
+
+                <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-6 z-20">
                   <Link
-                    to={`/race/${selectedTrack2027.toLowerCase()}`}
-                    className="group flex items-center gap-3 px-8 py-4 bg-[#e10600] hover:bg-white text-white hover:text-[#e10600] font-black text-sm uppercase tracking-widest rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(225,6,0,0.4)] hover:shadow-[0_0_30px_rgba(255,255,255,0.6)]"
+                    to={`/race/${selectedTrack2027.circuitKey ? selectedTrack2027.circuitKey.split('.').pop() : selectedTrack2027.city.split(',')[0].toLowerCase().replace(/ /g, '_')}`}
+                    className="group flex items-center gap-3 px-10 py-5 bg-[#e10600] hover:bg-white text-white hover:text-[#e10600] font-black text-lg uppercase tracking-widest rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(225,6,0,0.4)] hover:shadow-[0_0_30px_rgba(255,255,255,0.6)] pointer-events-auto"
                   >
                     <span>Circuit Details</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
                   </Link>

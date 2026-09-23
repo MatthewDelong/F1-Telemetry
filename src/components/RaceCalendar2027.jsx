@@ -252,8 +252,7 @@ const RaceCalendar2027 = ({ onRaceClick }) => {
       key={race.isTesting ? "testing" : race.round}
       onClick={() => {
         if (onRaceClick) {
-          const cityName = race.city.split(',')[0].toLowerCase();
-          onRaceClick(cityName);
+          onRaceClick(race);
         }
       }}
       className={`group flex items-center rounded-lg py-4 px-6 border-l-[3px] cursor-pointer hover:bg-white/10 transition-colors duration-200 ${

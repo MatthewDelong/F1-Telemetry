@@ -474,8 +474,7 @@ const RaceCalendar = ({ onRaceClick }) => {
       key={race.round}
       onClick={() => {
         if (onRaceClick) {
-          const circuitKeyStr = race.circuitKey ? race.circuitKey.split('.').pop() : race.country;
-          onRaceClick(circuitKeyStr);
+          onRaceClick(race);
         }
       }}
       className="group flex items-center bg-white/5 rounded-lg py-4 px-6 border-l-[3px] border-transparent cursor-pointer hover:bg-white/10 hover:border-white/20 transition-colors duration-200"
