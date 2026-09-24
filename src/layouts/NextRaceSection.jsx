@@ -430,7 +430,7 @@ const NextRaceSection = () => {
   }, [currentRaceData, countDownDate]);
 
   return (
-    <section className="min-h-screen snap-start flex flex-col items-center justify-center px-16 bg-black relative pt-[100px] pb-16 overflow-hidden border-t border-neutral-900">
+    <section className="min-h-screen snap-start flex flex-col items-center justify-center px-4 md:px-16 bg-black relative pt-[100px] pb-2 md:pb-16 overflow-hidden border-t border-neutral-900">
       {/* Background with blurred image and gradient overlay */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#4f63e3] rounded-full blur-[150px] opacity-20"></div>
@@ -446,13 +446,13 @@ const NextRaceSection = () => {
 
       <div className="max-w-5xl w-full mx-auto z-10">
         <motion.div
-          className="f1-next-race bg-black/40 backdrop-blur-md border border-white/10 rounded-[2.4rem] shadow-[0_0_40px_rgba(255,255,255,0.05)] px-4 py-8 sm:p-12"
+          className="f1-next-race bg-black/40 backdrop-blur-md border border-white/10 rounded-[2.4rem] shadow-[0_0_40px_rgba(255,255,255,0.05)] px-2 py-4 sm:px-4 sm:py-8 sm:p-12"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="next-race-header text-center py-10 mb-8">
+          <div className="next-race-header text-center py-4 mb-4 md:py-10 md:mb-8">
             <h2 className="heading-2 uppercase">
               <i className="bi bi-calendar-event me-2 text-2xl relative -top-1"></i> Next Race
             </h2>
@@ -460,7 +460,7 @@ const NextRaceSection = () => {
 
           <div className="next-race-content flex flex-col items-center text-center pt-6 pb-10">
             {/* Flag at the top center */}
-            <div className="race-flag mb-6">
+            <div className="race-flag mb-2 md:mb-6">
               <img
                 src={`/images/flags/${currentRaceData.flag}`}
                 alt={currentRaceData.country}
@@ -469,8 +469,8 @@ const NextRaceSection = () => {
             </div>
 
             <div className="race-details w-full">
-              <h4 className="mb-2">{currentRaceData.raceName}</h4>
-              <p className="race-circuit mb-6">{currentRaceData.circuitName}</p>
+              <h4 className="mb-1 md:mb-2">{currentRaceData.raceName}</h4>
+              <p className="race-circuit mb-3 md:mb-6">{currentRaceData.circuitName}</p>
 
               <div className="race-datetime flex flex-col items-center gap-4">
                 <div className="time-toggle mb-2">
@@ -512,7 +512,7 @@ const NextRaceSection = () => {
               </div>
 
               {/* Weather Display Area */}
-              <div className="race-weather max-w-xl mx-auto mt-8">
+              <div className="race-weather max-w-xl mx-auto mt-4 md:mt-8">
                 {loadingWeather ? (
                   <div className="weather-loading py-4">
                     <span
@@ -524,7 +524,7 @@ const NextRaceSection = () => {
                 ) : weather ? (
                   <>
                     <span className="weather-title">Current Conditions</span>
-                    <div className="flex flex-col items-center gap-4 py-4">
+                    <div className="flex flex-col items-center gap-2 md:gap-4 py-2 md:py-4">
                       <div className="weather-display">
                         <img
                           src={`https://openweathermap.org/img/wn/${weather.icon}.png`}
@@ -545,7 +545,7 @@ const NextRaceSection = () => {
                       {forecast.length > 0 && (
                         <div className="w-full mt-4">
                           <hr className="weather-divider mx-auto" />
-                          <div className="weather-forecast justify-center mt-6">
+                          <div className="weather-forecast justify-center mt-3 md:mt-6">
                             {forecast.map((day) => (
                               <div key={day.dt} className="forecast-day">
                                 <span className="forecast-label">
@@ -584,7 +584,7 @@ const NextRaceSection = () => {
             </div>
 
             {/* Countdown at the bottom center */}
-            <div className="race-countdown mt-10 w-full flex justify-center">
+            <div className="race-countdown mt-4 md:mt-10 w-full flex justify-center">
               {raceStatus === "upcoming" ? (
                 <div className="countdown-timer">
                   <div className="countdown-item">

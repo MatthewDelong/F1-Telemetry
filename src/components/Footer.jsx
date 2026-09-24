@@ -18,7 +18,7 @@ export const Footer = ({ className }) => {
   return (
     <footer
       className={classNames(
-        "bg-black border-t border-white/10 text-white pb-10 w-full relative z-20",
+        "bg-black border-t border-white/10 text-white pb-10 w-full relative z-20 snap-start scroll-mt-[100px]",
         className,
         {
           hidden: hideFooter,
@@ -68,9 +68,7 @@ export const Footer = ({ className }) => {
 
         {/* Right side: Page path links */}
         <div className="flex flex-col md:flex-row md:items-start gap-6 uppercase mt-8 xl:mt-0 flex-wrap justify-center">
-          <div
-            className="flex flex-col gap-8 p-12 rounded-2xl bg-white/5 backdrop-blur-md shadow-xl min-w-[220px] hover:bg-white/10 transition-colors duration-300 border border-white/10"
-          >
+          <div className="flex flex-col gap-8 p-12 rounded-2xl bg-white/5 backdrop-blur-md shadow-xl min-w-[220px] hover:bg-white/10 transition-colors duration-300 border border-white/10">
             <a
               href="https://www.formula1.com/"
               target="_blank"
@@ -96,9 +94,7 @@ export const Footer = ({ className }) => {
             </a>
           </div>
 
-          <div
-            className="flex flex-col gap-8 p-12 rounded-2xl bg-white/5 backdrop-blur-md shadow-xl min-w-[220px] hover:bg-white/10 transition-colors duration-300 border border-white/10"
-          >
+          <div className="flex flex-col gap-8 p-12 rounded-2xl bg-white/5 backdrop-blur-md shadow-xl min-w-[220px] hover:bg-white/10 transition-colors duration-300 border border-white/10">
             <a
               href="https://www.fiaformula2.com/"
               target="_blank"
@@ -124,9 +120,7 @@ export const Footer = ({ className }) => {
             </a>
           </div>
 
-          <div
-            className="flex flex-col gap-8 p-12 rounded-2xl bg-white/5 backdrop-blur-md shadow-xl min-w-[220px] hover:bg-white/10 transition-colors duration-300 border border-white/10"
-          >
+          <div className="flex flex-col gap-8 p-12 rounded-2xl bg-white/5 backdrop-blur-md shadow-xl min-w-[220px] hover:bg-white/10 transition-colors duration-300 border border-white/10">
             <a
               href="https://www.f1academy.com/"
               target="_blank"
@@ -152,9 +146,7 @@ export const Footer = ({ className }) => {
             </a>
           </div>
 
-          <div
-            className="flex flex-col gap-8 p-12 rounded-2xl bg-white/5 backdrop-blur-md shadow-xl min-w-[200px] hover:bg-white/10 transition-colors duration-300 border border-white/10"
-          >
+          <div className="flex flex-col gap-8 p-12 rounded-2xl bg-white/5 backdrop-blur-md shadow-xl min-w-[200px] hover:bg-white/10 transition-colors duration-300 border border-white/10">
             <div className="flex flex-col items-center gap-4 mt-2 mb-4">
               <div className="flex items-center justify-center h-[20px] lg:h-[28px] mb-1">
                 <p className="uppercase tracking-xs gradient-text-electric-blue text-lg font-bold">

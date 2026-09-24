@@ -166,9 +166,15 @@ body::-webkit-scrollbar {
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  scroll-snap-type: y mandatory;
+  scroll-snap-type: y proximity;
   -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable;
+}
+
+@media (min-width: 768px) {
+  .snap-container {
+    scroll-snap-type: y mandatory;
+  }
 }
 
 .standard-scroll-container {
