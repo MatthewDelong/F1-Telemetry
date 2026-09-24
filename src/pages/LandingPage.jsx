@@ -264,7 +264,11 @@ export function LandingPage() {
     return (
       <div
         className="flex flex-col items-center group transition-transform duration-300 ease-[cubic-bezier(0.17,0.55,0.55,1)] hover:-translate-y-[1rem] cursor-pointer"
-        style={{ position: "relative", "--driver-color": color !== "#ffffff" ? color : "rgba(255,255,255,0.5)" }}
+        style={{
+          position: "relative",
+          "--driver-color":
+            color !== "#ffffff" ? color : "rgba(255,255,255,0.5)",
+        }}
         onClick={() => navigateToRaceResult(raceData)}
       >
         {/* Headshot */}
@@ -298,9 +302,10 @@ export function LandingPage() {
           style={{
             width: "100%",
             height: "20px",
-            background: color !== "#ffffff" 
-              ? `linear-gradient(180deg, color-mix(in srgb, ${color} 40%, #666) 0%, color-mix(in srgb, ${color} 10%, #3a3a3a) 100%)` 
-              : "linear-gradient(180deg, #666 0%, #3a3a3a 100%)",
+            background:
+              color !== "#ffffff"
+                ? `linear-gradient(180deg, color-mix(in srgb, ${color} 40%, #666) 0%, color-mix(in srgb, ${color} 10%, #3a3a3a) 100%)`
+                : "linear-gradient(180deg, #666 0%, #3a3a3a 100%)",
             transform: "perspective(300px) rotateX(45deg)",
             transformOrigin: "bottom",
             borderTop: "1px solid rgba(255,255,255,0.4)",
@@ -312,12 +317,14 @@ export function LandingPage() {
           style={{
             width: "100%",
             minHeight: driver.position === 1 ? "115px" : "95px",
-            background: color !== "#ffffff" 
-              ? `radial-gradient(circle at 50% 100%, color-mix(in srgb, ${color} 30%, transparent) 0%, rgba(0,0,0,0) 80%), linear-gradient(180deg, rgba(42,42,42,0.4) 0%, rgba(10,10,10,0.6) 100%)`
-              : "linear-gradient(180deg, rgba(42,42,42,0.4) 0%, rgba(10,10,10,0.6) 100%)",
-            boxShadow: color !== "#ffffff" 
-              ? `inset 0 -5px 15px color-mix(in srgb, ${color} 20%, transparent)` 
-              : undefined,
+            background:
+              color !== "#ffffff"
+                ? `radial-gradient(circle at 50% 100%, color-mix(in srgb, ${color} 30%, transparent) 0%, rgba(0,0,0,0) 80%), linear-gradient(180deg, rgba(42,42,42,0.4) 0%, rgba(10,10,10,0.6) 100%)`
+                : "linear-gradient(180deg, rgba(42,42,42,0.4) 0%, rgba(10,10,10,0.6) 100%)",
+            boxShadow:
+              color !== "#ffffff"
+                ? `inset 0 -5px 15px color-mix(in srgb, ${color} 20%, transparent)`
+                : undefined,
             borderLeft: "1px solid rgba(255,255,255,0.1)",
             borderRight: "1px solid rgba(255,255,255,0.1)",
             borderBottom: "1px solid rgba(255,255,255,0.1)",
@@ -436,11 +443,18 @@ export function LandingPage() {
   };
 
   const latestResultsLayout = () => {
-    const circuitIdToUse = raceData?.circuitId || raceData?.Circuit?.circuitId || raceData?.location?.toLowerCase() || raceData?.country?.toLowerCase();
-    console.log("DEBUG: LandingPage latestResultsLayout", { raceData, circuitIdToUse });
+    const circuitIdToUse =
+      raceData?.circuitId ||
+      raceData?.Circuit?.circuitId ||
+      raceData?.location?.toLowerCase() ||
+      raceData?.country?.toLowerCase();
+    console.log("DEBUG: LandingPage latestResultsLayout", {
+      raceData,
+      circuitIdToUse,
+    });
     return (
       <>
-        <div className="flex flex-col items-center z-10 w-full">
+        <div className="flex flex-col items-center z-10 w-full mt-24 md:mt-0">
           <p className="text-xl tracking-xl uppercase gradient-text-light mb-16">
             Latest F1 Race Results
           </p>
@@ -489,8 +503,13 @@ export function LandingPage() {
           </Button>
         </div>
 
-        <div className="bg-neutral-950/40 absolute inset-0 w-full h-full overflow-hidden" style={{ opacity: 0.5 }}>
-          {circuitIdToUse && <ProceduralTrackBackground trackKey={circuitIdToUse} />}
+        <div
+          className="bg-neutral-950/40 absolute inset-0 w-full h-full overflow-hidden"
+          style={{ opacity: 0.5 }}
+        >
+          {circuitIdToUse && (
+            <ProceduralTrackBackground trackKey={circuitIdToUse} />
+          )}
         </div>
       </>
     );
@@ -506,7 +525,7 @@ export function LandingPage() {
 
   return (
     <div className="snap-container" ref={snapContainerRef}>
-      <section className="bg-black relative h-[100dvh] snap-start overflow-hidden flex items-center justify-center">
+      <section className="bg-black relative h-[100dvh] snap-start overflow-hidden flex items-center justify-start md:justify-center pt-[100px] md:pt-0">
         <img
           src={heroImageSource}
           alt=""
@@ -527,7 +546,7 @@ export function LandingPage() {
           }}
         />
 
-        <div className="mx-auto text-center px-8 sm:px-16 py-12 relative z-10 bg-black/40 backdrop-blur-md border border-white/10 rounded-[2.4rem] shadow-[0_0_40px_rgba(255,255,255,0.05)] w-[90%] max-w-4xl">
+        <div className="mx-auto text-center px-8 sm:px-16 py-12 relative z-10 bg-black/40 backdrop-blur-md border border-white/10 rounded-[2.4rem] shadow-[0_0_40px_rgba(255,255,255,0.05)] w-[90%] max-w-4xl mt-20 md:mt-0">
           <h1 className="heading-1 mb-16 leading-none">
             Read the Race. <br />
             Not Just the Results.
@@ -548,29 +567,41 @@ export function LandingPage() {
           </div>
         </div>
       </section>
-      <section className="h-[100dvh] snap-start relative flex items-center justify-center bg-neutral-950 bg-glow-dark-bottom overflow-hidden pt-[64px]">
+      <section className="h-[100dvh] snap-start relative flex items-center justify-start md:justify-center bg-neutral-950 bg-glow-dark-bottom overflow-hidden pt-[100px] md:pt-[64px]">
         {latestResultsLayout()}
       </section>
 
       <section className="snap-start scroll-mt-24 relative bg-neutral-950 px-4 py-8 overflow-hidden w-full h-[100dvh] flex items-center justify-center flex-col">
-        <div className="w-[95%] max-w-[1600px] mx-auto h-[80vh] mt-8 relative">
-          <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 flex gap-4 bg-black/60 p-2 rounded-full backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)]">
-             <button onClick={() => setGlobeYear(2026)} className={`px-6 py-2 rounded-full text-sm font-bold tracking-wider uppercase transition-colors ${globeYear === 2026 ? 'bg-[#e10600] text-white' : 'text-neutral-400 hover:text-white'}`}>2026 Season</button>
-             <button onClick={() => setGlobeYear(2027)} className={`px-6 py-2 rounded-full text-sm font-bold tracking-wider uppercase transition-colors ${globeYear === 2027 ? 'bg-[#e10600] text-white' : 'text-neutral-400 hover:text-white'}`}>2027 Preview</button>
+        <div className="w-[95%] max-w-[1600px] mx-auto h-[70vh] md:h-[80vh] mt-24 md:mt-16 relative">
+          <div className="absolute bottom-6 right-6 md:bottom-auto md:top-4 md:right-auto md:left-1/2 md:-translate-x-1/2 z-20 flex flex-col md:flex-row gap-2 md:gap-4 bg-black/60 p-2 rounded-xl md:rounded-full backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)]">
+            <button
+              onClick={() => setGlobeYear(2026)}
+              className={`px-4 md:px-6 py-2 rounded-lg md:rounded-full text-xs md:text-sm font-bold tracking-wider uppercase transition-colors ${globeYear === 2026 ? "bg-[#e10600] text-white" : "text-neutral-400 hover:text-white"}`}
+            >
+              2026 Season
+            </button>
+            <button
+              onClick={() => setGlobeYear(2027)}
+              className={`px-4 md:px-6 py-2 rounded-lg md:rounded-full text-xs md:text-sm font-bold tracking-wider uppercase transition-colors ${globeYear === 2027 ? "bg-[#e10600] text-white" : "text-neutral-400 hover:text-white"}`}
+            >
+              2027 Preview
+            </button>
           </div>
           <F1GlobeWidget
             key={globeYear}
             year={globeYear}
-            races={Object.entries(globeYear === 2026 ? RACES_DATA : RACES_DATA_2027)
+            races={Object.entries(
+              globeYear === 2026 ? RACES_DATA : RACES_DATA_2027,
+            )
               .map(([name, data]) => ({
                 ...data,
                 name: data.globeName || name,
                 circuit: data.displayName || data.circuitKey,
               }))
               .sort((a, b) => {
-                 if (a.round === 'T') return -1;
-                 if (b.round === 'T') return 1;
-                 return a.round - b.round;
+                if (a.round === "T") return -1;
+                if (b.round === "T") return 1;
+                return a.round - b.round;
               })}
           />
         </div>

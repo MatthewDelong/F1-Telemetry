@@ -158,7 +158,7 @@ export const Footer = ({ className }) => {
             <div className="flex flex-col items-center gap-4 mt-2 mb-4">
               <div className="flex items-center justify-center h-[20px] lg:h-[28px] mb-1">
                 <p className="uppercase tracking-xs gradient-text-electric-blue text-lg font-bold">
-                  LEGAL
+                  INFO & LEGAL
                 </p>
               </div>
               <div className="flex items-center justify-center h-[24px] lg:h-[32px]">

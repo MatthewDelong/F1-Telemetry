@@ -398,7 +398,7 @@ const NextRaceSection = () => {
             condition: data.weather[0].main,
             description: data.weather[0].description,
             icon: data.weather[0].icon,
-            location: currentRaceData.displayName,
+            location: currentRaceData.city.split(',')[0],
           });
         }
 
