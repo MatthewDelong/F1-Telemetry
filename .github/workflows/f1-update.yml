@@ -70,4 +70,5 @@ jobs:
           git add -f backend/database.sqlite
           git add src/config/f1/
           git commit -m "Automated F1 data update (Database + JSON files)" || echo "No changes to commit"
+          git pull --rebase origin main
           git push
