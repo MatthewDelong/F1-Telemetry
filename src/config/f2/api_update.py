@@ -184,9 +184,20 @@ def main():
     unique_sessions = {}
     for obj in all_json_objects:
         name = obj.get('shortName')
-        if name in ['Sprint Race', 'Feature Race', 'Qualifying']:
-            if not unique_sessions.get(name) or len(obj.get('results', [])) > len(unique_sessions[name].get('results', [])):
-                unique_sessions[name] = obj
+        if not name:
+            continue
+            
+        session_type = None
+        if 'Sprint Race' in name or 'Race 1' in name:
+            session_type = 'Sprint Race'
+        elif 'Feature Race' in name or 'Race 2' in name:
+            session_type = 'Feature Race'
+        elif 'Qualifying' in name:
+            session_type = 'Qualifying'
+            
+        if session_type:
+            if not unique_sessions.get(session_type) or len(obj.get('results', [])) > len(unique_sessions[session_type].get('results', [])):
+                unique_sessions[session_type] = obj
             
     if not unique_sessions:
         print("No sessions found on the page!")
@@ -200,12 +211,6 @@ def main():
         
     if 'Feature Race' in unique_sessions:
         feature_data = [map_result(d) for d in unique_sessions['Feature Race'].get('results', [])]
-        
-    if 'Race 2' in unique_sessions and not feature_data:
-        feature_data = [map_result(d) for d in unique_sessions['Race 2'].get('results', [])]
-        
-    if 'Race 1' in unique_sessions and not sprint_data:
-        sprint_data = [map_result(d) for d in unique_sessions['Race 1'].get('results', [])]
         
     if not sprint_data and not feature_data:
         print("No Sprint Race or Feature Race results found in the data.")

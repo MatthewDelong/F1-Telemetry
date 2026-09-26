@@ -52,7 +52,7 @@ export const fetchDriverInfo = async (year, championshipLevel) => {
 const enrichDriverData = (raceData, driverInfo) => {
   // console.log('enrichDriverData', raceData, driverInfo);
   return raceData.map(driver => {
-    const driverDetails = driverInfo[driver.number];
+    const driverDetails = driverInfo[driver.driverId] || driverInfo[driver.number];
     if (!driverDetails || !driverDetails.Driver || !driverDetails.Constructor) {
       console.error("enrichDriverData missing driver details", {
         driverNumber: driver.number,
