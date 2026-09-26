@@ -2,7 +2,7 @@
     "driverId": "alonso",
     "driverCode": "ALO",
     "driverNumber": "14",
-    "lastUpdate": "2026-09-21T23:02:17.269372",
+    "lastUpdate": "2026-09-26T18:40:28.062737",
     "totalWins": 32,
     "totalPodiums": 106,
     "totalPoles": 23,
@@ -939,7 +939,8 @@
             "Hungary Grand Prix": "1:23.679",
             "Netherlands Grand Prix": "1:16.946",
             "Italy Grand Prix": "1:27.961",
-            "Spain Grand Prix": "1:39.003"
+            "Spain Grand Prix (Madrid)": "1:39.003",
+            "Spain Grand Prix": "1:25.366"
         }
     },
     "finalStandings": {
@@ -2492,6 +2493,9 @@
                 "Italy Grand Prix": {
                     "points": 3
                 },
+                "Spain Grand Prix (Madrid)": {
+                    "points": 3
+                },
                 "Spain Grand Prix": {
                     "points": 3
                 }
@@ -3029,7 +3033,8 @@
                 "Hungary Grand Prix": "14",
                 "Netherlands Grand Prix": "9",
                 "Italy Grand Prix": "21",
-                "Spain Grand Prix": "17"
+                "Spain Grand Prix (Madrid)": "17",
+                "Spain Grand Prix": "19"
             }
         }
     },
@@ -3547,7 +3552,8 @@
                 "Hungary Grand Prix": "16",
                 "Netherlands Grand Prix": "18",
                 "Italy Grand Prix": "21",
-                "Spain Grand Prix": "17"
+                "Spain Grand Prix (Madrid)": "17",
+                "Spain Grand Prix": "22"
             }
         }
     },
@@ -4020,7 +4026,8 @@
             "Hungary Grand Prix": 2,
             "Netherlands Grand Prix": 9,
             "Italy Grand Prix": 0,
-            "Spain Grand Prix": 0
+            "Spain Grand Prix (Madrid)": 0,
+            "Spain Grand Prix": 3
         }
     },
     "driverQualifyingTimes": {
@@ -6229,8 +6236,13 @@
                     "N/A",
                     "N/A"
                 ],
-                "Spain Grand Prix": [
+                "Spain Grand Prix (Madrid)": [
                     "1:35.388",
+                    "N/A",
+                    "N/A"
+                ],
+                "Spain Grand Prix": [
+                    "1:18.815",
                     "N/A",
                     "N/A"
                 ]

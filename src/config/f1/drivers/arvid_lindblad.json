@@ -2,7 +2,7 @@
     "driverId": "arvid_lindblad",
     "driverCode": "LIN",
     "driverNumber": "",
-    "lastUpdate": "2026-09-21T23:02:17.269242",
+    "lastUpdate": "2026-09-26T18:40:28.062607",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -55,14 +55,15 @@
             "Hungary Grand Prix": "1:25.931",
             "Netherlands Grand Prix": "1:16.653",
             "Italy Grand Prix": "1:26.028",
-            "Spain Grand Prix": "1:38.211"
+            "Spain Grand Prix (Madrid)": "1:38.211",
+            "Spain Grand Prix": "1:21.914"
         }
     },
     "finalStandings": {
         "2026": {
             "year": "2026",
             "position": "11",
-            "points": "31"
+            "points": "37"
         },
         "2025": {
             "year": "2025",
@@ -79,43 +80,46 @@
             "year": "2026",
             "pos": {
                 "Australia Grand Prix": {
-                    "points": 31
+                    "points": 37
                 },
                 "China Grand Prix": {
-                    "points": 31
+                    "points": 37
                 },
                 "Japan Grand Prix": {
-                    "points": 31
+                    "points": 37
                 },
                 "Miami Grand Prix": {
-                    "points": 31
+                    "points": 37
                 },
                 "Canada Grand Prix": {
-                    "points": 31
+                    "points": 37
                 },
                 "Monaco Grand Prix": {
-                    "points": 31
+                    "points": 37
                 },
                 "Austria Grand Prix": {
-                    "points": 31
+                    "points": 37
                 },
                 "Great Britain Grand Prix": {
-                    "points": 31
+                    "points": 37
                 },
                 "Belgium Grand Prix": {
-                    "points": 31
+                    "points": 37
                 },
                 "Hungary Grand Prix": {
-                    "points": 31
+                    "points": 37
                 },
                 "Netherlands Grand Prix": {
-                    "points": 31
+                    "points": 37
                 },
                 "Italy Grand Prix": {
-                    "points": 31
+                    "points": 37
+                },
+                "Spain Grand Prix (Madrid)": {
+                    "points": 37
                 },
                 "Spain Grand Prix": {
-                    "points": 31
+                    "points": 37
                 }
             }
         }
@@ -138,6 +142,7 @@
                 "Hungary Grand Prix": "10",
                 "Netherlands Grand Prix": "12",
                 "Italy Grand Prix": "8",
+                "Spain Grand Prix (Madrid)": "9",
                 "Spain Grand Prix": "9"
             }
         }
@@ -160,7 +165,8 @@
                 "Hungary Grand Prix": "9",
                 "Netherlands Grand Prix": "10",
                 "Italy Grand Prix": "9",
-                "Spain Grand Prix": "10"
+                "Spain Grand Prix (Madrid)": "10",
+                "Spain Grand Prix": "11"
             }
         }
     },
@@ -179,7 +185,8 @@
             "Hungary Grand Prix": -1,
             "Netherlands Grand Prix": -2,
             "Italy Grand Prix": 1,
-            "Spain Grand Prix": 1
+            "Spain Grand Prix (Madrid)": 1,
+            "Spain Grand Prix": 2
         }
     },
     "driverQualifyingTimes": {
@@ -248,10 +255,15 @@
                     "1:22.345",
                     "1:22.286"
                 ],
-                "Spain Grand Prix": [
+                "Spain Grand Prix (Madrid)": [
                     "1:34.340",
                     "1:33.204",
                     "1:33.041"
+                ],
+                "Spain Grand Prix": [
+                    "1:16.425",
+                    "1:15.840",
+                    "N/A"
                 ]
             }
         }
@@ -287,13 +299,13 @@
             "wins": 0.0,
             "podiums": 0.0,
             "poles": 0.0,
-            "points": 15.5
+            "points": 18.5
         },
         "std": {
             "wins": 0.0,
             "podiums": 0.0,
             "poles": 0.0,
-            "points": 15.5
+            "points": 18.5
         },
         "cv": {
             "wins": 0,

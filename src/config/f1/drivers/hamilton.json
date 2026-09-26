@@ -2,7 +2,7 @@
     "driverId": "hamilton",
     "driverCode": "HAM",
     "driverNumber": "44",
-    "lastUpdate": "2026-09-21T23:02:17.269495",
+    "lastUpdate": "2026-09-26T18:40:28.062835",
     "totalWins": 106,
     "totalPodiums": 207,
     "totalPoles": 107,
@@ -998,7 +998,8 @@
             "Hungary Grand Prix": "1:22.300",
             "Netherlands Grand Prix": "1:14.566",
             "Italy Grand Prix": "1:25.300",
-            "Spain Grand Prix": "1:39.839"
+            "Spain Grand Prix (Madrid)": "1:39.839",
+            "Spain Grand Prix": "1:20.122"
         }
     },
     "finalStandings": {
@@ -1100,7 +1101,7 @@
         "2026": {
             "year": "2026",
             "position": "3",
-            "points": "191"
+            "points": "199"
         }
     },
     "posAfterRace": {
@@ -2343,43 +2344,46 @@
             "year": "2026",
             "pos": {
                 "Australia Grand Prix": {
-                    "points": 191
+                    "points": 199
                 },
                 "China Grand Prix": {
-                    "points": 191
+                    "points": 199
                 },
                 "Japan Grand Prix": {
-                    "points": 191
+                    "points": 199
                 },
                 "Miami Grand Prix": {
-                    "points": 191
+                    "points": 199
                 },
                 "Canada Grand Prix": {
-                    "points": 191
+                    "points": 199
                 },
                 "Monaco Grand Prix": {
-                    "points": 191
+                    "points": 199
                 },
                 "Austria Grand Prix": {
-                    "points": 191
+                    "points": 199
                 },
                 "Great Britain Grand Prix": {
-                    "points": 191
+                    "points": 199
                 },
                 "Belgium Grand Prix": {
-                    "points": 191
+                    "points": 199
                 },
                 "Hungary Grand Prix": {
-                    "points": 191
+                    "points": 199
                 },
                 "Netherlands Grand Prix": {
-                    "points": 191
+                    "points": 199
                 },
                 "Italy Grand Prix": {
-                    "points": 191
+                    "points": 199
+                },
+                "Spain Grand Prix (Madrid)": {
+                    "points": 199
                 },
                 "Spain Grand Prix": {
-                    "points": 191
+                    "points": 199
                 }
             }
         }
@@ -2855,7 +2859,8 @@
                 "Hungary Grand Prix": "5",
                 "Netherlands Grand Prix": "4",
                 "Italy Grand Prix": "6",
-                "Spain Grand Prix": "22"
+                "Spain Grand Prix (Madrid)": "22",
+                "Spain Grand Prix": "1"
             }
         }
     },
@@ -3330,7 +3335,8 @@
                 "Hungary Grand Prix": "5",
                 "Netherlands Grand Prix": "5",
                 "Italy Grand Prix": "4",
-                "Spain Grand Prix": "4"
+                "Spain Grand Prix (Madrid)": "4",
+                "Spain Grand Prix": "2"
             }
         }
     },
@@ -3766,7 +3772,8 @@
             "Hungary Grand Prix": 0,
             "Netherlands Grand Prix": 1,
             "Italy Grand Prix": -2,
-            "Spain Grand Prix": -18
+            "Spain Grand Prix (Madrid)": -18,
+            "Spain Grand Prix": 1
         }
     },
     "driverQualifyingTimes": {
@@ -5808,10 +5815,15 @@
                     "1:22.516",
                     "1:22.011"
                 ],
-                "Spain Grand Prix": [
+                "Spain Grand Prix (Madrid)": [
                     "1:33.531",
                     "1:32.710",
                     "1:32.013"
+                ],
+                "Spain Grand Prix": [
+                    "1:15.625",
+                    "1:15.418",
+                    "1:14.743"
                 ]
             }
         }
@@ -5955,19 +5967,19 @@
             "wins": 5.3,
             "podiums": 10.35,
             "poles": 5.35,
-            "points": 260.475
+            "points": 260.875
         },
         "std": {
             "wins": 4.196427051671457,
             "podiums": 5.246665607793201,
             "poles": 4.210403781111736,
-            "points": 111.1705306050124
+            "points": 110.93397529611927
         },
         "cv": {
             "wins": 0.7917786889946146,
             "podiums": 0.5069242133133528,
             "poles": 0.7869913609554646,
-            "points": 0.4267992344947208
+            "points": 0.42523804617582855
         }
     },
     "peakSeason": {
@@ -5994,7 +6006,7 @@
         "2013": 0.2,
         "2014": 0.8571428571428571,
         "2015": 0.6363636363636364,
-        "2016": 0.5833333333333334,
+        "2016": 0.5,
         "2017": 0.7272727272727273,
         "2018": 0.6363636363636364,
         "2019": 0.6,
