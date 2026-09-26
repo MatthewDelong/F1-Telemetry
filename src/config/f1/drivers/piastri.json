@@ -2,7 +2,7 @@
     "driverId": "piastri",
     "driverCode": "PIA",
     "driverNumber": "81",
-    "lastUpdate": "2026-09-21T23:02:17.269230",
+    "lastUpdate": "2026-09-26T18:40:28.062592",
     "totalWins": 9,
     "totalPodiums": 28,
     "totalPoles": 6,
@@ -194,7 +194,8 @@
             "Hungary Grand Prix": "1:23.896",
             "Netherlands Grand Prix": "1:14.303",
             "Italy Grand Prix": "1:25.125",
-            "Spain Grand Prix": "1:37.226"
+            "Spain Grand Prix (Madrid)": "1:37.226",
+            "Spain Grand Prix": "1:20.835"
         }
     },
     "finalStandings": {
@@ -484,6 +485,9 @@
                 "Italy Grand Prix": {
                     "points": 120
                 },
+                "Spain Grand Prix (Madrid)": {
+                    "points": 120
+                },
                 "Spain Grand Prix": {
                     "points": 120
                 }
@@ -587,7 +591,8 @@
                 "Hungary Grand Prix": "20",
                 "Netherlands Grand Prix": "6",
                 "Italy Grand Prix": "5",
-                "Spain Grand Prix": "8"
+                "Spain Grand Prix (Madrid)": "8",
+                "Spain Grand Prix": "5"
             }
         }
     },
@@ -688,6 +693,7 @@
                 "Hungary Grand Prix": "3",
                 "Netherlands Grand Prix": "4",
                 "Italy Grand Prix": "6",
+                "Spain Grand Prix (Madrid)": "7",
                 "Spain Grand Prix": "7"
             }
         }
@@ -782,7 +788,8 @@
             "Hungary Grand Prix": -17,
             "Netherlands Grand Prix": -2,
             "Italy Grand Prix": 1,
-            "Spain Grand Prix": -1
+            "Spain Grand Prix (Madrid)": -1,
+            "Spain Grand Prix": 2
         }
     },
     "driverQualifyingTimes": {
@@ -1210,10 +1217,15 @@
                     "1:22.017",
                     "1:21.966"
                 ],
-                "Spain Grand Prix": [
+                "Spain Grand Prix (Madrid)": [
                     "1:33.829",
                     "1:33.204",
                     "1:32.294"
+                ],
+                "Spain Grand Prix": [
+                    "1:16.138",
+                    "1:15.518",
+                    "1:15.090"
                 ]
             }
         }
