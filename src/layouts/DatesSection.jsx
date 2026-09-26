@@ -29,6 +29,8 @@ const CIRCUIT_NAMES = {
   "f1.circuits.vegas_strip": "Las Vegas Strip Street Circuit",
   "f1.circuits.losail": "Lusail International Circuit",
   "f1.circuits.yas_marina": "Yas Marina Circuit",
+  "f1.circuits.portimao": "Algarve International Circuit",
+  "f1.circuits.istanbul": "Istanbul Park Circuit",
 };
 
 const DatesSection = () => {
