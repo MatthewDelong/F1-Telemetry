@@ -5,6 +5,32 @@ import RaceCalendar from "../components/RaceCalendar";
 import RaceCalendar2027 from "../components/RaceCalendar2027";
 import ProceduralTrackBackground from "../components/ProceduralTrackBackground";
 
+const CIRCUIT_NAMES = {
+  "f1.circuits.albert_park": "Albert Park Grand Prix Circuit",
+  "f1.circuits.shanghai": "Shanghai International Circuit",
+  "f1.circuits.suzuka": "Suzuka Circuit",
+  "f1.circuits.miami": "Miami International Autodrome",
+  "f1.circuits.gilles_villeneuve": "Circuit Gilles Villeneuve",
+  "f1.circuits.monte_carlo": "Circuit de Monaco",
+  "f1.circuits.catalunya": "Circuit de Barcelona-Catalunya",
+  "f1.circuits.red_bull_ring": "Red Bull Ring",
+  "f1.circuits.silverstone": "Silverstone Circuit",
+  "f1.circuits.spa": "Circuit de Spa-Francorchamps",
+  "f1.circuits.hungaroring": "Hungaroring",
+  "f1.circuits.zandvoort": "Circuit Park Zandvoort",
+  "f1.circuits.monza": "Autodromo Nazionale di Monza",
+  "f1.circuits.madrid": "Madring Circuit",
+  "f1.circuits.baku": "Baku City Circuit",
+  "f1.circuits.sepang": "Sepang International Circuit",
+  "f1.circuits.marina_bay": "Marina Bay Street Circuit",
+  "f1.circuits.cota": "Circuit of the Americas",
+  "f1.circuits.hermanos_rodriguez": "Autódromo Hermanos Rodríguez",
+  "f1.circuits.interlagos": "Autódromo José Carlos Pace",
+  "f1.circuits.vegas_strip": "Las Vegas Strip Street Circuit",
+  "f1.circuits.losail": "Lusail International Circuit",
+  "f1.circuits.yas_marina": "Yas Marina Circuit",
+};
+
 const DatesSection = () => {
   const [selectedTrack2026, setSelectedTrack2026] = useState(null);
   const [selectedTrack2027, setSelectedTrack2027] = useState(null);
@@ -101,8 +127,8 @@ const DatesSection = () => {
                     </div>
                     <div className="w-1.5 h-1.5 rounded-full bg-neutral-600"></div>
                     <div className="flex items-center gap-3">
-                      <span className="text-[#e10600]">Location:</span>{" "}
-                      {selectedTrack2026.city}
+                      <span className="text-[#e10600]">Circuit:</span>{" "}
+                      {CIRCUIT_NAMES[selectedTrack2026.circuitKey] || selectedTrack2026.city}
                     </div>
                     {selectedTrack2026.isSprint && (
                       <>
@@ -241,8 +267,8 @@ const DatesSection = () => {
                     </div>
                     <div className="w-1.5 h-1.5 rounded-full bg-neutral-600"></div>
                     <div className="flex items-center gap-3">
-                      <span className="text-[#e10600]">Location:</span>{" "}
-                      {selectedTrack2027.city}
+                      <span className="text-[#e10600]">Circuit:</span>{" "}
+                      {CIRCUIT_NAMES[selectedTrack2027.circuitKey] || selectedTrack2027.city}
                     </div>
                     {selectedTrack2027.isSprint && (
                       <>

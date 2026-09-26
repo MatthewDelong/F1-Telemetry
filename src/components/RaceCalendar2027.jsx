@@ -148,7 +148,7 @@ const RaceCalendar2027 = ({ onRaceClick }) => {
     },
     {
       round: 15,
-      displayName: "Spanish Grand Prix",
+      displayName: "Spanish Grand Prix (Madrid)",
       date: "2027-09-12",
       dateRange: "10-12 Sep",
       city: "Madrid, ES",

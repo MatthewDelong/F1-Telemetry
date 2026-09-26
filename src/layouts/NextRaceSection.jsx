@@ -189,7 +189,7 @@ const RACES_DATA = {
   "Spain Grand Prix (Madrid)": {
     round: 14,
     raceName: "Madrid Grand Prix",
-    circuitName: "Madring",
+    circuitName: "Madring Circuit",
     date: "2026-09-13",
     localTime: "15:00",
     laps: 57,

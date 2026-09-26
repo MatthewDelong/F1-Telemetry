@@ -254,7 +254,7 @@ const RaceCalendar = ({ onRaceClick }) => {
       country: "Spain",
       lat: 40.4168,
       lng: -3.7038,
-      displayName: "Spain Grand Prix",
+      displayName: "Spanish Grand Prix (Madrid)",
       countDownDate: "2026-09-13T13:00:00Z",
       flag: "es.webp",
       track: "Madrid-Spain.webp",
