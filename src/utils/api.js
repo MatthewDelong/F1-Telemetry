@@ -1584,7 +1584,7 @@ export const fetchOpenF1Podium = async (meetingKey) => {
         },
         time:
           td.pos === 1
-            ? formatF1Time(bestLapSec)
+            ? "WINNER"
             : driverGaps[td.driver_number] != null
               ? `+${driverGaps[td.driver_number].toFixed(3)}`
               : `+${(td.pos * 7.5).toFixed(3)}`,
