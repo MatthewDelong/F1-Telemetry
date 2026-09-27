@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import RaceCalendar from "../components/RaceCalendar";
 import RaceCalendar2027 from "../components/RaceCalendar2027";
 import ProceduralTrackBackground from "../components/ProceduralTrackBackground";
+import circuitDetails from "../config/circuitDetails.json";
 
 const CIRCUIT_NAMES = {
   "f1.circuits.albert_park": "Albert Park Grand Prix Circuit",
@@ -36,6 +37,22 @@ const CIRCUIT_NAMES = {
 const DatesSection = () => {
   const [selectedTrack2026, setSelectedTrack2026] = useState(null);
   const [selectedTrack2027, setSelectedTrack2027] = useState(null);
+
+  const getCircuitDetails = (track) => {
+    if (!track) return null;
+    let key = track.circuitKey ? track.circuitKey.split(".").pop() : track.city.split(",")[0].toLowerCase().replace(/ /g, "_");
+    
+    const keyMap = {
+      "cota": "americas",
+      "hermanos_rodriguez": "rodriguez",
+      "vegas_strip": "vegas",
+      "gilles_villeneuve": "villeneuve",
+      "monte_carlo": "monaco"
+    };
+    
+    key = keyMap[key] || key;
+    return circuitDetails[key];
+  };
   const sectionRef = useRef(null);
   const section2027Ref = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
@@ -141,29 +158,31 @@ const DatesSection = () => {
                       </>
                     )}
                   </div>
-                </div>
 
-                <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-6 z-20">
-                  <Link
-                    to={`/race/${selectedTrack2026.circuitKey ? selectedTrack2026.circuitKey.split(".").pop() : selectedTrack2026.city.split(",")[0].toLowerCase().replace(/ /g, "_")}`}
-                    className="group flex items-center gap-3 px-10 py-5 bg-[#e10600] hover:bg-white text-white hover:text-[#e10600] font-black text-lg uppercase tracking-widest rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(225,6,0,0.4)] hover:shadow-[0_0_30px_rgba(255,255,255,0.6)] pointer-events-auto"
-                  >
-                    <span>Circuit Details</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 transform group-hover:translate-x-1 transition-transform"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={3}
-                        d="M14 5l7 7m0 0l-7 7m7-7H3"
-                      />
-                    </svg>
-                  </Link>
+                  {(() => {
+                    const details = getCircuitDetails(selectedTrack2026);
+                    if (!details) return null;
+                    return (
+                      <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-3 w-full">
+                        <div className="flex items-center gap-2 bg-black/60 px-5 py-2.5 rounded-full backdrop-blur-md border border-white/10 shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                          <span className="text-[#e10600] font-bold uppercase tracking-widest text-xs md:text-sm">First GP:</span>
+                          <span className="text-white font-black text-xs md:text-sm">{details.firstGrandPrix}</span>
+                        </div>
+                        <div className="flex items-center gap-2 bg-black/60 px-5 py-2.5 rounded-full backdrop-blur-md border border-white/10 shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                          <span className="text-[#e10600] font-bold uppercase tracking-widest text-xs md:text-sm">Laps:</span>
+                          <span className="text-white font-black text-xs md:text-sm">{details.raceLaps}</span>
+                        </div>
+                        <div className="flex items-center gap-2 bg-black/60 px-5 py-2.5 rounded-full backdrop-blur-md border border-white/10 shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                          <span className="text-[#e10600] font-bold uppercase tracking-widest text-xs md:text-sm">Length:</span>
+                          <span className="text-white font-black text-xs md:text-sm">{details.length}</span>
+                        </div>
+                        <div className="flex items-center gap-2 bg-black/60 px-5 py-2.5 rounded-full backdrop-blur-md border border-white/10 shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                          <span className="text-[#e10600] font-bold uppercase tracking-widest text-xs md:text-sm">Corners:</span>
+                          <span className="text-white font-black text-xs md:text-sm">{details.corners}</span>
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </div>
               </motion.div>
             )}
@@ -281,29 +300,31 @@ const DatesSection = () => {
                       </>
                     )}
                   </div>
-                </div>
 
-                <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-6 z-20">
-                  <Link
-                    to={`/race/${selectedTrack2027.circuitKey ? selectedTrack2027.circuitKey.split(".").pop() : selectedTrack2027.city.split(",")[0].toLowerCase().replace(/ /g, "_")}`}
-                    className="group flex items-center gap-3 px-10 py-5 bg-[#e10600] hover:bg-white text-white hover:text-[#e10600] font-black text-lg uppercase tracking-widest rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(225,6,0,0.4)] hover:shadow-[0_0_30px_rgba(255,255,255,0.6)] pointer-events-auto"
-                  >
-                    <span>Circuit Details</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6 transform group-hover:translate-x-1 transition-transform"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={3}
-                        d="M14 5l7 7m0 0l-7 7m7-7H3"
-                      />
-                    </svg>
-                  </Link>
+                  {(() => {
+                    const details = getCircuitDetails(selectedTrack2027);
+                    if (!details) return null;
+                    return (
+                      <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-3 w-full">
+                        <div className="flex items-center gap-2 bg-black/60 px-5 py-2.5 rounded-full backdrop-blur-md border border-white/10 shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                          <span className="text-[#e10600] font-bold uppercase tracking-widest text-xs md:text-sm">First GP:</span>
+                          <span className="text-white font-black text-xs md:text-sm">{details.firstGrandPrix}</span>
+                        </div>
+                        <div className="flex items-center gap-2 bg-black/60 px-5 py-2.5 rounded-full backdrop-blur-md border border-white/10 shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                          <span className="text-[#e10600] font-bold uppercase tracking-widest text-xs md:text-sm">Laps:</span>
+                          <span className="text-white font-black text-xs md:text-sm">{details.raceLaps}</span>
+                        </div>
+                        <div className="flex items-center gap-2 bg-black/60 px-5 py-2.5 rounded-full backdrop-blur-md border border-white/10 shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                          <span className="text-[#e10600] font-bold uppercase tracking-widest text-xs md:text-sm">Length:</span>
+                          <span className="text-white font-black text-xs md:text-sm">{details.length}</span>
+                        </div>
+                        <div className="flex items-center gap-2 bg-black/60 px-5 py-2.5 rounded-full backdrop-blur-md border border-white/10 shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                          <span className="text-[#e10600] font-bold uppercase tracking-widest text-xs md:text-sm">Corners:</span>
+                          <span className="text-white font-black text-xs md:text-sm">{details.corners}</span>
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </div>
               </motion.div>
             )}
