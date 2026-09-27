@@ -21,7 +21,7 @@ export const Modal = ({ isOpen, onClose, children, title, footer }) => {
 
     return (
         <div 
-            className="modal-overlay fixed top-[0] left-[0] w-full h-svh bg-glow bg-neutral-900/95 backdrop-blur-lg z-[1001] overflow-y-auto no-scrollbar" 
+            className="modal-overlay fixed inset-0 bg-glow bg-neutral-900/95 backdrop-blur-lg z-[1001] overflow-y-auto no-scrollbar" 
             onClick={onClose}
         >
             <div className="modal-content" onClick={e => e.stopPropagation()}>
@@ -43,7 +43,7 @@ export const Modal = ({ isOpen, onClose, children, title, footer }) => {
                 <div 
                     className={classNames(
                         "modal-content__content max-md:px-16 px-40",
-                        footer ? 'pb-[192px]' : 'pb-[96px]',
+                        footer ? 'pb-24' : 'pb-8',
                     )}
                 >
                     {children}
