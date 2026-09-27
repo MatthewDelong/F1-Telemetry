@@ -328,7 +328,7 @@ const RaceCalendar = ({ onRaceClick }) => {
       country: "USA",
       lat: 30.1328,
       lng: -97.6411,
-      displayName: "Circuit of the Americas - USA",
+      displayName: "United States Grand Prix",
       countDownDate: "2026-10-25T20:00:00Z",
       flag: "us.webp",
       track: "Austin-USA.webp",
