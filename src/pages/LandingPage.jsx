@@ -571,6 +571,7 @@ export function LandingPage() {
         {latestResultsLayout()}
       </section>
 
+      {/* 
       <section className="snap-start scroll-mt-24 relative bg-neutral-950 px-4 py-8 overflow-hidden w-full h-[100dvh] flex items-center justify-center flex-col">
         <div className="w-[95%] max-w-[1600px] mx-auto h-[70vh] md:h-[80vh] mt-24 md:mt-16 relative">
           <div className="absolute bottom-6 right-6 md:bottom-auto md:top-4 md:right-auto md:left-1/2 md:-translate-x-1/2 z-20 flex flex-col md:flex-row gap-2 md:gap-4 bg-black/60 p-2 rounded-xl md:rounded-full backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)]">
@@ -606,6 +607,7 @@ export function LandingPage() {
           />
         </div>
       </section>
+      */}
 
       <DatesSection />
       <NextRaceSection />
