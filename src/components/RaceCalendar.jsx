@@ -80,6 +80,7 @@ const RaceCalendar = ({ onRaceClick }) => {
     },
     "Canada Grand Prix": {
       round: 5,
+      isSprint: true,
       raceKey: "f1.races.canada",
       circuitKey: "f1.circuits.gilles_villeneuve",
       date: "2026-05-24",
@@ -152,6 +153,7 @@ const RaceCalendar = ({ onRaceClick }) => {
     },
     "Great Britain Grand Prix": {
       round: 9,
+      isSprint: true,
       raceKey: "f1.races.britain",
       circuitKey: "f1.circuits.silverstone",
       date: "2026-07-05",
@@ -170,7 +172,6 @@ const RaceCalendar = ({ onRaceClick }) => {
     },
     "Belgium Grand Prix": {
       round: 10,
-      isSprint: true,
       raceKey: "f1.races.belgium",
       circuitKey: "f1.circuits.spa",
       date: "2026-07-19",
@@ -207,6 +208,7 @@ const RaceCalendar = ({ onRaceClick }) => {
     },
     "Netherlands Grand Prix": {
       round: 12,
+      isSprint: true,
       raceKey: "f1.races.netherlands",
       circuitKey: "f1.circuits.zandvoort",
       date: "2026-08-23",
@@ -299,6 +301,7 @@ const RaceCalendar = ({ onRaceClick }) => {
     },
     "Singapore Grand Prix": {
       round: 17,
+      isSprint: true,
       raceKey: "f1.races.singapore",
       circuitKey: "f1.circuits.marina_bay",
       date: "2026-10-11",
@@ -317,7 +320,6 @@ const RaceCalendar = ({ onRaceClick }) => {
     },
     "United States Grand Prix": {
       round: 18,
-      isSprint: true,
       raceKey: "f1.races.usa",
       circuitKey: "f1.circuits.cota",
       date: "2026-10-25",
@@ -354,7 +356,6 @@ const RaceCalendar = ({ onRaceClick }) => {
     },
     "Brazil Grand Prix": {
       round: 20,
-      isSprint: true,
       raceKey: "f1.races.brazil",
       circuitKey: "f1.circuits.interlagos",
       date: "2026-11-08",
@@ -391,7 +392,6 @@ const RaceCalendar = ({ onRaceClick }) => {
     },
     "Qatar Grand Prix": {
       round: 22,
-      isSprint: true,
       raceKey: "f1.races.qatar",
       circuitKey: "f1.circuits.losail",
       date: "2026-11-29",

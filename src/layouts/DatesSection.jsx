@@ -132,7 +132,7 @@ const DatesSection = () => {
                     <img
                       src={`/images/flags/${selectedTrack2026.flag}`}
                       alt={selectedTrack2026.country}
-                      className="w-20 h-auto rounded shadow-[0_4px_12px_rgba(0,0,0,0.5)] border border-white/10"
+                      className="w-28 md:w-36 h-auto rounded shadow-[0_4px_12px_rgba(0,0,0,0.5)] border border-white/10"
                     />
                     <div className="text-4xl md:text-5xl font-black italic tracking-widest text-white uppercase drop-shadow-[0_4px_10px_rgba(0,0,0,1)]">
                       {selectedTrack2026.displayName}
@@ -274,7 +274,7 @@ const DatesSection = () => {
                     <img
                       src={`/images/flags/${selectedTrack2027.flag}`}
                       alt={selectedTrack2027.country}
-                      className="w-20 h-auto rounded shadow-[0_4px_12px_rgba(0,0,0,0.5)] border border-white/10"
+                      className="w-28 md:w-36 h-auto rounded shadow-[0_4px_12px_rgba(0,0,0,0.5)] border border-white/10"
                     />
                     <div className="text-4xl md:text-5xl font-black italic tracking-widest text-white uppercase drop-shadow-[0_4px_10px_rgba(0,0,0,1)]">
                       {selectedTrack2027.displayName}
