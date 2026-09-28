@@ -2,16 +2,16 @@
     "driverId": "russell",
     "driverCode": "RUS",
     "driverNumber": "63",
-    "lastUpdate": "2026-09-26T18:40:28.062553",
-    "totalWins": 7,
-    "totalPodiums": 31,
-    "totalPoles": 10,
+    "lastUpdate": "2026-09-28T17:40:09.219039",
+    "totalWins": 8,
+    "totalPodiums": 33,
+    "totalPoles": 11,
     "totalDNFs": 20,
     "totalRaces": 164,
-    "winRate": 0.04242424242424243,
-    "podiumRate": 0.18787878787878787,
-    "poleRate": 0.06060606060606061,
-    "dnfRate": 0.12121212121212122,
+    "winRate": 0.04790419161676647,
+    "podiumRate": 0.19760479041916168,
+    "poleRate": 0.0658682634730539,
+    "dnfRate": 0.11976047904191617,
     "seasonWins": {
         "2019": 0,
         "2020": 0,
@@ -20,7 +20,7 @@
         "2023": 0,
         "2024": 2,
         "2025": 2,
-        "2026": 2
+        "2026": 3
     },
     "seasonPodiums": {
         "2019": 0,
@@ -30,7 +30,7 @@
         "2023": 2,
         "2024": 4,
         "2025": 9,
-        "2026": 7
+        "2026": 9
     },
     "seasonPoles": {
         "2019": 0,
@@ -40,7 +40,7 @@
         "2023": 0,
         "2024": 3,
         "2025": 2,
-        "2026": 4
+        "2026": 5
     },
     "seasonDNFs": {
         "2019": 2,
@@ -73,7 +73,8 @@
             "Australia Grand Prix",
             "Canada Grand Prix",
             "Spain Grand Prix",
-            "Austria Grand Prix"
+            "Austria Grand Prix",
+            "Azerbaijan Grand Prix"
         ]
     },
     "podiums": {
@@ -120,6 +121,8 @@
             "Great Britain Grand Prix": "2",
             "Netherlands Grand Prix": "3",
             "Italy Grand Prix": "2",
+            "Chinese Grand Prix": "2",
+            "Azerbaijan Grand Prix": "1",
             "Spain Grand Prix": "2"
         }
     },
@@ -340,6 +343,8 @@
             "Netherlands Grand Prix": "1:15.393",
             "Italy Grand Prix": "1:24.390",
             "Spain Grand Prix (Madrid)": "1:35.587",
+            "Chinese Grand Prix": "1:35.400",
+            "Azerbaijan Grand Prix": "1:44.916",
             "Spain Grand Prix": "1:20.640"
         }
     },
@@ -916,6 +921,12 @@
                 "Spain Grand Prix (Madrid)": {
                     "points": 236
                 },
+                "Chinese Grand Prix": {
+                    "points": 236
+                },
+                "Azerbaijan Grand Prix": {
+                    "points": 236
+                },
                 "Spain Grand Prix": {
                     "points": 236
                 }
@@ -1117,6 +1128,8 @@
                 "Netherlands Grand Prix": "3",
                 "Italy Grand Prix": "2",
                 "Spain Grand Prix (Madrid)": "5",
+                "Chinese Grand Prix": "2",
+                "Azerbaijan Grand Prix": "1",
                 "Spain Grand Prix": "2"
             }
         }
@@ -1316,6 +1329,8 @@
                 "Netherlands Grand Prix": "2",
                 "Italy Grand Prix": "2",
                 "Spain Grand Prix (Madrid)": "6",
+                "Chinese Grand Prix": "2",
+                "Azerbaijan Grand Prix": "1",
                 "Spain Grand Prix": "1"
             }
         }
@@ -1500,6 +1515,8 @@
             "Netherlands Grand Prix": -1,
             "Italy Grand Prix": 0,
             "Spain Grand Prix (Madrid)": 1,
+            "Chinese Grand Prix": 0,
+            "Azerbaijan Grand Prix": 0,
             "Spain Grand Prix": -1
         }
     },
@@ -2354,6 +2371,16 @@
                     "1:32.850",
                     "1:32.149"
                 ],
+                "Chinese Grand Prix": [
+                    "1:33.262",
+                    "1:32.523",
+                    "1:32.286"
+                ],
+                "Azerbaijan Grand Prix": [
+                    "1:43.615",
+                    "1:43.462",
+                    "1:42.526"
+                ],
                 "Spain Grand Prix": [
                     "1:15.717",
                     "1:15.228",
@@ -2370,7 +2397,7 @@
         "2023": 8.090909090909092,
         "2024": 6.75,
         "2025": 4.541666666666667,
-        "2026": 6.142857142857143
+        "2026": 5.5625
     },
     "avgQualiPositions": {
         "2019": 18.285714285714285,
@@ -2380,7 +2407,7 @@
         "2023": 6.5,
         "2024": 5.166666666666667,
         "2025": 4.375,
-        "2026": 3.0
+        "2026": 2.8125
     },
     "rates": {
         "wins": {
@@ -2391,7 +2418,7 @@
             "2023": 0.0,
             "2024": 0.08333333333333333,
             "2025": 0.08333333333333333,
-            "2026": 0.14285714285714285
+            "2026": 0.1875
         },
         "podiums": {
             "2019": 0.0,
@@ -2401,7 +2428,7 @@
             "2023": 0.09090909090909091,
             "2024": 0.16666666666666666,
             "2025": 0.375,
-            "2026": 0.5
+            "2026": 0.5625
         },
         "poles": {
             "2019": 0.0,
@@ -2411,7 +2438,7 @@
             "2023": 0.0,
             "2024": 0.125,
             "2025": 0.08333333333333333,
-            "2026": 0.2857142857142857
+            "2026": 0.3125
         },
         "DNFs": {
             "2019": 0.09523809523809523,
@@ -2426,28 +2453,28 @@
     },
     "consistency": {
         "mean": {
-            "wins": 0.875,
-            "podiums": 3.875,
-            "poles": 1.25,
+            "wins": 1.0,
+            "podiums": 4.125,
+            "poles": 1.375,
             "points": 158.625
         },
         "std": {
-            "wins": 0.9270248108869579,
-            "podiums": 3.4437443284889775,
-            "poles": 1.479019945774904,
+            "wins": 1.118033988749895,
+            "podiums": 3.7228181529588578,
+            "poles": 1.7275343701356567,
             "points": 123.84560700727337
         },
         "cv": {
-            "wins": 1.0594569267279519,
-            "podiums": 0.8887082138036071,
-            "poles": 1.1832159566199232,
+            "wins": 1.118033988749895,
+            "podiums": 0.9025013704142686,
+            "poles": 1.2563886328259322,
             "points": 0.7807445674217391
         }
     },
     "peakSeason": {
         "wins": {
-            "season": "2024",
-            "wins": 2
+            "season": "2026",
+            "wins": 3
         },
         "podiums": {
             "season": "2025",
@@ -2455,7 +2482,7 @@
         },
         "poles": {
             "season": "2026",
-            "poles": 4
+            "poles": 5
         }
     },
     "ptwConRate": {
@@ -2466,6 +2493,6 @@
         "2023": -1,
         "2024": 0.3333333333333333,
         "2025": 1.0,
-        "2026": 0.5
+        "2026": 0.6
     }
 }

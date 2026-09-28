@@ -2,16 +2,16 @@
     "driverId": "leclerc",
     "driverCode": "LEC",
     "driverNumber": "16",
-    "lastUpdate": "2026-09-26T18:40:28.062541",
+    "lastUpdate": "2026-09-28T17:40:09.219077",
     "totalWins": 9,
     "totalPodiums": 54,
     "totalPoles": 24,
     "totalDNFs": 26,
     "totalRaces": 185,
-    "winRate": 0.04838709677419355,
-    "podiumRate": 0.2903225806451613,
-    "poleRate": 0.12903225806451613,
-    "dnfRate": 0.13978494623655913,
+    "winRate": 0.047872340425531915,
+    "podiumRate": 0.2872340425531915,
+    "poleRate": 0.1276595744680851,
+    "dnfRate": 0.13829787234042554,
     "seasonWins": {
         "2018": 0,
         "2019": 2,
@@ -418,6 +418,8 @@
             "Netherlands Grand Prix": "1:14.230",
             "Italy Grand Prix": -1,
             "Spain Grand Prix (Madrid)": "1:36.063",
+            "Chinese Grand Prix": "1:36.011",
+            "Azerbaijan Grand Prix": "1:45.784",
             "Spain Grand Prix": "1:20.379"
         }
     },
@@ -1067,6 +1069,12 @@
                 "Spain Grand Prix (Madrid)": {
                     "points": 179
                 },
+                "Chinese Grand Prix": {
+                    "points": 179
+                },
+                "Azerbaijan Grand Prix": {
+                    "points": 179
+                },
                 "Spain Grand Prix": {
                     "points": 179
                 }
@@ -1293,6 +1301,8 @@
                 "Netherlands Grand Prix": "5",
                 "Italy Grand Prix": "22",
                 "Spain Grand Prix (Madrid)": "4",
+                "Chinese Grand Prix": "4",
+                "Azerbaijan Grand Prix": "4",
                 "Spain Grand Prix": "15"
             }
         }
@@ -1517,6 +1527,8 @@
                 "Netherlands Grand Prix": "6",
                 "Italy Grand Prix": "3",
                 "Spain Grand Prix (Madrid)": "5",
+                "Chinese Grand Prix": "4",
+                "Azerbaijan Grand Prix": "2",
                 "Spain Grand Prix": "10"
             }
         }
@@ -1724,6 +1736,8 @@
             "Netherlands Grand Prix": 1,
             "Italy Grand Prix": -19,
             "Spain Grand Prix (Madrid)": 1,
+            "Chinese Grand Prix": 0,
+            "Azerbaijan Grand Prix": -2,
             "Spain Grand Prix": -5
         }
     },
@@ -2687,6 +2701,16 @@
                     "1:32.755",
                     "1:32.019"
                 ],
+                "Chinese Grand Prix": [
+                    "1:33.175",
+                    "1:32.486",
+                    "1:32.428"
+                ],
+                "Azerbaijan Grand Prix": [
+                    "1:44.360",
+                    "1:43.780",
+                    "1:43.363"
+                ],
                 "Spain Grand Prix": [
                     "1:15.964",
                     "1:15.281",
@@ -2704,7 +2728,7 @@
         "2023": 8.227272727272727,
         "2024": 4.541666666666667,
         "2025": 6.75,
-        "2026": 7.142857142857143
+        "2026": 6.75
     },
     "avgQualiPositions": {
         "2018": 12.476190476190476,
@@ -2715,7 +2739,7 @@
         "2023": 4.454545454545454,
         "2024": 5.333333333333333,
         "2025": 5.458333333333333,
-        "2026": 4.357142857142857
+        "2026": 4.1875
     },
     "rates": {
         "wins": {
@@ -2727,7 +2751,7 @@
             "2023": 0.0,
             "2024": 0.125,
             "2025": 0.0,
-            "2026": 0.07142857142857142
+            "2026": 0.0625
         },
         "podiums": {
             "2018": 0.0,
@@ -2738,7 +2762,7 @@
             "2023": 0.2727272727272727,
             "2024": 0.5416666666666666,
             "2025": 0.2916666666666667,
-            "2026": 0.2857142857142857
+            "2026": 0.25
         },
         "poles": {
             "2018": 0.0,
