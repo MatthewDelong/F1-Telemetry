@@ -2,7 +2,7 @@
     "driverId": "arvid_lindblad",
     "driverCode": "LIN",
     "driverNumber": "",
-    "lastUpdate": "2026-09-26T18:40:28.062607",
+    "lastUpdate": "2026-09-28T17:40:09.219115",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -56,6 +56,8 @@
             "Netherlands Grand Prix": "1:16.653",
             "Italy Grand Prix": "1:26.028",
             "Spain Grand Prix (Madrid)": "1:38.211",
+            "Chinese Grand Prix": "1:36.099",
+            "Azerbaijan Grand Prix": "1:46.849",
             "Spain Grand Prix": "1:21.914"
         }
     },
@@ -118,6 +120,12 @@
                 "Spain Grand Prix (Madrid)": {
                     "points": 37
                 },
+                "Chinese Grand Prix": {
+                    "points": 37
+                },
+                "Azerbaijan Grand Prix": {
+                    "points": 37
+                },
                 "Spain Grand Prix": {
                     "points": 37
                 }
@@ -143,6 +151,8 @@
                 "Netherlands Grand Prix": "12",
                 "Italy Grand Prix": "8",
                 "Spain Grand Prix (Madrid)": "9",
+                "Chinese Grand Prix": "12",
+                "Azerbaijan Grand Prix": "7",
                 "Spain Grand Prix": "9"
             }
         }
@@ -166,6 +176,8 @@
                 "Netherlands Grand Prix": "10",
                 "Italy Grand Prix": "9",
                 "Spain Grand Prix (Madrid)": "10",
+                "Chinese Grand Prix": "15",
+                "Azerbaijan Grand Prix": "15",
                 "Spain Grand Prix": "11"
             }
         }
@@ -186,6 +198,8 @@
             "Netherlands Grand Prix": -2,
             "Italy Grand Prix": 1,
             "Spain Grand Prix (Madrid)": 1,
+            "Chinese Grand Prix": 3,
+            "Azerbaijan Grand Prix": 8,
             "Spain Grand Prix": 2
         }
     },
@@ -260,6 +274,16 @@
                     "1:33.204",
                     "1:33.041"
                 ],
+                "Chinese Grand Prix": [
+                    "1:33.906",
+                    "1:33.784",
+                    "N/A"
+                ],
+                "Azerbaijan Grand Prix": [
+                    "1:45.381",
+                    "1:45.106",
+                    "N/A"
+                ],
                 "Spain Grand Prix": [
                     "1:16.425",
                     "1:15.840",
@@ -270,11 +294,11 @@
     },
     "avgRacePositions": {
         "2025": 0.0,
-        "2026": 10.714285714285714
+        "2026": 10.5625
     },
     "avgQualiPositions": {
         "2025": 0.0,
-        "2026": 10.642857142857142
+        "2026": 11.1875
     },
     "rates": {
         "wins": {

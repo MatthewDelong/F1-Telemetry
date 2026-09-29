@@ -2,23 +2,23 @@
     "driverId": "hadjar",
     "driverCode": "HAD",
     "driverNumber": "6",
-    "lastUpdate": "2026-09-26T18:40:28.061082",
+    "lastUpdate": "2026-09-28T17:40:09.219064",
     "totalWins": 0,
-    "totalPodiums": 2,
+    "totalPodiums": 3,
     "totalPoles": 0,
     "totalDNFs": 11,
     "totalRaces": 35,
     "winRate": 0.0,
-    "podiumRate": 0.05714285714285714,
+    "podiumRate": 0.08108108108108109,
     "poleRate": 0.0,
-    "dnfRate": 0.3142857142857143,
+    "dnfRate": 0.2972972972972973,
     "seasonWins": {
         "2025": 0,
         "2026": 0
     },
     "seasonPodiums": {
         "2025": 1,
-        "2026": 1
+        "2026": 2
     },
     "seasonPoles": {
         "2025": 0,
@@ -37,7 +37,8 @@
             "Netherlands Grand Prix": "3"
         },
         "2026": {
-            "Monaco Grand Prix": "3"
+            "Monaco Grand Prix": "3",
+            "Azerbaijan Grand Prix": "3"
         }
     },
     "DNFs": {
@@ -94,6 +95,8 @@
             "Great Britain Grand Prix": "1:32.268",
             "Belgium Grand Prix": "1:49.298",
             "Hungary Grand Prix": "1:23.218",
+            "Chinese Grand Prix": "1:37.311",
+            "Azerbaijan Grand Prix": "1:45.618",
             "Spain Grand Prix": "1:20.150"
         }
     },
@@ -220,6 +223,12 @@
                 "Hungary Grand Prix": {
                     "points": 86
                 },
+                "Chinese Grand Prix": {
+                    "points": 86
+                },
+                "Azerbaijan Grand Prix": {
+                    "points": 86
+                },
                 "Spain Grand Prix": {
                     "points": 86
                 }
@@ -267,6 +276,8 @@
                 "Great Britain Grand Prix": "5",
                 "Belgium Grand Prix": "6",
                 "Hungary Grand Prix": "6",
+                "Chinese Grand Prix": "8",
+                "Azerbaijan Grand Prix": "3",
                 "Spain Grand Prix": "6"
             }
         }
@@ -312,6 +323,8 @@
                 "Great Britain Grand Prix": "5",
                 "Belgium Grand Prix": "21",
                 "Hungary Grand Prix": "8",
+                "Chinese Grand Prix": "9",
+                "Azerbaijan Grand Prix": "4",
                 "Spain Grand Prix": "6"
             }
         }
@@ -354,6 +367,8 @@
             "Great Britain Grand Prix": 0,
             "Belgium Grand Prix": 15,
             "Hungary Grand Prix": 2,
+            "Chinese Grand Prix": 1,
+            "Azerbaijan Grand Prix": 1,
             "Spain Grand Prix": 0
         }
     },
@@ -534,6 +549,16 @@
                     "1:17.872",
                     "1:17.856"
                 ],
+                "Chinese Grand Prix": [
+                    "1:33.632",
+                    "1:33.352",
+                    "1:33.121"
+                ],
+                "Azerbaijan Grand Prix": [
+                    "1:44.161",
+                    "1:43.880",
+                    "1:43.500"
+                ],
                 "Spain Grand Prix": [
                     "1:16.427",
                     "1:15.754",
@@ -544,11 +569,11 @@
     },
     "avgRacePositions": {
         "2025": 11.791666666666666,
-        "2026": 9.0
+        "2026": 8.461538461538462
     },
     "avgQualiPositions": {
         "2025": 9.666666666666666,
-        "2026": 9.272727272727273
+        "2026": 8.846153846153847
     },
     "rates": {
         "wins": {
@@ -557,7 +582,7 @@
         },
         "podiums": {
             "2025": 0.041666666666666664,
-            "2026": 0.09090909090909091
+            "2026": 0.15384615384615385
         },
         "poles": {
             "2025": 0.0,
@@ -571,19 +596,19 @@
     "consistency": {
         "mean": {
             "wins": 0.0,
-            "podiums": 1.0,
+            "podiums": 1.5,
             "poles": 0.0,
             "points": 68.5
         },
         "std": {
             "wins": 0.0,
-            "podiums": 0.0,
+            "podiums": 0.5,
             "poles": 0.0,
             "points": 17.5
         },
         "cv": {
             "wins": 0,
-            "podiums": 0.0,
+            "podiums": 0.3333333333333333,
             "poles": 0,
             "points": 0.25547445255474455
         }
@@ -594,8 +619,8 @@
             "wins": 0
         },
         "podiums": {
-            "season": "2025",
-            "podiums": 1
+            "season": "2026",
+            "podiums": 2
         },
         "poles": {
             "season": "No peak season",

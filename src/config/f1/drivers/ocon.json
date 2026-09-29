@@ -2,16 +2,16 @@
     "driverId": "ocon",
     "driverCode": "OCO",
     "driverNumber": "31",
-    "lastUpdate": "2026-09-26T18:40:28.062637",
+    "lastUpdate": "2026-09-28T17:40:09.219134",
     "totalWins": 1,
     "totalPodiums": 4,
     "totalPoles": 0,
     "totalDNFs": 48,
     "totalRaces": 192,
-    "winRate": 0.0051813471502590676,
-    "podiumRate": 0.02072538860103627,
+    "winRate": 0.005128205128205128,
+    "podiumRate": 0.020512820512820513,
     "poleRate": 0.0,
-    "dnfRate": 0.24870466321243523,
+    "dnfRate": 0.24615384615384617,
     "seasonWins": {
         "2016": 0,
         "2017": 0,
@@ -372,6 +372,8 @@
             "Netherlands Grand Prix": "1:17.588",
             "Italy Grand Prix": "1:25.711",
             "Spain Grand Prix (Madrid)": "1:38.119",
+            "Chinese Grand Prix": "1:35.964",
+            "Azerbaijan Grand Prix": "1:47.068",
             "Spain Grand Prix": "1:21.643"
         }
     },
@@ -1052,6 +1054,12 @@
                 "Spain Grand Prix (Madrid)": {
                     "points": 7
                 },
+                "Chinese Grand Prix": {
+                    "points": 7
+                },
+                "Azerbaijan Grand Prix": {
+                    "points": 7
+                },
                 "Spain Grand Prix": {
                     "points": 7
                 }
@@ -1289,6 +1297,8 @@
                 "Netherlands Grand Prix": "19",
                 "Italy Grand Prix": "16",
                 "Spain Grand Prix (Madrid)": "11",
+                "Chinese Grand Prix": "14",
+                "Azerbaijan Grand Prix": "8",
                 "Spain Grand Prix": "13"
             }
         }
@@ -1523,6 +1533,8 @@
                 "Netherlands Grand Prix": "15",
                 "Italy Grand Prix": "14",
                 "Spain Grand Prix (Madrid)": "13",
+                "Chinese Grand Prix": "13",
+                "Azerbaijan Grand Prix": "13",
                 "Spain Grand Prix": "17"
             }
         }
@@ -1738,6 +1750,8 @@
             "Netherlands Grand Prix": -4,
             "Italy Grand Prix": -2,
             "Spain Grand Prix (Madrid)": 2,
+            "Chinese Grand Prix": -1,
+            "Azerbaijan Grand Prix": 5,
             "Spain Grand Prix": 4
         }
     },
@@ -2735,6 +2749,16 @@
                     "1:33.667",
                     "N/A"
                 ],
+                "Chinese Grand Prix": [
+                    "1:33.974",
+                    "1:33.538",
+                    "N/A"
+                ],
+                "Azerbaijan Grand Prix": [
+                    "1:45.039",
+                    "1:45.016",
+                    "N/A"
+                ],
                 "Spain Grand Prix": [
                     "1:17.073",
                     "N/A",
@@ -2753,7 +2777,7 @@
         "2023": 11.863636363636363,
         "2024": 13.695652173913043,
         "2025": 12.5,
-        "2026": 13.714285714285714
+        "2026": 13.375
     },
     "avgQualiPositions": {
         "2016": 20.25,
@@ -2765,7 +2789,7 @@
         "2023": 11.181818181818182,
         "2024": 14.391304347826088,
         "2025": 15.125,
-        "2026": 14.857142857142858
+        "2026": 14.625
     },
     "rates": {
         "wins": {
