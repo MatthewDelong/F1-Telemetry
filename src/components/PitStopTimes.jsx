@@ -1,6 +1,19 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+
+const useIsMobile = (breakpoint = 640) => {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== 'undefined' ? window.innerWidth <= breakpoint : false
+  );
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${breakpoint}px)`);
+    const handler = (e) => setIsMobile(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, [breakpoint]);
+  return isMobile;
+};
 import {
   ResponsiveContainer,
   ScatterChart,
@@ -141,42 +154,59 @@ export const PitStopTimes = ({
     return null;
   };
 
-  const renderCustomShape = (props) => {
+  const isMobile = useIsMobile();
+
+  const renderCustomShape = useCallback((props) => {
     const { cx, cy, fill, payload } = props;
+    const r = isMobile ? 5 : 6;
+    const iconSize = isMobile ? 16 : 20;
+    const offset = iconSize / 2;
     if (payload.isFastest) {
       return (
-        <g transform={`translate(${cx - 10}, ${cy - 12})`}>
+        <g transform={`translate(${cx - offset}, ${cy - offset})`}>
           <path
             d="M13.2,2H5.1L3,13.2h4.5l-2.4,8.8l10.1-11.2h-4.5L13.2,2z"
             fill="#FDE047"
             filter="drop-shadow(0 0 3px rgba(253, 224, 71, 0.8))"
+            transform={isMobile ? `scale(${iconSize / 20})` : undefined}
           />
         </g>
       );
     }
-    return <circle cx={cx} cy={cy} r={6} fill={fill} />;
-  };
+    return <circle cx={cx} cy={cy} r={r} fill={fill} />;
+  }, [isMobile]);
 
   const Legend = () => (
-    <div className="flex flex-col gap-12 w-[110px] sm:w-[130px] shrink-0 border-l border-slate-800 pl-16 sm:pl-24 ml-16 sm:ml-24">
-      <h3 className="text-xs font-display uppercase text-white tracking-widest mb-4">Pit Stop Legend</h3>
+    <div className={classNames(
+      "shrink-0",
+      isMobile
+        ? "flex flex-row flex-wrap items-center gap-x-12 gap-y-6 border-b border-slate-800 pb-12 mb-12"
+        : "flex flex-col gap-12 w-[130px] border-l border-slate-800 pl-24 ml-24"
+    )}>
+      <h3 className={classNames(
+        "text-xs font-display uppercase text-white tracking-widest",
+        isMobile ? "w-full mb-2" : "mb-4"
+      )}>Pit Stop Legend</h3>
       {Object.entries(STOP_COLORS).map(([num, color]) => (
-        <div key={num} className="flex items-center gap-8">
+        <div key={num} className="flex items-center gap-6">
           <div
-            className="w-10 h-10 rounded-full"
+            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full"
             style={{ backgroundColor: color }}
           />
           <span className="text-[10px] text-neutral-400 font-display uppercase whitespace-nowrap">{`Stop ${num}`}</span>
         </div>
       ))}
-      <div className="flex items-center gap-8 mt-8 pt-8 border-t border-slate-800">
+      <div className={classNames(
+        "flex items-center gap-6",
+        !isMobile && "mt-8 pt-8 border-t border-slate-800"
+      )}>
         <svg width="12" height="12" viewBox="0 0 20 20" className="shrink-0">
           <path
             d="M13.2,2H5.1L3,13.2h4.5l-2.4,8.8l10.1-11.2h-4.5L13.2,2z"
             fill="#FDE047"
           />
         </svg>
-        <span className="text-[10px] text-yellow-300 font-display uppercase leading-tight">Fastest Pit Stop</span>
+        <span className="text-[10px] text-yellow-300 font-display uppercase leading-tight whitespace-nowrap">Fastest Pit Stop</span>
       </div>
     </div>
   );
@@ -210,11 +240,17 @@ export const PitStopTimes = ({
         </div>
       )}
 
-      <div className="flex flex-row items-stretch">
-        <div className="grow min-w-0" style={{ height: Math.max(displayAcronyms.length * 40 + 100, 400) }}>
+      <div className={classNames(
+        isMobile ? "flex flex-col" : "flex flex-row items-stretch"
+      )}>
+        {isMobile && <Legend />}
+        <div className="grow min-w-0" style={{ height: Math.max(displayAcronyms.length * (isMobile ? 34 : 40) + (isMobile ? 70 : 100), isMobile ? 350 : 400) }}>
           <ResponsiveContainer width="100%" height="100%">
             <ScatterChart
-              margin={{ top: 20, right: 10, bottom: 40, left: 20 }}
+              margin={isMobile
+                ? { top: 10, right: 8, bottom: 30, left: 0 }
+                : { top: 20, right: 10, bottom: 40, left: 20 }
+              }
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#2D3748" vertical={true} horizontal={true} />
               <XAxis
@@ -227,7 +263,8 @@ export const PitStopTimes = ({
                 tickLine={false}
                 domain={xDomain}
                 allowDataOverflow={true}
-                label={{ value: 'Time (s)', position: 'bottom', fill: '#A0AEC0', offset: 20 }}
+                tick={{ fontSize: isMobile ? 10 : 12 }}
+                label={{ value: 'Time (s)', position: 'bottom', fill: '#A0AEC0', offset: isMobile ? 10 : 20, fontSize: isMobile ? 10 : 12 }}
               />
               <YAxis
                 type="number"
@@ -240,11 +277,12 @@ export const PitStopTimes = ({
                 domain={[Math.min(...yTicks), Math.max(...yTicks)]}
                 reversed={true}
                 interval={0}
-                width={50}
+                width={isMobile ? 36 : 50}
+                tick={{ fontSize: isMobile ? 10 : 12 }}
                 tickFormatter={(index) => sortedDriverAcronyms[index]}
-                label={{ value: 'Drivers', angle: -90, position: 'insideLeft', fill: '#A0AEC0', offset: -10 }}
+                label={isMobile ? undefined : { value: 'Drivers', angle: -90, position: 'insideLeft', fill: '#A0AEC0', offset: -10 }}
               />
-              <ZAxis type="number" range={[140, 140]} />
+              <ZAxis type="number" range={isMobile ? [80, 80] : [140, 140]} />
               <Tooltip content={<CustomTooltip />} />
               <Scatter 
                 name="Pit Stops" 
@@ -261,7 +299,7 @@ export const PitStopTimes = ({
             </ScatterChart>
           </ResponsiveContainer>
         </div>
-        <Legend />
+        {!isMobile && <Legend />}
       </div>
     </div>
   );
