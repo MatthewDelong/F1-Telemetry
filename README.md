@@ -138,7 +138,8 @@ F1-Telemetry features dynamic, procedural 3D tracks powered by `Three.js` and `@
 
 - **3D Geometry & Curvature Math (`src/utils/TrackBuilder.js`)**:
   - Raw X/Y telemetry positional coordinates are smoothed using a moving-average filter and fitted to a 3D Catmull-Rom spline (`THREE.CatmullRomCurve3`).
-  - **Apex & Corner Detection**: Peak curvature calculations automatically locate circuit apexes, enforcing minimum corner separation and matching exact FIA/official corner counts (e.g. 22 corners for Madrid / Madring).
+  - **Apex & Corner Detection**: Peak curvature calculations automatically locate circuit apexes and dynamically drop corner labels. This robust system falls back to automatic detection for new circuits (like Sepang during OpenF1 API testing) or enforces manual fraction mapping for specific tracks.
+  - **Track Orientation & Calibration**: Supports dynamic axis inversions (e.g., `invertY` for Sepang) to correctly align raw GPS telemetry streams with standard 16:9 official broadcast track maps. Telemetry coordinates for driver dots are synchronized perfectly with the flipped geometry via `telemetryToScene`.
   - **Ribbon Geometry**: Triangulates extruded 3D track ribbons with dynamic width, elevated curbs, sector color coding (Sector 1 red, Sector 2 blue, Sector 3 yellow), and dynamic start/finish line markers.
   - **Environment Scatter**: Instanced low-poly tree assets (`InstancedMesh`) and grandstand geometry are procedurally placed along track perimeters using normal vector math offsets.
 
@@ -321,7 +322,6 @@ This project pulls data from four sources:
 - **Development & AI Collaboration:** This project is actively developed by **Matthew Delong**, in extensive pair-programming collaboration with **Antigravity**, an agentic AI coding assistant developed by Google DeepMind.
 - **Inspiration:** This project was originally inspired by and built as a successor to the [F1nsight](https://github.com/adityakotha03/F1nsight) project by [Aditya Kotha](https://github.com/adityakotha03).
 - Special thanks to data providers and API service [OpenF1](https://openf1.org/) that enable access to current and historical F1 data.
-- [FastF1](https://github.com/theOehrly/Fast-F1) — Used extensively for fetching and parsing the underlying raw coordinate data to generate our procedural 3D tracks.
 - [Flagpedia](https://flagpedia.net/) — High-quality country flag WebP images used for race locations and driver nationalities.
 - This work is based on "basic Lowpoly F1 Car V1" by arthihalder, available under a Creative Commons Attribution 4.0 International license. [View the model on Sketchfab](https://sketchfab.com/3d-models/basic-lowpoly-f1-car-v1-b4c6a1cfe0154f4d86b39ff3b7f955a1). License details can be found at [CC-BY-4.0](http://creativecommons.org/licenses/by/4.0/).
 

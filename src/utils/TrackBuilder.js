@@ -34,7 +34,7 @@ const SECTOR_EMISSIVE = [
  * Normalize raw GPS points: center at origin, scale to fit a target scene size.
  * Returns { points: Vector2[], center, scale }
  */
-function normalizeGPSPoints(rawPoints, targetSize = 20) {
+function normalizeGPSPoints(rawPoints, targetSize = 20, canonicalId = "") {
   if (!rawPoints || rawPoints.length < 10) return null;
 
   // Filter out invalid GPS coordinates and deduplicate very close points (< 0.5 units apart)
@@ -130,12 +130,21 @@ function normalizeGPSPoints(rawPoints, targetSize = 20) {
   const maxRange = Math.max(rangeX, rangeY);
   const scaleFactor = targetSize / maxRange;
 
+  const invertY = canonicalId === "sepang";
+  const invertX = false;
+
   const points = singleLapPoints.map(
-    (p) =>
-      new THREE.Vector2((p.x - cx) * scaleFactor, (p.y - cy) * scaleFactor),
+    (p) => {
+      let nx = (p.x - cx) * scaleFactor;
+      let ny = (p.y - cy) * scaleFactor;
+      if (invertX) nx = -nx;
+      if (invertY) ny = -ny;
+      return new THREE.Vector2(nx, ny);
+    }
   );
 
-  return { points, center: new THREE.Vector2(cx, cy), scale: scaleFactor };
+  // Return the inversion flags so telemetry can also be inverted when drawn!
+  return { points, center: new THREE.Vector2(cx, cy), scale: scaleFactor, invertX, invertY };
 }
 
 /**
@@ -473,10 +482,6 @@ const MANUAL_CORNERS = {
   cota: [
     0.1125, 0.1475, 0.2061, 0.2375, 0.2778, 0.3062, 0.3332, 0.3526, 0.3903, 0.4543,
     0.4614, 0.681, 0.7265, 0.7549, 0.7756, 0.8296, 0.8481, 0.9116, 0.9654, 0.9928
-  ],
-  sepang: [
-    0.197, 0.213, 0.258, 0.354, 0.399, 0.422, 0.467, 0.530, 0.701, 0.730,
-    0.758, 0.782, 0.806, 0.828, 0.989
   ],
   bahrain: [
     0.130, 0.145, 0.166, 0.275, 0.339, 0.349, 0.370, 0.409, 0.495, 0.510,
@@ -864,7 +869,7 @@ export function buildTrackFromGPS(rawGPSPoints, circuitId) {
   const isBaku = canonicalId === "baku";
   const trackWidth = isBaku ? BAKU_TRACK_WIDTH : TRACK_WIDTH;
 
-  const normalized = normalizeGPSPoints(rawGPSPoints, 18);
+  const normalized = normalizeGPSPoints(rawGPSPoints, 18, canonicalId);
   if (!normalized) {
     console.warn("[TrackBuilder] Insufficient GPS data for track generation");
     return {
@@ -875,7 +880,7 @@ export function buildTrackFromGPS(rawGPSPoints, circuitId) {
     };
   }
 
-  const { points, center, scale } = normalized;
+  const { points, center, scale, invertX, invertY } = normalized;
   const curve = buildSpline(points);
   const group = new THREE.Group();
 
@@ -970,16 +975,20 @@ export function buildTrackFromGPS(rawGPSPoints, circuitId) {
     group.rotation.z = Math.PI; // 180 degree rotation
   }
 
-  return { group, curve, center, scale };
+  return { group, curve, center, scale, invertX, invertY };
 }
 
 /**
  * Convert a raw telemetry point (x,y) into 3D scene coordinates
  * using the calibration values returned from buildTrackFromGPS.
  */
-export function telemetryToScene(x, y, center, scale) {
+export function telemetryToScene(x, y, center, scale, invertX = false, invertY = false) {
   if (!center || !scale) return new THREE.Vector3(x, y, 0);
-  return new THREE.Vector3((x - center.x) * scale, (y - center.y) * scale, 0);
+  let nx = (x - center.x) * scale;
+  let ny = (y - center.y) * scale;
+  if (invertX) nx = -nx;
+  if (invertY) ny = -ny;
+  return new THREE.Vector3(nx, ny, 0);
 }
 
 /**

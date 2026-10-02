@@ -229,6 +229,8 @@ export const ThreeCanvas = ({
                 next.y * 1500,
                 trackCalibrationRef.current.center,
                 trackCalibrationRef.current.scale,
+                trackCalibrationRef.current.invertX,
+                trackCalibrationRef.current.invertY
               );
               targetX = scenePos.x;
               targetY = scenePos.y;
@@ -368,10 +370,10 @@ export const ThreeCanvas = ({
       return;
     }
 
-    const { group, curve, center, scale } = result;
+    const { group, curve, center, scale, invertX, invertY } = result;
 
     // Store calibration for converting driver telemetry to scene coordinates
-    trackCalibrationRef.current = { center, scale };
+    trackCalibrationRef.current = { center, scale, invertX, invertY };
     trackCurveRef.current = curve;
 
     currentScene.add(group);
