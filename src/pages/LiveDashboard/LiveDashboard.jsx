@@ -700,7 +700,7 @@ export default function LiveDashboard() {
           {/* ===== TRACK MAP TAB ===== */}
           {activeTab === "trackmap" && !dataLoading && (
             <div className="dashboard-grid fade-in">
-              <TrackMap sessionKey={selectedSessionKey} drivers={drivers} />
+              <TrackMap sessionKey={selectedSessionKey} drivers={drivers} isLive={isLive} playbackTime={currentPlaybackTime} />
             </div>
           )}
         </div>

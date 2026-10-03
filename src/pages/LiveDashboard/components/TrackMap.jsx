@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { getTeamColor } from '../utils/f1Utils';
 
-export default function TrackMap({ sessionKey, drivers }) {
+export default function TrackMap({ sessionKey, drivers, isLive = true, playbackTime }) {
   const [trackPoints, setTrackPoints] = useState([]);
   const [carPositions, setCarPositions] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Reference timestamp to fetch only new data
   const lastUpdateRef = useRef(null);
 
-  // 1. Fetch Track Outline (using one driver's full session location)
+  // 1. Fetch Track Outline
   useEffect(() => {
     if (!sessionKey || !drivers || drivers.length === 0) return;
 
@@ -20,8 +19,6 @@ export default function TrackMap({ sessionKey, drivers }) {
       setLoading(true);
       try {
         let validData = null;
-        
-        // Try up to 5 drivers to find one with a full location trace
         for (let i = 0; i < Math.min(drivers.length, 5); i++) {
           const driverForOutline = drivers[i].driver_number;
           const res = await fetch(`https://api.openf1.org/v1/location?session_key=${sessionKey}&driver_number=${driverForOutline}`);
@@ -37,23 +34,16 @@ export default function TrackMap({ sessionKey, drivers }) {
         if (cancelled) return;
 
         if (validData) {
-          // Save the final timestamp of the session so we can fetch historical cars
-          const finalDate = validData[validData.length - 1].date;
-          
-          // To draw the track outline correctly, we need the full boundary of the car's movement
-          // We downsample by 10 to keep the SVG light, but we MUST use the whole session so the viewBox
-          // scales correctly to the full track size.
           const downsampled = validData.filter((_, idx) => idx % 10 === 0);
-          
           setTrackPoints(downsampled);
           
-          // Initialize lastUpdateRef for the polling interval
-          // If the race was >1 day ago, set the ref to 10 seconds before the end of the session
-          const sessionEnd = new Date(finalDate);
-          if (Date.now() - sessionEnd.getTime() > 24 * 60 * 60 * 1000) {
-             lastUpdateRef.current = new Date(sessionEnd.getTime() - 10000).toISOString();
+          if (isLive) {
+            const finalDate = validData[validData.length - 1].date;
+            const sessionEnd = new Date(finalDate);
+            if (Date.now() - sessionEnd.getTime() > 24 * 60 * 60 * 1000) {
+               lastUpdateRef.current = new Date(sessionEnd.getTime() - 10000).toISOString();
+            }
           }
-
         } else {
           setError("No location data available to draw track map.");
         }
@@ -66,73 +56,85 @@ export default function TrackMap({ sessionKey, drivers }) {
     };
 
     fetchTrackOutline();
-
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [sessionKey, drivers]);
 
-  // 2. Poll for Live Car Positions
+  const playbackTimeRef = useRef(playbackTime);
+  
+  useEffect(() => {
+    playbackTimeRef.current = playbackTime;
+  }, [playbackTime]);
+
+  // 2. Poll / Fetch Car Positions
   useEffect(() => {
     if (!sessionKey || !drivers || drivers.length === 0 || trackPoints.length === 0) return;
 
     let cancelled = false;
     let intervalId;
 
-    const fetchLivePositions = async () => {
+    const fetchPositions = async () => {
       try {
         let url = `https://api.openf1.org/v1/location?session_key=${sessionKey}`;
-        if (lastUpdateRef.current) {
-          url += `&date>=${lastUpdateRef.current}`;
+        
+        if (isLive) {
+          if (lastUpdateRef.current) {
+            url += `&date>=${lastUpdateRef.current}`;
+          } else {
+            const tenSecAgo = new Date(Date.now() - 15000).toISOString();
+            url += `&date>=${tenSecAgo}`;
+          }
         } else {
-          // If first fetch and no fallback, fetch last 15 seconds
-          const tenSecAgo = new Date(Date.now() - 15000).toISOString();
-          url += `&date>=${tenSecAgo}`;
+          const pTime = playbackTimeRef.current;
+          if (!pTime) return;
+          const targetDate = new Date(pTime).toISOString();
+          const tenSecBefore = new Date(pTime - 10000).toISOString();
+          url += `&date<=${targetDate}&date>=${tenSecBefore}`;
         }
 
         const res = await fetch(url);
         if (!res.ok) return;
         const data = await res.json();
         
-        if (cancelled || data.length === 0) return;
-
-        // Update lastUpdateRef to the latest date found (only if it's a live race)
-        const sortedData = data.sort((a, b) => new Date(a.date) - new Date(b.date));
-        
-        const latestDateStr = sortedData[sortedData.length - 1].date;
-        const latestTime = new Date(latestDateStr).getTime();
-        
-        // If the data is from right now (live race), advance the pointer so we only get new data next tick
-        if (Date.now() - latestTime < 24 * 60 * 60 * 1000) {
-            lastUpdateRef.current = latestDateStr;
+        if (cancelled || data.length === 0) {
+           return;
         }
 
-        // Group by driver and take the latest position for each
+        const sortedData = data.sort((a, b) => new Date(a.date) - new Date(b.date));
+        
+        if (isLive) {
+          const latestDateStr = sortedData[sortedData.length - 1].date;
+          const latestTime = new Date(latestDateStr).getTime();
+          if (Date.now() - latestTime < 24 * 60 * 60 * 1000) {
+              lastUpdateRef.current = latestDateStr;
+          }
+        }
+
         const latestPositions = {};
         for (const pt of sortedData) {
           latestPositions[pt.driver_number] = pt;
         }
 
-        setCarPositions(prev => ({
-          ...prev,
-          ...latestPositions
-        }));
+        if (isLive) {
+            setCarPositions(prev => ({ ...prev, ...latestPositions }));
+        } else {
+            setCarPositions(latestPositions);
+        }
 
       } catch (err) {
-        console.error("Error fetching live locations:", err);
+        console.error("Error fetching locations:", err);
       }
     };
 
-    fetchLivePositions();
-    intervalId = setInterval(fetchLivePositions, 2000); // 2 second refresh for smooth map
+    fetchPositions();
+    // Poll continuously (2s for live, 1s for archive playback)
+    intervalId = setInterval(fetchPositions, isLive ? 2000 : 1000);
 
     return () => {
       cancelled = true;
-      clearInterval(intervalId);
+      if (intervalId) clearInterval(intervalId);
     };
-  }, [sessionKey, drivers, trackPoints]);
+  }, [sessionKey, drivers, trackPoints, isLive]);
 
-  // Calculate SVG ViewBox based on the track points
   const viewBox = useMemo(() => {
     if (trackPoints.length === 0) return "0 0 1000 1000";
 
@@ -142,16 +144,14 @@ export default function TrackMap({ sessionKey, drivers }) {
     trackPoints.forEach(p => {
       if (p.x < minX) minX = p.x;
       if (p.x > maxX) maxX = p.x;
-      // Note: we negate Y because SVG Y goes down, but map Y goes up
       if (-p.y < minY) minY = -p.y;
       if (-p.y > maxY) maxY = -p.y;
     });
 
-    // Add 10% padding
     const width = maxX - minX;
     const height = maxY - minY;
-    const paddingX = width * 0.1;
-    const paddingY = height * 0.1;
+    const paddingX = width * 0.15;
+    const paddingY = height * 0.15;
 
     return `${minX - paddingX} ${minY - paddingY} ${width + paddingX * 2} ${height + paddingY * 2}`;
   }, [trackPoints]);
@@ -163,7 +163,7 @@ export default function TrackMap({ sessionKey, drivers }) {
           <div className="panel-title">🗺️ Live Track Radar</div>
         </div>
         <div className="panel-body" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-tertiary)' }}>
-          Generating track outline...
+          Generating high-res track outline...
         </div>
       </div>
     );
@@ -182,40 +182,92 @@ export default function TrackMap({ sessionKey, drivers }) {
     );
   }
 
+  const mapScale = parseFloat(viewBox.split(' ')[2]);
+  const strokeOuter = Math.max(120, mapScale / 120);
+  const strokeInner = Math.max(60, mapScale / 240);
+  const strokeCenter = Math.max(10, mapScale / 1000);
+  const dotSize = Math.max(150, mapScale / 50);
+
   return (
-    <div className="panel">
-      <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <div className="panel-title">🗺️ Live Track Radar</div>
+    <div className="panel" style={{ overflow: 'hidden' }}>
+      <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', zIndex: 10 }}>
+        <div className="panel-title">🗺️ Track Radar {isLive ? '(Live)' : '(Archive)'}</div>
         <div style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)' }}>
-          Cars update every 2 seconds
+          {isLive ? 'Live tracking (2s update)' : 'Time Machine Active'}
         </div>
       </div>
-      <div className="panel-body" style={{ padding: '0', display: 'flex', justifyContent: 'center', backgroundColor: '#111' }}>
+      
+      <div className="panel-body" style={{ 
+        padding: '0', 
+        display: 'flex', 
+        justifyContent: 'center', 
+        backgroundColor: '#0a0a0c',
+        backgroundImage: 'radial-gradient(circle at 50% 50%, #1a1a24 0%, #0a0a0c 100%)',
+        position: 'relative'
+      }}>
+        
+        {/* Subtle grid background */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundSize: '40px 40px',
+          backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px)',
+          pointerEvents: 'none'
+        }} />
+
         <svg 
           viewBox={viewBox} 
           style={{ 
             width: '100%', 
-            maxHeight: '600px', 
-            display: 'block' 
+            height: '100%',
+            minHeight: '600px',
+            maxHeight: '800px',
+            display: 'block',
+            filter: 'drop-shadow(0 0 20px rgba(0,0,0,0.5))'
           }}
         >
-          {/* Draw Track Outline */}
+          <defs>
+            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="15" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+            
+            <filter id="car-glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="8" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+
+          {/* Track Outer Border (Glow + Width) */}
           <polyline
             points={trackPoints.map(p => `${p.x},${-p.y}`).join(' ')}
             fill="none"
-            stroke="var(--border-secondary)"
-            strokeWidth={Math.max(100, (viewBox.split(' ')[2] / 150))} // Dynamic stroke width based on map scale
+            stroke="rgba(255, 255, 255, 0.08)"
+            strokeWidth={strokeOuter}
+            strokeLinejoin="round"
+            strokeLinecap="round"
+            filter="url(#glow)"
+          />
+
+          {/* Track Asphalt Main */}
+          <polyline
+            points={trackPoints.map(p => `${p.x},${-p.y}`).join(' ')}
+            fill="none"
+            stroke="#16161d"
+            strokeWidth={strokeInner}
             strokeLinejoin="round"
             strokeLinecap="round"
           />
 
+          {/* Track Center Line (Racing Line Hint) */}
           <polyline
             points={trackPoints.map(p => `${p.x},${-p.y}`).join(' ')}
             fill="none"
-            stroke="var(--bg-primary)"
-            strokeWidth={Math.max(50, (viewBox.split(' ')[2] / 300))} // Inner track
+            stroke="rgba(255, 255, 255, 0.15)"
+            strokeWidth={strokeCenter}
             strokeLinejoin="round"
             strokeLinecap="round"
+            strokeDasharray={`${strokeCenter * 4} ${strokeCenter * 6}`}
           />
 
           {/* Draw Cars */}
@@ -224,23 +276,37 @@ export default function TrackMap({ sessionKey, drivers }) {
             if (!drv) return null;
             
             const color = getTeamColor(drv.team_name, drv.team_colour);
-            const dotSize = Math.max(150, (viewBox.split(' ')[2] / 60)); // Scale dot to map size
             
             return (
-              <g key={driverNumber} transform={`translate(${pos.x}, ${-pos.y})`}>
+              <g key={driverNumber} transform={`translate(${pos.x}, ${-pos.y})`} style={{ transition: 'transform 0.5s ease-out' }}>
+                {/* Outer Glow */}
+                <circle
+                  r={dotSize * 1.3}
+                  fill={color}
+                  opacity="0.3"
+                  filter="url(#car-glow)"
+                />
+                {/* Main dot */}
                 <circle
                   r={dotSize}
+                  fill="#111"
+                  stroke={color}
+                  strokeWidth={dotSize * 0.25}
+                />
+                {/* Inner highlight */}
+                <circle
+                  r={dotSize * 0.75}
                   fill={color}
-                  stroke="#fff"
-                  strokeWidth={dotSize * 0.15}
+                  opacity="0.8"
                 />
                 <text
                   y={dotSize * 0.35}
                   fontSize={dotSize * 1.1}
-                  fontWeight="bold"
+                  fontWeight="800"
+                  fontFamily="var(--font-display, sans-serif)"
                   fill="#fff"
                   textAnchor="middle"
-                  style={{ textShadow: '0 0 4px rgba(0,0,0,0.8)' }}
+                  style={{ textShadow: '0 2px 4px rgba(0,0,0,0.9)' }}
                 >
                   {drv.name_acronym || driverNumber}
                 </text>

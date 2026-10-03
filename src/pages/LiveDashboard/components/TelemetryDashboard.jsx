@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getTeamColor } from '../utils/f1Utils';
 import { getCarData } from '../services/api';
 
-export default function TelemetryDashboard({ sessionKey, drivers, year = 2026, isLive = true }) {
+export default function TelemetryDashboard({ sessionKey, drivers, year = 2026, isLive = true, playbackTime }) {
   const [selectedDriver, setSelectedDriver] = useState('');
   const [telemetry, setTelemetry] = useState(null);
   const [loading, setLoading] = useState(false);
