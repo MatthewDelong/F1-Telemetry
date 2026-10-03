@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getTeamColor } from '../utils/f1Utils';
 import { getCarData } from '../services/api';
 
@@ -14,56 +14,62 @@ export default function TelemetryDashboard({ sessionKey, drivers, year = 2026, i
     }
   }, [drivers, selectedDriver]);
 
+  const playbackTimeRef = useRef(playbackTime);
+  
+  useEffect(() => {
+    playbackTimeRef.current = playbackTime;
+  }, [playbackTime]);
+
   // Fetch telemetry on interval
   useEffect(() => {
     if (!sessionKey || !selectedDriver) return;
     
     let cancelled = false;
-    let intervalId;
-    let timeoutId;
+    let timerId;
 
-    const fetchTelemetry = async (isInitial = false) => {
-      if (isInitial) setLoading(true);
+    const pollTelemetry = async () => {
       try {
         let params = {};
-        if (!isLive && playbackTime) {
-          params['date<='] = new Date(playbackTime).toISOString();
-          params['date>='] = new Date(playbackTime - 5000).toISOString(); // last 5 seconds to ensure we get a data point
+        if (!isLive) {
+          const pTime = playbackTimeRef.current;
+          if (!pTime) return;
+          params['date<='] = new Date(pTime).toISOString();
+          params['date>='] = new Date(pTime - 5000).toISOString(); 
         }
         const data = await getCarData(sessionKey, selectedDriver, params);
         
         if (!cancelled && data && data.length > 0) {
-          // get the point closest to playbackTime without going over
-          const validPoints = data.filter(d => !playbackTime || new Date(d.date).getTime() <= playbackTime);
-          if (validPoints.length > 0) {
-            setTelemetry(validPoints[validPoints.length - 1]);
+          if (!isLive) {
+             const pTime = playbackTimeRef.current;
+             const validPoints = data.filter(d => !pTime || new Date(d.date).getTime() <= pTime);
+             if (validPoints.length > 0) {
+               setTelemetry(validPoints[validPoints.length - 1]);
+             } else {
+               setTelemetry(data[data.length - 1]);
+             }
           } else {
-            setTelemetry(data[data.length - 1]);
+             setTelemetry(data[data.length - 1]);
           }
-        } else if (!cancelled && (!data || data.length === 0)) {
-          // if no data in this tiny window, maybe clear it? We'll leave the old data on screen
         }
       } catch (err) {
         console.error("Telemetry fetch error:", err);
       } finally {
         if (!cancelled) setLoading(false);
       }
+      
+      if (!cancelled) {
+         timerId = setTimeout(pollTelemetry, isLive ? 10000 : 2500);
+      }
     };
 
-    if (isLive) {
-      fetchTelemetry(true);
-      intervalId = setInterval(() => fetchTelemetry(false), 10000); // 10s refresh
-    } else {
-      // Debounce the fetch for archive mode so we don't spam when scrubbing
-      timeoutId = setTimeout(() => fetchTelemetry(true), 150);
-    }
+    setLoading(true);
+    pollTelemetry();
 
     return () => {
       cancelled = true;
-      if (intervalId) clearInterval(intervalId);
-      if (timeoutId) clearTimeout(timeoutId);
+      if (timerId) clearTimeout(timerId);
     };
-  }, [sessionKey, selectedDriver, isLive, playbackTime]);
+  }, [sessionKey, selectedDriver, isLive]);
 
   const drv = drivers?.find(d => parseInt(d.driver_number) === parseInt(selectedDriver));
   const color = drv ? getTeamColor(drv.team_name, drv.team_colour) : '#666';
@@ -73,16 +79,6 @@ export default function TelemetryDashboard({ sessionKey, drivers, year = 2026, i
 
   return (
     <div className="panel relative">
-      {!isLive && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm rounded-lg">
-          <div className="text-center p-8 border border-white/10 bg-neutral-900 rounded shadow-xl">
-            <h3 className="text-xl font-display font-bold uppercase tracking-widest text-f1-red mb-2">🏁 Session Finished</h3>
-            <p className="text-neutral-300 font-display text-sm tracking-wider">Live telemetry is offline.</p>
-            <p className="text-neutral-500 font-display text-xs mt-4">Head over to the <strong>3D Replay</strong> tab to view historical telemetry.</p>
-          </div>
-        </div>
-      )}
-
       {/* Header */}
       <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div className="panel-title">🏎️ Live Telemetry Dashboard</div>

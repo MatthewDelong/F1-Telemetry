@@ -114,26 +114,31 @@ export default function LiveDashboard() {
 
   // Group sessions by meeting
   const groupedSessions = useMemo(() => {
-    const groups = {};
+    const groupsMap = new Map();
     for (const s of sessions) {
       const meetingKey = s.meeting_key || s.location || "Unknown";
-      if (!groups[meetingKey]) {
-        groups[meetingKey] = {
+      if (!groupsMap.has(meetingKey)) {
+        groupsMap.set(meetingKey, {
+          meetingKey,
           meetingName: s.circuit_short_name || s.location || "Unknown",
           country: s.country_name || "",
           sessions: [],
-        };
+          date_start: s.date_start,
+        });
       }
-      groups[meetingKey].sessions.push(s);
+      groupsMap.get(meetingKey).sessions.push(s);
+      if (new Date(s.date_start) < new Date(groupsMap.get(meetingKey).date_start)) {
+        groupsMap.get(meetingKey).date_start = s.date_start;
+      }
     }
-    return groups;
+    return Array.from(groupsMap.values()).sort((a, b) => new Date(a.date_start) - new Date(b.date_start));
   }, [sessions]);
 
   // Time Machine Data Filtering
   const sessionStart = selectedSession?.date_start ? new Date(selectedSession.date_start).getTime() : null;
   const sessionEnd = selectedSession?.date_end ? new Date(selectedSession.date_end).getTime() : null;
 
-  const currentPlaybackTime = (!isLive && playbackTime !== null) ? playbackTime : new Date().getTime();
+  const currentPlaybackTime = (!isLive && playbackTime !== null) ? playbackTime : (sessionEnd || new Date().getTime());
 
   // Helper to safely parse dates for filtering
   const filterByTime = (arr, dateField = "date") => {
@@ -218,9 +223,9 @@ export default function LiveDashboard() {
               ) : sessions.length === 0 ? (
                 <option>No sessions found</option>
               ) : (
-                Object.entries(groupedSessions).map(([meetKey, group]) => (
+                groupedSessions.map((group) => (
                   <optgroup
-                    key={meetKey}
+                    key={group.meetingKey}
                     label={`🏁 ${group.meetingName} — ${group.country}`}
                   >
                     {group.sessions.map((s) => (

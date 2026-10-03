@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { getTeamColor } from '../utils/f1Utils';
+import { getLocation } from '../services/api';
 
 export default function TrackMap({ sessionKey, drivers, isLive = true, playbackTime }) {
   const [trackPoints, setTrackPoints] = useState([]);
@@ -70,32 +71,30 @@ export default function TrackMap({ sessionKey, drivers, isLive = true, playbackT
     if (!sessionKey || !drivers || drivers.length === 0 || trackPoints.length === 0) return;
 
     let cancelled = false;
-    let intervalId;
+    let timerId;
 
-    const fetchPositions = async () => {
+    const pollPositions = async () => {
       try {
-        let url = `https://api.openf1.org/v1/location?session_key=${sessionKey}`;
+        let params = { session_key: sessionKey };
         
         if (isLive) {
           if (lastUpdateRef.current) {
-            url += `&date>=${lastUpdateRef.current}`;
+            params['date>='] = lastUpdateRef.current;
           } else {
             const tenSecAgo = new Date(Date.now() - 15000).toISOString();
-            url += `&date>=${tenSecAgo}`;
+            params['date>='] = tenSecAgo;
           }
         } else {
           const pTime = playbackTimeRef.current;
           if (!pTime) return;
-          const targetDate = new Date(pTime).toISOString();
-          const tenSecBefore = new Date(pTime - 10000).toISOString();
-          url += `&date<=${targetDate}&date>=${tenSecBefore}`;
+          params['date<='] = new Date(pTime).toISOString();
+          params['date>='] = new Date(pTime - 10000).toISOString();
         }
 
-        const res = await fetch(url);
-        if (!res.ok) return;
-        const data = await res.json();
+        const data = await getLocation(params);
         
-        if (cancelled || data.length === 0) {
+        if (cancelled || !data || data.length === 0) {
+           if (!cancelled) timerId = setTimeout(pollPositions, isLive ? 2000 : 2500);
            return;
         }
 
@@ -123,15 +122,17 @@ export default function TrackMap({ sessionKey, drivers, isLive = true, playbackT
       } catch (err) {
         console.error("Error fetching locations:", err);
       }
+      
+      if (!cancelled) {
+         timerId = setTimeout(pollPositions, isLive ? 2000 : 2500);
+      }
     };
 
-    fetchPositions();
-    // Poll continuously (2s for live, 1s for archive playback)
-    intervalId = setInterval(fetchPositions, isLive ? 2000 : 1000);
+    pollPositions();
 
     return () => {
       cancelled = true;
-      if (intervalId) clearInterval(intervalId);
+      if (timerId) clearTimeout(timerId);
     };
   }, [sessionKey, drivers, trackPoints, isLive]);
 

@@ -49,8 +49,18 @@ export function useLiveTelemetry(selectedYear) {
     async function loadSessions() {
       setLoadingSessions(true);
       try {
-        const data = await getSessions({ year: selectedYear });
-        if (!cancelled && data) {
+        const rawData = await getSessions({ year: selectedYear });
+        if (!cancelled && rawData) {
+          // Filter out obsolete Sakhir-Bahrain meetings and fix Kuala Lumpur country
+          const data = rawData
+            .filter(s => ![1282, 1304, 1305].includes(s.meeting_key))
+            .map(s => {
+              if (s.meeting_key === 1308) {
+                s.country_name = "Malaysia";
+              }
+              return s;
+            });
+
           const chronological = data.sort(
             (a, b) => new Date(a.date_start) - new Date(b.date_start)
           );

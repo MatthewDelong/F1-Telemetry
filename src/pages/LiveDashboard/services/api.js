@@ -67,15 +67,25 @@ async function fetchWithRetry(urlStr, retries = 3, backoff = 1000) {
 }
 
 async function fetchAPI(endpoint, params = {}) {
-  const url = new URL(`${BASE_URL}${endpoint}`);
+  let url = `${BASE_URL}${endpoint}`;
+  const queryParts = [];
+  
   Object.entries(params).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== '') {
-      url.searchParams.append(key, value);
+      if (key.endsWith('<') || key.endsWith('>') || key.endsWith('<=') || key.endsWith('>=')) {
+        queryParts.push(`${key}${encodeURIComponent(value)}`);
+      } else {
+        queryParts.push(`${key}=${encodeURIComponent(value)}`);
+      }
     }
   });
 
+  if (queryParts.length > 0) {
+    url += '?' + queryParts.join('&');
+  }
+
   // Enqueue requests to strictly stagger them and avoid rate limiting
-  return enqueueFetch(url.toString());
+  return enqueueFetch(url);
 }
 
 // ===== SESSION =====

@@ -76,12 +76,35 @@ export default function MiniSectorMap({ sessionKey, drivers, laps }) {
 
       try {
         const getBestLapLoc = async (dNum) => {
-          const dLaps = laps.filter(l => parseInt(l.driver_number) === parseInt(dNum) && l.lap_duration);
-          if (dLaps.length === 0) return null;
-          const best = dLaps.reduce((min, cur) => cur.lap_duration < min.lap_duration ? cur : min, dLaps[0]);
+          let dLaps = laps.filter(l => parseInt(l.driver_number) === parseInt(dNum));
+          if (dLaps.length < 2) return null;
+          
+          let best = null;
+          let bestDuration = Infinity;
+          
+          const lapsWithDuration = dLaps.filter(l => l.lap_duration);
+          if (lapsWithDuration.length > 0) {
+            best = lapsWithDuration.reduce((min, cur) => cur.lap_duration < min.lap_duration ? cur : min, lapsWithDuration[0]);
+            bestDuration = best.lap_duration;
+          } else {
+            dLaps = dLaps.sort((a, b) => a.lap_number - b.lap_number);
+            for (let i = 0; i < dLaps.length - 1; i++) {
+              if (dLaps[i].date_start && dLaps[i+1].date_start) {
+                const t1 = new Date(dLaps[i].date_start).getTime();
+                const t2 = new Date(dLaps[i+1].date_start).getTime();
+                const duration = (t2 - t1) / 1000;
+                if (duration > 60 && duration < bestDuration) {
+                  bestDuration = duration;
+                  best = dLaps[i];
+                }
+              }
+            }
+          }
+
+          if (!best || !best.date_start || bestDuration === Infinity) return null;
 
           const startTime = new Date(best.date_start);
-          const endTime = new Date(startTime.getTime() + best.lap_duration * 1000);
+          const endTime = new Date(startTime.getTime() + bestDuration * 1000);
 
           // Add 1s padding
           const startStr = new Date(startTime.getTime() - 1000).toISOString();
@@ -118,7 +141,7 @@ export default function MiniSectorMap({ sessionKey, drivers, laps }) {
     fetchDominance();
 
     return () => { cancelled = true; };
-  }, [sessionKey, driver1, driver2, laps]);
+  }, [sessionKey, driver1, driver2, laps?.length]);
 
   // Compute map rendering
   const mapData = useMemo(() => {
@@ -167,8 +190,23 @@ export default function MiniSectorMap({ sessionKey, drivers, laps }) {
         d2Count++;
       }
 
+      let nextPoint = null;
+      for (let j = 1; j < NUM_SECTORS; j++) {
+         const idx = (i + j) % NUM_SECTORS;
+         const nxt = d1Data.sectors[idx];
+         if (nxt && nxt.points.length > 0) {
+             nextPoint = nxt.points[0];
+             break;
+         }
+      }
+      
+      const pointsToRender = [...s1.points];
+      if (nextPoint) {
+         pointsToRender.push(nextPoint);
+      }
+
       segments.push({
-        points: s1.points,
+        points: pointsToRender,
         color: dominantColor
       });
     }
