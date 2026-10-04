@@ -39,6 +39,12 @@ if ($source === 'openf1' && strpos($_SERVER['QUERY_STRING'], '&') !== false) {
         $fullPath = preg_replace('/&flush=[^&]*/', '', $fullPath);
         $fullPath = preg_replace('/&refresh=[^&]*/', '', $fullPath);
         $path = urldecode($fullPath);
+        
+        // JS URLSearchParams appends parameters with '&' to the root api.php url
+        // We must convert the first '&' to '?' for the reconstructed OpenF1 path
+        if (strpos($path, '&') !== false && strpos($path, '?') === false) {
+            $path = preg_replace('/&/', '?', $path, 1);
+        }
     }
 }
 
@@ -50,10 +56,15 @@ if (empty($source) || empty($path)) {
 
 // Function to fetch OpenF1 auth token
 function getOpenF1Token() {
-    $envFile = __DIR__ . '/../.env.production';
-    $username = '';
-    $password = '';
-    if (file_exists($envFile)) {
+    $envFile = __DIR__ . '/.env.production';
+    if (!file_exists($envFile)) {
+        $envFile = __DIR__ . '/../.env.production';
+    }
+    
+    $username = getenv('OPENF1_USERNAME') ?: (isset($_ENV['OPENF1_USERNAME']) ? $_ENV['OPENF1_USERNAME'] : '');
+    $password = getenv('OPENF1_PASSWORD') ?: (isset($_ENV['OPENF1_PASSWORD']) ? $_ENV['OPENF1_PASSWORD'] : '');
+    
+    if (empty($username) && file_exists($envFile)) {
         $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         foreach ($lines as $line) {
             if (strpos(trim($line), '#') === 0) continue;
@@ -246,14 +257,22 @@ if ($source === 'f1') {
     }
 
 } else if ($source === 'openf1') {
-    // Proxy for OpenF1 API using the custom Cloudflare Worker to bypass live session blocks
-    $baseUrl = "https://openf1-proxy.matthew-delong73.workers.dev/";
     // Strip leading slash if present in path
     $requestPath = ltrim($path, '/');
     
-    $headers = [
-        'Origin' => 'https://f1-telemetry.co.uk' // Spoof origin to satisfy worker restrictions
-    ];
+    $headers = [];
+    $baseUrl = "https://api.openf1.org/";
+    
+    // Attach sponsor authentication token if available (Premium)
+    $token = getOpenF1Token();
+    if ($token) {
+        $baseUrl = "https://api.openf1.org/";
+        $headers['Authorization'] = 'Bearer ' . $token;
+    } else {
+        // Fallback to Cloudflare Worker if .env token is missing
+        $baseUrl = "https://openf1-proxy.matthew-delong73.workers.dev/";
+        $headers['Origin'] = 'https://f1-telemetry.co.uk';
+    }
     
     $data = fetchUrl($baseUrl . $requestPath, 15, $lastError, $headers);
 } else if ($source === 'f1a' || $source === 'f2') {

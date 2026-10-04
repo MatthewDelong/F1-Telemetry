@@ -159,7 +159,7 @@ export function useLiveTelemetry(selectedYear) {
       setStints(stintsData || []);
       setPositions(positionsData || []);
       setIntervals(intervalsData || []);
-      setWeather(weatherData && weatherData.length > 0 ? weatherData[weatherData.length - 1] : null);
+      setWeather(weatherData || []);
       setRaceControl(rcData || []);
       setPitStops(pitData || []);
       setTeamRadio(radioData || []);

@@ -22,10 +22,7 @@ export default function TrackMap({ sessionKey, drivers, isLive = true, playbackT
         let validData = null;
         for (let i = 0; i < Math.min(drivers.length, 5); i++) {
           const driverForOutline = drivers[i].driver_number;
-          const res = await fetch(`https://api.openf1.org/v1/location?session_key=${sessionKey}&driver_number=${driverForOutline}`);
-          if (!res.ok) continue;
-          
-          const data = await res.json();
+          const data = await getLocation({ session_key: sessionKey, driver_number: driverForOutline });
           if (data && data.length > 500) {
             validData = data;
             break;

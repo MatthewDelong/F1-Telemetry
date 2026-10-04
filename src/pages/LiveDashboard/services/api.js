@@ -4,12 +4,14 @@
  * Includes rate limiting protection with retry and staggered requests
  */
 
-const BASE_URL = 'https://api.openf1.org/v1';
-const FALLBACK_URL = 'https://api.openf1.org/v1';
+const isProd = import.meta.env.PROD;
+const BASE_URL = isProd 
+  ? '/api.php?source=openf1&path=/v1' 
+  : '/openf1/v1';
 
 // Strict queue to ensure requests are staggered and never hit the OpenF1 429 rate limit
 let requestQueue = Promise.resolve();
-const STAGGER_DELAY = 1200; // ms between requests
+const STAGGER_DELAY = 150; // ms between requests
 
 function enqueueFetch(urlStr) {
   const promise = requestQueue.then(async () => {
@@ -36,10 +38,11 @@ async function fetchWithRetry(urlStr, retries = 3, backoff = 1000) {
         continue;
       }
       
-      // If the proxy returns forbidden/unauthorized (e.g. someone else cloned the repo)
+      // If proxy token is refreshing, it might return 401/403 temporarily. Just retry.
       if (response.status === 401 || response.status === 403) {
-        console.warn(`Proxy authentication failed. Falling back to public API...`);
-        currentUrl = currentUrl.replace(BASE_URL, FALLBACK_URL);
+        console.warn(`Proxy auth error (${response.status}), retrying...`);
+        const waitTime = backoff * Math.pow(2, attempt);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
         continue;
       }
       
@@ -52,13 +55,6 @@ async function fetchWithRetry(urlStr, retries = 3, backoff = 1000) {
       }
       return await response.json();
     } catch (err) {
-      // If fetch completely fails (e.g. CORS error from restricted proxy), fallback to public API
-      if (currentUrl.startsWith(BASE_URL) && err.name === 'TypeError') {
-        console.warn(`Proxy connection failed (likely CORS). Falling back to public API...`);
-        currentUrl = currentUrl.replace(BASE_URL, FALLBACK_URL);
-        continue;
-      }
-      
       if (attempt === retries) throw err;
       const waitTime = backoff * Math.pow(2, attempt);
       await new Promise(resolve => setTimeout(resolve, waitTime));

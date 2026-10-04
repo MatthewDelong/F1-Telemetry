@@ -249,7 +249,7 @@ export default function MiniSectorMap({ sessionKey, drivers, laps }) {
       </div>
       
       <div className="panel-body" style={{ minHeight: '400px', display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#111' }}>
-        {loading ? (
+        {loading && !mapData ? (
           <div style={{ padding: '3rem', color: 'var(--text-tertiary)' }}>Fetching high-res telemetry data...</div>
         ) : !mapData ? (
           <div style={{ padding: '3rem', color: 'var(--text-tertiary)' }}>Not enough lap data for comparison.</div>

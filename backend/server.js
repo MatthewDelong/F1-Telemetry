@@ -502,20 +502,23 @@ async function getOpenF1Token() {
 // ─── OpenF1 Proxy: passthrough to api.openf1.org ───
 app.get("/openf1/*", async (req, res) => {
   try {
-    // Forward /openf1/... to Cloudflare worker
-    const targetUrl = `https://openf1-proxy.matthew-delong73.workers.dev${req.url.replace('/openf1', '')}`;
+    const token = await getOpenF1Token();
+    let targetUrl = `https://api.openf1.org${req.url.replace('/openf1', '')}`;
+    const headers = { 
+      Accept: "application/json"
+    };
+
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    
     console.log(`[OpenF1 Proxy] Proxying: ${req.method} ${targetUrl}`);
 
     try {
-      const headers = { 
-        Accept: "application/json",
-        'Origin': 'https://f1-telemetry.co.uk' // Spoof origin to satisfy worker restrictions
-      };
-
       const response = await axios.get(targetUrl, {
         headers,
         validateStatus: false,
-        timeout: 10000,
+        timeout: 15000,
       });
 
       res.writeHead(response.status, {

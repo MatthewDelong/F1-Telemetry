@@ -155,8 +155,15 @@ export default function LiveDashboard() {
   const filteredIntervals = filterByTime(intervals, "date");
   const filteredRaceControl = filterByTime(raceControl, "date");
   const filteredTeamRadio = filterByTime(teamRadio, "date");
-  // Weather usually has 'date' too
-  const currentFilteredWeather = !isLive && weather ? filterByTime([weather], "date")[0] : weather;
+  let currentFilteredWeather = null;
+  if (weather && weather.length > 0) {
+    if (!isLive) {
+      const pastWeather = filterByTime(weather, "date");
+      currentFilteredWeather = pastWeather.length > 0 ? pastWeather[pastWeather.length - 1] : null;
+    } else {
+      currentFilteredWeather = weather[weather.length - 1];
+    }
+  }
 
   const currentFlag = useMemo(() => {
     // If a CHEQUERED flag was ever shown, it supersedes subsequent CLEAR messages
