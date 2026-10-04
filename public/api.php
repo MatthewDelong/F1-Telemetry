@@ -280,8 +280,16 @@ if ($source === 'f1') {
     $basePath = ($source === 'f1a') ? 'f1a' : 'f2';
     $legacyApi = ($source === 'f1a') ? 'f1aapi' : 'f2api';
 
-    // Try original path and a flattened path (like local server.js does)
+    // Try original path, year/filename, and a flattened path (like local server.js does)
     $pathsToTry = [$pathWithoutQuery];
+    
+    // Extract year from path if it exists (e.g., from 'races/2025/results.json' or 'constructors/2025/drivers.json')
+    if (preg_match('/(\d{4})/', $pathWithoutQuery, $matches)) {
+        $year = $matches[1];
+        $fileName = basename($pathWithoutQuery);
+        $pathsToTry[] = $year . '/' . $fileName;
+    }
+
     if (basename($pathWithoutQuery) !== $pathWithoutQuery) {
         $pathsToTry[] = basename($pathWithoutQuery);
     }
