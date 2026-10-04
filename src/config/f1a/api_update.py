@@ -243,7 +243,9 @@ def main():
         "Results": new_results
     }
     
-    results_path = os.path.join(os.path.dirname(__file__), 'results.json')
+    results_dir = os.path.join(os.path.dirname(__file__), season)
+    os.makedirs(results_dir, exist_ok=True)
+    results_path = os.path.join(results_dir, 'results.json')
         
     if os.path.exists(results_path):
         with open(results_path, 'r', encoding='utf-8') as f:
