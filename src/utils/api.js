@@ -660,18 +660,36 @@ const fetchRaceResults = async (
       }
 
       if (!raceData || !raceData.Results) {
-        // Fallback to OpenF1 if this is a past race
-        console.log(
-          `[API] Results empty for round ${raceId}, checking OpenF1 fallback...`,
-        );
-        const meetingKeys = await fetchRaceMeetingKeys(selectedYear);
-
-        // Try to find meeting key by fallback name
-        if (fallbackRaceName && meetingKeys[fallbackRaceName]) {
-          const meetingKey = meetingKeys[fallbackRaceName].meeting_key;
-          return await fetchOpenF1Podium(meetingKey);
+        // Fallback to Jolpica API for historical races to avoid slow OpenF1 position pagination
+        console.log(`[API] Results empty for round ${raceId}, checking Jolpica fallback...`);
+        try {
+          const jolpiUrl = `https://api.jolpi.ca/ergast/f1/${selectedYear}/${raceId}/results.json`;
+          const jolpiResp = await fetch(jolpiUrl);
+          if (jolpiResp.ok) {
+            const jolpiData = await jolpiResp.json();
+            const results = jolpiData?.MRData?.RaceTable?.Races?.[0]?.Results;
+            if (results && results.length > 0) {
+              raceData = { Results: results };
+            }
+          }
+        } catch (e) {
+          console.warn("[API] Jolpica fallback failed", e);
         }
-        return [];
+
+        if (!raceData || !raceData.Results) {
+          // Fallback to OpenF1 if this is a past race
+          console.log(
+            `[API] Results empty for round ${raceId}, checking OpenF1 fallback...`,
+          );
+          const meetingKeys = await fetchRaceMeetingKeys(selectedYear);
+  
+          // Try to find meeting key by fallback name
+          if (fallbackRaceName && meetingKeys[fallbackRaceName]) {
+            const meetingKey = meetingKeys[fallbackRaceName].meeting_key;
+            return await fetchOpenF1Podium(meetingKey);
+          }
+          return [];
+        }
       }
       const data = raceData.Results;
       // console.log('response', data);
