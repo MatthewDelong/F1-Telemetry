@@ -48,7 +48,7 @@ export default defineConfig({
         id: "/",
         name: "F1 TELEMETRY",
         short_name: "F1 TELEMETRY",
-        version: "2.0.0",
+        version: "2.0.1",
         description: "In-depth Formula One Telemetry and Analysis",
         theme_color: "#000000",
         background_color: "#000000",
@@ -111,7 +111,7 @@ export default defineConfig({
             handler: "NetworkFirst",
             options: {
               cacheName: "api-data-cache",
-              networkTimeoutSeconds: 10,
+              networkTimeoutSeconds: 60,
               expiration: {
                 maxEntries: 200,
                 maxAgeSeconds: 60 * 60, // 1 hour fallback
@@ -128,7 +128,7 @@ export default defineConfig({
             handler: "NetworkFirst",
             options: {
               cacheName: "external-api-cache",
-              networkTimeoutSeconds: 15,
+              networkTimeoutSeconds: 60,
               expiration: {
                 maxEntries: 100,
                 maxAgeSeconds: 60 * 60, // 1 hour fallback
