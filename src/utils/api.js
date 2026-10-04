@@ -27,12 +27,12 @@ export function normalizeOpenF1Date(date) {
   return d.toISOString();
 }
 
-const CACHE_PREFIX = "f1_cache_v19_";
+const CACHE_PREFIX = "f1_cache_v20_";
 const CACHE_TTL = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
 
 // Clean up stale cache entries from previous versions on load
 try {
-  const OLD_PREFIXES = ["f1_cache_v18_", "f1_cache_v17_", "f1_cache_v16_", "f1_cache_v15_", "f1_cache_v14_", "f1_cache_v13_", "f1_cache_v12_", "f1_cache_v11_", "f1_cache_v10_"];
+  const OLD_PREFIXES = ["f1_cache_v19_", "f1_cache_v18_", "f1_cache_v17_", "f1_cache_v16_", "f1_cache_v15_", "f1_cache_v14_", "f1_cache_v13_", "f1_cache_v12_", "f1_cache_v11_", "f1_cache_v10_"];
   Object.keys(localStorage).forEach((key) => {
     if (OLD_PREFIXES.some((p) => key.startsWith(p))) {
       localStorage.removeItem(key);
@@ -1711,6 +1711,8 @@ export const fetchMostRecentRace = async (
       selectedYear,
       mostRecentRace.round,
       mostRecentRace.raceName,
+      mostRecentRace.circuitId || mostRecentRace.Circuit?.circuitId,
+      mostRecentRace.date
     );
 
     // OpenF1 Fallback for Podium (if Jolpica/GitHub is missing data)
