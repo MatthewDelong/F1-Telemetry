@@ -31,28 +31,30 @@ export function ConstructorStandingsF2({ selectedYear, championshipLevel }) {
       );
       let constructorStandings = formattedConstructors;
       
-      try {
-        let offRes = await fetch(`${getSeriesBaseUrl(championshipLevel)}official_team_standings.json`);
-        if (!offRes.ok) {
-          offRes = await fetch(`https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/official_team_standings.json`);
-        }
-        if (offRes.ok) {
-          const officialStandings = await offRes.json();
-          if (officialStandings && officialStandings.length > 0) {
-            constructorStandings = constructorStandings.map(c => {
-              const norm = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
-              const cn = norm(c.name || c.constructorId);
-              const match = officialStandings.find(x => norm(x.name).startsWith(cn) || cn.startsWith(norm(x.name).substring(0, 5)));
-              if (match) {
-                return { ...c, points: match.points };
-              }
-              return c;
-            });
-            constructorStandings.sort((a, b) => b.points - a.points);
+      if (selectedYear.toString() === "2026") {
+        try {
+          let offRes = await fetch(`${getSeriesBaseUrl(championshipLevel)}official_team_standings.json`);
+          if (!offRes.ok) {
+            offRes = await fetch(`https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/official_team_standings.json`);
           }
+          if (offRes.ok) {
+            const officialStandings = await offRes.json();
+            if (officialStandings && officialStandings.length > 0) {
+              constructorStandings = constructorStandings.map(c => {
+                const norm = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+                const cn = norm(c.name || c.constructorId);
+                const match = officialStandings.find(x => norm(x.name).startsWith(cn) || cn.startsWith(norm(x.name).substring(0, 5)));
+                if (match) {
+                  return { ...c, points: match.points };
+                }
+                return c;
+              });
+              constructorStandings.sort((a, b) => b.points - a.points);
+            }
+          }
+        } catch (e) {
+          console.warn("Could not load official team standings", e);
         }
-      } catch (e) {
-        console.warn("Could not load official team standings", e);
       }
 
       setStandings(constructorStandings);

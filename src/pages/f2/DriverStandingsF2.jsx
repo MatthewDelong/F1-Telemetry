@@ -50,29 +50,31 @@ export function DriverStandingsF2({ selectedYear, championshipLevel }) {
         constructorId: driverIdToConstructor[driver.driverId] || null,
       }));
 
-      try {
-        let offRes = await fetch(`${getSeriesBaseUrl(championshipLevel)}official_driver_standings.json`);
-        if (!offRes.ok) {
-          offRes = await fetch(`https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/official_driver_standings.json`);
-        }
-        if (offRes.ok) {
-          const officialStandings = await offRes.json();
-          if (officialStandings && officialStandings.length > 0) {
-            driverStandings = driverStandings.map(d => {
-              const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(' jr.', '').replace('ue', 'u');
-              const ln = norm(d.familyName || d.driverId);
-              const match = officialStandings.find(x => norm(x.name).includes(ln));
-              if (match) {
-                return { ...d, points: match.points };
-              }
-              return d;
-            });
-            // Re-sort using official points
-            driverStandings.sort((a, b) => b.points - a.points);
+      if (selectedYear.toString() === "2026") {
+        try {
+          let offRes = await fetch(`${getSeriesBaseUrl(championshipLevel)}official_driver_standings.json`);
+          if (!offRes.ok) {
+            offRes = await fetch(`https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/official_driver_standings.json`);
           }
+          if (offRes.ok) {
+            const officialStandings = await offRes.json();
+            if (officialStandings && officialStandings.length > 0) {
+              driverStandings = driverStandings.map(d => {
+                const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(' jr.', '').replace('ue', 'u');
+                const ln = norm(d.familyName || d.driverId);
+                const match = officialStandings.find(x => norm(x.name).includes(ln));
+                if (match) {
+                  return { ...d, points: match.points };
+                }
+                return d;
+              });
+              // Re-sort using official points
+              driverStandings.sort((a, b) => b.points - a.points);
+            }
+          }
+        } catch (e) {
+          console.warn("Could not load official driver standings", e);
         }
-      } catch (e) {
-        console.warn("Could not load official driver standings", e);
       }
 
       setStandings(driverStandings);
