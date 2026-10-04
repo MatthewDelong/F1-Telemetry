@@ -274,7 +274,7 @@ if ($source === 'f1') {
         $headers['Origin'] = 'https://f1-telemetry.co.uk';
     }
     
-    $data = fetchUrl($baseUrl . $requestPath, 15, $lastError, $headers);
+    $data = fetchUrl($baseUrl . $requestPath, 60, $lastError, $headers);
 } else if ($source === 'f1a' || $source === 'f2') {
     $urlsToTry = [];
     $basePath = ($source === 'f1a') ? 'f1a' : 'f2';
