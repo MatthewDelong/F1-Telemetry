@@ -133,7 +133,17 @@ function normalizeGPSPoints(rawPoints, targetSize = 20, canonicalId = "") {
   const invertY = canonicalId === "sepang";
   const invertX = false;
 
-  const points = singleLapPoints.map(
+  let sourcePoints = singleLapPoints;
+  if (canonicalId === "sepang") {
+    // The raw OpenF1 Sepang telemetry starts roughly halfway down the main straight.
+    // We shift the array backwards so index 0 precisely matches the official 
+    // Start/Finish line visually (about 1/4 down the main straight).
+    const shiftAmt = Math.round(sourcePoints.length * 0.045);
+    const shiftIdx = sourcePoints.length - shiftAmt;
+    sourcePoints = [...sourcePoints.slice(shiftIdx), ...sourcePoints.slice(0, shiftIdx)];
+  }
+
+  const points = sourcePoints.map(
     (p) => {
       let nx = (p.x - cx) * scaleFactor;
       let ny = (p.y - cy) * scaleFactor;
