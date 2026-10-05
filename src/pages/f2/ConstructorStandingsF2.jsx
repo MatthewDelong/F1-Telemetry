@@ -31,11 +31,15 @@ export function ConstructorStandingsF2({ selectedYear, championshipLevel }) {
       );
       let constructorStandings = formattedConstructors;
       
-      if (selectedYear.toString() === "2026") {
+      if (selectedYear.toString() === "2026" || selectedYear.toString() === "2025") {
         try {
-          let offRes = await fetch(`${getSeriesBaseUrl(championshipLevel)}official_team_standings.json`);
+          const fileName = selectedYear.toString() === "2026" 
+            ? "official_team_standings.json" 
+            : `official_team_standings_${selectedYear}.json`;
+
+          let offRes = await fetch(`${getSeriesBaseUrl(championshipLevel)}${fileName}`);
           if (!offRes.ok) {
-            offRes = await fetch(`https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/official_team_standings.json`);
+            offRes = await fetch(`https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/${fileName}`);
           }
           if (offRes.ok) {
             const officialStandings = await offRes.json();

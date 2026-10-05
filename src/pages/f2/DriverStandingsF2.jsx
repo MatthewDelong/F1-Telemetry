@@ -50,11 +50,15 @@ export function DriverStandingsF2({ selectedYear, championshipLevel }) {
         constructorId: driverIdToConstructor[driver.driverId] || null,
       }));
 
-      if (selectedYear.toString() === "2026") {
+      if (selectedYear.toString() === "2026" || selectedYear.toString() === "2025") {
         try {
-          let offRes = await fetch(`${getSeriesBaseUrl(championshipLevel)}official_driver_standings.json`);
+          const fileName = selectedYear.toString() === "2026" 
+            ? "official_driver_standings.json" 
+            : `official_driver_standings_${selectedYear}.json`;
+            
+          let offRes = await fetch(`${getSeriesBaseUrl(championshipLevel)}${fileName}`);
           if (!offRes.ok) {
-            offRes = await fetch(`https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/official_driver_standings.json`);
+            offRes = await fetch(`https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/${fileName}`);
           }
           if (offRes.ok) {
             const officialStandings = await offRes.json();
