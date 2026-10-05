@@ -1,7 +1,7 @@
 import { calculateFastestLapDriver } from "./calculateFastestLapDriver.js";
 import { wildCardDrivers } from "./wildCards.js";
 
-const scoringConfigs = {
+export const scoringConfigs = {
   F1A: {
     rescheduledFeatureKey: 'race0', // rescheduled race
     sprintKey: 'race1',

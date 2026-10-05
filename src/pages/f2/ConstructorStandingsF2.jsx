@@ -20,7 +20,7 @@ export function ConstructorStandingsF2({ selectedYear, championshipLevel }) {
         championshipLevel,
       );
       const { racesMeta, constructorPointsByRace } =
-        buildRacePointsMaps(allRaceResults);
+        buildRacePointsMaps(allRaceResults, championshipLevel, selectedYear);
       setConstructorRacePoints(constructorPointsByRace);
       setRacesMeta(racesMeta);
       // console.log({allRaceResults});
@@ -49,6 +49,17 @@ export function ConstructorStandingsF2({ selectedYear, championshipLevel }) {
                 const cn = norm(c.name || c.constructorId);
                 const match = officialStandings.find(x => norm(x.name).startsWith(cn) || cn.startsWith(norm(x.name).substring(0, 5)));
                 if (match) {
+                  const racePoints = constructorPointsByRace.get(c.constructorId);
+                  if (racePoints) {
+                    const currentSum = racePoints.reduce((acc, curr) => acc + curr.total, 0);
+                    if (currentSum !== match.points) {
+                      racePoints.push({
+                        raceName: "Points Adjustment",
+                        pointsByKey: { adjustment: match.points - currentSum },
+                        total: match.points - currentSum
+                      });
+                    }
+                  }
                   return { ...c, points: match.points };
                 }
                 return c;
@@ -90,13 +101,7 @@ export function ConstructorStandingsF2({ selectedYear, championshipLevel }) {
                   index={index}
                   championshipLevel="f2"
                 />
-                <PointsByRaceDropdown
-                  title="Points by race"
-                  racesMeta={racesMeta}
-                  pointsByRace={
-                    constructorRacePoints.get(standing.constructorId) || []
-                  }
-                />
+                {/* <PointsByRaceDropdown ... /> */}
               </li>
             ))}
           </ul>

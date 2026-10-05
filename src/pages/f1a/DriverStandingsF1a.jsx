@@ -19,9 +19,7 @@ export function DriverStandingsF1a({ selectedYear, championshipLevel }) {
         championshipLevel,
       );
       const { racesMeta, driverPointsByRace } =
-        buildRacePointsMaps(allRaceResults);
-      setDriverRacePoints(driverPointsByRace);
-      setRacesMeta(racesMeta);
+        buildRacePointsMaps(allRaceResults, championshipLevel, selectedYear);
 
       let driverStandings = [];
 
@@ -56,6 +54,17 @@ export function DriverStandingsF1a({ selectedYear, championshipLevel }) {
                 });
                 
                 if (existing) {
+                  const racePoints = driverPointsByRace.get(existing.driverId);
+                  if (racePoints) {
+                    const currentSum = racePoints.reduce((acc, curr) => acc + curr.total, 0);
+                    if (currentSum !== match.points) {
+                      racePoints.push({
+                        raceName: "Points Adjustment",
+                        pointsByKey: { adjustment: match.points - currentSum },
+                        total: match.points - currentSum
+                      });
+                    }
+                  }
                   officialDrivers.push({ ...existing, points: match.points });
                 } else {
                   const driverEntry = Object.values(driverInfoMap).find(entry => {
@@ -91,6 +100,8 @@ export function DriverStandingsF1a({ selectedYear, championshipLevel }) {
       }
 
       setStandings(driverStandings);
+      setDriverRacePoints(new Map(driverPointsByRace));
+      setRacesMeta(racesMeta);
       setIsLoading(false);
     };
 
@@ -125,11 +136,7 @@ export function DriverStandingsF1a({ selectedYear, championshipLevel }) {
                   showStanding
                   championshipLevel={championshipLevel}
                 />
-                <PointsByRaceDropdown
-                  title="Points by race"
-                  racesMeta={racesMeta}
-                  pointsByRace={driverRacePoints.get(standing.driverId) || []}
-                />
+                {/* <PointsByRaceDropdown ... /> */}
               </li>
             ))}
           </ul>

@@ -19,7 +19,7 @@ export function DriverStandingsF2({ selectedYear, championshipLevel }) {
         championshipLevel,
       );
       const { racesMeta, driverPointsByRace } =
-        buildRacePointsMaps(allRaceResults);
+        buildRacePointsMaps(allRaceResults, championshipLevel, selectedYear);
       setDriverRacePoints(driverPointsByRace);
       setRacesMeta(racesMeta);
       const driverInfoMap = await fetchDriverInfo(
@@ -68,6 +68,17 @@ export function DriverStandingsF2({ selectedYear, championshipLevel }) {
                 const ln = norm(d.familyName || d.driverId);
                 const match = officialStandings.find(x => norm(x.name).includes(ln));
                 if (match) {
+                  const racePoints = driverPointsByRace.get(d.driverId);
+                  if (racePoints) {
+                    const currentSum = racePoints.reduce((acc, curr) => acc + curr.total, 0);
+                    if (currentSum !== match.points) {
+                      racePoints.push({
+                        raceName: "Points Adjustment",
+                        pointsByKey: { adjustment: match.points - currentSum },
+                        total: match.points - currentSum
+                      });
+                    }
+                  }
                   return { ...d, points: match.points };
                 }
                 return d;
@@ -116,11 +127,7 @@ export function DriverStandingsF2({ selectedYear, championshipLevel }) {
                   showStanding
                   championshipLevel={championshipLevel}
                 />
-                <PointsByRaceDropdown
-                  title="Points by race"
-                  racesMeta={racesMeta}
-                  pointsByRace={driverRacePoints.get(standing.driverId) || []}
-                />
+                {/* <PointsByRaceDropdown ... /> */}
               </li>
             ))}
           </ul>
