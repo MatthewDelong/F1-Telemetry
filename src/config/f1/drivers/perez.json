@@ -2,16 +2,16 @@
     "driverId": "perez",
     "driverCode": "PER",
     "driverNumber": "11",
-    "lastUpdate": "2026-10-05T12:45:56.171302",
+    "lastUpdate": "2026-10-05T18:29:10.590924",
     "totalWins": 6,
     "totalPodiums": 39,
     "totalPoles": 3,
     "totalDNFs": 44,
     "totalRaces": 283,
-    "winRate": 0.020134228187919462,
-    "podiumRate": 0.13087248322147652,
-    "poleRate": 0.010067114093959731,
-    "dnfRate": 0.1476510067114094,
+    "winRate": 0.020066889632107024,
+    "podiumRate": 0.13043478260869565,
+    "poleRate": 0.010033444816053512,
+    "dnfRate": 0.14715719063545152,
     "seasonWins": {
         "2011": 0,
         "2012": 0,
@@ -570,6 +570,7 @@
             "Spain Grand Prix (Madrid)": "1:41.116",
             "Chinese Grand Prix": "1:38.523",
             "Azerbaijan Grand Prix": "1:47.363",
+            "Bahrain Grand Prix in Malaysia": "1:42.688",
             "Spain Grand Prix": "1:22.820"
         }
     },
@@ -1615,6 +1616,9 @@
                 "Azerbaijan Grand Prix": {
                     "points": 0
                 },
+                "Bahrain Grand Prix in Malaysia": {
+                    "points": 0
+                },
                 "Spain Grand Prix": {
                     "points": 0
                 }
@@ -1977,6 +1981,7 @@
                 "Spain Grand Prix (Madrid)": "20",
                 "Chinese Grand Prix": "15",
                 "Azerbaijan Grand Prix": "14",
+                "Bahrain Grand Prix in Malaysia": "19",
                 "Spain Grand Prix": "14"
             }
         }
@@ -2336,6 +2341,7 @@
                 "Spain Grand Prix (Madrid)": "18",
                 "Chinese Grand Prix": "21",
                 "Azerbaijan Grand Prix": "20",
+                "Bahrain Grand Prix in Malaysia": "20",
                 "Spain Grand Prix": "19"
             }
         }
@@ -2666,6 +2672,7 @@
             "Spain Grand Prix (Madrid)": -2,
             "Chinese Grand Prix": 6,
             "Azerbaijan Grand Prix": 6,
+            "Bahrain Grand Prix in Malaysia": 1,
             "Spain Grand Prix": 5
         }
     },
@@ -4208,6 +4215,11 @@
                     "N/A",
                     "N/A"
                 ],
+                "Bahrain Grand Prix in Malaysia": [
+                    "1:38.933",
+                    "N/A",
+                    "N/A"
+                ],
                 "Spain Grand Prix": [
                     "1:17.545",
                     "N/A",
@@ -4231,7 +4243,7 @@
         "2022": 5.409090909090909,
         "2023": 5.863636363636363,
         "2024": 9.625,
-        "2026": 16.8125
+        "2026": 16.941176470588236
     },
     "avgQualiPositions": {
         "2011": 13.61111111111111,
@@ -4248,7 +4260,7 @@
         "2022": 5.0,
         "2023": 9.045454545454545,
         "2024": 9.25,
-        "2026": 19.5
+        "2026": 19.529411764705884
     },
     "rates": {
         "wins": {

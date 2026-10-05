@@ -2,16 +2,16 @@
     "driverId": "max_verstappen",
     "driverCode": "VER",
     "driverNumber": "3",
-    "lastUpdate": "2026-10-05T12:45:56.171116",
-    "totalWins": 71,
-    "totalPodiums": 135,
-    "totalPoles": 51,
+    "lastUpdate": "2026-10-05T18:29:10.590725",
+    "totalWins": 72,
+    "totalPodiums": 136,
+    "totalPoles": 52,
     "totalDNFs": 33,
     "totalRaces": 245,
-    "winRate": 0.2862903225806452,
-    "podiumRate": 0.5443548387096774,
-    "poleRate": 0.2056451612903226,
-    "dnfRate": 0.13306451612903225,
+    "winRate": 0.2891566265060241,
+    "podiumRate": 0.5461847389558233,
+    "poleRate": 0.20883534136546184,
+    "dnfRate": 0.13253012048192772,
     "seasonWins": {
         "2015": 0,
         "2016": 1,
@@ -24,7 +24,7 @@
         "2023": 19,
         "2024": 9,
         "2025": 8,
-        "2026": 0
+        "2026": 1
     },
     "seasonPodiums": {
         "2015": 0,
@@ -38,7 +38,7 @@
         "2023": 21,
         "2024": 14,
         "2025": 15,
-        "2026": 8
+        "2026": 9
     },
     "seasonPoles": {
         "2015": 0,
@@ -52,7 +52,7 @@
         "2023": 13,
         "2024": 10,
         "2025": 8,
-        "2026": 0
+        "2026": 1
     },
     "seasonDNFs": {
         "2015": 5,
@@ -138,7 +138,9 @@
             "United States Grand Prix",
             "Abu Dhabi Grand Prix"
         ],
-        "2026": []
+        "2026": [
+            "Bahrain Grand Prix in Malaysia"
+        ]
     },
     "podiums": {
         "2015": {},
@@ -297,6 +299,7 @@
             "Italy Grand Prix": "3",
             "Spain Grand Prix (Madrid)": "2",
             "Azerbaijan Grand Prix": "2",
+            "Bahrain Grand Prix in Malaysia": "1",
             "Spain Grand Prix": "2"
         }
     },
@@ -628,6 +631,7 @@
             "Spain Grand Prix (Madrid)": "1:36.760",
             "Chinese Grand Prix": "1:37.046",
             "Azerbaijan Grand Prix": "1:44.993",
+            "Bahrain Grand Prix in Malaysia": "1:38.220",
             "Spain Grand Prix": "1:20.230"
         }
     },
@@ -1493,6 +1497,9 @@
                 "Azerbaijan Grand Prix": {
                     "points": 188
                 },
+                "Bahrain Grand Prix in Malaysia": {
+                    "points": 188
+                },
                 "Spain Grand Prix": {
                     "points": 188
                 }
@@ -1793,6 +1800,7 @@
                 "Spain Grand Prix (Madrid)": "2",
                 "Chinese Grand Prix": "16",
                 "Azerbaijan Grand Prix": "2",
+                "Bahrain Grand Prix in Malaysia": "1",
                 "Spain Grand Prix": "4"
             }
         }
@@ -2091,6 +2099,7 @@
                 "Spain Grand Prix (Madrid)": "3",
                 "Chinese Grand Prix": "8",
                 "Azerbaijan Grand Prix": "8",
+                "Bahrain Grand Prix in Malaysia": "1",
                 "Spain Grand Prix": "5"
             }
         }
@@ -2366,6 +2375,7 @@
             "Spain Grand Prix (Madrid)": 1,
             "Chinese Grand Prix": -8,
             "Azerbaijan Grand Prix": 6,
+            "Bahrain Grand Prix in Malaysia": 0,
             "Spain Grand Prix": 1
         }
     },
@@ -3646,6 +3656,11 @@
                     "1:43.706",
                     "1:44.081"
                 ],
+                "Bahrain Grand Prix in Malaysia": [
+                    "1:36.477",
+                    "1:35.696",
+                    "1:35.130"
+                ],
                 "Spain Grand Prix": [
                     "1:16.352",
                     "1:15.484",
@@ -3666,7 +3681,7 @@
         "2023": 1.2727272727272727,
         "2024": 3.625,
         "2025": 3.6666666666666665,
-        "2026": 8.5
+        "2026": 8.058823529411764
     },
     "avgQualiPositions": {
         "2015": 11.0,
@@ -3680,7 +3695,7 @@
         "2023": 3.0,
         "2024": 2.9166666666666665,
         "2025": 3.5,
-        "2026": 6.4375
+        "2026": 6.117647058823529
     },
     "rates": {
         "wins": {
@@ -3695,7 +3710,7 @@
             "2023": 0.8636363636363636,
             "2024": 0.375,
             "2025": 0.3333333333333333,
-            "2026": 0.0
+            "2026": 0.058823529411764705
         },
         "podiums": {
             "2015": 0.0,
@@ -3709,7 +3724,7 @@
             "2023": 0.9545454545454546,
             "2024": 0.5833333333333334,
             "2025": 0.625,
-            "2026": 0.5
+            "2026": 0.5294117647058824
         },
         "poles": {
             "2015": 0.0,
@@ -3723,7 +3738,7 @@
             "2023": 0.5909090909090909,
             "2024": 0.4166666666666667,
             "2025": 0.3333333333333333,
-            "2026": 0.0
+            "2026": 0.058823529411764705
         },
         "DNFs": {
             "2015": 0.2631578947368421,
@@ -3742,21 +3757,21 @@
     },
     "consistency": {
         "mean": {
-            "wins": 5.916666666666667,
-            "podiums": 11.25,
-            "poles": 4.25,
+            "wins": 6.0,
+            "podiums": 11.333333333333334,
+            "poles": 4.333333333333333,
             "points": 302.7083333333333
         },
         "std": {
-            "wins": 6.006362367430797,
-            "podiums": 5.832738064865706,
-            "poles": 4.602988159880492,
+            "wins": 5.930148958219065,
+            "podiums": 5.792715732327588,
+            "poles": 4.533823502911814,
             "points": 145.61628490850725
         },
         "cv": {
-            "wins": 1.015159836748867,
-            "podiums": 0.5184656057658406,
-            "poles": 1.0830560376189393,
+            "wins": 0.9883581597031775,
+            "podiums": 0.511121976381846,
+            "poles": 1.0462669622104188,
             "points": 0.4810448503515725
         }
     },
@@ -3786,6 +3801,6 @@
         "2023": 1.0,
         "2024": 0.6,
         "2025": 0.625,
-        "2026": -1
+        "2026": 1.0
     }
 }

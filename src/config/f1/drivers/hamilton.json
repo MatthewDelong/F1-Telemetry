@@ -2,16 +2,16 @@
     "driverId": "hamilton",
     "driverCode": "HAM",
     "driverNumber": "44",
-    "lastUpdate": "2026-10-05T12:45:56.171173",
+    "lastUpdate": "2026-10-05T18:29:10.590742",
     "totalWins": 106,
-    "totalPodiums": 208,
+    "totalPodiums": 209,
     "totalPoles": 107,
     "totalDNFs": 35,
     "totalRaces": 392,
-    "winRate": 0.2676767676767677,
-    "podiumRate": 0.5252525252525253,
-    "poleRate": 0.2702020202020202,
-    "dnfRate": 0.08838383838383838,
+    "winRate": 0.26700251889168763,
+    "podiumRate": 0.5264483627204031,
+    "poleRate": 0.2695214105793451,
+    "dnfRate": 0.08816120906801007,
     "seasonWins": {
         "2007": 4,
         "2008": 5,
@@ -54,7 +54,7 @@
         "2023": 6,
         "2024": 5,
         "2025": 0,
-        "2026": 6
+        "2026": 7
     },
     "seasonPoles": {
         "2007": 5,
@@ -491,6 +491,7 @@
             "Monaco Grand Prix": "2",
             "Great Britain Grand Prix": "3",
             "Chinese Grand Prix": "3",
+            "Bahrain Grand Prix in Malaysia": "3",
             "Spain Grand Prix": "1"
         }
     },
@@ -1002,6 +1003,7 @@
             "Spain Grand Prix (Madrid)": "1:39.839",
             "Chinese Grand Prix": "1:36.092",
             "Azerbaijan Grand Prix": "1:46.170",
+            "Bahrain Grand Prix in Malaysia": "1:38.610",
             "Spain Grand Prix": "1:20.122"
         }
     },
@@ -2391,6 +2393,9 @@
                 "Azerbaijan Grand Prix": {
                     "points": 214
                 },
+                "Bahrain Grand Prix in Malaysia": {
+                    "points": 214
+                },
                 "Spain Grand Prix": {
                     "points": 214
                 }
@@ -2871,6 +2876,7 @@
                 "Spain Grand Prix (Madrid)": "22",
                 "Chinese Grand Prix": "3",
                 "Azerbaijan Grand Prix": "6",
+                "Bahrain Grand Prix in Malaysia": "3",
                 "Spain Grand Prix": "1"
             }
         }
@@ -3349,6 +3355,7 @@
                 "Spain Grand Prix (Madrid)": "4",
                 "Chinese Grand Prix": "3",
                 "Azerbaijan Grand Prix": "6",
+                "Bahrain Grand Prix in Malaysia": "2",
                 "Spain Grand Prix": "2"
             }
         }
@@ -3788,6 +3795,7 @@
             "Spain Grand Prix (Madrid)": -18,
             "Chinese Grand Prix": 0,
             "Azerbaijan Grand Prix": 0,
+            "Bahrain Grand Prix in Malaysia": -1,
             "Spain Grand Prix": 1
         }
     },
@@ -5845,6 +5853,11 @@
                     "1:44.037",
                     "1:43.858"
                 ],
+                "Bahrain Grand Prix in Malaysia": [
+                    "1:36.595",
+                    "1:36.032",
+                    "1:35.428"
+                ],
                 "Spain Grand Prix": [
                     "1:15.625",
                     "1:15.418",
@@ -5873,7 +5886,7 @@
         "2023": 6.181818181818182,
         "2024": 6.958333333333333,
         "2025": 8.5,
-        "2026": 5.125
+        "2026": 5.0
     },
     "avgQualiPositions": {
         "2007": 2.6470588235294117,
@@ -5895,7 +5908,7 @@
         "2023": 6.363636363636363,
         "2024": 8.5,
         "2025": 9.041666666666666,
-        "2026": 4.375
+        "2026": 4.235294117647059
     },
     "rates": {
         "wins": {
@@ -5918,7 +5931,7 @@
             "2023": 0.0,
             "2024": 0.08333333333333333,
             "2025": 0.0,
-            "2026": 0.0625
+            "2026": 0.058823529411764705
         },
         "podiums": {
             "2007": 0.7058823529411765,
@@ -5940,7 +5953,7 @@
             "2023": 0.2727272727272727,
             "2024": 0.20833333333333334,
             "2025": 0.0,
-            "2026": 0.375
+            "2026": 0.4117647058823529
         },
         "poles": {
             "2007": 0.29411764705882354,
@@ -5990,19 +6003,19 @@
     "consistency": {
         "mean": {
             "wins": 5.3,
-            "podiums": 10.4,
+            "podiums": 10.45,
             "poles": 5.35,
             "points": 261.625
         },
         "std": {
             "wins": 4.196427051671457,
-            "podiums": 5.2,
+            "podiums": 5.162121656838397,
             "poles": 4.210403781111736,
             "points": 110.56320307860115
         },
         "cv": {
             "wins": 0.7917786889946146,
-            "podiums": 0.5,
+            "podiums": 0.4939829336687461,
             "poles": 0.7869913609554646,
             "points": 0.4226018273429571
         }

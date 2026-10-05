@@ -2,16 +2,16 @@
     "driverId": "hadjar",
     "driverCode": "HAD",
     "driverNumber": "6",
-    "lastUpdate": "2026-10-05T12:45:56.171131",
+    "lastUpdate": "2026-10-05T18:29:10.590760",
     "totalWins": 0,
     "totalPodiums": 3,
     "totalPoles": 0,
     "totalDNFs": 11,
     "totalRaces": 35,
     "winRate": 0.0,
-    "podiumRate": 0.08108108108108109,
+    "podiumRate": 0.07894736842105263,
     "poleRate": 0.0,
-    "dnfRate": 0.2972972972972973,
+    "dnfRate": 0.2894736842105263,
     "seasonWins": {
         "2025": 0,
         "2026": 0
@@ -97,6 +97,7 @@
             "Hungary Grand Prix": "1:23.218",
             "Chinese Grand Prix": "1:37.311",
             "Azerbaijan Grand Prix": "1:45.618",
+            "Bahrain Grand Prix in Malaysia": "1:39.792",
             "Spain Grand Prix": "1:20.150"
         }
     },
@@ -229,6 +230,9 @@
                 "Azerbaijan Grand Prix": {
                     "points": 96
                 },
+                "Bahrain Grand Prix in Malaysia": {
+                    "points": 96
+                },
                 "Spain Grand Prix": {
                     "points": 96
                 }
@@ -278,6 +282,7 @@
                 "Hungary Grand Prix": "6",
                 "Chinese Grand Prix": "8",
                 "Azerbaijan Grand Prix": "3",
+                "Bahrain Grand Prix in Malaysia": "5",
                 "Spain Grand Prix": "6"
             }
         }
@@ -325,6 +330,7 @@
                 "Hungary Grand Prix": "8",
                 "Chinese Grand Prix": "9",
                 "Azerbaijan Grand Prix": "4",
+                "Bahrain Grand Prix in Malaysia": "8",
                 "Spain Grand Prix": "6"
             }
         }
@@ -369,6 +375,7 @@
             "Hungary Grand Prix": 2,
             "Chinese Grand Prix": 1,
             "Azerbaijan Grand Prix": 1,
+            "Bahrain Grand Prix in Malaysia": 3,
             "Spain Grand Prix": 0
         }
     },
@@ -559,6 +566,11 @@
                     "1:43.880",
                     "1:43.500"
                 ],
+                "Bahrain Grand Prix in Malaysia": [
+                    "1:36.898",
+                    "1:36.192",
+                    "1:35.558"
+                ],
                 "Spain Grand Prix": [
                     "1:16.427",
                     "1:15.754",
@@ -569,11 +581,11 @@
     },
     "avgRacePositions": {
         "2025": 11.791666666666666,
-        "2026": 8.461538461538462
+        "2026": 8.214285714285714
     },
     "avgQualiPositions": {
         "2025": 9.666666666666666,
-        "2026": 8.846153846153847
+        "2026": 8.785714285714286
     },
     "rates": {
         "wins": {
@@ -582,7 +594,7 @@
         },
         "podiums": {
             "2025": 0.041666666666666664,
-            "2026": 0.15384615384615385
+            "2026": 0.14285714285714285
         },
         "poles": {
             "2025": 0.0,
