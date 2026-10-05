@@ -446,7 +446,9 @@ export const nationalityToFlag = (nationality) => {
     "BAT": "ch",
     "CRO": "us",
     "HAN": "gb",
-    "ALY": "sa"
+    "ALY": "sa",
+    "HAV": "ca",
+    "ANA": "au"
   };
 
   const key = normalized.toLowerCase();
