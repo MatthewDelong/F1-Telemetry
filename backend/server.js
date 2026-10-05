@@ -378,7 +378,8 @@ app.use("/api/proxy/:source", async (req, res) => {
       isGlobal ||
       isYearSpecificMatch ||
       isRootAnd2026 ||
-      path.includes("2026")
+      path.includes("2026") ||
+      path.includes("2025")
     ) {
       try {
         console.log(
