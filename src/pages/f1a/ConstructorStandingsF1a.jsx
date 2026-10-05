@@ -27,52 +27,18 @@ export function ConstructorStandingsF1a({ selectedYear, championshipLevel }) {
 
       let constructorStandings = [];
 
-      if (Number(selectedYear) >= 2025) {
-        const { formattedConstructors } = calculateSeriesPoints2025(
-          allRaceResults,
-          championshipLevel,
-        );
-        constructorStandings = formattedConstructors;
-      } else {
-        const constructorPoints = {};
-        // Aggregate points for each constructor and store driver codes
-        allRaceResults.forEach((race) => {
-          ["race1", "race2", "race3"].forEach((raceKey) => {
-            if (!race[raceKey]) return;
-            race[raceKey].forEach((result) => {
-              const constructorId = result.Constructor.constructorId;
-              const points = parseInt(result.points, 10);
-              const driverCode = result.Driver.code;
+      const { formattedConstructors } = calculateSeriesPoints2025(
+        allRaceResults,
+        championshipLevel,
+      );
+      constructorStandings = formattedConstructors;
 
-              if (!constructorPoints[constructorId]) {
-                constructorPoints[constructorId] = {
-                  ...result.Constructor,
-                  points: 0,
-                  driverCodes: new Set(), // Use a Set to avoid duplicate codes
-                };
-              }
-              constructorPoints[constructorId].points += points;
-              constructorPoints[constructorId].driverCodes.add(driverCode);
-            });
-          });
-        });
-        // Convert driver codes from Set to array
-        Object.keys(constructorPoints).forEach((constructorId) => {
-          constructorPoints[constructorId].driverCodes = Array.from(
-            constructorPoints[constructorId].driverCodes,
-          );
-        });
-        // Convert to array and sort by points in descending order
-        constructorStandings = Object.values(constructorPoints).sort(
-          (a, b) => b.points - a.points,
-        );
-      }
-
-      if (selectedYear.toString() === "2026") {
+      if (["2024", "2025", "2026"].includes(selectedYear.toString())) {
         try {
-          let offRes = await fetch(`${getSeriesBaseUrl(championshipLevel)}official_team_standings.json`);
+          const suffix = selectedYear.toString() === "2026" ? "" : `_${selectedYear}`;
+          let offRes = await fetch(`${getSeriesBaseUrl(championshipLevel)}official_team_standings${suffix}.json`);
           if (!offRes.ok) {
-            offRes = await fetch(`https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/official_team_standings.json`);
+            offRes = await fetch(`https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/official_team_standings${suffix}.json`);
           }
           if (offRes.ok) {
             const officialStandings = await offRes.json();

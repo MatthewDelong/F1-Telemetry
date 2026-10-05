@@ -62,7 +62,7 @@ export const calculateSeriesPoints2025 = (allRaceResults, championshipLevel) => 
     } else {
       raceMap = {
         [config.sprintKey]: {
-          points: config.sprintPoints,
+          points: championshipLevel === "F1A" ? config.featurePoints : config.sprintPoints,
           fastestLapLimit: config.fastestLapEligibility[config.sprintKey]
         },
         [config.featureKey]: {
@@ -149,7 +149,7 @@ export const calculateSeriesPoints2025 = (allRaceResults, championshipLevel) => 
 
         // Sort scores descending by points and sum all non-wildcard drivers for constructors
         teamData.scores.sort((a, b) => b.points - a.points);
-        const eligibleScores = championshipLevel === "F1A" ? teamData.scores.slice(0, 2) : teamData.scores;
+        const eligibleScores = teamData.scores;
 
         eligibleScores.forEach(score => {
           constructorPoints[constructorId].points += score.points;
@@ -158,9 +158,15 @@ export const calculateSeriesPoints2025 = (allRaceResults, championshipLevel) => 
       });
     });
 
-    // Pole bonus for Feature Race
+    // Pole bonus for Feature Race(s)
     let poleBonusRaces = [];
-    poleBonusRaces = hasRace3 ? [race.race3] : [race[config.featureKey]];
+    if (hasRace3) {
+      poleBonusRaces = [race.race1, race.race3];
+    } else {
+      poleBonusRaces = config.poleBonusRace === 'both' 
+        ? [race[config.sprintKey], race[config.featureKey]] 
+        : [race[config.featureKey]];
+    }
     
     poleBonusRaces.forEach(poleBonusResults => {
       if (Array.isArray(poleBonusResults)) {

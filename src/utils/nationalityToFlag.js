@@ -430,6 +430,8 @@ export const nationalityToFlag = (nationality) => {
     "BUS": "ph",
     "BLO": "us",
     "ALQ": "ae",
+    "HAL": "ae",
+    "AAL": "ae",
     "SCH": "de",
     "DEH": "nl",
     "NOB": "br",
@@ -441,7 +443,10 @@ export const nationalityToFlag = (nationality) => {
     "CHO": "gb",
     "JUF": "sa",
     "FLO": "ro",
-    "BAT": "ch"
+    "BAT": "ch",
+    "CRO": "us",
+    "HAN": "gb",
+    "ALY": "sa"
   };
 
   const key = normalized.toLowerCase();

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchAllRaceResults, getSeriesBaseUrl } from "../../utils/apiF1a";
+import { fetchAllRaceResults, getSeriesBaseUrl, fetchDriverInfo } from "../../utils/apiF1a";
 import { calculateSeriesPoints2025 } from "../../utils/calculateSeriesPoints2025";
 import { ConstructorDriver, Loading } from "../../components";
 import { PointsByRaceDropdown } from "../../components/PointsByRaceDropdown";
@@ -25,54 +25,64 @@ export function DriverStandingsF1a({ selectedYear, championshipLevel }) {
 
       let driverStandings = [];
 
-      if (Number(selectedYear) >= 2025) {
-        const { formattedDrivers } = calculateSeriesPoints2025(
-          allRaceResults,
-          championshipLevel,
-        );
-        driverStandings = formattedDrivers;
-      } else {
-        const driverPoints = {};
-        allRaceResults.forEach((race) => {
-          ["race1", "race2", "race3"].forEach((raceKey) => {
-            if (!race[raceKey]) return;
-            race[raceKey].forEach((result) => {
-              const driverId = result.Driver.driverId;
-              const points = parseInt(result.points, 10);
-              if (!driverPoints[driverId]) {
-                driverPoints[driverId] = {
-                  ...result.Driver,
-                  points: 0,
-                };
-              }
-              driverPoints[driverId].points += points;
-            });
-          });
-        });
-        driverStandings = Object.values(driverPoints).sort(
-          (a, b) => b.points - a.points,
-        );
-      }
+      const { formattedDrivers } = calculateSeriesPoints2025(
+        allRaceResults,
+        championshipLevel,
+      );
+      driverStandings = formattedDrivers;
 
-      if (selectedYear.toString() === "2026") {
+      if (["2024", "2025", "2026"].includes(selectedYear.toString())) {
         try {
-          let offRes = await fetch(`${getSeriesBaseUrl(championshipLevel)}official_driver_standings.json`);
+          const suffix = selectedYear.toString() === "2026" ? "" : `_${selectedYear}`;
+          let offRes = await fetch(`${getSeriesBaseUrl(championshipLevel)}official_driver_standings${suffix}.json`);
           if (!offRes.ok) {
-            offRes = await fetch(`https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/official_driver_standings.json`);
+            offRes = await fetch(`https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/official_driver_standings${suffix}.json`);
           }
           if (offRes.ok) {
             const officialStandings = await offRes.json();
             if (officialStandings && officialStandings.length > 0) {
-              driverStandings = driverStandings.map(d => {
-                const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(' jr.', '').replace('ue', 'u');
-                const ln = norm(d.familyName || d.driverId);
-                const match = officialStandings.find(x => norm(x.name).includes(ln));
-                if (match) {
-                  return { ...d, points: match.points };
+              const driverInfoMap = await fetchDriverInfo(selectedYear, championshipLevel);
+              const officialDrivers = [];
+              const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(' jr.', '').replace('ue', 'u');
+              
+              officialStandings.forEach(match => {
+                const lnMatch = norm(match.name).split('. ').pop();
+                
+                let existing = driverStandings.find(d => {
+                  const ln = norm(d.familyName || d.driverId);
+                  const fiMatch = norm(match.name).charAt(0);
+                  const dFi = norm(d.givenName || d.driverId).charAt(0);
+                  return (norm(match.name).includes(ln) || ln.includes(lnMatch)) && fiMatch === dFi;
+                });
+                
+                if (existing) {
+                  officialDrivers.push({ ...existing, points: match.points });
+                } else {
+                  const driverEntry = Object.values(driverInfoMap).find(entry => {
+                    const ln = norm(entry.Driver?.familyName || entry.Driver?.driverId || "");
+                    const fiMatch = norm(match.name).charAt(0);
+                    const dFi = norm(entry.Driver?.givenName || entry.Driver?.driverId || "").charAt(0);
+                    return (norm(match.name).includes(ln) || ln.includes(lnMatch)) && fiMatch === dFi;
+                  });
+                  if (driverEntry) {
+                    officialDrivers.push({
+                      ...driverEntry.Driver,
+                      constructorId: driverEntry.Constructor?.constructorId,
+                      points: match.points
+                    });
+                  } else {
+                    officialDrivers.push({
+                      driverId: match.name,
+                      familyName: match.name,
+                      code: "UNK",
+                      points: match.points
+                    });
+                  }
                 }
-                return d;
               });
-              driverStandings.sort((a, b) => b.points - a.points);
+              
+              officialDrivers.sort((a, b) => b.points - a.points);
+              driverStandings = officialDrivers;
             }
           }
         } catch (e) {
