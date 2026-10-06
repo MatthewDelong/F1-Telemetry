@@ -1,0 +1,265 @@
+.team-driver-card {
+  --team: #7500ad;
+  --team-dark: #22003a;
+  --rx: 0deg;
+  --ry: 0deg;
+  --mx: 50%;
+  --my: 50%;
+
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 10;
+  border-radius: 16px;
+  overflow: hidden;
+  isolation: isolate;
+  cursor: default;
+  color: #fff;
+
+  /* Carbon-fibre weave base */
+  background:
+    linear-gradient(165deg, rgba(255, 255, 255, 0.07) 0%, transparent 38%),
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.035) 0 3px, transparent 3px 6px),
+    repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.45) 0 3px, transparent 3px 6px),
+    linear-gradient(180deg, #1b1c21 0%, #0c0d10 100%);
+  box-shadow:
+    0 28px 50px -28px rgba(0, 0, 0, 0.9),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+  transform-style: preserve-3d;
+  transition:
+    transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.45s ease;
+  animation: team-driver-card-in 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+
+  &:hover {
+    box-shadow:
+      0 36px 60px -26px color-mix(in srgb, var(--team) 55%, transparent),
+      inset 0 0 0 1px color-mix(in srgb, var(--team) 60%, transparent),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  }
+
+  /* Top accent bar */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--team), color-mix(in srgb, var(--team) 40%, #fff));
+    z-index: 5;
+  }
+
+  /* Diagonal team-colour livery stripes */
+  &__livery {
+    position: absolute;
+    inset: -30% -40%;
+    z-index: 0;
+    background: linear-gradient(
+      118deg,
+      transparent 34%,
+      var(--team) 34%,
+      var(--team) 47%,
+      var(--team-dark) 47%,
+      var(--team-dark) 51%,
+      transparent 51%,
+      transparent 54%,
+      color-mix(in srgb, var(--team) 70%, #fff) 54%,
+      color-mix(in srgb, var(--team) 70%, #fff) 55.2%,
+      transparent 55.2%
+    );
+    opacity: 0.85;
+    transform: translateX(-6%);
+    transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s;
+  }
+
+  &:hover &__livery {
+    transform: translateX(2%);
+    opacity: 1;
+  }
+
+  /* Subtle technical grid that fades out toward the bottom */
+  &__grid {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 22px 22px;
+    mask-image: linear-gradient(180deg, #000 0%, transparent 70%);
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 70%);
+  }
+
+  /* Outlined race number watermark */
+  &__number {
+    position: absolute;
+    top: 6%;
+    left: 6%;
+    z-index: 2;
+    font-family: var(--font-display, sans-serif);
+    font-size: clamp(6rem, 11vw, 9rem);
+    line-height: 0.85;
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(255, 255, 255, 0.22);
+    letter-spacing: -0.04em;
+    transform: translateZ(20px);
+    pointer-events: none;
+  }
+
+  &__photo {
+    position: absolute;
+    right: 0%;
+    bottom: 0;
+    z-index: 3;
+    height: 100%;
+    width: auto;
+    max-width: 55%;
+    object-fit: contain;
+    object-position: bottom right;
+    filter: drop-shadow(-12px 10px 24px rgba(0, 0, 0, 0.6));
+    mask-image: linear-gradient(180deg, #000 72%, transparent 100%);
+    -webkit-mask-image: linear-gradient(180deg, #000 72%, transparent 100%);
+    transform: translateZ(40px);
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  &:hover &__photo {
+    transform: translateZ(40px) scale(1.04) translateY(-1%);
+  }
+
+  &__top {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+
+  &__code {
+    font-family: var(--font-display, sans-serif);
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: var(--team);
+    box-shadow: 0 6px 16px -6px var(--team);
+  }
+
+  &__team {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    opacity: 0.7;
+  }
+
+  &__info {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    padding: 24px;
+    background: linear-gradient(90deg, rgba(8, 8, 10, 0.95) 0%, rgba(8, 8, 10, 0.8) 45%, transparent 100%);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  &__name {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  &__first {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    opacity: 0.75;
+    margin-bottom: 4px;
+  }
+
+  &__last {
+    font-family: var(--font-display, sans-serif);
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  &__stats {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  &__flag {
+    height: 18px;
+    width: auto;
+    border-radius: 3px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  }
+
+  &__stat {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+
+    span {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      opacity: 0.55;
+    }
+
+    strong {
+      font-family: var(--font-display, sans-serif);
+      font-weight: 400;
+      font-size: 1rem;
+    }
+  }
+
+  /* Cursor-tracked light sheen */
+  &__sheen {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none;
+    background: radial-gradient(
+      circle at var(--mx) var(--my),
+      rgba(255, 255, 255, 0.22) 0%,
+      rgba(255, 255, 255, 0.06) 25%,
+      transparent 55%
+    );
+    mix-blend-mode: overlay;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  &:hover &__sheen {
+    opacity: 1;
+  }
+}
+
+@keyframes team-driver-card-in {
+  from {
+    opacity: 0;
+    transform: perspective(900px) translateY(24px) rotateX(8deg);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-driver-card {
+    animation: none;
+    transition: none;
+  }
+}

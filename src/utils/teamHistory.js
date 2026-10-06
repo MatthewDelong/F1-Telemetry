@@ -16,9 +16,10 @@ export const teamHistory = {
         { team: 'Renault', startYear: 2016, endYear: 2020 },
         { team: 'Alpine', startYear: 2021, endYear: currentYear }
       ],
-      // raceVictories: 111,
-      // podiums: 11,
-      // polePositions: 1,
+      raceVictories: 1,
+      podiums: 6,
+      polePositions: 1,
+      fastestLaps: 1,
     },
     astonmartin: {
       name: 'aston_martin',
@@ -35,9 +36,10 @@ export const teamHistory = {
         { team: 'Racing Point', startYear: 2019, endYear: 2020 },
         { team: 'Aston Martin', startYear: 2021, endYear: currentYear }
       ],
-      // raceVictories: 111,
-      // podiums: 11,
-      // polePositions: 1,
+      raceVictories: 0,
+      podiums: 9,
+      polePositions: 0,
+      fastestLaps: 3,
     },
     audi: {
       name: 'audi',
@@ -53,9 +55,10 @@ export const teamHistory = {
         { team: 'Stake', startYear: 2024, endYear: 2025 },
         { team: 'Audi', startYear: 2026, endYear: currentYear },
       ],
-      // raceVictories: 111,
-      // podiums: 11,
-      // polePositions: 1,
+      raceVictories: 1,
+      podiums: 27,
+      polePositions: 1,
+      fastestLaps: 5,
     },
     cadillac: {
       name: 'cadillac',
@@ -66,9 +69,10 @@ export const teamHistory = {
       teamHistory: [
         { team: 'Cadillac', startYear: 2026, endYear: currentYear },
       ],
-      // raceVictories: 111,
-      // podiums: 11,
-      // polePositions: 1,
+      raceVictories: 0,
+      podiums: 0,
+      polePositions: 0,
+      fastestLaps: 0,
     },
     ferrari: {
       name: 'ferrari',
@@ -79,9 +83,10 @@ export const teamHistory = {
       teamHistory: [
         { team: 'Ferrari', startYear: 1950, endYear: currentYear },
       ],
-      // raceVictories: 245,
-      // podiums: 815,
-      // polePositions: 251,
+      raceVictories: 251,
+      podiums: 857,
+      polePositions: 259,
+      fastestLaps: 105,
     },
     haas: {
       name: 'haas',
@@ -92,9 +97,10 @@ export const teamHistory = {
       teamHistory: [
         { team: 'HAAS', startYear: 2016, endYear: currentYear },
       ],
-      // raceVictories: 111,
-      // podiums: 11,
-      // polePositions: 1,
+      raceVictories: 0,
+      podiums: 0,
+      polePositions: 1,
+      fastestLaps: 3,
     },
     mclaren: {
       name: 'mclaren',
@@ -105,9 +111,10 @@ export const teamHistory = {
       teamHistory: [
         { team: 'Mclaren', startYear: 1966, endYear: currentYear },
       ],
-      // raceVictories: 111,
-      // podiums: 11,
-      // polePositions: 1,
+      raceVictories: 201,
+      podiums: 549,
+      polePositions: 181,
+      fastestLaps: 74,
     },
     mercedes: {
       name: 'mercedes',
@@ -123,9 +130,10 @@ export const teamHistory = {
         { team: 'Brawn GP', startYear: 2009, endYear: 2009 },
         { team: 'Mercedes', startYear: 2010, endYear: currentYear }
       ],
-      // raceVictories: 111,
-      // podiums: 11,
-      // polePositions: 1,
+      raceVictories: 142,
+      podiums: 331,
+      polePositions: 154,
+      fastestLaps: 124,
     },
     rb: {
       name: 'red_bull_racing',
@@ -139,9 +147,10 @@ export const teamHistory = {
         { team: 'Alpha Tauri', startYear: 2020, endYear: 2023 },
         { team: 'Red Bull Racing', startYear: 2024, endYear: currentYear }
       ],
-      // raceVictories: 111,
-      // podiums: 11,
-      // polePositions: 1,
+      raceVictories: 2,
+      podiums: 6,
+      polePositions: 1,
+      fastestLaps: 4,
     },
     redbull: {
       name: 'red_bull',
@@ -154,9 +163,10 @@ export const teamHistory = {
         { team: 'Jaguar', startYear: 2000, endYear: 2004 },
         { team: 'Red Bull', startYear: 2005, endYear: currentYear },
       ],
-      // raceVictories: 111,
-      // podiums: 11,
-      // polePositions: 1,
+      raceVictories: 131,
+      podiums: 307,
+      polePositions: 112,
+      fastestLaps: 104,
     },
     williams: {
       name: 'williams',
@@ -167,9 +177,10 @@ export const teamHistory = {
       teamHistory: [
         { team: 'Williams', startYear: 1977, endYear: currentYear },
       ],
-      // raceVictories: 111,
-      // podiums: 11,
-      // polePositions: 1,
+      raceVictories: 114,
+      podiums: 315,
+      polePositions: 128,
+      fastestLaps: 134,
     }
   };
 

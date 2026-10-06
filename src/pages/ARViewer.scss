@@ -201,3 +201,34 @@ model-viewer {
   border-radius: 25px;
   transition: width 0.3s;
 }
+
+.f1nsight-stat-card {
+  position: relative;
+  background:
+    linear-gradient(165deg, rgba(255, 255, 255, 0.05) 0%, transparent 40%),
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.02) 0 2px, transparent 2px 4px),
+    linear-gradient(180deg, #18191c 0%, #0d0e11 100%);
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 
+    0 8px 24px -8px rgba(0,0,0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  aspect-ratio: 1;
+  text-align: left;
+  overflow: hidden;
+  color: white;
+}
+
+.f1nsight-stat-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 16px 16px;
+  pointer-events: none;
+}
+

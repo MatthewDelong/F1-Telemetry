@@ -7,6 +7,10 @@ import { darkenColor } from "../utils/colorUtils";
 import { HistoryBar } from "../components/HistoryBar";
 import { teamHistory } from "../utils/teamHistory";
 import teamColors from "../utils/teamColors.json";
+import { getTeamDriversForYear } from "../utils/api";
+import { CarTurntable } from "../components/ar/CarTurntable";
+import { SeasonTimeline } from "../components/ar/SeasonTimeline";
+import { TeamDriverCard } from "../components/ar/TeamDriverCard";
 
 import "./ARViewer.scss";
 
@@ -23,6 +27,7 @@ export const ARViewer = () => {
       ARViewer.defaultProps.team.name
     }.png`,
   );
+  const [teamDrivers, setTeamDrivers] = useState([]);
   const modelViewerRef = useRef(null);
   const showTeamSelectionDrawer = true;
 
@@ -64,6 +69,10 @@ export const ARViewer = () => {
   const teamHistoryData = team?.teamHistory || [];
   const constructorTitlesCount = team?.constructorTitles?.length || 0;
   const driversChampionshipsCount = team?.driversChampionships?.length || 0;
+  const raceVictories = team?.raceVictories || "-";
+  const podiums = team?.podiums || "-";
+  const polePositions = team?.polePositions || "-";
+  const fastestLaps = team?.fastestLaps || "-";
   const isGarageCollectionCar = team?.name === "apx";
 
   const setTeamModelByYear = (teamNameValue, modelYear) => {
@@ -140,30 +149,22 @@ export const ARViewer = () => {
     document.head.appendChild(link);
   };
 
-  const CarSelectionButton = ({
-    backgroundColor,
-    onClick,
-    imageSrc,
-    imageAlt,
-    label,
-  }) => (
-    <button
-      style={{ backgroundColor }}
-      className={classNames(
-        "text-white p-2 rounded inline-flex flex-col items-center text-center bg-glow-dark mt-16 max-md:w-[45%] group transition-transform duration-300 hover:scale-95",
-      )}
-      onClick={onClick}
-    >
-      <img
-        src={imageSrc}
-        alt={imageAlt}
-        className="w-[16rem] -mt-32 transition-transform duration-300 group-hover:scale-110"
-      />
-      <p className="font-display text-2xl transition-transform duration-300 group-hover:scale-95">
-        {label}
-      </p>
-    </button>
-  );
+  useEffect(() => {
+    let mounted = true;
+    if (!selectedModelYear || !activeModelTeamName) {
+      setTeamDrivers([]);
+      return;
+    }
+    getTeamDriversForYear(selectedModelYear, activeModelTeamName).then(
+      (drivers) => {
+        console.log("Fetched drivers for", selectedModelYear, activeModelTeamName, drivers);
+        if (mounted) setTeamDrivers(drivers || []);
+      }
+    ).catch(err => console.error("Error fetching drivers:", err));
+    return () => {
+      mounted = false;
+    };
+  }, [selectedModelYear, activeModelTeamName]);
 
   useEffect(() => {
     const modelViewer = modelViewerRef.current;
@@ -204,43 +205,15 @@ export const ARViewer = () => {
     <>
       <div className="ar-container mb-64">
         <div className="model-viewer-wrapper relative">
-          <div className="model-viewer-text-large pointer-events-none">
-            {teamName}
+
+          <div className="absolute inset-0">
+            <CarTurntable
+              src={glbLink}
+              color={activeThemeColor}
+              edgeColor={darkenColor(activeThemeColor, 60)}
+              className="w-full h-full"
+            />
           </div>
-          <model-viewer
-            key={`${selectedTeamName}`}
-            ref={modelViewerRef}
-            draco-decoder-path="/decoders/draco/"
-            meshopt-decoder-path="/decoders/meshopt/meshopt_decoder.js"
-            loading="lazy"
-            poster={posterUrl}
-            src={glbLink}
-            ar-modes={ARViewer.defaultProps.arModes}
-            ar={ARViewer.defaultProps.ar}
-            ar-scale={ARViewer.defaultProps.arScale}
-            camera-controls={ARViewer.defaultProps.cameraControls}
-            exposure={ARViewer.defaultProps.exposure}
-            shadow-intensity={ARViewer.defaultProps.shadowIntensity}
-            shadow-softness={ARViewer.defaultProps.shadowSoftness}
-            alt={ARViewer.defaultProps.alt}
-            style={{ width: "100%", height: "100%", display: "block" }}
-          >
-            <div className="progress-bar" slot="progress-bar">
-              <div className="update-bar" />
-            </div>
-            <button
-              slot="ar-button"
-              className="ar-button shadow-md absolute left-1/2 translate-x-[-50%] w-[90%] flex justify-center items-center rounded-b-lg"
-              style={{
-                borderBottom: `1px solid ${activeThemeColor}`,
-                backgroundColor: activeThemeColor,
-                zIndex: 100,
-              }}
-            >
-              <img src={"/APX/3diconWhite.png"} alt="AR icon" />
-              Launch AR
-            </button>
-          </model-viewer>
 
           <div className="ar-badge leading-none text-sm">
             <div>AR Enabled</div>
@@ -362,74 +335,113 @@ export const ARViewer = () => {
           <h2 className="tracking-sm uppercase gradient-text-light text-center mb-32">
             Team Garage
           </h2>
-          <div className="flex flex-row justify-center gap-24 px-12 pb-32 flex-wrap">
-            {availableTeamYears.map((modelYear, index) => {
-              const modelTeamName = getModelTeamNameForYear(
-                selectedTeamName,
-                modelYear,
-              );
-              const yearButtonColor = teamColors[modelYear]?.[modelTeamName]
-                ? `#${teamColors[modelYear][modelTeamName]}`
-                : activeThemeColor;
-              return (
-                <CarSelectionButton
-                  key={index}
-                  backgroundColor={yearButtonColor}
-                  onClick={() => {
-                    setTeamModelByYear(selectedTeamName, modelYear);
-                  }}
-                  imageSrc={`${
-                    "/images/" +
-                    modelYear +
-                    "/cars/" +
-                    getModelTeamNameForYear(selectedTeamName, modelYear) +
-                    ".png"
-                  }`}
-                  imageAlt={`${selectedTeamName}-${modelYear}`}
-                  label={modelYear}
-                />
-              );
-            })}
+          <div className="px-12 pb-32 pt-12">
+            <SeasonTimeline
+              entries={availableTeamYears.map((modelYear) => ({
+                key: modelYear,
+                label: modelYear,
+                image: `/images/${modelYear}/cars/${getModelTeamNameForYear(selectedTeamName, modelYear)}.png`
+              }))}
+              selectedKey={selectedModelYear}
+              onSelect={(year) => setTeamModelByYear(selectedTeamName, year)}
+              color={activeThemeColor}
+            />
           </div>
 
-          <h2 className="tracking-sm uppercase gradient-text-light text-center mb-32">
-            History
-          </h2>
+
           <div className="px-32">
             <HistoryBar history={teamHistoryData} color={activeThemeColor} />
           </div>
 
-          <h2 className="tracking-wide uppercase gradient-text-light text-center text-12 mb-32 opacity-80">
-            Titles & Championships
-          </h2>
-          <div
-            className="model-viewer-text-medium-wrapper flex flex-row justify-center gap-48 sm:gap-64 mx-32 mb-64 font-display leading-tight"
-            style={{ color: activeThemeColor }}
-          >
-            <div className="model-viewer-text-medium flex flex-col items-end text-right">
-              <div className="text-18 sm:text-20 uppercase font-display flex flex-col">
-                <span>Constructor</span>
-                <span>Titles</span>
+          {teamDrivers.length > 0 && (
+            <div className="flex flex-row flex-wrap justify-center gap-16 px-16 mb-48 max-w-[1200px] mx-auto w-full">
+              {teamDrivers.map((driver, idx) => (
+                <div key={driver.driverId} className="w-full md:w-[calc(50%-12px)] max-w-[500px]">
+                  <TeamDriverCard
+                    year={selectedModelYear}
+                    code={driver.code}
+                    number={driver.number}
+                    firstName={driver.firstName}
+                    lastName={driver.lastName}
+                    nationality={driver.nationality}
+                    points={driver.points}
+                    position={driver.position}
+                    wins={driver.wins}
+                    teamLabel={teamName}
+                    color={activeThemeColor}
+                    index={idx}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="flex justify-center px-16 mb-16">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-16 max-w-[1200px] w-full">
+              {/* Box 1 */}
+              <div className="f1nsight-stat-card">
+                <div className="text-[10px] sm:text-[11px] font-bold uppercase font-display leading-[1.1] opacity-80">
+                  Constructor<br />Titles
+                </div>
+                <div className="font-display font-bold leading-[0.85] text-[42px] sm:text-[54px] my-4" style={{ color: activeThemeColor }}>
+                  {constructorTitlesCount}
+                </div>
+                <div className="mt-auto text-[9px] sm:text-[10px] font-display leading-[1.25] opacity-60 tracking-widest break-words">
+                  {team?.constructorTitles?.join(" ")}
+                </div>
               </div>
-              <div
-                className="font-display leading-[0.8]"
-                style={{ fontSize: "3rem" }}
-              >
-                {constructorTitlesCount}
+              {/* Box 2 */}
+              <div className="f1nsight-stat-card">
+                <div className="text-[10px] sm:text-[11px] font-bold uppercase font-display leading-[1.1] opacity-80">
+                  Drivers'<br />Championships
+                </div>
+                <div className="font-display font-bold leading-[0.85] text-[42px] sm:text-[54px] my-4" style={{ color: activeThemeColor }}>
+                  {driversChampionshipsCount}
+                </div>
+                <div className="mt-auto text-[9px] sm:text-[10px] font-display leading-[1.25] opacity-60 tracking-widest break-words">
+                  {team?.driversChampionships?.join(" ")}
+                </div>
+              </div>
+              {/* Box 3 */}
+              <div className="f1nsight-stat-card">
+                <div className="text-[10px] sm:text-[11px] font-bold uppercase font-display leading-[1.1] opacity-80">
+                  Race<br />Victories
+                </div>
+                <div className="font-display font-bold leading-[0.85] text-[42px] sm:text-[54px] my-4" style={{ color: activeThemeColor }}>
+                  {raceVictories}
+                </div>
+              </div>
+              {/* Box 4 */}
+              <div className="f1nsight-stat-card">
+                <div className="text-[10px] sm:text-[11px] font-bold uppercase font-display leading-[1.1] opacity-80">
+                  Podiums<br />&nbsp;
+                </div>
+                <div className="font-display font-bold leading-[0.85] text-[42px] sm:text-[54px] my-4" style={{ color: activeThemeColor }}>
+                  {podiums}
+                </div>
+              </div>
+              {/* Box 5 */}
+              <div className="f1nsight-stat-card">
+                <div className="text-[10px] sm:text-[11px] font-bold uppercase font-display leading-[1.1] opacity-80">
+                  Pole<br />Positions
+                </div>
+                <div className="font-display font-bold leading-[0.85] text-[42px] sm:text-[54px] my-4" style={{ color: activeThemeColor }}>
+                  {polePositions}
+                </div>
+              </div>
+              {/* Box 6 */}
+              <div className="f1nsight-stat-card">
+                <div className="text-[10px] sm:text-[11px] font-bold uppercase font-display leading-[1.1] opacity-80">
+                  Fastest<br />Laps
+                </div>
+                <div className="font-display font-bold leading-[0.85] text-[42px] sm:text-[54px] my-4" style={{ color: activeThemeColor }}>
+                  {fastestLaps}
+                </div>
               </div>
             </div>
-            <div className="model-viewer-text-medium flex flex-col items-start text-left">
-              <div className="text-18 sm:text-20 uppercase font-display flex flex-col">
-                <span>Drivers</span>
-                <span>Championships</span>
-              </div>
-              <div
-                className="font-display leading-[0.8]"
-                style={{ fontSize: "3rem" }}
-              >
-                {driversChampionshipsCount}
-              </div>
-            </div>
+          </div>
+          <div className="text-center text-[9px] uppercase tracking-widest opacity-40 mb-64 px-16 max-w-[1200px] mx-auto leading-relaxed">
+            Poles use qualifying data from 2010, Ergast qualifying for 2003-2009, and grid position 1 for 1950-2002. - Fastest-lap data is only available from 2004.
           </div>
         </div>
       )}
@@ -441,17 +453,20 @@ export const ARViewer = () => {
           Special Editions
         </h2>
 
-        <div className="flex flex-row justify-center flex-wrap gap-12 p-32">
-          {specialEditionModels.map((specialModel) => (
-            <CarSelectionButton
-              key={specialModel.id}
-              backgroundColor={specialModel.color}
-              onClick={() => handleSpecialEditionSelect(specialModel)}
-              imageSrc={`${specialModel.imagePath}`}
-              imageAlt={specialModel.label}
-              label={specialModel.label}
-            />
-          ))}
+        <div className="px-12 pb-32 max-w-[800px] mx-auto w-full">
+          <SeasonTimeline
+            entries={specialEditionModels.map((model) => ({
+              key: model.id,
+              label: model.label,
+              image: model.imagePath
+            }))}
+            selectedKey={team.name === "apx" ? "apx" : null}
+            onSelect={(key) => {
+              const model = specialEditionModels.find(m => m.id === key);
+              if (model) handleSpecialEditionSelect(model);
+            }}
+            color="#AE7D0E"
+          />
         </div>
         <p className="tracking-widest text-neutral-500 text-xs text-center mt-32">
           ©2026 F1-Telemetry

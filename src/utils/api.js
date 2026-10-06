@@ -970,6 +970,53 @@ export const getDriverStandings = async (selectedYear) => {
   return [];
 };
 
+/**
+ * Returns the drivers who scored/raced for a constructor in a given season,
+ * based on the latest round of that season's driver standings.
+ * @param {string|number} selectedYear
+ * @param {string} constructorId Ergast constructor id (e.g. "mclaren", "rb")
+ */
+export const getTeamDriversForYear = async (selectedYear, constructorId) => {
+  if (!selectedYear || !constructorId) return [];
+  const url = `${BASE_F1_URL}races/${selectedYear}/driverStandings.json`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) return [];
+    const data = await response.json();
+    const roundKeys = Object.keys(data || {}).filter((k) => /^\d+$/.test(k));
+    const key = data?.latest
+      ? "latest"
+      : roundKeys.length
+        ? String(Math.max(...roundKeys.map(Number)))
+        : null;
+    const standings = key && Array.isArray(data[key]) ? data[key] : [];
+
+    return standings
+      .filter((standing) =>
+        (standing.Constructors || []).some(
+          (constructor) => constructor.constructorId === constructorId,
+        ),
+      )
+      .map((standing) => {
+        const driver = standing.Driver || {};
+        return {
+          driverId: driver.driverId,
+          code: driver.code || (driver.familyName || "").slice(0, 3).toUpperCase(),
+          number: driver.permanentNumber || "",
+          firstName: driver.givenName || "",
+          lastName: driver.familyName || driver.lastName || "",
+          nationality: driver.nationality || "",
+          points: standing.points ?? "0",
+          position: standing.positionText || standing.position || "",
+          wins: standing.wins ?? "0",
+        };
+      });
+  } catch (error) {
+    console.error("Error fetching team drivers:", error);
+    return [];
+  }
+};
+
 export const getPartialDriverStandings = async (selectedYear, start, end) => {
   const url = `${BASE_F1_URL}races/${selectedYear}/driverStandings.json`;
   try {
