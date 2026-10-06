@@ -139,7 +139,7 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /\.(?:png|jpg|jpeg|svg|webp|ico|glb|bin)$/,
+            urlPattern: /\.(?:png|jpg|jpeg|svg|webp|ico|glb|bin)(?:\?.*)?$/i,
             handler: "StaleWhileRevalidate",
             options: {
               cacheName: "assets-cache",

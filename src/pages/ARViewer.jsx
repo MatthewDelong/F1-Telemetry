@@ -139,7 +139,7 @@ export const ARViewer = () => {
     const availableYears = getAvailableYearsForTeam(teamNameValue);
     const latestYear = availableYears[availableYears.length - 1] || "2026";
     const modelTeamName = getModelTeamNameForYear(teamNameValue, latestYear);
-    const glbUrl = `/ArFiles/glbs/${latestYear}/${modelTeamName}.glb?v=v2_ultra`;
+    const glbUrl = `/ArFiles/glbs/${latestYear}/${modelTeamName}.glb`;
 
     // Create a hidden link to prefetch the GLB
     const link = document.createElement("link");
@@ -479,7 +479,7 @@ export const ARViewer = () => {
 export default ARViewer;
 
 ARViewer.defaultProps = {
-  glbLink: `/ArFiles/glbs/2024/mclaren.glb?v=v2_ultra`,
+  glbLink: `/ArFiles/glbs/2024/mclaren.glb`,
   team: { ...teamHistory.mclaren, year: "2024" },
   buttonIcon: `/APX/3diconWhite.png`,
   loading: "auto",
