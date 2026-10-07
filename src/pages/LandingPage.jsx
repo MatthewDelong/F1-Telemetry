@@ -587,9 +587,9 @@ export function LandingPage() {
                       className="absolute inset-0 pointer-events-none -z-10 rounded-[2.4rem] overflow-hidden"
                       style={{
                         background: `
-                        radial-gradient(ellipse 120% 70% at 50% 0%, color-mix(in srgb, ${getTeamColor(p1?.constructorId)} 95%, transparent) 0%, transparent 100%),
-                        radial-gradient(circle at -10% 80%, color-mix(in srgb, ${getTeamColor(p2?.constructorId)} 70%, transparent) 0%, transparent 60%),
-                        radial-gradient(circle at 110% 80%, color-mix(in srgb, ${getTeamColor(p3?.constructorId)} 70%, transparent) 0%, transparent 60%),
+                        radial-gradient(ellipse 120% 70% at 50% 0%, color-mix(in srgb, ${getTeamColor(p1?.constructorId)} 45%, transparent) 0%, transparent 100%),
+                        radial-gradient(circle at -10% 80%, color-mix(in srgb, ${getTeamColor(p2?.constructorId)} 40%, transparent) 0%, transparent 60%),
+                        radial-gradient(circle at 110% 80%, color-mix(in srgb, ${getTeamColor(p3?.constructorId)} 40%, transparent) 0%, transparent 60%),
                         linear-gradient(180deg, rgba(25,25,25,0.6) 0%, rgba(10,10,10,0.9) 100%)
                       `,
                       }}
