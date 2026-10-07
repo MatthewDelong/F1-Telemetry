@@ -546,25 +546,56 @@ export function LandingPage() {
           }}
         />
 
-        <div className="mx-auto text-center px-8 sm:px-16 py-12 relative z-10 bg-black/40 backdrop-blur-md border border-white/10 rounded-[2.4rem] shadow-[0_0_40px_rgba(255,255,255,0.05)] w-[90%] max-w-4xl mt-20 md:mt-0">
-          <h1 className="heading-1 mb-16 leading-none">
-            Read the Race. <br />
-            Not Just the Results.
-          </h1>
-          <p className="text-neutral-300 text-base sm:text-3xl mb-12 sm:mb-24 mx-auto leading-tight sm:leading-none flex flex-col gap-4 sm:gap-12">
-            <span>
-              Telemetry, driver battles, and full race breakdowns for F1
-            </span>
-            <span>plus complete results for F2 and F1 Academy</span>
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 mt-12 sm:mt-24">
+        {/* Hero Content Container */}
+        <div className="relative z-10 w-full flex flex-col items-center justify-center mt-20 md:mt-0 px-4">
+          
+          {/* Condensed Title */}
+          <div className="text-center mb-10 md:mb-16">
+            <h1 className="text-5xl md:text-7xl font-display font-black uppercase text-white tracking-tighter drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)] leading-none mb-4">
+              Read the Race.<br />
+              <span className="text-neutral-300">Not Just the Results.</span>
+            </h1>
+            <p className="text-neutral-200 text-lg md:text-2xl font-medium drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">
+              Deep telemetry for F1, plus full race results for F2 & F1 Academy.
+            </p>
+          </div>
+
+          <div className="mx-auto flex flex-col md:flex-row items-center justify-center gap-8 md:gap-4 w-[95%] max-w-6xl">
+          
+          {/* Card 1: Latest Results */}
+          <div className="group relative flex flex-col items-center justify-between text-center px-6 sm:px-8 py-16 bg-black/40 backdrop-blur-md border border-white/10 rounded-[2.4rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] w-full md:w-1/2 transition-all duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:z-20 hover:bg-black/60 hover:shadow-[0_0_40px_rgba(255,255,255,0.1)] md:[transform:perspective(1200px)_rotateY(12deg)_rotateZ(-2deg)_scale(0.95)] md:hover:[transform:perspective(1200px)_rotateY(0deg)_rotateZ(0deg)_scale(1)]">
+            <div className="mb-24 md:mb-32">
+              <h2 className="text-4xl md:text-5xl font-display font-bold uppercase text-white mb-6 tracking-wide drop-shadow-md">
+                Latest Race
+              </h2>
+              <p className="text-neutral-300 text-lg md:text-xl font-medium leading-relaxed">
+                Detailed telemetry, driver battles, <br className="hidden md:block" />
+                and full race breakdowns.
+              </p>
+            </div>
             <ViewLatestRaceButton
               meetingKey={raceData?.meetingKey}
               driverCodes={topThreeDriverCodes}
               year={selectedYear}
+              className="z-30 scale-110"
             />
-            <TeammateComparisonButton year={2026} />
           </div>
+
+          {/* Card 2: Teammate Comparison */}
+          <div className="group relative flex flex-col items-center justify-between text-center px-6 sm:px-8 py-16 bg-black/40 backdrop-blur-md border border-white/10 rounded-[2.4rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] w-full md:w-1/2 transition-all duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:z-20 hover:bg-black/60 hover:shadow-[0_0_40px_rgba(255,255,255,0.1)] md:[transform:perspective(1200px)_rotateY(-12deg)_rotateZ(2deg)_scale(0.95)] md:hover:[transform:perspective(1200px)_rotateY(0deg)_rotateZ(0deg)_scale(1)]">
+            <div className="mb-24 md:mb-32">
+              <h2 className="text-4xl md:text-5xl font-display font-bold uppercase text-white mb-6 tracking-wide drop-shadow-md">
+                Head to Head
+              </h2>
+              <p className="text-neutral-300 text-lg md:text-xl font-medium leading-relaxed">
+                Compare live telemetry and pace <br className="hidden md:block" />
+                between teammates.
+              </p>
+            </div>
+            <TeammateComparisonButton year={selectedYear} className="z-30 scale-110" />
+          </div>
+
+        </div>
         </div>
       </section>
       <section className="h-[100dvh] snap-start relative flex items-center justify-start md:justify-center bg-neutral-950 bg-glow-dark-bottom overflow-hidden pt-[100px] md:pt-[64px]">
