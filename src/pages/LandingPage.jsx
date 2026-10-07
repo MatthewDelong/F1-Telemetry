@@ -38,6 +38,7 @@ export function LandingPage() {
   const [heroBgIndex, setHeroBgIndex] = useState(0);
   const [globeYear, setGlobeYear] = useState(2026);
   const [isHeroImageVisible, setIsHeroImageVisible] = useState(true);
+  const [headToHeadColor, setHeadToHeadColor] = useState("5F0B84");
   const [isBelowLargeBreakpoint, setIsBelowLargeBreakpoint] = useState(
     typeof window !== "undefined"
       ? window.innerWidth < LARGE_BREAKPOINT_PX
@@ -561,40 +562,76 @@ export function LandingPage() {
           </div>
 
           <div className="mx-auto flex flex-col md:flex-row items-center justify-center gap-8 md:gap-4 w-[95%] max-w-6xl">
-          
-          {/* Card 1: Latest Results */}
-          <div className="group relative flex flex-col items-center justify-between text-center px-6 sm:px-8 py-16 bg-black/40 backdrop-blur-md border border-white/10 rounded-[2.4rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] w-full md:w-1/2 transition-all duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:z-20 hover:bg-black/60 hover:shadow-[0_0_40px_rgba(255,255,255,0.1)] md:[transform:perspective(1200px)_rotateY(12deg)_rotateZ(-2deg)_scale(0.95)] md:hover:[transform:perspective(1200px)_rotateY(0deg)_rotateZ(0deg)_scale(1)]">
-            <div className="mb-24 md:mb-32">
-              <h2 className="text-4xl md:text-5xl font-display font-bold uppercase text-white mb-6 tracking-wide drop-shadow-md">
-                Latest Race
-              </h2>
-              <p className="text-neutral-300 text-lg md:text-xl font-medium leading-relaxed">
-                Detailed telemetry, driver battles, <br className="hidden md:block" />
-                and full race breakdowns.
-              </p>
-            </div>
-            <ViewLatestRaceButton
-              meetingKey={raceData?.meetingKey}
-              driverCodes={topThreeDriverCodes}
-              year={selectedYear}
-              className="z-30 scale-110"
-            />
-          </div>
+          {(() => {
+            const getTeamColor = (constructorId) => "#" + (teamColorsData[String(selectedYear)]?.[constructorId] || "ffffff");
+            const p1 = podiumDrivers?.find(d => d.position === 1) || {};
+            const p2 = podiumDrivers?.find(d => d.position === 2) || {};
+            const p3 = podiumDrivers?.find(d => d.position === 3) || {};
 
-          {/* Card 2: Teammate Comparison */}
-          <div className="group relative flex flex-col items-center justify-between text-center px-6 sm:px-8 py-16 bg-black/40 backdrop-blur-md border border-white/10 rounded-[2.4rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] w-full md:w-1/2 transition-all duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:z-20 hover:bg-black/60 hover:shadow-[0_0_40px_rgba(255,255,255,0.1)] md:[transform:perspective(1200px)_rotateY(-12deg)_rotateZ(2deg)_scale(0.95)] md:hover:[transform:perspective(1200px)_rotateY(0deg)_rotateZ(0deg)_scale(1)]">
-            <div className="mb-24 md:mb-32">
-              <h2 className="text-4xl md:text-5xl font-display font-bold uppercase text-white mb-6 tracking-wide drop-shadow-md">
-                Head to Head
-              </h2>
-              <p className="text-neutral-300 text-lg md:text-xl font-medium leading-relaxed">
-                Compare live telemetry and pace <br className="hidden md:block" />
-                between teammates.
-              </p>
-            </div>
-            <TeammateComparisonButton year={selectedYear} className="z-30 scale-110" />
-          </div>
+            return (
+              <>
+                {/* Card 1: Latest Results */}
+                <div 
+                  className="group relative flex flex-col items-center justify-between text-center px-6 sm:px-8 py-16 backdrop-blur-md rounded-[2.4rem] w-full md:w-1/2 transition-all duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:z-20 md:[transform:perspective(1200px)_rotateY(12deg)_rotateZ(-2deg)_scale(0.95)] md:hover:[transform:perspective(1200px)_rotateY(0deg)_rotateZ(0deg)_scale(1)] overflow-hidden"
+                  style={{
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    borderTop: `1px solid color-mix(in srgb, ${getTeamColor(p1?.constructorId)} 50%, rgba(255,255,255,0.2))`,
+                    boxShadow: `inset 0 -2px 20px rgba(255, 255, 255, 0.05), inset 0 2px 20px color-mix(in srgb, ${getTeamColor(p1?.constructorId)} 20%, transparent), 0 20px 50px rgba(0,0,0,0.5)`
+                  }}
+                >
+                  {/* Background elements for Card 1 */}
+                  <div className="absolute inset-0 pointer-events-none -z-10 rounded-[2.4rem] overflow-hidden"
+                    style={{
+                      background: `
+                        radial-gradient(circle at 50% -10%, color-mix(in srgb, ${getTeamColor(p1?.constructorId)} 60%, transparent) 0%, transparent 60%),
+                        radial-gradient(circle at -10% 20%, color-mix(in srgb, ${getTeamColor(p2?.constructorId)} 50%, transparent) 0%, transparent 60%),
+                        radial-gradient(circle at 110% 20%, color-mix(in srgb, ${getTeamColor(p3?.constructorId)} 50%, transparent) 0%, transparent 60%),
+                        linear-gradient(180deg, rgba(25,25,25,0.6) 0%, rgba(10,10,10,0.9) 100%)
+                      `
+                    }}
+                  />
 
+                  <div className="mb-24 md:mb-32 relative z-10">
+                    <h2 className="text-4xl md:text-5xl font-display font-bold uppercase text-white mb-6 tracking-wide drop-shadow-md">
+                      Latest Race
+                    </h2>
+                    <p className="text-neutral-300 text-lg md:text-xl font-medium leading-relaxed">
+                      Detailed telemetry, driver battles, <br className="hidden md:block" />
+                      and full race breakdowns.
+                    </p>
+                  </div>
+                  <ViewLatestRaceButton
+                    meetingKey={raceData?.meetingKey}
+                    driverCodes={topThreeDriverCodes}
+                    year={selectedYear}
+                    className="z-30 scale-110"
+                  />
+                </div>
+
+                {/* Card 2: Teammate Comparison */}
+                <div 
+                  className="group relative flex flex-col items-center justify-between text-center px-6 sm:px-8 py-16 backdrop-blur-md rounded-[2.4rem] w-full md:w-1/2 transition-all duration-500 ease-[cubic-bezier(0.25,0.8,0.25,1)] hover:z-20 md:[transform:perspective(1200px)_rotateY(-12deg)_rotateZ(2deg)_scale(0.95)] md:hover:[transform:perspective(1200px)_rotateY(0deg)_rotateZ(0deg)_scale(1)] overflow-hidden"
+                  style={{
+                    background: `radial-gradient(circle at 50% -20%, color-mix(in srgb, #${headToHeadColor} 50%, transparent) 0%, transparent 60%), linear-gradient(180deg, rgba(25,25,25,0.6) 0%, rgba(10,10,10,0.9) 100%)`,
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    borderTop: `1px solid color-mix(in srgb, #${headToHeadColor} 80%, rgba(255,255,255,0.3))`,
+                    boxShadow: `inset 0 -2px 20px rgba(255, 255, 255, 0.05), inset 0 2px 20px color-mix(in srgb, #${headToHeadColor} 30%, transparent), 0 20px 50px rgba(0,0,0,0.5)`
+                  }}
+                >
+                  <div className="mb-24 md:mb-32 relative z-10">
+                    <h2 className="text-4xl md:text-5xl font-display font-bold uppercase text-white mb-6 tracking-wide drop-shadow-md">
+                      Head to Head
+                    </h2>
+                    <p className="text-neutral-300 text-lg md:text-xl font-medium leading-relaxed">
+                      Compare live telemetry and pace <br className="hidden md:block" />
+                      between teammates.
+                    </p>
+                  </div>
+                  <TeammateComparisonButton year={selectedYear} onTeamChange={setHeadToHeadColor} className="z-30 scale-110" />
+                </div>
+              </>
+            );
+          })()}
         </div>
         </div>
       </section>

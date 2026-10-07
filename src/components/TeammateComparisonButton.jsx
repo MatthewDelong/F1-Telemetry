@@ -63,7 +63,7 @@ const TEAMMATE_TEAMS = [
   },
 ];
 
-export function TeammateComparisonButton({ year = DEFAULT_YEAR, className }) {
+export function TeammateComparisonButton({ year = DEFAULT_YEAR, className, onTeamChange }) {
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
   const [activeTeam, setActiveTeam] = useState(TEAMMATE_TEAMS[0]);
@@ -99,12 +99,18 @@ export function TeammateComparisonButton({ year = DEFAULT_YEAR, className }) {
     setIsHovered(false);
 
     hoverOutTimeoutRef.current = window.setTimeout(() => {
-      setActiveTeam((currentTeam) => pickRandomTeam(currentTeam.constructorId));
+      const newTeam = pickRandomTeam(activeTeam.constructorId);
+      setActiveTeam(newTeam);
+      const newTeamColor = teamColorsByYear[String(year)]?.[newTeam.constructorId] || "5F0B84";
+      if (onTeamChange) onTeamChange(newTeamColor);
       hoverOutTimeoutRef.current = null;
     }, 300);
   };
 
   useEffect(() => {
+    // Initial call
+    if (onTeamChange) onTeamChange(activeTeamColor);
+    
     return () => {
       if (hoverOutTimeoutRef.current) {
         window.clearTimeout(hoverOutTimeoutRef.current);
