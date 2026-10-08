@@ -85,7 +85,9 @@ export const ThreeCanvas = ({
   const [isCalibrated, setIsCalibrated] = useState(true);
   const [driverDetails, setDriverDetails] = useState(null);
   const [theta, setTheta] = useState((-131 * Math.PI) / 180);
-  const [cameraHeight, setCameraHeight] = useState(window.innerWidth < 768 ? 28.5 : 21);
+  const [cameraHeight, setCameraHeight] = useState(
+    window.innerWidth < 768 ? 28.5 : 21,
+  );
   const [radius, setRadius] = useState(window.innerWidth < 768 ? 38 : 28);
   const [trackColorMode, setTrackColorMode] = useState("sectors");
 
@@ -115,8 +117,10 @@ export const ThreeCanvas = ({
   // Handle color updates
   useEffect(() => {
     if (mapRef.current && trackCurveRef.current) {
-      const canonicalId = locationMaps[circuitId?.toLowerCase()] || circuitId?.toLowerCase();
-      const bounds = sectorBoundaries[canonicalId] || sectorBoundaries[circuitId] || [0.333, 0.666];
+      const canonicalId =
+        locationMaps[circuitId?.toLowerCase()] || circuitId?.toLowerCase();
+      const bounds = sectorBoundaries[canonicalId] ||
+        sectorBoundaries[circuitId] || [0.333, 0.666];
       updateTrackColors(
         mapRef.current,
         trackCurveRef.current,
@@ -230,7 +234,7 @@ export const ThreeCanvas = ({
                 trackCalibrationRef.current.center,
                 trackCalibrationRef.current.scale,
                 trackCalibrationRef.current.invertX,
-                trackCalibrationRef.current.invertY
+                trackCalibrationRef.current.invertY,
               );
               targetX = scenePos.x;
               targetY = scenePos.y;
@@ -240,13 +244,18 @@ export const ThreeCanvas = ({
             }
 
             // Protect against invalid/NaN coordinates which will completely destroy the 3D model
-            if (isNaN(targetX) || isNaN(targetY) || (next.x === 0 && next.y === 0)) {
+            if (
+              isNaN(targetX) ||
+              isNaN(targetY) ||
+              (next.x === 0 && next.y === 0)
+            ) {
               carModelRef.current.userData.tweenActive = false;
               if (next.cardata) setDriverDetails(next.cardata);
             } else {
               // Bulletproof fix: If the distance is massive (e.g. first spawn, teleport, driver switch, GPS glitch)
               // do not tween! Snap instantly and clear the trail memory to prevent laser beams.
-              const distSq = (targetX - oldPos.x) ** 2 + (targetY - oldPos.y) ** 2;
+              const distSq =
+                (targetX - oldPos.x) ** 2 + (targetY - oldPos.y) ** 2;
               if (distSq > 100 || carModelRef.current.userData.isFirstSpawn) {
                 carModelRef.current.position.set(targetX, targetY, 0.03);
                 carModelRef.current.userData.tweenActive = false;
@@ -401,7 +410,7 @@ export const ThreeCanvas = ({
       currentScene.remove(carModelRef.current);
       carModelRef.current = null;
     }
-    
+
     // Clear the trail when switching drivers
     trailPointsRef.current = [];
 

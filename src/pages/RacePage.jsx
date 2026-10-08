@@ -137,18 +137,24 @@ export function RacePage() {
         );
 
         let targetMk = raceId;
-        
+
         // If raceId is a string like "bahrain" or "americas", find the most recent meeting key using canonical locations
         if (response && isNaN(Number(raceId))) {
-          const canonicalRaceId = locationMaps[raceId.toLowerCase()] || raceId.toLowerCase();
-          
-          const match = Object.entries(response).reverse().find(([mk, r]) => {
-            const loc = r.location ? r.location.toLowerCase() : "";
-            const canonicalLocation = locationMaps[loc] || loc;
-            return canonicalLocation === canonicalRaceId || 
-                   (r.raceName && r.raceName.toLowerCase().includes(raceId.replace(/_/g, " ")));
-          });
-          
+          const canonicalRaceId =
+            locationMaps[raceId.toLowerCase()] || raceId.toLowerCase();
+
+          const match = Object.entries(response)
+            .reverse()
+            .find(([mk, r]) => {
+              const loc = r.location ? r.location.toLowerCase() : "";
+              const canonicalLocation = locationMaps[loc] || loc;
+              return (
+                canonicalLocation === canonicalRaceId ||
+                (r.raceName &&
+                  r.raceName.toLowerCase().includes(raceId.replace(/_/g, " ")))
+              );
+            });
+
           if (match) {
             targetMk = match[0];
           }
@@ -167,9 +173,10 @@ export function RacePage() {
           // Fallback for completely future/unknown races (e.g., madrid) - preview mode without telemetry
           setYear(new Date().getFullYear() + (raceId === "madrid" ? 1 : 0));
           setLocation(raceId.toLowerCase());
-          
+
           // Capitalize race name (e.g., madrid -> Madrid Grand Prix)
-          const formattedName = raceId.charAt(0).toUpperCase() + raceId.slice(1) + " Grand Prix";
+          const formattedName =
+            raceId.charAt(0).toUpperCase() + raceId.slice(1) + " Grand Prix";
           setRaceName(formattedName);
         } else {
           // Make sure it stops loading if not found
@@ -178,7 +185,10 @@ export function RacePage() {
       } catch (err) {
         console.error("Error fetching by meeting key:", err);
       } finally {
-        if (!response || (!response[raceId] && isNaN(Number(raceId)) && !meetingKey)) {
+        if (
+          !response ||
+          (!response[raceId] && isNaN(Number(raceId)) && !meetingKey)
+        ) {
           setIsLoading(false);
         }
       }
@@ -428,7 +438,9 @@ export function RacePage() {
         }
 
         const raceSession = Array.isArray(sessionsData)
-          ? [...sessionsData].reverse().find((session) => session.session_name === "Race")
+          ? [...sessionsData]
+              .reverse()
+              .find((session) => session.session_name === "Race")
           : null;
 
         let sessionKey = null;
@@ -459,7 +471,10 @@ export function RacePage() {
           );
 
           await new Promise((r) => setTimeout(r, 250));
-          const lapsData = await fetchOpenF1FullSessionData("/laps", sessionKey);
+          const lapsData = await fetchOpenF1FullSessionData(
+            "/laps",
+            sessionKey,
+          );
 
           console.log(`[RacePage] Session Key: ${sessionKey}`);
           console.log(
@@ -579,7 +594,8 @@ export function RacePage() {
           );
 
           setIsSessionLive(
-            !raceSession.date_end || new Date() < new Date(raceSession.date_end),
+            !raceSession.date_end ||
+              new Date() < new Date(raceSession.date_end),
           );
         }
 
@@ -977,7 +993,7 @@ export function RacePage() {
             year={parseInt(year)}
             time={result.Time?.time || result.status}
             fastestLap={result.FastestLap}
-            layoutSmall={layoutSmall}
+            layoutSmall={layoutSmall && index > 2}
             isRace={true}
             speedUnit={speedUnit}
           />
@@ -1257,11 +1273,14 @@ export function RacePage() {
                         "flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-full font-display uppercase tracking-widest text-xs transition-all duration-300 border border-transparent",
                         !isPaused
                           ? "bg-white/20 text-white shadow-[0_4px_30px_rgba(0,0,0,0.15)] border-white/40 backdrop-blur-md"
-                          : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border-white/10"
+                          : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border-white/10",
                       )}
                       onClick={() => setIsPaused(!isPaused)}
                     >
-                      <FontAwesomeIcon icon={isPaused ? "play" : "pause"} className="text-sm" />
+                      <FontAwesomeIcon
+                        icon={isPaused ? "play" : "pause"}
+                        className="text-sm"
+                      />
                       <span>{isPaused ? "Play" : "Live"}</span>
                     </button>
 
@@ -1274,11 +1293,16 @@ export function RacePage() {
                           "flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 rounded-full transition-all duration-300 font-display uppercase tracking-widest text-[10px]",
                           showCameraControls
                             ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.4)]"
-                            : "text-white/50 hover:bg-white/10 hover:text-white"
+                            : "text-white/50 hover:bg-white/10 hover:text-white",
                         )}
-                        onClick={() => setShowCameraControls(!showCameraControls)}
+                        onClick={() =>
+                          setShowCameraControls(!showCameraControls)
+                        }
                       >
-                        <FontAwesomeIcon icon="camera-rotate" className="text-sm" />
+                        <FontAwesomeIcon
+                          icon="camera-rotate"
+                          className="text-sm"
+                        />
                         <span className="max-sm:hidden">Camera</span>
                       </button>
                       <button
@@ -1286,7 +1310,7 @@ export function RacePage() {
                           "flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 rounded-full transition-all duration-300 font-display uppercase tracking-widest text-[10px]",
                           showCarDetails
                             ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.4)]"
-                            : "text-white/50 hover:bg-white/10 hover:text-white"
+                            : "text-white/50 hover:bg-white/10 hover:text-white",
                         )}
                         onClick={() => setShowCarDetails(!showCarDetails)}
                       >
@@ -1301,13 +1325,19 @@ export function RacePage() {
                     className="w-10 h-10 sm:w-12 sm:h-12 bg-black/40 border border-white/10 text-white/50 hover:bg-white/10 hover:text-white rounded-xl backdrop-blur-md flex items-center justify-center transition-all shadow-lg sm:hidden"
                     onClick={() => setDriverDrawerOpen(true)}
                   >
-                    <FontAwesomeIcon icon="user" className="text-lg sm:text-xl" />
+                    <FontAwesomeIcon
+                      icon="user"
+                      className="text-lg sm:text-xl"
+                    />
                   </button>
                   <button
                     className="w-10 h-10 sm:w-12 sm:h-12 bg-black/40 border border-white/10 text-white/50 hover:bg-white/10 hover:text-white rounded-xl backdrop-blur-md flex items-center justify-center transition-all shadow-lg"
                     onClick={() => setIsDrawerOpen(true)}
                   >
-                    <FontAwesomeIcon icon="gear" className="text-lg sm:text-xl" />
+                    <FontAwesomeIcon
+                      icon="gear"
+                      className="text-lg sm:text-xl"
+                    />
                   </button>
                 </div>
               </div>
@@ -1408,16 +1438,18 @@ export function RacePage() {
                   )}
                 </div>
               )}
-              <div className="race-page__leaderboard-desktop-wrapper max-sm:hidden absolute top-[0] left-[0]">
-                <div className="race-leaderboard-glass">
-                  <div className="race-leaderboard-glass__header">
+              <div className="race-page__leaderboard-desktop-wrapper max-sm:hidden absolute top-0 left-0 bottom-0 h-full pointer-events-none pb-4">
+                <div className="race-leaderboard-glass pointer-events-auto flex flex-col h-full max-h-full">
+                  <div className="race-leaderboard-glass__header shrink-0">
                     {selectedSession === "Race"
                       ? "Race Results"
                       : selectedSession === "Qualifying"
-                      ? "Qualifying Results"
-                      : "Sprint Results"}
+                        ? "Qualifying Results"
+                        : "Sprint Results"}
                   </div>
-                  {driverButtons(true)}
+                  <div className="overflow-y-auto overflow-x-hidden grow custom-scrollbar">
+                    {driverButtons(true)}
+                  </div>
                 </div>
               </div>
             </div>
@@ -1435,18 +1467,11 @@ export function RacePage() {
             race
           </button>
         )}
-        <div className="mb-40 flex flex-col gap-4 items-center uppercase">
-          <p className="text-sm tracking-sm">{year}</p>
-          <h1 className="heading-3">{raceName}</h1>
-          {(selectedSession === "Qualifying" ||
-            selectedSession === "Sprint") && (
-            <p className="text-sm tracking-sm">{selectedSession}</p>
-          )}
-          <div className="divider-glow-dark mt-32" />
-        </div>
-        
+
         <div className="page-container-centered mb-32">
-          <CircuitDetails circuitId={location && locationMaps[location.toLowerCase()]} />
+          <CircuitDetails
+            circuitId={location && locationMaps[location.toLowerCase()]}
+          />
         </div>
 
         {selectedSession === "Qualifying" && (
