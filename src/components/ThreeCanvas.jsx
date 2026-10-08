@@ -356,6 +356,19 @@ export const ThreeCanvas = ({
           activeCam = topFollowCameraRef.current;
         }
 
+        // Dynamically elevate corner numbers in Halo view to avoid clipping,
+        // but drop them back to the sticks for top-down overview
+        const cornerLabelsGroup = scene.getObjectByName("CornerLabels");
+        if (cornerLabelsGroup) {
+          const targetZ = sync.haloView ? 1.5 : 0.1;
+          cornerLabelsGroup.children.forEach(child => {
+            if (child.isSprite) {
+              // Smooth lerp for the elevation change
+              child.position.z += (targetZ - child.position.z) * 0.1;
+            }
+          });
+        }
+
         if (activeCam && rendererRef.current) {
           if (activeCam === cameraRef.current) {
             // Phase 2: Auto-orbiting camera for 360 preview mode
@@ -368,9 +381,9 @@ export const ThreeCanvas = ({
               sync.radius * Math.sin(sync.theta),
               sync.cameraHeight,
             );
-            // Look slightly below the origin to shift the track UP in the viewport
-            // This compensates for the perspective projection making the near side (bottom) look larger
-            activeCam.lookAt(0, 0, -6);
+            // Look directly at the origin to center the track perfectly in the viewport
+            // Removing the previous -6 offset that pushed the track artificially high up
+            activeCam.lookAt(0, 0, 0);
           }
           rendererRef.current.render(scene, activeCam);
         }

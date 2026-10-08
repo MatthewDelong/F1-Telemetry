@@ -1137,17 +1137,40 @@ export function RacePage() {
           {driverButtons(true)}
         </Drawer>
 
-        {/* TOP BAR */}
-        <div className="w-full shrink-0 flex items-center px-4 pt-6 pb-3 gap-6 relative z-[9999]">
-          {/* Session Selectors */}
-          <div className="flex gap-2 pointer-events-auto">
+        {/* TOP BAR BANNER */}
+        <div className="absolute top-6 left-0 z-[9999] flex items-stretch pointer-events-none drop-shadow-2xl">
+          {/* Track Name Block - Blue angled */}
+          <div
+            className="bg-brand-blue-500 pl-6 py-3 flex flex-col justify-center pointer-events-auto whitespace-nowrap shrink-0"
+            style={{
+              paddingRight: "30px",
+              clipPath: "polygon(0 0, 100% 0, calc(100% - 30px) 100%, 0 100%)",
+            }}
+          >
+            <div className="font-display text-[9px] font-bold tracking-widest uppercase text-white/70 leading-none mb-1">
+              {year} Season
+            </div>
+            <h1 className="font-display text-sm sm:text-base font-black uppercase tracking-widest text-white leading-none drop-shadow-md">
+              {raceName}
+            </h1>
+          </div>
+
+          {/* Session Selectors - Dark angled */}
+          <div
+            className="bg-black/70 backdrop-blur-md flex items-center gap-2 pr-6 py-2 pointer-events-auto shrink-0"
+            style={{
+              paddingLeft: "20px",
+              marginLeft: "-30px",
+              clipPath: "polygon(30px 0, 100% 0, 100% 100%, 0 100%)",
+            }}
+          >
             {hasRaceSession && (
               <button
                 className={classNames(
-                  "px-4 py-1.5 rounded-full font-display text-[10px] sm:text-xs tracking-widest uppercase transition-all",
+                  "px-4 py-1.5 font-display text-[10px] sm:text-xs font-bold tracking-widest uppercase transition-all rounded-sm",
                   selectedSession === "Race"
-                    ? "bg-white/20 text-white border-white/40 border"
-                    : "bg-black/40 text-white/60 hover:bg-black/60 hover:text-white border border-white/10",
+                    ? "bg-white text-black"
+                    : "text-white/60 hover:text-white hover:bg-white/10",
                 )}
                 onClick={() => setSelectedSession("Race")}
               >
@@ -1157,10 +1180,10 @@ export function RacePage() {
             {hasQualifyingSession && (
               <button
                 className={classNames(
-                  "px-4 py-1.5 rounded-full font-display text-[10px] sm:text-xs tracking-widest uppercase transition-all",
+                  "px-4 py-1.5 font-display text-[10px] sm:text-xs font-bold tracking-widest uppercase transition-all rounded-sm",
                   selectedSession === "Qualifying"
-                    ? "bg-white/20 text-white border-white/40 border"
-                    : "bg-black/40 text-white/60 hover:bg-black/60 hover:text-white border border-white/10",
+                    ? "bg-white text-black"
+                    : "text-white/60 hover:text-white hover:bg-white/10",
                 )}
                 onClick={() => setSelectedSession("Qualifying")}
               >
@@ -1170,37 +1193,27 @@ export function RacePage() {
             {hasSprintSession && (
               <button
                 className={classNames(
-                  "px-4 py-1.5 rounded-full font-display text-[10px] sm:text-xs tracking-widest uppercase transition-all",
+                  "px-4 py-1.5 font-display text-[10px] sm:text-xs font-bold tracking-widest uppercase transition-all rounded-sm",
                   selectedSession === "Sprint"
-                    ? "bg-white/20 text-white border-white/40 border"
-                    : "bg-black/40 text-white/60 hover:bg-black/60 hover:text-white border border-white/10",
+                    ? "bg-white text-black"
+                    : "text-white/60 hover:text-white hover:bg-white/10",
                 )}
                 onClick={() => setSelectedSession("Sprint")}
               >
                 Sprint
               </button>
             )}
-          </div>
 
-          {/* Track Name */}
-          <div className="flex flex-col">
-            <div className="font-display text-[9px] tracking-widest uppercase text-white/30 leading-none mb-0.5">
-              {year} Season
+            {/* Mobile: open driver list */}
+            <div className="flex-1 flex justify-end px-2 sm:hidden ml-2">
+              <button
+                id="race-mobile-driver-list"
+                className="w-8 h-8 bg-white/10 text-white hover:bg-brand-blue-500 rounded-sm flex items-center justify-center transition-all"
+                onClick={() => setDriverDrawerOpen(true)}
+              >
+                <FontAwesomeIcon icon="user" className="text-sm" />
+              </button>
             </div>
-            <h1 className="font-display text-sm sm:text-base uppercase tracking-widest text-white leading-none">
-              {raceName}
-            </h1>
-          </div>
-
-          {/* Mobile: open driver list */}
-          <div className="flex-1 flex justify-end px-2 sm:hidden pointer-events-auto">
-            <button
-              id="race-mobile-driver-list"
-              className="w-8 h-8 bg-black/40 border border-white/10 text-white/50 hover:bg-white/10 hover:text-white rounded-md backdrop-blur-md flex items-center justify-center transition-all"
-              onClick={() => setDriverDrawerOpen(true)}
-            >
-              <FontAwesomeIcon icon="user" className="text-sm" />
-            </button>
           </div>
         </div>
 

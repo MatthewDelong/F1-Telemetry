@@ -695,7 +695,7 @@ function createCornerLabels(curve, numCorners = 0, circuitId = "") {
     sprite.position.set(
       corner.point.x + normal.x * labelOffset,
       corner.point.y + normal.y * labelOffset,
-      1.5,
+      0.1,
     );
     sprite.scale.set(1.0, 1.0, 1);
     group.add(sprite);
