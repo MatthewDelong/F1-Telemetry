@@ -1,0 +1,549 @@
+/* ─── Race HUD: docked telemetry + playback / camera controls ─── */
+$hud-bg: rgba(8, 9, 12, 0.88);
+$hud-border: rgba(255, 255, 255, 0.09);
+$hud-inner: rgba(255, 255, 255, 0.045);
+$hud-label: rgba(255, 255, 255, 0.5);
+$hud-purple: #5b1ff2;
+$hud-purple-glow: rgba(91, 31, 242, 0.55);
+$hud-green: #3fd4a0;
+$hud-red: #f2424e;
+$hud-cyan: #38bdf8;
+
+.race-hud {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0;
+
+  @media (min-width: 640px) {
+    width: calc(100% - 250px);
+    margin-left: 250px;
+  }
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: auto;
+  font-family: "Formula1", sans-serif;
+  color: #fff;
+  animation: raceHudIn 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+
+  &__label {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $hud-label;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  &__value {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__big {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 0.9;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ─── Telemetry row ─── */
+  &__telemetry {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.55fr) repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  &__tile {
+    background: $hud-bg;
+    border: 1px solid $hud-border;
+    border-radius: 16px;
+    padding: 12px 16px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    min-width: 0;
+    height: 72px;
+    box-sizing: border-box;
+    transition: border-color 0.25s ease;
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+  }
+
+  /* Gear */
+  &__gear {
+    display: flex;
+    align-items: flex-end;
+    gap: 18px;
+  }
+
+  &__gear-scale {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  &__gear-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+    height: 40px;
+    color: rgba(255, 255, 255, 0.35);
+    transition: color 0.15s ease;
+  }
+
+  &__gear-tick {
+    width: 1px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.25);
+    transition: all 0.15s ease;
+  }
+
+  &__gear-num {
+    font-size: 10px;
+    line-height: 1;
+  }
+
+  &__gear-step--active {
+    color: $hud-cyan;
+
+    .race-hud__gear-tick {
+      width: 2px;
+      height: 18px;
+      background: $hud-cyan;
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
+    }
+  }
+
+  /* Speed */
+  &__tile--speed {
+    padding-right: 12px;
+  }
+
+  &__speed {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+  }
+
+  &__units {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-bottom: 1px;
+  }
+
+  &__unit {
+    font-family: inherit;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.35);
+    background: none;
+    border: none;
+    padding: 0;
+    text-align: left;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    &--active {
+      color: #fff;
+      font-weight: 700;
+    }
+  }
+
+  /* Bars */
+  &__bar-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__segments {
+    display: flex;
+    gap: 2px;
+    height: 16px;
+  }
+
+  &__segment {
+    flex: 1;
+    border-radius: 1px;
+    background: rgba(255, 255, 255, 0.07);
+    transition: background-color 0.08s linear, box-shadow 0.08s linear;
+
+    &--green {
+      background: $hud-green;
+      box-shadow: 0 0 4px rgba(63, 212, 160, 0.45);
+    }
+
+    &--red {
+      background: $hud-red;
+      box-shadow: 0 0 4px rgba(242, 66, 78, 0.5);
+    }
+  }
+
+  /* ─── Controls row ─── */
+  &__controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: $hud-bg;
+    border: 1px solid $hud-border;
+    border-radius: 18px;
+    padding: 10px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  &__transport {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  &__icon-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: 1px solid $hud-border;
+    background: $hud-inner;
+    color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    &--active {
+      background: $hud-purple;
+      border-color: rgba(140, 100, 255, 0.6);
+      color: #fff;
+      box-shadow: 0 0 18px $hud-purple-glow;
+
+      &:hover {
+        background: #6c36f5;
+      }
+    }
+  }
+
+  /* Dropdown */
+  &__dropdown {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  &__dropdown-btn {
+    min-width: 140px;
+    width: auto;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 1px solid $hud-border;
+    background: $hud-inner;
+    color: #fff;
+    font-family: inherit;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+
+    &:hover,
+    &--open {
+      border-color: rgba(140, 100, 255, 0.55);
+      background: rgba(255, 255, 255, 0.07);
+    }
+  }
+
+  &__dropdown-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+
+    .race-hud__label {
+      font-size: 8px;
+    }
+  }
+
+  &__dropdown-value {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__caret {
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid rgba(255, 255, 255, 0.85);
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  &__dropdown-btn--open &__caret {
+    transform: rotate(180deg);
+  }
+
+  &__menu {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 0;
+    min-width: 100%;
+    padding: 6px;
+    margin: 0;
+    list-style: none;
+    background: rgba(12, 13, 18, 0.97);
+    border: 1px solid $hud-border;
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 100;
+    animation: raceHudMenuIn 0.16s ease-out both;
+  }
+
+  &__menu-item {
+    width: 100%;
+    display: block;
+    padding: 9px 10px;
+    border-radius: 8px;
+    border: none;
+    background: none;
+    color: rgba(255, 255, 255, 0.65);
+    font-family: inherit;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: left;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+    }
+
+    &--active {
+      background: rgba(91, 31, 242, 0.22);
+      color: #fff;
+    }
+  }
+
+  /* Sliders */
+  &__sliders {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    padding: 0 6px;
+    min-width: 0;
+  }
+
+  &__slider {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    transition: opacity 0.2s ease;
+
+    &--disabled {
+      opacity: 0.35;
+    }
+  }
+
+  &__range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 16px;
+    margin: 0;
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 6px;
+    outline: none;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 10px;
+      height: 22px;
+      border-radius: 4px;
+      background: $hud-purple;
+      border: none;
+      box-shadow: 0 0 10px $hud-purple-glow;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    &::-moz-range-thumb {
+      width: 10px;
+      height: 22px;
+      border-radius: 4px;
+      background: $hud-purple;
+      border: none;
+      box-shadow: 0 0 10px $hud-purple-glow;
+      cursor: pointer;
+    }
+
+    &:not(:disabled):hover::-webkit-slider-thumb {
+      background: #7543f7;
+      transform: scaleY(1.08);
+    }
+
+    &:focus-visible::-webkit-slider-thumb {
+      outline: 2px solid rgba(255, 255, 255, 0.6);
+      outline-offset: 2px;
+    }
+  }
+
+  /* ─── Responsive (container-based: the slot sits beside the leaderboard) ─── */
+  @container race-hud (max-width: 880px) {
+    &__telemetry {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    &__tile--gear {
+      grid-column: span 4;
+    }
+
+    &__tile--speed {
+      grid-column: span 2;
+    }
+
+    &__tile--bar {
+      grid-column: span 2;
+    }
+
+    &__controls {
+      flex-wrap: wrap;
+    }
+
+    &__sliders {
+      flex-basis: 100%;
+      padding: 4px 4px 2px;
+    }
+  }
+
+  @container race-hud (max-width: 520px) {
+    gap: 6px;
+
+    &__telemetry {
+      gap: 6px;
+    }
+
+    &__tile {
+      padding: 8px 10px;
+      border-radius: 12px;
+      gap: 6px;
+    }
+
+    &__tile--bar {
+      grid-column: span 3;
+    }
+
+    &__tile--rpm {
+      display: none;
+    }
+
+    &__gear {
+      gap: 10px;
+    }
+
+    &__big {
+      font-size: 22px;
+    }
+
+    &__segments {
+      height: 10px;
+    }
+
+    &__controls {
+      gap: 6px;
+      padding: 8px;
+      border-radius: 14px;
+    }
+
+    &__icon-btn {
+      width: 36px;
+      height: 36px;
+    }
+
+    &__dropdown-btn {
+      width: 100px;
+      height: 36px;
+    }
+
+    &__sliders {
+      gap: 10px;
+    }
+  }
+}
+
+.race-hud-slot {
+  width: 100%;
+  container-type: inline-size;
+  container-name: race-hud;
+
+  &:empty {
+    display: none;
+  }
+}
+
+@keyframes raceHudIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes raceHudMenuIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

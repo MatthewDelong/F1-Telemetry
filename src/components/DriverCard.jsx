@@ -31,6 +31,11 @@ export const DriverCard = (props) => {
   const cardRef = useRef(null);
   const isInView = useInView(cardRef, { once: true });
 
+  let displayTime = time;
+  if (typeof displayTime === "string" && /did not start/i.test(displayTime)) {
+    displayTime = "DNS";
+  }
+
   const getTireCompound = (driverCode, lap) => {
     const driverStint = stint?.find((item) => item.acronym === driverCode);
     if (driverStint && driverStint.tires) {
@@ -86,8 +91,8 @@ export const DriverCard = (props) => {
           ? `${"/images/" + year + "/" + championshipLevel + "/" + driver.code?.trim() + ".png"}`
           : `${"/images/" + year + "/drivers/" + driver.code?.trim() + ".png"}`
       }
-      width={48}
-      height={48}
+      width={36}
+      height={36}
       className={classNames("absolute block bottom-[0px] left-[24px] z-20 object-contain")}
       style={{ opacity: 1 }}
     />
@@ -149,18 +154,18 @@ export const DriverCard = (props) => {
         <div className="flex items-center leading-none text-sm font-bold">
           <p
             className={classNames(
-              "w-48 bg-neutral-700/80 py-[1px] text-center rounded-l-sm text-[10px] shadow-inner",
+              "w-40 bg-neutral-700/80 py-0 text-center rounded-l-sm text-[9px] shadow-inner",
             )}
           >
             {isRace && isNaN(endPosition) ? "DNF" : `P${isRace ? endPosition : index + 1}`}
           </p>
-          <span className="pl-12 mr-6 text-[13px] text-white brightness-125 uppercase tracking-wider">
+          <span className="pl-8 mr-4 text-[12px] text-white brightness-125 uppercase tracking-wider">
             {driver.code}
           </span>
         </div>
-        <div className="flex items-center max-sm:pr-4 sm:pr-12 max-sm:gap-4 sm:gap-8 h-full">
-          <p className="text-[12px] sm:text-[13px] text-white font-medium opacity-90">
-            {time}
+        <div className="flex items-center max-sm:pr-4 sm:pr-8 max-sm:gap-4 sm:gap-6 h-full">
+          <p className="text-[11px] sm:text-[12px] text-white font-medium opacity-90">
+            {displayTime}
           </p>
           <div className="status-icons-wrapper flex flex-col items-center justify-center gap-[1px] min-w-[20px]">
             {isFastestLapDriver && (
@@ -238,15 +243,15 @@ export const DriverCard = (props) => {
       >
         <div
           className={classNames(
-            "driver-card-position text-[12px] font-display px-3 py-0 bg-neutral-700/80 rounded-l-md flex items-center h-full min-h-[26px]",
+            "driver-card-position text-[11px] font-display px-2 py-0 bg-neutral-700/80 rounded-l-md flex items-center h-full min-h-[22px]",
           )}
         >
           {isRace && isNaN(endPosition) ? "DNF" : `P${isRace ? endPosition : index + 1}`}
         </div>
         {driverImage}
-        <div className="grow py-0 pl-[8px] pr-8 text-right flex flex-col justify-center relative">
-          <div className="flex items-center justify-end gap-6 relative z-10">
-            <span className="heading-4 !m-0 !p-0 max-sm:pl-24 sm:pl-24 uppercase font-black italic tracking-tighter text-[14px] leading-none drop-shadow-md">
+        <div className="grow py-0 pl-[8px] pr-4 text-right flex flex-col justify-center relative">
+          <div className="flex items-center justify-end gap-3 relative z-10">
+            <span className="heading-4 !m-0 !p-0 max-sm:pl-16 sm:pl-16 uppercase font-black italic tracking-tighter text-[13px] leading-none drop-shadow-md">
               {driver.code}
             </span>
             <div className="status-icons-wrapper flex flex-col items-center justify-center gap-[1px] min-w-[20px]">
@@ -278,9 +283,9 @@ export const DriverCard = (props) => {
               {isRace && !hidePositionMovement && positionMovement()}
             </div>
           </div>
-          <div className="w-full h-[1px] bg-neutral-600 my-[2px] opacity-50" />
+          <div className="w-full h-[1px] bg-neutral-600 my-0 opacity-50" />
           <p className={classNames("!m-0 !p-0 text-[11px] leading-none font-bold text-white/90")}>
-            {time}
+            {displayTime}
           </p>
         </div>
       </div>
@@ -295,7 +300,7 @@ export const DriverCard = (props) => {
             <p className="pl-8 pr-8 font-bold text-white">{driver.code}</p>
           </div>
           <div>
-            <p className="text-sm pl-8 font-medium text-white">{time}</p>
+            <p className="text-sm pl-8 font-medium text-white">{displayTime}</p>
           </div>
         </div>
       )}

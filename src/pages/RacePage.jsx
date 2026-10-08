@@ -40,7 +40,6 @@ import {
   CircuitDetails,
 } from "../components";
 import Drawer from "../components/Drawer";
-import Accordion from "../components/Accordion";
 import { locationMaps } from "../utils/locationMaps";
 import { organizeQualifyingResults } from "../utils/organizeQualifyingResults";
 
@@ -101,11 +100,9 @@ export function RacePage() {
   const [hasRaceSession, sethasRaceSession] = useState(false);
   const [hasQualifyingSession, sethasQualifyingSession] = useState(false);
   const [hasSprintSession, sethasSprintSession] = useState(false);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [driverDrawerOpen, setDriverDrawerOpen] = useState(false);
   const [showStartingGrid, setShowStartingGrid] = useState(false);
-  const [showCarDetails, setShowCarDetails] = useState(true);
-  const [showCameraControls, setShowCameraControls] = useState(false);
+  const [hudSlot, setHudSlot] = useState(null);
   const [raceControlMessages, setRaceControlMessages] = useState([]);
   const [isSessionLive, setIsSessionLive] = useState(false);
   const [speedUnit, setSpeedUnit] = useState("kph");
@@ -918,6 +915,7 @@ export function RacePage() {
       setDriverCode(raceResults[index].Driver.code);
       setDriverNumber(raceResults[index].number);
       setActiveButtonIndex(index);
+      setIsPaused(false);
 
       (async () => {
         try {
@@ -971,7 +969,7 @@ export function RacePage() {
   const driverSelectedShowTrack = driverSelected && (hasTrackData || hasMap);
 
   const driverButtons = (layoutSmall) => (
-    <ul className="flex flex-col p-2 sm:p-2 pt-5 sm:pt-5">
+    <ul className="flex flex-col p-2 sm:p-2 pt-8 sm:pt-8 mt-2">
       {fullRaceResults.map((result, index) => (
         <button
           key={index}
@@ -991,7 +989,10 @@ export function RacePage() {
             startPosition={parseInt(result.grid, 10) || 0}
             endPosition={parseInt(result.position, 10) || 0}
             year={parseInt(year)}
-            time={result.Time?.time || result.status}
+            time={
+              result.Time?.time ||
+              (/did not start/i.test(result.status) ? "DNS" : result.status)
+            }
             fastestLap={result.FastestLap}
             layoutSmall={layoutSmall && index > 2}
             isRace={true}
@@ -1118,7 +1119,14 @@ export function RacePage() {
     <Loading message={`Loading ${raceName} ${year} ${selectedSession}`} />
   ) : (
     <div className="race-page">
-      <div className="race-page__track-view relative">
+      <div
+        className={classNames(
+          "race-page__track-view relative flex flex-col w-full shrink-0",
+          selectedSession === "Race" || selectedSession === "Sprint"
+            ? "h-[calc(100dvh-64px)]"
+            : "h-auto pb-4",
+        )}
+      >
         <Drawer
           isOpen={driverDrawerOpen}
           onClose={() => setDriverDrawerOpen(false)}
@@ -1128,318 +1136,81 @@ export function RacePage() {
           </div>
           {driverButtons(true)}
         </Drawer>
-        <Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)}>
-          {driverSelected && (
-            <>
-              <Accordion
-                title="Playback Speed"
-                contentClasses="flex flex-col gap-8 items-start"
-              >
-                <button
-                  className={classNames("tracking-sm uppercase block", {
-                    "text-brand-blue-300": speedFactor !== 4,
-                  })}
-                  onClick={() => {
-                    setSpeedFactor(4);
-                    setIsDrawerOpen(false);
-                  }}
-                >
-                  Normal
-                </button>
-                <button
-                  className={classNames("tracking-sm uppercase block", {
-                    "text-brand-blue-300": speedFactor !== 1.5,
-                  })}
-                  onClick={() => {
-                    setSpeedFactor(1.5);
-                    setIsDrawerOpen(false);
-                  }}
-                >
-                  Push Push
-                </button>
-                <button
-                  className={classNames("tracking-sm uppercase block", {
-                    "text-brand-blue-300": speedFactor !== 0.2,
-                  })}
-                  onClick={() => {
-                    setSpeedFactor(0.2);
-                    setIsDrawerOpen(false);
-                  }}
-                >
-                  {parseInt(year) >= 2026 ? "ERS Boost" : "DRS"}
-                </button>
-              </Accordion>
-              <Accordion
-                title="Camera Angle"
-                contentClasses="flex flex-col gap-8 items-start"
-              >
-                <button
-                  className={classNames("tracking-sm uppercase block", {
-                    "text-brand-blue-300": !haloView && !topFollowView,
-                  })}
-                  onClick={() => {
-                    setHaloView(false);
-                    setTopFollowView(false);
-                    setIsDrawerOpen(false);
-                  }}
-                >
-                  Sky View
-                </button>
-                <button
-                  className={classNames("tracking-sm uppercase block", {
-                    "text-brand-blue-300": haloView,
-                  })}
-                  onClick={() => {
-                    setHaloView(true);
-                    setTopFollowView(false);
-                    setIsDrawerOpen(false);
-                  }}
-                >
-                  Halo View
-                </button>
-                <button
-                  className={classNames("tracking-sm uppercase block", {
-                    "text-brand-blue-300": topFollowView,
-                  })}
-                  onClick={() => {
-                    setTopFollowView(true);
-                    setHaloView(false);
-                    setIsDrawerOpen(false);
-                  }}
-                >
-                  Top Follow View
-                </button>
-              </Accordion>
-            </>
-          )}
 
-          <Accordion
-            title="Units"
-            contentClasses="flex flex-col gap-8 items-start"
-          >
+        {/* TOP BAR */}
+        <div className="w-full shrink-0 flex items-center px-4 pt-6 pb-3 gap-6 relative z-[9999]">
+          {/* Session Selectors */}
+          <div className="flex gap-2 pointer-events-auto">
+            {hasRaceSession && (
+              <button
+                className={classNames(
+                  "px-4 py-1.5 rounded-full font-display text-[10px] sm:text-xs tracking-widest uppercase transition-all",
+                  selectedSession === "Race"
+                    ? "bg-white/20 text-white border-white/40 border"
+                    : "bg-black/40 text-white/60 hover:bg-black/60 hover:text-white border border-white/10",
+                )}
+                onClick={() => setSelectedSession("Race")}
+              >
+                Race
+              </button>
+            )}
+            {hasQualifyingSession && (
+              <button
+                className={classNames(
+                  "px-4 py-1.5 rounded-full font-display text-[10px] sm:text-xs tracking-widest uppercase transition-all",
+                  selectedSession === "Qualifying"
+                    ? "bg-white/20 text-white border-white/40 border"
+                    : "bg-black/40 text-white/60 hover:bg-black/60 hover:text-white border border-white/10",
+                )}
+                onClick={() => setSelectedSession("Qualifying")}
+              >
+                Qualifying
+              </button>
+            )}
+            {hasSprintSession && (
+              <button
+                className={classNames(
+                  "px-4 py-1.5 rounded-full font-display text-[10px] sm:text-xs tracking-widest uppercase transition-all",
+                  selectedSession === "Sprint"
+                    ? "bg-white/20 text-white border-white/40 border"
+                    : "bg-black/40 text-white/60 hover:bg-black/60 hover:text-white border border-white/10",
+                )}
+                onClick={() => setSelectedSession("Sprint")}
+              >
+                Sprint
+              </button>
+            )}
+          </div>
+
+          {/* Track Name */}
+          <div className="flex flex-col">
+            <div className="font-display text-[9px] tracking-widest uppercase text-white/30 leading-none mb-0.5">
+              {year} Season
+            </div>
+            <h1 className="font-display text-sm sm:text-base uppercase tracking-widest text-white leading-none">
+              {raceName}
+            </h1>
+          </div>
+
+          {/* Mobile: open driver list */}
+          <div className="flex-1 flex justify-end px-2 sm:hidden pointer-events-auto">
             <button
-              className={classNames("tracking-sm uppercase block", {
-                "text-brand-blue-300": speedUnit === "kph",
-              })}
-              onClick={() => {
-                setSpeedUnit("kph");
-                setIsDrawerOpen(false);
-              }}
+              id="race-mobile-driver-list"
+              className="w-8 h-8 bg-black/40 border border-white/10 text-white/50 hover:bg-white/10 hover:text-white rounded-md backdrop-blur-md flex items-center justify-center transition-all"
+              onClick={() => setDriverDrawerOpen(true)}
             >
-              KPH
+              <FontAwesomeIcon icon="user" className="text-sm" />
             </button>
-            <button
-              className={classNames("tracking-sm uppercase block", {
-                "text-brand-blue-300": speedUnit === "mph",
-              })}
-              onClick={() => {
-                setSpeedUnit("mph");
-                setIsDrawerOpen(false);
-              }}
-            >
-              MPH
-            </button>
-          </Accordion>
-        </Drawer>
+          </div>
+        </div>
 
         {(selectedSession === "Race" || selectedSession === "Sprint") && (
-          <>
-            {/* ─── Top Telemetry Prompts ─── */}
-            <div className="absolute top-[32px] w-full flex flex-col items-center z-[20] pointer-events-none">
-              {apiRestricted ? (
-                <div className="bg-red-900/80 border border-red-500/50 text-white text-center py-6 px-10 rounded-md pointer-events-auto text-lg shadow-2xl">
-                  Live F1 session in progress. Telemetry data is restricted
-                  globally by OpenF1 until the session ends.
-                </div>
-              ) : !driverSelected ? (
-                <div className="text-center px-10 py-4 rounded-full bg-black/40 border border-white/10 font-display text-lg tracking-wider uppercase text-white backdrop-blur-md max-sm:hidden shadow-lg pointer-events-auto">
-                  <span className="text-brand-blue-500 mr-3 animate-pulse">
-                    ●
-                  </span>{" "}
-                  Select a driver to activate telemetry
-                </div>
-              ) : null}
-            </div>
-
-            {/* ─── Bottom Controls, Titles, and Session Selectors ─── */}
-            <div className="absolute bottom-4 sm:bottom-[40px] w-full flex flex-col items-center z-[20] pointer-events-none gap-3 sm:gap-6 px-4">
-              {/* Controls Bar */}
-              <div className="w-full flex justify-end items-center gap-4 px-2 sm:px-8">
-                {driverSelected && (
-                  <div className="flex items-center bg-gradient-to-r from-black/80 to-black/40 border border-white/10 rounded-[2rem] p-2 backdrop-blur-2xl shadow-[0_10px_40px_rgba(0,0,0,0.8)] pointer-events-auto">
-                    {/* Play/Pause Combo */}
-                    <button
-                      className={classNames(
-                        "flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-full font-display uppercase tracking-widest text-xs transition-all duration-300 border border-transparent",
-                        !isPaused
-                          ? "bg-white/20 text-white shadow-[0_4px_30px_rgba(0,0,0,0.15)] border-white/40 backdrop-blur-md"
-                          : "bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border-white/10",
-                      )}
-                      onClick={() => setIsPaused(!isPaused)}
-                    >
-                      <FontAwesomeIcon
-                        icon={isPaused ? "play" : "pause"}
-                        className="text-sm"
-                      />
-                      <span>{isPaused ? "Play" : "Live"}</span>
-                    </button>
-
-                    <div className="w-[1px] h-6 sm:h-8 bg-white/10 mx-2 sm:mx-4"></div>
-
-                    {/* Tools */}
-                    <div className="flex items-center gap-1 sm:gap-2 pr-1 sm:pr-2">
-                      <button
-                        className={classNames(
-                          "flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 rounded-full transition-all duration-300 font-display uppercase tracking-widest text-[10px]",
-                          showCameraControls
-                            ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.4)]"
-                            : "text-white/50 hover:bg-white/10 hover:text-white",
-                        )}
-                        onClick={() =>
-                          setShowCameraControls(!showCameraControls)
-                        }
-                      >
-                        <FontAwesomeIcon
-                          icon="camera-rotate"
-                          className="text-sm"
-                        />
-                        <span className="max-sm:hidden">Camera</span>
-                      </button>
-                      <button
-                        className={classNames(
-                          "flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-3 rounded-full transition-all duration-300 font-display uppercase tracking-widest text-[10px]",
-                          showCarDetails
-                            ? "bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.4)]"
-                            : "text-white/50 hover:bg-white/10 hover:text-white",
-                        )}
-                        onClick={() => setShowCarDetails(!showCarDetails)}
-                      >
-                        <FontAwesomeIcon icon="gauge" className="text-sm" />
-                        <span className="max-sm:hidden">Telemetry</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
-                <div className="flex items-center gap-4 sm:gap-6 pointer-events-auto">
-                  <button
-                    className="w-10 h-10 sm:w-12 sm:h-12 bg-black/40 border border-white/10 text-white/50 hover:bg-white/10 hover:text-white rounded-xl backdrop-blur-md flex items-center justify-center transition-all shadow-lg sm:hidden"
-                    onClick={() => setDriverDrawerOpen(true)}
-                  >
-                    <FontAwesomeIcon
-                      icon="user"
-                      className="text-lg sm:text-xl"
-                    />
-                  </button>
-                  <button
-                    className="w-10 h-10 sm:w-12 sm:h-12 bg-black/40 border border-white/10 text-white/50 hover:bg-white/10 hover:text-white rounded-xl backdrop-blur-md flex items-center justify-center transition-all shadow-lg"
-                    onClick={() => setIsDrawerOpen(true)}
-                  >
-                    <FontAwesomeIcon
-                      icon="gear"
-                      className="text-lg sm:text-xl"
-                    />
-                  </button>
-                </div>
-              </div>
-
-              {/* Race Name Title & Season */}
-              <div className="flex flex-col items-center text-center">
-                <div className="font-display text-xs sm:text-sm tracking-widest uppercase text-white/30 mb-1">
-                  {year} Season
-                </div>
-                <h1 className="font-display text-2xl sm:text-5xl md:text-[4rem] uppercase tracking-widest text-white drop-shadow-lg leading-tight px-4">
-                  {raceName}
-                </h1>
-              </div>
-
-              {/* Session Selectors */}
-              <div className="flex gap-4 sm:gap-6 pointer-events-auto">
-                {hasRaceSession && (
-                  <button
-                    className={classNames(
-                      "px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-display text-xs sm:text-sm tracking-widest uppercase transition-all",
-                      selectedSession === "Race"
-                        ? "bg-white/20 text-white shadow-[0_4px_30px_rgba(0,0,0,0.15)] border-white/40 backdrop-blur-md"
-                        : "bg-black/40 text-white/60 hover:bg-black/60 hover:text-white backdrop-blur-md border border-white/10",
-                    )}
-                    onClick={() => setSelectedSession("Race")}
-                  >
-                    Race
-                  </button>
-                )}
-                {hasQualifyingSession && (
-                  <button
-                    className={classNames(
-                      "px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-display text-xs sm:text-sm tracking-widest uppercase transition-all",
-                      selectedSession === "Qualifying"
-                        ? "bg-white/20 text-white shadow-[0_4px_30px_rgba(0,0,0,0.15)] border-white/40 backdrop-blur-md"
-                        : "bg-black/40 text-white/60 hover:bg-black/60 hover:text-white backdrop-blur-md border border-white/10",
-                    )}
-                    onClick={() => setSelectedSession("Qualifying")}
-                  >
-                    Qualifying
-                  </button>
-                )}
-                {hasSprintSession && (
-                  <button
-                    className={classNames(
-                      "px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-display text-xs sm:text-sm tracking-widest uppercase transition-all",
-                      selectedSession === "Sprint"
-                        ? "bg-white/20 text-white shadow-[0_4px_30px_rgba(0,0,0,0.15)] border-white/40 backdrop-blur-md"
-                        : "bg-black/40 text-white/60 hover:bg-black/60 hover:text-white backdrop-blur-md border border-white/10",
-                    )}
-                    onClick={() => setSelectedSession("Sprint")}
-                  >
-                    Sprint
-                  </button>
-                )}
-              </div>
-            </div>
-
-            <div className="race-page__track-view__display relative">
-              {hasTrackData ? (
-                <ThreeCanvas
-                  className="race-page__track-view__display__canvas"
-                  trackReferenceData={trackReferenceData}
-                  circuitId={circuitIdCanonical}
-                  locData={locData}
-                  driverSelected={driverSelected}
-                  constructorId={
-                    selectedDriverRaceData?.Constructor?.constructorId || ""
-                  }
-                  driverCode={driverCode}
-                  driverColor={driversColor[driverCode]}
-                  isPaused={isPaused}
-                  haloView={haloView}
-                  topFollowView={topFollowView}
-                  speedFactor={speedFactor}
-                  year={year}
-                  showCarDetails={showCarDetails}
-                  showCameraControls={showCameraControls}
-                  speedUnit={speedUnit}
-                  selectedDriverData={selectedDriverData}
-                  onToggleUnit={handleUnitToggle}
-                />
-              ) : (
-                <div className="race-page__track-view__display__preview flex flex-col gap-4 items-center justify-center bg-[#0a0a0a]">
-                  {trackLoadError ? (
-                    <>
-                      <div className="text-red-500 font-display font-bold">
-                        TRACK UNAVAILABLE
-                      </div>
-                      <div className="text-white/50 font-display text-sm">
-                        OpenF1 API Rate Limited (429)
-                      </div>
-                    </>
-                  ) : (
-                    <div className="text-white/50 font-display">
-                      Loading track data...
-                    </div>
-                  )}
-                </div>
-              )}
-              <div className="race-page__leaderboard-desktop-wrapper max-sm:hidden absolute top-0 left-0 bottom-0 h-full pointer-events-none pb-4">
-                <div className="race-leaderboard-glass pointer-events-auto flex flex-col h-full max-h-full">
+          <div className="flex flex-col w-full h-full relative min-h-0">
+            {/* MAIN CONTENT SPLIT */}
+            <div className="flex-1 flex flex-col sm:flex-row min-h-0 w-full">
+              {/* SIDEBAR */}
+              <div className="race-page__leaderboard-desktop-wrapper max-sm:hidden shrink-0 w-auto h-full z-10 px-2 sm:px-4 pb-4">
+                <div className="race-leaderboard-glass pointer-events-auto flex flex-col h-full max-h-full w-full">
                   <div className="race-leaderboard-glass__header shrink-0">
                     {selectedSession === "Race"
                       ? "Race Results"
@@ -1452,27 +1223,96 @@ export function RacePage() {
                   </div>
                 </div>
               </div>
+
+              {/* TRACK + HUD COLUMN */}
+              <div className="flex-1 flex flex-col min-w-0 h-full relative z-10 pr-2 sm:pr-4 pb-2 sm:pb-4 gap-3">
+                {/* TRACK WINDOW */}
+                <div className="flex-1 relative rounded-xl border border-white/10 bg-[#060608] overflow-hidden shadow-2xl">
+                  {/* Top Telemetry Prompts */}
+                  <div className="absolute top-[20px] w-full flex flex-col items-center z-[20] pointer-events-none">
+                    {apiRestricted ? (
+                      <div className="bg-red-900/80 border border-red-500/50 text-white text-center py-4 px-6 rounded-md pointer-events-auto text-sm shadow-xl">
+                        Live F1 session in progress. Telemetry data is
+                        restricted globally by OpenF1 until the session ends.
+                      </div>
+                    ) : !driverSelected ? (
+                      <div className="text-center px-6 py-2 rounded-full bg-black/40 border border-white/10 font-display text-sm tracking-wider uppercase text-white backdrop-blur-md max-sm:hidden shadow-lg pointer-events-auto">
+                        <span className="text-brand-blue-500 mr-2 animate-pulse">
+                          ●
+                        </span>{" "}
+                        Select a driver to activate telemetry
+                      </div>
+                    ) : null}
+                  </div>
+
+                  {hasTrackData ? (
+                    <ThreeCanvas
+                      className="race-page__track-view__display__canvas w-full h-full"
+                      trackReferenceData={trackReferenceData}
+                      circuitId={circuitIdCanonical}
+                      locData={locData}
+                      driverSelected={driverSelected}
+                      constructorId={
+                        selectedDriverRaceData?.Constructor?.constructorId || ""
+                      }
+                      driverCode={driverCode}
+                      driverColor={driversColor[driverCode]}
+                      isPaused={isPaused}
+                      haloView={haloView}
+                      topFollowView={topFollowView}
+                      speedFactor={speedFactor}
+                      year={year}
+                      speedUnit={speedUnit}
+                      onSpeedUnitChange={setSpeedUnit}
+                      onPausedChange={setIsPaused}
+                      onSpeedFactorChange={setSpeedFactor}
+                      onCameraViewChange={(view) => {
+                        setHaloView(view === "halo");
+                        setTopFollowView(view === "top");
+                      }}
+                      hudContainer={hudSlot}
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex flex-col gap-4 items-center justify-center bg-[#0a0a0a]">
+                      {trackLoadError ? (
+                        <>
+                          <div className="text-red-500 font-display font-bold">
+                            TRACK UNAVAILABLE
+                          </div>
+                          <div className="text-white/50 font-display text-sm">
+                            OpenF1 API Rate Limited (429)
+                          </div>
+                        </>
+                      ) : (
+                        <div className="text-white/50 font-display">
+                          Loading track data...
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* HUD SLOT */}
+                <div className="w-full shrink-0 flex justify-center pt-1">
+                  <div
+                    ref={setHudSlot}
+                    className="race-hud-slot w-full flex justify-center"
+                  />
+                </div>
+              </div>
             </div>
-          </>
+          </div>
         )}
       </div>
 
       <div className="race-page__scroll-container">
-        {selectedSession === "Qualifying" && (
-          <button
-            className="text-xs tracking-xs uppercase mb-16 bg-glow rounded-sm p-4 ml-8"
-            onClick={() => setSelectedSession("Race")}
-          >
-            <FontAwesomeIcon icon="chevron-left" className="mr-16" />
-            race
-          </button>
+        {selectedSession === "Race" && (
+          <div className="page-container-centered mb-32">
+            <CircuitDetails
+              circuitId={location && locationMaps[location.toLowerCase()]}
+            />
+          </div>
         )}
-
-        <div className="page-container-centered mb-32">
-          <CircuitDetails
-            circuitId={location && locationMaps[location.toLowerCase()]}
-          />
-        </div>
 
         {selectedSession === "Qualifying" && (
           <div className="flex items-start justify-center gap-8 sm:gap-32 mx-8 mb-32 max-md:overflow-x-auto max-md:justify-start max-md:w-full max-md:px-8 max-md:snap-x max-md:snap-mandatory no-scrollbar">
@@ -1481,10 +1321,10 @@ export function RacePage() {
                 key={i}
                 className="p-16 bg-glow-dark rounded-md sm:rounded-xlarge max-md:min-w-[85vw] max-md:snap-center max-md:shrink-0"
               >
-                <h3 className="heading-3 mb-32 gradient-text-light">
+                <h3 className="heading-3 mb-32 gradient-text-light text-center">
                   Q{i + 1}
                 </h3>
-                <ul className="w-fit mx-auto">
+                <ul className="w-full min-w-[150px] max-w-[200px] mx-auto flex flex-col gap-1">
                   {res.map((r, idx) => (
                     <DriverCard
                       key={idx}

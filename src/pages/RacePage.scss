@@ -37,14 +37,6 @@
     &__display {
       position: relative;
 
-      &__canvas {
-        .three-canvas-container {
-          position: relative;
-          width: 100%;
-          overflow: hidden;
-          @include viewHeight;
-        }
-      }
       &__preview {
         @include viewHeight;
       }

@@ -50,9 +50,9 @@ export function LandingPage() {
     const fetchData = async () => {
       const now = new Date();
 
-      // Get all past races for current year sorted newest first
+      // Get all past races sorted newest first
       const pastRaces = raceDetails
-        .filter((r) => new Date(`${r.date}T${r.time}`) < now && r.season === String(currentYear))
+        .filter((r) => new Date(`${r.date}T${r.time}`) < now)
         .sort(
           (a, b) =>
             new Date(`${b.date}T${b.time}`) - new Date(`${a.date}T${a.time}`),
@@ -466,7 +466,7 @@ export function LandingPage() {
           {/* Podium */}
           <div
             className="flex items-end justify-center mt-4 md:mt-8 w-full scale-[0.8] sm:scale-100"
-            style={{ paddingTop: "140px", paddingBottom: "30px", gap: 0 }}
+            style={{ paddingTop: "160px", paddingBottom: "30px", gap: 0 }}
           >
             {/* P2 */}
             <div style={{ width: "120px", zIndex: 1, position: "relative" }}>

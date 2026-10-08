@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import classNames from "classnames";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
@@ -11,9 +12,7 @@ import {
 } from "../utils/TrackBuilder";
 import sectorBoundaries from "../config/f1/sectorBoundaries.json";
 import { locationMaps } from "../utils/locationMaps";
-import { Loading } from "./Loading";
-import DriverCarDetails from "./DriverCarDetails";
-import RangeSlider from "./RangeSlider";
+import RaceHud from "./RaceHud";
 
 /**
  * ThreeCanvas: Self-Calibrating 3D Race Viewer
@@ -34,13 +33,14 @@ export const ThreeCanvas = ({
   topFollowView,
   speedFactor,
   className,
-  showCarDetails,
-  showCameraControls,
   constructorId,
   year,
   speedUnit,
-  selectedDriverData,
-  onToggleUnit,
+  onSpeedUnitChange,
+  onPausedChange,
+  onSpeedFactorChange,
+  onCameraViewChange,
+  hudContainer,
 }) => {
   // 1. Initial Refs for Scene
   const mountRef = useRef(null);
@@ -220,17 +220,16 @@ export const ThreeCanvas = ({
           !sync.isPaused &&
           sync.calibrated
         ) {
-          const next = locDataRef.current.shift();
-          if (next) {
-            carModelRef.current.userData.tweenActive = true;
-            const oldPos = carModelRef.current.position.clone();
+          let next = locDataRef.current.shift();
+          let targetX = 0, targetY = 0;
 
-            // Use TrackBuilder calibration if available, otherwise fallback
-            let targetX, targetY;
+          // FAST-FORWARD invalid points instantly (e.g. thousands of 0,0 points before race start)
+          while (next) {
+            // Calculate targetX/targetY for 'next'
             if (trackCalibrationRef.current) {
               const scenePos = telemetryToScene(
-                next.x * 1500, // Reverse the /1500 scaling applied in fetchLocationData
-                next.y * 1500,
+                (next.x || 0) * 1500, // Reverse the /1500 scaling applied in fetchLocationData
+                (next.y || 0) * 1500,
                 trackCalibrationRef.current.center,
                 trackCalibrationRef.current.scale,
                 trackCalibrationRef.current.invertX,
@@ -239,19 +238,27 @@ export const ThreeCanvas = ({
               targetX = scenePos.x;
               targetY = scenePos.y;
             } else {
-              targetX = (next.x - sync.telemetryCenter.x) * sync.telemetryScale;
-              targetY = (next.y - sync.telemetryCenter.y) * sync.telemetryScale;
+              targetX = ((next.x || 0) - sync.telemetryCenter.x) * sync.telemetryScale;
+              targetY = ((next.y || 0) - sync.telemetryCenter.y) * sync.telemetryScale;
             }
 
-            // Protect against invalid/NaN coordinates which will completely destroy the 3D model
+            // Check if valid (strict finite check)
             if (
-              isNaN(targetX) ||
-              isNaN(targetY) ||
-              (next.x === 0 && next.y === 0)
+              Number.isFinite(targetX) && 
+              Number.isFinite(targetY) && 
+              !(next.x === 0 && next.y === 0)
             ) {
-              carModelRef.current.userData.tweenActive = false;
-              if (next.cardata) setDriverDetails(next.cardata);
-            } else {
+              break; // Found a valid point!
+            }
+
+            // Point is invalid, skip it, but keep driver details if any
+            if (next.cardata) setDriverDetails(next.cardata);
+            next = locDataRef.current.shift();
+          }
+
+          if (next && Number.isFinite(targetX) && Number.isFinite(targetY)) {
+            carModelRef.current.userData.tweenActive = true;
+            const oldPos = carModelRef.current.position.clone();
               // Bulletproof fix: If the distance is massive (e.g. first spawn, teleport, driver switch, GPS glitch)
               // do not tween! Snap instantly and clear the trail memory to prevent laser beams.
               const distSq =
@@ -260,10 +267,14 @@ export const ThreeCanvas = ({
                 carModelRef.current.position.set(targetX, targetY, 0.03);
                 carModelRef.current.userData.tweenActive = false;
                 carModelRef.current.userData.isFirstSpawn = false;
+                if (carModelRef.current.userData.currentTween) {
+                  carModelRef.current.userData.currentTween.stop();
+                  carModelRef.current.userData.currentTween = null;
+                }
                 trailPointsRef.current = [];
                 if (next.cardata) setDriverDetails(next.cardata);
               } else {
-                new TWEEN.Tween(carModelRef.current.position)
+                const tween = new TWEEN.Tween(carModelRef.current.position)
                   .to({ x: targetX, y: targetY, z: 0.03 }, 12)
                   .onUpdate(() => {
                     if (!carModelRef.current) return;
@@ -284,12 +295,26 @@ export const ThreeCanvas = ({
                   .onComplete(() => {
                     if (carModelRef.current && carModelRef.current.userData) {
                       carModelRef.current.userData.tweenActive = false;
+                      carModelRef.current.userData.currentTween = null;
                     }
                     if (next.cardata) setDriverDetails(next.cardata);
-                  })
-                  .start();
+                  });
+                
+                carModelRef.current.userData.currentTween = tween;
+                carModelRef.current.userData.isTweenPaused = false;
+                tween.start();
               }
-            }
+          }
+        }
+
+        // Pause/Resume Current Tween
+        if (carModelRef.current && carModelRef.current.userData.currentTween) {
+          if (sync.isPaused && !carModelRef.current.userData.isTweenPaused) {
+            carModelRef.current.userData.currentTween.pause();
+            carModelRef.current.userData.isTweenPaused = true;
+          } else if (!sync.isPaused && carModelRef.current.userData.isTweenPaused) {
+            carModelRef.current.userData.currentTween.resume();
+            carModelRef.current.userData.isTweenPaused = false;
           }
         }
 
@@ -484,8 +509,8 @@ export const ThreeCanvas = ({
     >
       <div
         ref={mountRef}
-        className="three-canvas-container"
-        style={{ width: "100%", height: "100% !important" }}
+        className="three-canvas-container w-full h-full"
+        style={{ width: "100%", height: "100%" }}
       />
 
       {/* Floating Track Color Toggle */}
@@ -505,93 +530,29 @@ export const ThreeCanvas = ({
         </button>
       </div>
 
-      {driverSelected && (
-        <div
-          className={classNames(
-            "driver-dashboard absolute top-40 right-4 z-50 transition-all duration-300 flex flex-col gap-12",
-            showCarDetails || showCameraControls
-              ? "translate-x-0 opacity-100"
-              : "translate-x-[400px] opacity-0",
-          )}
-        >
-          {showCarDetails && (
-            <div className="telemetry-panel shadow-2xl">
-              {driverDetails ? (
-                <DriverCarDetails
-                  driverDetails={driverDetails}
-                  speedUnit={speedUnit}
-                  selectedDriverData={selectedDriverData}
-                  onToggleUnit={onToggleUnit}
-                  year={year}
-                />
-              ) : (
-                <Loading message="Syncing telemetry..." />
-              )}
-            </div>
-          )}
-
-          {showCameraControls && !haloView && !topFollowView && (
-            <div className="camera-panel bg-[#1a1a1a]/90 backdrop-blur-md p-20 rounded-md shadow-2xl border border-white/5 w-[24rem]">
-              <div className="flex flex-col gap-24">
-                <div className="flex flex-col gap-8">
-                  <div className="flex justify-between items-center mb-4">
-                    <p className="gradient-text-light uppercase text-[0.9rem] font-display tracking-widest font-bold">
-                      ROTATION
-                    </p>
-                    <p className="text-neutral-400 text-xs font-display">
-                      ({Math.round((theta * 180) / Math.PI)}°)
-                    </p>
-                  </div>
-                  <RangeSlider
-                    min={-180}
-                    max={180}
-                    value={Math.round((theta * 180) / Math.PI)}
-                    onChange={(e) => setTheta((e.target.value * Math.PI) / 180)}
-                  />
-                </div>
-
-                <div className="flex flex-col gap-8">
-                  <div className="flex justify-between items-center mb-4">
-                    <p className="gradient-text-light uppercase text-[0.9rem] font-display tracking-widest font-bold">
-                      CAMERA HEIGHT
-                    </p>
-                    <p className="text-neutral-400 text-xs font-display">
-                      ({cameraHeight.toFixed(1)})
-                    </p>
-                  </div>
-                  <RangeSlider
-                    min={5}
-                    max={50}
-                    step={0.5}
-                    value={cameraHeight}
-                    onChange={(e) =>
-                      setCameraHeight(parseFloat(e.target.value))
-                    }
-                  />
-                </div>
-
-                <div className="flex flex-col gap-8">
-                  <div className="flex justify-between items-center mb-4">
-                    <p className="gradient-text-light uppercase text-[0.9rem] font-display tracking-widest font-bold">
-                      ZOOM
-                    </p>
-                    <p className="text-neutral-400 text-xs font-display">
-                      ({(radius / 2.5).toFixed(1)})
-                    </p>
-                  </div>
-                  <RangeSlider
-                    min={5}
-                    max={100}
-                    step={1}
-                    value={radius}
-                    onChange={(e) => setRadius(parseFloat(e.target.value))}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+      {driverSelected &&
+        hudContainer &&
+        createPortal(
+          <RaceHud
+            driverDetails={driverDetails}
+            year={year}
+            speedUnit={speedUnit}
+            onSpeedUnitChange={onSpeedUnitChange}
+            isPaused={isPaused}
+            onPausedChange={onPausedChange}
+            speedFactor={speedFactor}
+            onSpeedFactorChange={onSpeedFactorChange}
+            cameraView={haloView ? "halo" : topFollowView ? "top" : "sky"}
+            onCameraViewChange={onCameraViewChange}
+            theta={theta}
+            onThetaChange={setTheta}
+            cameraHeight={cameraHeight}
+            onCameraHeightChange={setCameraHeight}
+            radius={radius}
+            onRadiusChange={setRadius}
+          />,
+          hudContainer,
+        )}
     </div>
   );
 };
