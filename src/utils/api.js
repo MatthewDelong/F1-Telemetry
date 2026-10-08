@@ -1136,7 +1136,29 @@ export const fetchRaceResultsByCircuit = async (
       return matchId || matchName || matchLocality;
     });
 
-    return raceData?.Results || [];
+    if (raceData && raceData.Results && raceData.Results.length > 0) {
+      return raceData.Results;
+    }
+
+    // Fallback to Jolpica API for missing historical data
+    if (circuitId) {
+      console.log(`[API] Results missing for circuit ${circuitId} in ${year}, checking Jolpica fallback...`);
+      try {
+        const jolpiUrl = `https://api.jolpi.ca/ergast/f1/${year}/circuits/${circuitId}/results.json`;
+        const jolpiResp = await fetch(jolpiUrl);
+        if (jolpiResp.ok) {
+          const jolpiData = await jolpiResp.json();
+          const results = jolpiData?.MRData?.RaceTable?.Races?.[0]?.Results;
+          if (results && results.length > 0) {
+            return results;
+          }
+        }
+      } catch (e) {
+        console.warn("[API] Jolpica fallback failed", e);
+      }
+    }
+
+    return [];
   } catch (error) {
     console.error("Error fetching race results:", error);
     return [];
@@ -1173,7 +1195,29 @@ export const fetchQualifyingResultsByCircuit = async (
       return matchId || matchName || matchLocality;
     });
 
-    return raceData?.QualifyingResults || [];
+    if (raceData && raceData.QualifyingResults && raceData.QualifyingResults.length > 0) {
+      return raceData.QualifyingResults;
+    }
+
+    // Fallback to Jolpica API
+    if (circuitId) {
+      console.log(`[API] Qualifying missing for circuit ${circuitId} in ${year}, checking Jolpica fallback...`);
+      try {
+        const jolpiUrl = `https://api.jolpi.ca/ergast/f1/${year}/circuits/${circuitId}/qualifying.json`;
+        const jolpiResp = await fetch(jolpiUrl);
+        if (jolpiResp.ok) {
+          const jolpiData = await jolpiResp.json();
+          const results = jolpiData?.MRData?.RaceTable?.Races?.[0]?.QualifyingResults;
+          if (results && results.length > 0) {
+            return results;
+          }
+        }
+      } catch (e) {
+        console.warn("[API] Jolpica fallback failed", e);
+      }
+    }
+
+    return [];
   } catch (error) {
     console.error("Error fetching qualifying results:", error);
     return [];
@@ -1210,7 +1254,32 @@ export const fetchSprintResultsByCircuit = async (
       return matchId || matchName || matchLocality;
     });
 
-    return raceData?.SprintResults || raceData?.Results || [];
+    if (raceData) {
+      const results = raceData.SprintResults || raceData.Results;
+      if (results && results.length > 0) {
+        return results;
+      }
+    }
+
+    // Fallback to Jolpica API
+    if (circuitId) {
+      console.log(`[API] Sprint missing for circuit ${circuitId} in ${year}, checking Jolpica fallback...`);
+      try {
+        const jolpiUrl = `https://api.jolpi.ca/ergast/f1/${year}/circuits/${circuitId}/sprint.json`;
+        const jolpiResp = await fetch(jolpiUrl);
+        if (jolpiResp.ok) {
+          const jolpiData = await jolpiResp.json();
+          const results = jolpiData?.MRData?.RaceTable?.Races?.[0]?.SprintResults;
+          if (results && results.length > 0) {
+            return results;
+          }
+        }
+      } catch (e) {
+        console.warn("[API] Jolpica fallback failed", e);
+      }
+    }
+
+    return [];
   } catch (error) {
     console.error("Error fetching sprint results:", error);
     return [];
