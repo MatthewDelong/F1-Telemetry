@@ -50,9 +50,9 @@ export function LandingPage() {
     const fetchData = async () => {
       const now = new Date();
 
-      // Get all past races sorted newest first
+      // Get all past races for current year sorted newest first
       const pastRaces = raceDetails
-        .filter((r) => new Date(`${r.date}T${r.time}`) < now)
+        .filter((r) => new Date(`${r.date}T${r.time}`) < now && r.season === String(currentYear))
         .sort(
           (a, b) =>
             new Date(`${b.date}T${b.time}`) - new Date(`${a.date}T${a.time}`),
@@ -63,9 +63,9 @@ export function LandingPage() {
         pastRaces.map((r) => `${r.raceName} (round ${r.round})`),
       );
 
-      // Try only the last 3 past races newest first until we find one with podium data
-      // This prevents the page from hanging for too long on first load
-      const racesToTry = pastRaces.slice(0, 3);
+      // Try the last 8 past races newest first until we find one with podium data
+      // This ensures we find the actual latest played race, even if recent real-world ones have no data
+      const racesToTry = pastRaces.slice(0, 8);
       for (const race of racesToTry) {
         const round = parseInt(race.round, 10);
         const season = parseInt(race.season, 10);

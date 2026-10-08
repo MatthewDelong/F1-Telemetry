@@ -971,11 +971,11 @@ export function RacePage() {
   const driverSelectedShowTrack = driverSelected && (hasTrackData || hasMap);
 
   const driverButtons = (layoutSmall) => (
-    <ul className="flex flex-col max-sm:p-8 sm:p-16">
+    <ul className="flex flex-col p-2 sm:p-2 pt-5 sm:pt-5">
       {fullRaceResults.map((result, index) => (
         <button
           key={index}
-          className="block w-full mb-2 sm:mb-2 max-sm:mb-8 relative transition-all"
+          className="block w-full mb-0 relative transition-all"
           onClick={() => {
             handleDriverSelectionClick(index);
             setIsDrawerOpen(false);

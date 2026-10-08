@@ -86,9 +86,9 @@ export const DriverCard = (props) => {
           ? `${"/images/" + year + "/" + championshipLevel + "/" + driver.code?.trim() + ".png"}`
           : `${"/images/" + year + "/drivers/" + driver.code?.trim() + ".png"}`
       }
-      width={72}
-      height={72}
-      className={classNames("absolute block bottom-[0px] left-[28px] z-20 object-contain")}
+      width={48}
+      height={48}
+      className={classNames("absolute block bottom-[0px] left-[24px] z-20 object-contain")}
       style={{ opacity: 1 }}
     />
   );
@@ -238,15 +238,15 @@ export const DriverCard = (props) => {
       >
         <div
           className={classNames(
-            "driver-card-position text-[18px] font-display px-6 py-1 bg-neutral-700/80 rounded-l-md flex items-center h-full min-h-[44px]",
+            "driver-card-position text-[12px] font-display px-3 py-0 bg-neutral-700/80 rounded-l-md flex items-center h-full min-h-[26px]",
           )}
         >
           {isRace && isNaN(endPosition) ? "DNF" : `P${isRace ? endPosition : index + 1}`}
         </div>
         {driverImage}
-        <div className="grow py-1 pl-[10px] pr-12 text-right flex flex-col justify-center relative">
-          <div className="flex items-center justify-end gap-12 relative z-10">
-            <span className="heading-4 max-sm:pl-32 sm:pl-32 uppercase font-black italic tracking-tighter text-[18px] drop-shadow-md">
+        <div className="grow py-0 pl-[8px] pr-8 text-right flex flex-col justify-center relative">
+          <div className="flex items-center justify-end gap-6 relative z-10">
+            <span className="heading-4 !m-0 !p-0 max-sm:pl-24 sm:pl-24 uppercase font-black italic tracking-tighter text-[14px] leading-none drop-shadow-md">
               {driver.code}
             </span>
             <div className="status-icons-wrapper flex flex-col items-center justify-center gap-[1px] min-w-[20px]">
@@ -278,8 +278,8 @@ export const DriverCard = (props) => {
               {isRace && !hidePositionMovement && positionMovement()}
             </div>
           </div>
-          <div className="divider-glow w-full my-4" />
-          <p className={classNames("text-base font-bold text-white/90")}>
+          <div className="w-full h-[1px] bg-neutral-600 my-[2px] opacity-50" />
+          <p className={classNames("!m-0 !p-0 text-[11px] leading-none font-bold text-white/90")}>
             {time}
           </p>
         </div>
