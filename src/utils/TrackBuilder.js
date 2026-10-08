@@ -84,7 +84,7 @@ function normalizeGPSPoints(rawPoints, targetSize = 20, canonicalId = "") {
   // Smoothing pass to increase the radius of tight corners (hairpins).
   // This prevents the CatmullRom normals from crossing and creating blocky/squared-off
   // polygons when extruding the track ribbon.
-  let smoothedPoints = singleLapPoints.map(p => ({x: p.x, y: p.y}));
+  let smoothedPoints = singleLapPoints.map((p) => ({ x: p.x, y: p.y }));
   for (let iter = 0; iter < 10; iter++) {
     const nextPts = [];
     const len = smoothedPoints.length;
@@ -92,15 +92,15 @@ function normalizeGPSPoints(rawPoints, targetSize = 20, canonicalId = "") {
       const prev = smoothedPoints[(i - 1 + len) % len];
       const curr = smoothedPoints[i];
       const next = smoothedPoints[(i + 1) % len];
-      
+
       const dPrev = Math.hypot(curr.x - prev.x, curr.y - prev.y);
       const dNext = Math.hypot(next.x - curr.x, next.y - curr.y);
-      
+
       // Only smooth if points are physically close (dense telemetry in slow corners)
       if (dPrev < 30 && dNext < 30) {
         nextPts.push({
           x: curr.x * 0.5 + prev.x * 0.25 + next.x * 0.25,
-          y: curr.y * 0.5 + prev.y * 0.25 + next.y * 0.25
+          y: curr.y * 0.5 + prev.y * 0.25 + next.y * 0.25,
         });
       } else {
         nextPts.push({ x: curr.x, y: curr.y });
@@ -136,25 +136,32 @@ function normalizeGPSPoints(rawPoints, targetSize = 20, canonicalId = "") {
   let sourcePoints = singleLapPoints;
   if (canonicalId === "sepang") {
     // The raw OpenF1 Sepang telemetry starts roughly halfway down the main straight.
-    // We shift the array backwards so index 0 precisely matches the official 
+    // We shift the array backwards so index 0 precisely matches the official
     // Start/Finish line visually (about 1/4 down the main straight).
     const shiftAmt = Math.round(sourcePoints.length * 0.045);
     const shiftIdx = sourcePoints.length - shiftAmt;
-    sourcePoints = [...sourcePoints.slice(shiftIdx), ...sourcePoints.slice(0, shiftIdx)];
+    sourcePoints = [
+      ...sourcePoints.slice(shiftIdx),
+      ...sourcePoints.slice(0, shiftIdx),
+    ];
   }
 
-  const points = sourcePoints.map(
-    (p) => {
-      let nx = (p.x - cx) * scaleFactor;
-      let ny = (p.y - cy) * scaleFactor;
-      if (invertX) nx = -nx;
-      if (invertY) ny = -ny;
-      return new THREE.Vector2(nx, ny);
-    }
-  );
+  const points = sourcePoints.map((p) => {
+    let nx = (p.x - cx) * scaleFactor;
+    let ny = (p.y - cy) * scaleFactor;
+    if (invertX) nx = -nx;
+    if (invertY) ny = -ny;
+    return new THREE.Vector2(nx, ny);
+  });
 
   // Return the inversion flags so telemetry can also be inverted when drawn!
-  return { points, center: new THREE.Vector2(cx, cy), scale: scaleFactor, invertX, invertY };
+  return {
+    points,
+    center: new THREE.Vector2(cx, cy),
+    scale: scaleFactor,
+    invertX,
+    invertY,
+  };
 }
 
 /**
@@ -174,7 +181,7 @@ function safeTangent(next, prev) {
 function buildSpline(points2D) {
   const pts3D = points2D.map((p) => new THREE.Vector3(p.x, p.y, 0));
   const curve = new THREE.CatmullRomCurve3(pts3D, true, "catmullrom", 0.2);
-  // Increase sampling resolution massively to ensure tight F1 hairpins 
+  // Increase sampling resolution massively to ensure tight F1 hairpins
   // do not become blocky/squared off during arc-length calculation.
   curve.arcLengthDivisions = 3000;
   return curve;
@@ -486,17 +493,18 @@ function createSectorMarkers(curve, trackWidth) {
 
 const MANUAL_CORNERS = {
   baku: [
-    0.075, 0.1408, 0.3417, 0.3714, 0.4334, 0.4459, 0.5092, 0.5727, 0.5862, 0.6049,
-    0.609, 0.6164, 0.6995, 0.8217, 0.8834, 0.92, 0.94, 0.96, 0.98, 1.0
+    0.075, 0.1408, 0.3417, 0.3714, 0.4334, 0.4459, 0.5092, 0.5727, 0.5862,
+    0.6049, 0.609, 0.6164, 0.6995, 0.8217, 0.8834, 0.92, 0.94, 0.96, 0.98, 1.0,
   ],
   cota: [
-    0.1125, 0.1475, 0.2061, 0.2375, 0.2778, 0.3062, 0.3332, 0.3526, 0.3903, 0.4543,
-    0.4614, 0.681, 0.7265, 0.7549, 0.7756, 0.8296, 0.8481, 0.9116, 0.9654, 0.9928
+    0.1125, 0.1475, 0.2061, 0.2375, 0.2778, 0.3062, 0.3332, 0.3526, 0.3903,
+    0.4543, 0.4614, 0.681, 0.7265, 0.7549, 0.7756, 0.8296, 0.8481, 0.9116,
+    0.9654, 0.9928,
   ],
   bahrain: [
-    0.130, 0.145, 0.166, 0.275, 0.339, 0.349, 0.370, 0.409, 0.495, 0.510,
-    0.628, 0.640, 0.690, 0.897, 0.904
-  ]
+    0.13, 0.145, 0.166, 0.275, 0.339, 0.349, 0.37, 0.409, 0.495, 0.51, 0.628,
+    0.64, 0.69, 0.897, 0.904,
+  ],
 };
 
 /**
@@ -524,7 +532,7 @@ function createCornerLabels(curve, numCorners = 0, circuitId = "") {
     selectedCorners = MANUAL_CORNERS[canonicalId].map((frac, i) => {
       let idx = Math.round(frac * TRACK_RESOLUTION);
       if (idx >= len) idx = len - 1; // Safety fallback
-      
+
       // Need to determine point and normal
       const curr = trackPoints[idx];
       const prev = trackPoints[(idx - 3 + len) % len];
@@ -687,7 +695,7 @@ function createCornerLabels(curve, numCorners = 0, circuitId = "") {
     sprite.position.set(
       corner.point.x + normal.x * labelOffset,
       corner.point.y + normal.y * labelOffset,
-      0.1,
+      1.5,
     );
     sprite.scale.set(1.0, 1.0, 1);
     group.add(sprite);
@@ -695,12 +703,16 @@ function createCornerLabels(curve, numCorners = 0, circuitId = "") {
     // Pointer stick connecting the track edge to the label
     const stickLength = labelOffset - TRACK_WIDTH * 0.6;
     const stickGeom = new THREE.PlaneGeometry(0.06, stickLength);
-    const stickMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.7 });
+    const stickMat = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.7,
+    });
     const stick = new THREE.Mesh(stickGeom, stickMat);
     stick.position.set(
       corner.point.x + normal.x * (TRACK_WIDTH * 0.6 + stickLength / 2),
       corner.point.y + normal.y * (TRACK_WIDTH * 0.6 + stickLength / 2),
-      0.02
+      0.02,
     );
     stick.rotation.z = Math.atan2(normal.y, normal.x) - Math.PI / 2;
     group.add(stick);
@@ -992,7 +1004,14 @@ export function buildTrackFromGPS(rawGPSPoints, circuitId) {
  * Convert a raw telemetry point (x,y) into 3D scene coordinates
  * using the calibration values returned from buildTrackFromGPS.
  */
-export function telemetryToScene(x, y, center, scale, invertX = false, invertY = false) {
+export function telemetryToScene(
+  x,
+  y,
+  center,
+  scale,
+  invertX = false,
+  invertY = false,
+) {
   if (!center || !scale) return new THREE.Vector3(x, y, 0);
   let nx = (x - center.x) * scale;
   let ny = (y - center.y) * scale;

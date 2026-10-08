@@ -171,8 +171,8 @@ export const ThreeCanvas = ({
       currentMount.clientWidth / (currentMount.clientHeight || 700);
 
     haloCameraRef.current = new THREE.PerspectiveCamera(75, aspect, 0.01, 5000);
-    haloCameraRef.current.position.set(0, 0.58, 0.4); // Y is Height, Z is Depth
-    haloCameraRef.current.rotation.set(Math.PI / 10, Math.PI, 0);
+    haloCameraRef.current.position.set(0, 0.6, 0.3); // Y is Height, Z is Depth
+    haloCameraRef.current.rotation.set(Math.PI / 12, Math.PI, 0);
 
     topFollowCameraRef.current = new THREE.PerspectiveCamera(
       72,
@@ -180,7 +180,7 @@ export const ThreeCanvas = ({
       0.1,
       5000,
     );
-    topFollowCameraRef.current.position.set(0, 2, -2); // Y is Height, Z is Depth
+    topFollowCameraRef.current.position.set(0, 2, -3); // Y is Height, Z is Depth
     topFollowCameraRef.current.rotation.set(Math.PI / 8, Math.PI, 0);
 
     // Progressive Trail
@@ -221,7 +221,8 @@ export const ThreeCanvas = ({
           sync.calibrated
         ) {
           let next = locDataRef.current.shift();
-          let targetX = 0, targetY = 0;
+          let targetX = 0,
+            targetY = 0;
 
           // FAST-FORWARD invalid points instantly (e.g. thousands of 0,0 points before race start)
           while (next) {
@@ -238,14 +239,16 @@ export const ThreeCanvas = ({
               targetX = scenePos.x;
               targetY = scenePos.y;
             } else {
-              targetX = ((next.x || 0) - sync.telemetryCenter.x) * sync.telemetryScale;
-              targetY = ((next.y || 0) - sync.telemetryCenter.y) * sync.telemetryScale;
+              targetX =
+                ((next.x || 0) - sync.telemetryCenter.x) * sync.telemetryScale;
+              targetY =
+                ((next.y || 0) - sync.telemetryCenter.y) * sync.telemetryScale;
             }
 
             // Check if valid (strict finite check)
             if (
-              Number.isFinite(targetX) && 
-              Number.isFinite(targetY) && 
+              Number.isFinite(targetX) &&
+              Number.isFinite(targetY) &&
               !(next.x === 0 && next.y === 0)
             ) {
               break; // Found a valid point!
@@ -259,51 +262,51 @@ export const ThreeCanvas = ({
           if (next && Number.isFinite(targetX) && Number.isFinite(targetY)) {
             carModelRef.current.userData.tweenActive = true;
             const oldPos = carModelRef.current.position.clone();
-              // Bulletproof fix: If the distance is massive (e.g. first spawn, teleport, driver switch, GPS glitch)
-              // do not tween! Snap instantly and clear the trail memory to prevent laser beams.
-              const distSq =
-                (targetX - oldPos.x) ** 2 + (targetY - oldPos.y) ** 2;
-              if (distSq > 100 || carModelRef.current.userData.isFirstSpawn) {
-                carModelRef.current.position.set(targetX, targetY, 0.03);
-                carModelRef.current.userData.tweenActive = false;
-                carModelRef.current.userData.isFirstSpawn = false;
-                if (carModelRef.current.userData.currentTween) {
-                  carModelRef.current.userData.currentTween.stop();
-                  carModelRef.current.userData.currentTween = null;
-                }
-                trailPointsRef.current = [];
-                if (next.cardata) setDriverDetails(next.cardata);
-              } else {
-                const tween = new TWEEN.Tween(carModelRef.current.position)
-                  .to({ x: targetX, y: targetY, z: 0.03 }, 12)
-                  .onUpdate(() => {
-                    if (!carModelRef.current) return;
-                    const dx = targetX - oldPos.x;
-                    const dy = targetY - oldPos.y;
-                    if (Math.abs(dx) > 0.0001 || Math.abs(dy) > 0.0001) {
-                      const angle = Math.atan2(dy, dx);
-                      carModelRef.current.rotation.set(
-                        Math.PI / 2,
-                        0,
-                        angle + Math.PI / 2,
-                        "YZX",
-                      );
-                    }
-                  })
-                  .easing(TWEEN.Easing.Linear.None)
-                  .delay(50 * sync.speedFactor)
-                  .onComplete(() => {
-                    if (carModelRef.current && carModelRef.current.userData) {
-                      carModelRef.current.userData.tweenActive = false;
-                      carModelRef.current.userData.currentTween = null;
-                    }
-                    if (next.cardata) setDriverDetails(next.cardata);
-                  });
-                
-                carModelRef.current.userData.currentTween = tween;
-                carModelRef.current.userData.isTweenPaused = false;
-                tween.start();
+            // Bulletproof fix: If the distance is massive (e.g. first spawn, teleport, driver switch, GPS glitch)
+            // do not tween! Snap instantly and clear the trail memory to prevent laser beams.
+            const distSq =
+              (targetX - oldPos.x) ** 2 + (targetY - oldPos.y) ** 2;
+            if (distSq > 100 || carModelRef.current.userData.isFirstSpawn) {
+              carModelRef.current.position.set(targetX, targetY, 0.03);
+              carModelRef.current.userData.tweenActive = false;
+              carModelRef.current.userData.isFirstSpawn = false;
+              if (carModelRef.current.userData.currentTween) {
+                carModelRef.current.userData.currentTween.stop();
+                carModelRef.current.userData.currentTween = null;
               }
+              trailPointsRef.current = [];
+              if (next.cardata) setDriverDetails(next.cardata);
+            } else {
+              const tween = new TWEEN.Tween(carModelRef.current.position)
+                .to({ x: targetX, y: targetY, z: 0.03 }, 12)
+                .onUpdate(() => {
+                  if (!carModelRef.current) return;
+                  const dx = targetX - oldPos.x;
+                  const dy = targetY - oldPos.y;
+                  if (Math.abs(dx) > 0.0001 || Math.abs(dy) > 0.0001) {
+                    const angle = Math.atan2(dy, dx);
+                    carModelRef.current.rotation.set(
+                      Math.PI / 2,
+                      0,
+                      angle + Math.PI / 2,
+                      "YZX",
+                    );
+                  }
+                })
+                .easing(TWEEN.Easing.Linear.None)
+                .delay(50 * sync.speedFactor)
+                .onComplete(() => {
+                  if (carModelRef.current && carModelRef.current.userData) {
+                    carModelRef.current.userData.tweenActive = false;
+                    carModelRef.current.userData.currentTween = null;
+                  }
+                  if (next.cardata) setDriverDetails(next.cardata);
+                });
+
+              carModelRef.current.userData.currentTween = tween;
+              carModelRef.current.userData.isTweenPaused = false;
+              tween.start();
+            }
           }
         }
 
@@ -312,7 +315,10 @@ export const ThreeCanvas = ({
           if (sync.isPaused && !carModelRef.current.userData.isTweenPaused) {
             carModelRef.current.userData.currentTween.pause();
             carModelRef.current.userData.isTweenPaused = true;
-          } else if (!sync.isPaused && carModelRef.current.userData.isTweenPaused) {
+          } else if (
+            !sync.isPaused &&
+            carModelRef.current.userData.isTweenPaused
+          ) {
             carModelRef.current.userData.currentTween.resume();
             carModelRef.current.userData.isTweenPaused = false;
           }
