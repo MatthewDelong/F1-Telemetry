@@ -150,6 +150,31 @@ export const ThreeCanvas = ({
     currentMount.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const { width, height } = entry.contentRect;
+        if (width > 0 && height > 0) {
+          renderer.setSize(width, height);
+          
+          if (cameraRef.current) {
+            cameraRef.current.aspect = width / height;
+            // Dynamically scale vertical FOV in portrait to keep the track horizontally large
+            cameraRef.current.fov = width < height ? 40 * (height / width) : 40;
+            cameraRef.current.updateProjectionMatrix();
+          }
+          if (haloCameraRef.current) {
+            haloCameraRef.current.aspect = width / height;
+            haloCameraRef.current.updateProjectionMatrix();
+          }
+          if (topFollowCameraRef.current) {
+            topFollowCameraRef.current.aspect = width / height;
+            topFollowCameraRef.current.updateProjectionMatrix();
+          }
+        }
+      }
+    });
+    resizeObserver.observe(currentMount);
+
     // Core Lighting
     scene.add(new THREE.AmbientLight(0xffffff, 2.5));
     const dirLight = new THREE.DirectionalLight(0xffffff, 2.0);
@@ -180,8 +205,8 @@ export const ThreeCanvas = ({
       0.1,
       5000,
     );
-    topFollowCameraRef.current.position.set(0, 2, -3); // Y is Height, Z is Depth
-    topFollowCameraRef.current.rotation.set(Math.PI / 8, Math.PI, 0);
+    topFollowCameraRef.current.position.set(0, 2.5, -3.5); // Y is Height, Z is Depth
+    topFollowCameraRef.current.rotation.set(Math.PI / 5.5, Math.PI, 0);
 
     // Progressive Trail
     const MAX_TRAIL = 800;
@@ -394,6 +419,7 @@ export const ThreeCanvas = ({
     };
     requestRef.current = requestAnimationFrame(animate);
     return () => {
+      resizeObserver.disconnect();
       if (rendererRef.current && currentMount) {
         currentMount.removeChild(rendererRef.current.domElement);
         rendererRef.current.dispose();
