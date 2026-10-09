@@ -21,7 +21,7 @@ export default defineConfig({
         "/driver-standings",
         "/teammates-comparison",
         "/driver-comparison",
-        "/ar-viewer",
+        "/team-garages",
         "/f1a/race-results",
         "/f1a/driver-standings",
         "/f1a/constructor-standings",
