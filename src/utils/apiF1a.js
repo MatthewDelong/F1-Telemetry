@@ -40,6 +40,9 @@ export const fetchDriverInfo = async (year, championshipLevel) => {
       ? `${base}constructors/${year}/drivers.json`
       : `${base}drivers/${year}/drivers.json`;
     const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`API returned status ${response.status}`);
+    }
     const data = await response.json();
     // console.log('fetchDriverInfo', {data});
     return data;
@@ -92,9 +95,17 @@ const filterTop3 = (raceData) => {
 
 export const fetchRaceResultsByCircuit = async (year, circuitId, top3 = false, championshipLevel) => {
   try {
-    const url = `${getSeriesBaseUrl(championshipLevel)}results.json`;
+    const url = `${getSeriesBaseUrl(championshipLevel)}${year}/results.json`;
     const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`API returned status ${response.status}`);
+    }
     const data = await response.json();
+
+    if (!Array.isArray(data)) {
+      console.error(`[API] Data is not an array for circuitId: ${circuitId}`);
+      return { raceName: '', race0: [], race1: [], race2: [], race3: [] };
+    }
 
     const results = data.find(race => race.Circuit.circuitId === circuitId && race.season === String(year));
 
@@ -129,7 +140,15 @@ export const fetchAllRaceResults = async (year, championshipLevel) => {
   try {
     const url = `${getSeriesBaseUrl(championshipLevel)}races/${year}/results.json`;
     const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`API returned status ${response.status}`);
+    }
     const data = await response.json();
+
+    if (!Array.isArray(data)) {
+      console.warn(`[API] Data is not an array for all races:`, data);
+      return [];
+    }
 
     // Fetch driver information for enrichment
     const driverInfo = await fetchDriverInfo(year, championshipLevel);
@@ -170,6 +189,11 @@ export const fetchMostRecentRaceWeekend = async (selectedYear, championshipLevel
     }
 
     const races = await response.json();
+    
+    if (!Array.isArray(races)) {
+      console.warn(`[API] Data is not an array for most recent race:`, races);
+      return null;
+    }
     
     // Step 2: Sort races based on the `round` to get the most recent one
     const sortedRaces = races.sort((a, b) => parseInt(b.round) - parseInt(a.round)); // Sort in descending order by `round`

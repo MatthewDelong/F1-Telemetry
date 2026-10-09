@@ -10,6 +10,10 @@ export const BASE_F1_URL = import.meta.env.PROD
   ? "/api.php?source=f1&path="
   : "/api/proxy/f1/";
 
+export const JOLPICA_BASE_URL = import.meta.env.PROD
+  ? "/api.php?source=jolpica&path="
+  : "/api/proxy/jolpica/";
+
 /**
  * Normalizes a date string to the format expected by the OpenF1 API (YYYY-MM-DDTHH:MM:SS.mmm)
  * @param {string|Date} date - The date to normalize
@@ -615,7 +619,52 @@ const fetchRaceResults = async (
   }
 
   const isCurrentYear = String(selectedYear) === "2026";
-  const resultsUrl = `${BASE_F1_URL}${isCurrentYear ? "2026/" : ""}results.json`;
+  
+  if (!isCurrentYear) {
+    // Skip trying to fetch results.json from our server for historical races
+    // as it doesn't exist and causes a 15-second 404 timeout on every load.
+    console.log(`[API] Historical race (${selectedYear}), skipping local results.json and going straight to Jolpica...`);
+    let raceData = null;
+    try {
+      const jolpiUrl = `${JOLPICA_BASE_URL}ergast/f1/${selectedYear}/${raceId}/results.json`;
+      const jolpiResp = await fetch(jolpiUrl);
+      if (jolpiResp.ok) {
+        const jolpiData = await jolpiResp.json();
+        const results = jolpiData?.MRData?.RaceTable?.Races?.[0]?.Results;
+        if (results && results.length > 0) {
+          raceData = { Results: results };
+        }
+      }
+    } catch (e) {
+      console.warn("[API] Jolpica fallback failed", e);
+    }
+    
+    if (!raceData || !raceData.Results) {
+      return [];
+    }
+    
+    const results = raceData.Results.map((result) => {
+      const drv = result.Driver || {};
+      const con = result.Constructor || {};
+      return {
+        driver: {
+          ...drv,
+          nationality: drv?.nationality || drv?.country_code || drv?.country || "",
+        },
+        fastestLap: result.FastestLap || result.fastestLap,
+        bestLapTime: (result.FastestLap || result.fastestLap)?.Time?.time || result.bestLapTime || "—",
+        grid: result.grid,
+        position: result.position,
+        time: (result.Time || result.time)?.time || result.time || "N/A",
+        status: result.status,
+        number: result.number,
+        constructor: con,
+      };
+    });
+    return results;
+  }
+
+  const resultsUrl = `${BASE_F1_URL}2026/results.json`;
   try {
     const rawData = await fetchWithPersistentCache(resultsUrl);
     if (rawData && Array.isArray(rawData)) {
@@ -663,7 +712,7 @@ const fetchRaceResults = async (
         // Fallback to Jolpica API for historical races to avoid slow OpenF1 position pagination
         console.log(`[API] Results empty for round ${raceId}, checking Jolpica fallback...`);
         try {
-          const jolpiUrl = `https://api.jolpi.ca/ergast/f1/${selectedYear}/${raceId}/results.json`;
+          const jolpiUrl = `${JOLPICA_BASE_URL}ergast/f1/${selectedYear}/${raceId}/results.json`;
           const jolpiResp = await fetch(jolpiUrl);
           if (jolpiResp.ok) {
             const jolpiData = await jolpiResp.json();
@@ -1144,7 +1193,7 @@ export const fetchRaceResultsByCircuit = async (
     if (circuitId) {
       console.log(`[API] Results missing for circuit ${circuitId} in ${year}, checking Jolpica fallback...`);
       try {
-        const jolpiUrl = `https://api.jolpi.ca/ergast/f1/${year}/circuits/${circuitId}/results.json`;
+        const jolpiUrl = `${JOLPICA_BASE_URL}ergast/f1/${year}/circuits/${circuitId}/results.json`;
         const jolpiResp = await fetch(jolpiUrl);
         if (jolpiResp.ok) {
           const jolpiData = await jolpiResp.json();
@@ -1203,7 +1252,7 @@ export const fetchQualifyingResultsByCircuit = async (
     if (circuitId) {
       console.log(`[API] Qualifying missing for circuit ${circuitId} in ${year}, checking Jolpica fallback...`);
       try {
-        const jolpiUrl = `https://api.jolpi.ca/ergast/f1/${year}/circuits/${circuitId}/qualifying.json`;
+        const jolpiUrl = `${JOLPICA_BASE_URL}ergast/f1/${year}/circuits/${circuitId}/qualifying.json`;
         const jolpiResp = await fetch(jolpiUrl);
         if (jolpiResp.ok) {
           const jolpiData = await jolpiResp.json();
@@ -1265,7 +1314,7 @@ export const fetchSprintResultsByCircuit = async (
     if (circuitId) {
       console.log(`[API] Sprint missing for circuit ${circuitId} in ${year}, checking Jolpica fallback...`);
       try {
-        const jolpiUrl = `https://api.jolpi.ca/ergast/f1/${year}/circuits/${circuitId}/sprint.json`;
+        const jolpiUrl = `${JOLPICA_BASE_URL}ergast/f1/${year}/circuits/${circuitId}/sprint.json`;
         const jolpiResp = await fetch(jolpiUrl);
         if (jolpiResp.ok) {
           const jolpiData = await jolpiResp.json();

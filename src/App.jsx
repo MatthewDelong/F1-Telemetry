@@ -132,6 +132,14 @@ function MainContent({
   const isF2 =
     validF2Paths.includes(location) || location.startsWith("/race-f2/");
 
+  const currentSeries = isF1a ? "F1A" : isF2 ? "F2" : "F1";
+
+  useEffect(() => {
+    // Automatically default to current year when changing between series
+    // (e.g. preventing F2 from trying to load 2024 data if it doesn't exist)
+    setSelectedYear(currentYear);
+  }, [currentSeries, setSelectedYear]);
+
   useEffect(() => {
     // Always clean up first
     document.body.classList.remove(

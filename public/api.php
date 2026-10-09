@@ -12,7 +12,7 @@ $source = $_GET['source'] ?? '';
 $path = $_GET['path'] ?? '';
 
 // Validate source against allowed values
-if (!in_array($source, ['f1', 'f2', 'f1a', 'openf1', 'gpfans'], true)) {
+if (!in_array($source, ['f1', 'f2', 'f1a', 'openf1', 'gpfans', 'jolpica'], true)) {
     http_response_code(400);
     echo json_encode(['error' => 'Invalid source parameter']);
     exit;
@@ -318,6 +318,10 @@ if ($source === 'f1') {
 } else if ($source === 'gpfans') {
     $url = "https://www.gpfans.com/en/rss.xml?cb=" . time();
     $data = fetchUrl($url, 15, $lastError);
+} else if ($source === 'jolpica') {
+    $requestPath = ltrim($path, '/');
+    $url = "https://api.jolpi.ca/" . $requestPath;
+    $data = fetchUrl($url, 30, $lastError);
 }
 
 // Serve Data

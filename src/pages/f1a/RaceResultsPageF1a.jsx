@@ -170,6 +170,7 @@ export function RaceResultsPageF1a({ selectedYear, championshipLevel }) {
   const hasScrolled = useRef(false);
 
   useEffect(() => {
+    let ignore = false;
     const fetchData = async () => {
       setIsLoading(true);
       hasScrolled.current = false;
@@ -178,18 +179,25 @@ export function RaceResultsPageF1a({ selectedYear, championshipLevel }) {
         fetchRaceDetails(selectedYear),
         fetchAllRaceResults(selectedYear, championshipLevel)
       ]);
-      setF1Races(f1Details);
-      setAllResults(allRaceRes || []);
-      setFilteredCircuits(
-        Object.entries(data)
-          .filter(([key, circuit]) => circuit.year === selectedYear.toString())
-          .map(([key, circuit]) => ({ ...circuit, meetingKey: key }))
-      );
-      setIsLoading(false);
+      
+      if (!ignore) {
+        setF1Races(f1Details);
+        setAllResults(allRaceRes || []);
+        setFilteredCircuits(
+          Object.entries(data)
+            .filter(([key, circuit]) => circuit.year === selectedYear.toString())
+            .map(([key, circuit]) => ({ ...circuit, meetingKey: key }))
+        );
+        setIsLoading(false);
+      }
     };
 
     fetchData();
-  }, [selectedYear]);
+    
+    return () => {
+      ignore = true;
+    };
+  }, [selectedYear, championshipLevel]);
 
   // Auto-scroll to the current race after data loads
   useEffect(() => {

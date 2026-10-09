@@ -206,7 +206,7 @@ app.get('/api/admin/rebuild-2026', requireAdmin, async (req, res) => {
 // Generic Proxy Route — cache-first for F1, passthrough for F1A/F2
 app.use("/api/proxy/:source", async (req, res) => {
   const { source } = req.params;
-  const allowedSources = ['f1', 'f2', 'f1a'];
+  const allowedSources = ['f1', 'f2', 'f1a', 'jolpica'];
   if (!allowedSources.includes(source)) {
     return res.status(400).json({ error: "Invalid source" });
   }
@@ -402,6 +402,8 @@ app.use("/api/proxy/:source", async (req, res) => {
     baseUrls.push("https://raw.githubusercontent.com/MatthewDelong/f1aapi/main/");
   } else if (source === "f2") {
     baseUrls.push("https://raw.githubusercontent.com/MatthewDelong/f2api/main/");
+  } else if (source === "jolpica") {
+    baseUrls.push("https://api.jolpi.ca/");
   } else {
     return res.status(400).json({ error: "Invalid source" });
   }
