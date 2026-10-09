@@ -137,10 +137,16 @@ export const TeamDriverCard = ({
         <div className="team-driver-card__stats">
           {flag && <img className="team-driver-card__flag" src={flag} alt={nationality} />}
           {isPrincipal ? (
-            <div className="team-driver-card__stat" style={{ gridColumn: "span 3" }}>
-              <span>Tenure</span>
-              <strong style={{ fontSize: "0.85rem", whiteSpace: "nowrap" }}>{roleYear}</strong>
-            </div>
+            <>
+              <div className="team-driver-card__stat" style={{ gridColumn: "span 2" }}>
+                <span>Tenure</span>
+                <strong style={{ fontSize: "0.85rem", whiteSpace: "nowrap" }}>{roleYear}</strong>
+              </div>
+              <div className="team-driver-card__stat">
+                <span>Pts</span>
+                <strong>{points}</strong>
+              </div>
+            </>
           ) : (
             <>
               <div className={classNames("team-driver-card__stat")}>

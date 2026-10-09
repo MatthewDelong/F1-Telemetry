@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import { teamHistory } from "../utils/teamHistory";
-import { getTeamDriversForYear } from "../utils/api";
+import { getTeamDriversForYear, getConstructorStandings } from "../utils/api";
 import { TeamDriverCard } from "../components/ar/TeamDriverCard";
 
 const teamPrincipals = {
@@ -26,6 +26,7 @@ export const TeamCards = ({ selectedYear }) => {
     let mounted = true;
 
     const fetchAllTeams = async () => {
+      const cStandings = await getConstructorStandings(year);
       const teamList = Object.values(teamHistory);
       const dataPromises = teamList.map(async (team) => {
         // Fetch drivers for this team
@@ -57,9 +58,18 @@ export const TeamCards = ({ selectedYear }) => {
           ];
         }
 
+        let cPts = "0";
+        if (cStandings && cStandings.length > 0) {
+          const matched = cStandings.find((s) => s.constructorId === team.name);
+          if (matched) {
+            cPts = matched.points;
+          }
+        }
+
         return {
           ...team,
           drivers: drivers,
+          constructorPoints: cPts,
         };
       });
 
@@ -192,7 +202,7 @@ export const TeamCards = ({ selectedYear }) => {
                     firstName={principal?.name.includes("/") ? principal.name.split("/")[0].trim() : principal?.name.split(" ")[0]}
                     lastName={principal?.name.includes("/") ? `/ ${principal.name.split("/")[1].trim()}` : principal?.name.split(" ").slice(1).join(" ")}
                     nationality={principal?.nat}
-                    points={"-"}
+                    points={team.constructorPoints || "0"}
                     position={"TP"}
                     wins={"-"}
                     teamLabel={team.name === "rb" ? "Racing Bulls" : team.name.replace(/_/g, " ")}
