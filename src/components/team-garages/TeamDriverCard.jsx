@@ -113,6 +113,12 @@ export const TeamDriverCard = ({
         }}
       />
 
+      {number && (
+        <div className="team-driver-card__top-left">
+          <span className="team-driver-card__car-number">{number}</span>
+        </div>
+      )}
+
       <div className="team-driver-card__top">
         <span className="team-driver-card__code">{code}</span>
       </div>
