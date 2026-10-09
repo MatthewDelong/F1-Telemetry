@@ -57,7 +57,7 @@ export const ConstructorCar = (props) => {
           <div className="h-1 w-32 border-b-[1px] border-solid border-neutral-500" />
         </div>
         <p className="uppercase tracking-sm text-xl">
-          {name.replace("F1 Team", "")}
+          {image === "rb" ? "RACING BULLS" : name.replace("F1 Team", "")}
         </p>
         <div className="h-1 w-[9.6rem] border-b-[1px] border-solid border-neutral-500 mb-4 mt-4" />
         <span className="heading-1 gradient-text-light ">{points}</span>
