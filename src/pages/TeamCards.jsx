@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import { teamHistory } from "../utils/teamHistory";
 import { getTeamDriversForYear, getConstructorStandings } from "../utils/api";
-import { TeamDriverCard } from "../components/ar/TeamDriverCard";
+import { TeamDriverCard } from "../components/team-garages/TeamDriverCard";
 
 const teamPrincipals = {
   alpine: { name: "Flavio Briatore", nat: "Italian", year: "2025 – Present" },
@@ -16,6 +16,20 @@ const teamPrincipals = {
   red_bull: { name: "Laurent Mekies", nat: "French", year: "2025 (July) – Present" },
   williams: { name: "James Vowles", nat: "British", year: "2023 – Present" },
   cadillac: { name: "Marcin Budkowski", nat: "Polish", year: "2026 – Present" },
+};
+
+const powerUnits = {
+  mercedes: "Mercedes",
+  mclaren: "Mercedes",
+  williams: "Mercedes",
+  alpine: "Mercedes",
+  ferrari: "Ferrari",
+  haas: "Ferrari",
+  cadillac: "Ferrari (shifting to GM/Cadillac power in 2029)",
+  red_bull: "Red Bull-Ford (Red Bull Powertrains)",
+  rb: "Red Bull-Ford (Red Bull Powertrains)",
+  aston_martin: "Honda",
+  audi: "Audi",
 };
 
 export const TeamCards = ({ selectedYear }) => {
@@ -211,6 +225,7 @@ export const TeamCards = ({ selectedYear }) => {
                     isPrincipal={true}
                     teamId={team.name}
                     roleYear={principal?.year}
+                    powerUnit={powerUnits[team.name]}
                   />
                 </div>
               </div>

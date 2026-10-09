@@ -21,7 +21,6 @@ import {
   TeammatesComparison,
   LandingPage,
   FeaturesPage,
-  ARViewer,
   RaceResultsPage,
   RacePage,
   DriverStandings,

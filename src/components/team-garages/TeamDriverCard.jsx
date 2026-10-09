@@ -41,6 +41,7 @@ export const TeamDriverCard = ({
   isPrincipal = false,
   teamId = "",
   roleYear = "",
+  powerUnit = "",
 }) => {
   const cardRef = useRef(null);
 
@@ -114,7 +115,6 @@ export const TeamDriverCard = ({
 
       <div className="team-driver-card__top">
         <span className="team-driver-card__code">{code}</span>
-        {teamLabel && <span className="team-driver-card__team">{teamLabel}</span>}
       </div>
 
       <div className="team-driver-card__info">
@@ -138,10 +138,18 @@ export const TeamDriverCard = ({
           {flag && <img className="team-driver-card__flag" src={flag} alt={nationality} />}
           {isPrincipal ? (
             <>
-              <div className="team-driver-card__stat" style={{ gridColumn: "span 2" }}>
+              <div className="team-driver-card__stat team-driver-card__stat--full">
                 <span>Tenure</span>
                 <strong style={{ fontSize: "0.85rem", whiteSpace: "nowrap" }}>{roleYear}</strong>
               </div>
+              {powerUnit && (
+                <div className="team-driver-card__stat">
+                  <span>Power Unit</span>
+                  <strong style={{ fontSize: "0.8rem", whiteSpace: "normal", lineHeight: 1.2, paddingTop: "4px" }}>
+                    {powerUnit}
+                  </strong>
+                </div>
+              )}
               <div className="team-driver-card__stat">
                 <span>Pts</span>
                 <strong>{points}</strong>

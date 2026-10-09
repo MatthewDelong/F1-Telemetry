@@ -168,12 +168,17 @@
   }
 
   &__logo {
-    height: 48px;
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    height: 75%;
     width: auto;
-    max-width: 120px;
+    max-width: 50%;
     object-fit: contain;
-    object-position: left center;
-    margin-bottom: 12px;
+    z-index: -1;
+    opacity: 0.30;
+    pointer-events: none;
   }
 
   &__name {
@@ -200,6 +205,7 @@
 
   &__stats {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 14px;
     padding-top: 10px;
@@ -229,6 +235,18 @@
       font-family: var(--font-display, sans-serif);
       font-weight: 400;
       font-size: 1rem;
+    }
+
+    &--full {
+      width: 100%;
+      margin-top: -4px;
+      
+      strong {
+        font-size: 0.8rem;
+        white-space: normal;
+        line-height: 1.2;
+        padding-top: 4px;
+      }
     }
   }
 
