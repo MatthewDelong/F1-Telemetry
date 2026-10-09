@@ -155,7 +155,7 @@ export const ThreeCanvas = ({
         const { width, height } = entry.contentRect;
         if (width > 0 && height > 0) {
           renderer.setSize(width, height);
-          
+
           if (cameraRef.current) {
             cameraRef.current.aspect = width / height;
             // Dynamically scale vertical FOV in portrait to keep the track horizontally large
@@ -195,9 +195,9 @@ export const ThreeCanvas = ({
     const aspect =
       currentMount.clientWidth / (currentMount.clientHeight || 700);
 
-    haloCameraRef.current = new THREE.PerspectiveCamera(75, aspect, 0.01, 5000);
-    haloCameraRef.current.position.set(0, 0.6, 0.3); // Y is Height, Z is Depth
-    haloCameraRef.current.rotation.set(Math.PI / 12, Math.PI, 0);
+    haloCameraRef.current = new THREE.PerspectiveCamera(60, aspect, 0.01, 5000);
+    haloCameraRef.current.position.set(0, 0.57, 0.34); // Y is Height, Z is Depth
+    haloCameraRef.current.rotation.set(Math.PI / 16, Math.PI, 0);
 
     topFollowCameraRef.current = new THREE.PerspectiveCamera(
       72,
@@ -386,7 +386,7 @@ export const ThreeCanvas = ({
         const cornerLabelsGroup = scene.getObjectByName("CornerLabels");
         if (cornerLabelsGroup) {
           const targetZ = sync.haloView ? 1.5 : 0.1;
-          cornerLabelsGroup.children.forEach(child => {
+          cornerLabelsGroup.children.forEach((child) => {
             if (child.isSprite) {
               // Smooth lerp for the elevation change
               child.position.z += (targetZ - child.position.z) * 0.1;
