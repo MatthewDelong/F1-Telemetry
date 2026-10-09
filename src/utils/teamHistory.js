@@ -136,7 +136,7 @@ export const teamHistory = {
       fastestLaps: 124,
     },
     rb: {
-      name: 'red_bull_racing',
+      name: 'rb',
       color: '#6692FF',
       constructorTitles: [],
       driversChampionships: [],

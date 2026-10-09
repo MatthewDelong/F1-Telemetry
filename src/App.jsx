@@ -39,6 +39,7 @@ import {
   AdminPage,
   LiveDashboard,
   BehindTheCode,
+  TeamCards,
 } from "./pages";
 import { ScrollToTop } from "./utils/ScrollToTop";
 import { getCurrentYear } from "./utils/currentYear";
@@ -215,7 +216,7 @@ function MainContent({
             element={<DriverComparison selectedYear={selectedYear} />}
           />
           <Route path="/race/:raceId" element={<RacePage />} />
-          <Route path="/ar-viewer" element={<ARViewer />} />
+          <Route path="/team-garages" element={<TeamCards selectedYear={selectedYear} />} />
           {/* F1A Routes */}
           <Route
             path="/f1a/race-results"

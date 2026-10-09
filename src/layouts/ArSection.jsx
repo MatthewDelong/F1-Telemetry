@@ -26,7 +26,7 @@ const ArSection = ({ layoutMobile, container }) => {
     >
       <div className="max-w-[1200px] w-full mx-auto px-16">
         <h2 className="heading-2 text-center mb-16 uppercase">
-          bring the excitement of F1 right into your own space
+          Explore the 2026 Team Garages
         </h2>
         <div className="flex max-sm:flex-col-reverse sm:flex-row items-center mx-auto relative">
           <motion.div
@@ -40,47 +40,27 @@ const ArSection = ({ layoutMobile, container }) => {
             <div className="absolute inset-0 z-0 opacity-10 rounded-[2.4rem] pointer-events-none" style={{ background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 70%)` }} />
             <div className="relative z-10 flex flex-col gap-8 sm:gap-12">
               <p className="text-neutral-300 text-lg">
-                Place and scale your favorite F1 car model right in your
-                environment. Walk around and inspect every intricate detail as if
-                you were in the paddock!
+                Discover the latest 2026 driver line-ups and team principals.
                 <br />
                 <br />
-                Not on a phone? No problem! You can also view the car in 360
-                degrees on your computer and learn about your favorite teams
-                history.
+                Dive into the team garages to learn about the history of the 
+                constructors and see who is leading them into the new era of Formula 1!
               </p>
               <Button
                 as="button"
                 onClick={() => {
-                  navigate("/ar-viewer");
+                  navigate("/team-garages");
                   if (typeof window.trackButtonClick === "function") {
                     window.trackButtonClick(
-                      `Home/Click/Section/AR Viewer - /ar-viewer`,
+                      `Home/Click/Section/Team Garages - /team-garages`,
                     );
                   }
                 }}
                 size="sm"
                 className="shadow-xl w-fit"
               >
-                {layoutMobile
-                  ? "Full AR Experience"
-                  : "360 Team Livery Viewer and History"}
+                View 2026 Team Garages
               </Button>
-              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-8 mt-8 border-t border-white/10 pt-12">
-                <div className="flex-1">
-                  <p className="text-lg sm:text-xl text-neutral-400 mb-2">
-                    Scan QR code to go to the full AR Experience on your mobile device
-                  </p>
-                  <p className="text-base sm:text-lg text-neutral-500 font-mono">
-                    Don't forget to tag @F1-Telemetry_uk #F1-Telemetry_uk
-                  </p>
-                </div>
-                <img
-                  className="w-[8rem] sm:w-[10rem] rounded-xl bg-white p-2"
-                  src={`${"/images/arQr.png"}`}
-                  alt="QR Code"
-                />
-              </div>
             </div>
             <img
               className="w-[300px] absolute left-full top-32 z-[1] pointer-events-none opacity-50"
@@ -89,16 +69,16 @@ const ArSection = ({ layoutMobile, container }) => {
             />
           </motion.div>
           <motion.div
-            className="w-2/3 sm:w-1/4 ar-experience-section__phone z-10"
+            className="w-2/3 sm:w-1/2 z-10"
             initial={{ opacity: 0, scale: 1.2 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <LumaKeyVideo
-              src="/Media/PngSequencePhone.mp4"
-              poster="/images/ArPhoneImage.png"
-              className="w-full h-auto max-h-[70vh] object-contain"
+            <img
+              src="/images/2026/cars/ferrari.png"
+              alt="2026 Team Garages"
+              className="w-full h-auto max-h-[70vh] object-contain drop-shadow-2xl"
             />
           </motion.div>
         </div>

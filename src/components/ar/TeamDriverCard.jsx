@@ -7,6 +7,20 @@ import { darkenColor } from "../../utils/colorUtils";
 
 const FALLBACK_PHOTO = "/images/2024/drivers/default_driver.png";
 
+const TEAM_LOGOS = {
+  mercedes: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/mercedes/2026mercedeslogo.webp",
+  ferrari: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/ferrari/2026ferrarilogo.webp",
+  red_bull: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/redbullracing/2026redbullracinglogo.webp",
+  rb: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/racingbulls/2026racingbullslogo.webp",
+  alpine: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/alpine/2026alpinelogo.webp",
+  haas: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/haasf1team/2026haasf1teamlogo.webp",
+  audi: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/audi/2026audilogo.webp",
+  williams: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/williams/2026williamslogo.webp",
+  aston_martin: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/astonmartin/2026astonmartinlogo.webp",
+  cadillac: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/cadillac/2026cadillaclogo.webp",
+  mclaren: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/mclaren/2026mclarenlogo.webp",
+};
+
 /**
  * "Livery" driver card – carbon-fibre base, team-colour speed stripes,
  * outlined race number watermark, and a cursor-tracked 3D tilt + sheen.
@@ -24,15 +38,26 @@ export const TeamDriverCard = ({
   teamLabel,
   color = "#7500AD",
   index = 0,
+  isPrincipal = false,
+  teamId = "",
+  roleYear = "",
 }) => {
   const cardRef = useRef(null);
-  const [photoSrc, setPhotoSrc] = useState(`/images/${year}/drivers/${code}.png`);
-  const [prevKey, setPrevKey] = useState(`${year}-${code}`);
+
+  const getInitialPhotoSrc = () => {
+    if (isPrincipal && teamId) {
+      return `/images/${year}/principals/${teamId}.png`;
+    }
+    return `/images/${year}/drivers/${code}.png`;
+  };
+
+  const [photoSrc, setPhotoSrc] = useState(getInitialPhotoSrc());
+  const [prevKey, setPrevKey] = useState(`${year}-${code}-${teamId}`);
 
   // Reset the photo when the card is reused for a different driver/season.
-  if (prevKey !== `${year}-${code}`) {
-    setPrevKey(`${year}-${code}`);
-    setPhotoSrc(`/images/${year}/drivers/${code}.png`);
+  if (prevKey !== `${year}-${code}-${teamId}`) {
+    setPrevKey(`${year}-${code}-${teamId}`);
+    setPhotoSrc(getInitialPhotoSrc());
   }
 
   const handleMove = (event) => {
@@ -93,24 +118,45 @@ export const TeamDriverCard = ({
       </div>
 
       <div className="team-driver-card__info">
+        {isPrincipal && teamId && TEAM_LOGOS[teamId] && (
+          <img
+            src={TEAM_LOGOS[teamId]}
+            alt={`${teamLabel} Logo`}
+            className="team-driver-card__logo"
+            style={{
+              filter: ["audi", "aston_martin", "cadillac", "mercedes"].includes(teamId)
+                ? "brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.4))"
+                : "drop-shadow(0 2px 4px rgba(0,0,0,0.4))",
+            }}
+          />
+        )}
         <div className="team-driver-card__name">
           <span className="team-driver-card__first">{firstName}</span>
           <span className="team-driver-card__last">{lastName}</span>
         </div>
         <div className="team-driver-card__stats">
           {flag && <img className="team-driver-card__flag" src={flag} alt={nationality} />}
-          <div className={classNames("team-driver-card__stat")}>
-            <span>Pos</span>
-            <strong>{position ? `P${position}` : "–"}</strong>
-          </div>
-          <div className="team-driver-card__stat">
-            <span>Pts</span>
-            <strong>{points}</strong>
-          </div>
-          <div className="team-driver-card__stat">
-            <span>Wins</span>
-            <strong>{wins}</strong>
-          </div>
+          {isPrincipal ? (
+            <div className="team-driver-card__stat" style={{ gridColumn: "span 3" }}>
+              <span>Tenure</span>
+              <strong style={{ fontSize: "0.85rem", whiteSpace: "nowrap" }}>{roleYear}</strong>
+            </div>
+          ) : (
+            <>
+              <div className={classNames("team-driver-card__stat")}>
+                <span>Pos</span>
+                <strong>{position ? `P${position}` : "–"}</strong>
+              </div>
+              <div className="team-driver-card__stat">
+                <span>Pts</span>
+                <strong>{points}</strong>
+              </div>
+              <div className="team-driver-card__stat">
+                <span>Wins</span>
+                <strong>{wins}</strong>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
