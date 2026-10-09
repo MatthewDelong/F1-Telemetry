@@ -8,17 +8,17 @@ import { darkenColor } from "../../utils/colorUtils";
 const FALLBACK_PHOTO = "/images/2024/drivers/default_driver.png";
 
 const TEAM_LOGOS = {
-  mercedes: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/mercedes/2026mercedeslogo.webp",
-  ferrari: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/ferrari/2026ferrarilogo.webp",
-  red_bull: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/redbullracing/2026redbullracinglogo.webp",
-  rb: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/racingbulls/2026racingbullslogo.webp",
-  alpine: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/alpine/2026alpinelogo.webp",
-  haas: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/haasf1team/2026haasf1teamlogo.webp",
-  audi: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/audi/2026audilogo.webp",
-  williams: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/williams/2026williamslogo.webp",
-  aston_martin: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/astonmartin/2026astonmartinlogo.webp",
-  cadillac: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/cadillac/2026cadillaclogo.webp",
-  mclaren: "https://media.formula1.com/image/upload/v1740000001/common/f1/2026/mclaren/2026mclarenlogo.webp",
+  mercedes: "/images/2026/logos/mercedes.webp",
+  ferrari: "/images/2026/logos/ferrari.webp",
+  red_bull: "/images/2026/logos/red_bull.webp",
+  rb: "/images/2026/logos/rb.webp",
+  alpine: "/images/2026/logos/alpine.webp",
+  haas: "/images/2026/logos/haas.webp",
+  audi: "/images/2026/logos/audi.webp",
+  williams: "/images/2026/logos/williams.webp",
+  aston_martin: "/images/2026/logos/aston_martin.webp",
+  cadillac: "/images/2026/logos/cadillac.webp",
+  mclaren: "/images/2026/logos/mclaren.webp",
 };
 
 /**
