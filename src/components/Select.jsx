@@ -83,7 +83,13 @@ const CustomSelectContainer = ({ children, ...props }) => {
       <ReactSelect
         {...props}
         components={customComponents}
-        styles={customStyles} 
+        styles={{
+            ...customStyles,
+            menuPortal: base => ({ ...base, zIndex: 9999 })
+        }} 
+        menuPortalTarget={document.body}
+        maxMenuHeight={300}
+        menuPosition="fixed"
       />
     );
 };

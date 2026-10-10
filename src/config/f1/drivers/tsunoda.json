@@ -8,9 +8,9 @@
     "totalPoles": 0,
     "totalDNFs": 41,
     "totalRaces": 115,
-    "winRate": 0.0,
-    "podiumRate": 0.0,
-    "poleRate": 0.0,
+    "winRate": 0,
+    "podiumRate": 0,
+    "poleRate": 0,
     "dnfRate": 0.3474576271186441,
     "seasonWins": {
         "2021": 0,
@@ -240,10 +240,10 @@
             "United States Grand Prix": "1:38.803"
         },
         "2026": {
+            "Spain Grand Prix": "1:38.396",
             "Netherlands Grand Prix": "1:16.639",
             "Italy Grand Prix": "1:26.320",
-            "Spain Grand Prix (Madrid)": "1:38.396",
-            "Spain Grand Prix": "1:38.396"
+            "Spain Grand Prix (Madrid)": "1:38.396"
         }
     },
     "finalStandings": {
@@ -649,6 +649,9 @@
         "2026": {
             "year": "2026",
             "pos": {
+                "Spain Grand Prix": {
+                    "points": 1
+                },
                 "Netherlands Grand Prix": {
                     "points": 1
                 },
@@ -656,9 +659,6 @@
                     "points": 1
                 },
                 "Spain Grand Prix (Madrid)": {
-                    "points": 1
-                },
-                "Spain Grand Prix": {
                     "points": 1
                 }
             }
@@ -801,10 +801,10 @@
         },
         "2026": {
             "positions": {
+                "Spain Grand Prix": "14",
                 "Netherlands Grand Prix": "11",
                 "Italy Grand Prix": "10",
-                "Spain Grand Prix (Madrid)": "14",
-                "Spain Grand Prix": "14"
+                "Spain Grand Prix (Madrid)": "14"
             }
         }
     },
@@ -945,10 +945,10 @@
         },
         "2026": {
             "positions": {
+                "Spain Grand Prix": "15",
                 "Netherlands Grand Prix": "12",
                 "Italy Grand Prix": "15",
-                "Spain Grand Prix (Madrid)": "15",
-                "Spain Grand Prix": "15"
+                "Spain Grand Prix (Madrid)": "15"
             }
         }
     },
@@ -1078,10 +1078,10 @@
             "United States Grand Prix": 6
         },
         "2026": {
+            "Spain Grand Prix": 1,
             "Netherlands Grand Prix": 1,
             "Italy Grand Prix": 5,
-            "Spain Grand Prix (Madrid)": 1,
-            "Spain Grand Prix": 1
+            "Spain Grand Prix (Madrid)": 1
         }
     },
     "driverQualifyingTimes": {
@@ -1677,6 +1677,11 @@
         },
         "2026": {
             "QualiTimes": {
+                "Spain Grand Prix": [
+                    "1:34.311",
+                    "1:34.084",
+                    "N/A"
+                ],
                 "Netherlands Grand Prix": [
                     "1:13.085",
                     "1:12.627",
@@ -1688,11 +1693,6 @@
                     "N/A"
                 ],
                 "Spain Grand Prix (Madrid)": [
-                    "1:34.311",
-                    "1:34.084",
-                    "N/A"
-                ],
-                "Spain Grand Prix": [
                     "1:34.311",
                     "1:34.084",
                     "N/A"
@@ -1718,28 +1718,28 @@
     },
     "rates": {
         "wins": {
-            "2021": 0.0,
-            "2022": 0.0,
-            "2023": 0.0,
-            "2024": 0.0,
-            "2025": 0.0,
-            "2026": 0.0
+            "2021": 0,
+            "2022": 0,
+            "2023": 0,
+            "2024": 0,
+            "2025": 0,
+            "2026": 0
         },
         "podiums": {
-            "2021": 0.0,
-            "2022": 0.0,
-            "2023": 0.0,
-            "2024": 0.0,
-            "2025": 0.0,
-            "2026": 0.0
+            "2021": 0,
+            "2022": 0,
+            "2023": 0,
+            "2024": 0,
+            "2025": 0,
+            "2026": 0
         },
         "poles": {
-            "2021": 0.0,
-            "2022": 0.0,
-            "2023": 0.0,
-            "2024": 0.0,
-            "2025": 0.0,
-            "2026": 0.0
+            "2021": 0,
+            "2022": 0,
+            "2023": 0,
+            "2024": 0,
+            "2025": 0,
+            "2026": 0
         },
         "DNFs": {
             "2021": 0.18181818181818182,
@@ -1747,20 +1747,20 @@
             "2023": 0.36363636363636365,
             "2024": 0.625,
             "2025": 0.3333333333333333,
-            "2026": 0.0
+            "2026": 0
         }
     },
     "consistency": {
         "mean": {
-            "wins": 0.0,
-            "podiums": 0.0,
-            "poles": 0.0,
+            "wins": 0,
+            "podiums": 0,
+            "poles": 0,
             "points": 20.833333333333332
         },
         "std": {
-            "wins": 0.0,
-            "podiums": 0.0,
-            "poles": 0.0,
+            "wins": 0,
+            "podiums": 0,
+            "poles": 0,
             "points": 11.852097798374018
         },
         "cv": {

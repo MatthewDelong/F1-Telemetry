@@ -188,6 +188,7 @@
             "Miami Grand Prix": "1:31.949",
             "Canada Grand Prix": "1:15.456",
             "Monaco Grand Prix": "1:15.816",
+            "Spain Grand Prix": "1:20.835",
             "Austria Grand Prix": "1:10.595",
             "Great Britain Grand Prix": "1:32.917",
             "Belgium Grand Prix": "1:49.562",
@@ -195,10 +196,8 @@
             "Netherlands Grand Prix": "1:14.303",
             "Italy Grand Prix": "1:25.125",
             "Spain Grand Prix (Madrid)": "1:37.226",
-            "Chinese Grand Prix": -1,
             "Azerbaijan Grand Prix": "1:46.602",
-            "Bahrain Grand Prix in Malaysia": "1:39.485",
-            "Spain Grand Prix": "1:20.835"
+            "Bahrain Grand Prix (Malaysia)": "1:39.485"
         }
     },
     "finalStandings": {
@@ -470,6 +469,9 @@
                 "Monaco Grand Prix": {
                     "points": 128
                 },
+                "Spain Grand Prix": {
+                    "points": 128
+                },
                 "Austria Grand Prix": {
                     "points": 128
                 },
@@ -491,16 +493,10 @@
                 "Spain Grand Prix (Madrid)": {
                     "points": 128
                 },
-                "Chinese Grand Prix": {
-                    "points": 128
-                },
                 "Azerbaijan Grand Prix": {
                     "points": 128
                 },
-                "Bahrain Grand Prix in Malaysia": {
-                    "points": 128
-                },
-                "Spain Grand Prix": {
+                "Bahrain Grand Prix (Malaysia)": {
                     "points": 128
                 }
             }
@@ -597,6 +593,7 @@
                 "Miami Grand Prix": "3",
                 "Canada Grand Prix": "11",
                 "Monaco Grand Prix": "4",
+                "Spain Grand Prix": "5",
                 "Austria Grand Prix": "4",
                 "Great Britain Grand Prix": "11",
                 "Belgium Grand Prix": "5",
@@ -604,10 +601,8 @@
                 "Netherlands Grand Prix": "6",
                 "Italy Grand Prix": "5",
                 "Spain Grand Prix (Madrid)": "8",
-                "Chinese Grand Prix": "19",
                 "Azerbaijan Grand Prix": "13",
-                "Bahrain Grand Prix in Malaysia": "6",
-                "Spain Grand Prix": "5"
+                "Bahrain Grand Prix (Malaysia)": "6"
             }
         }
     },
@@ -702,6 +697,7 @@
                 "Miami Grand Prix": "7",
                 "Canada Grand Prix": "4",
                 "Monaco Grand Prix": "7",
+                "Spain Grand Prix": "7",
                 "Austria Grand Prix": "7",
                 "Great Britain Grand Prix": "8",
                 "Belgium Grand Prix": "6",
@@ -709,10 +705,8 @@
                 "Netherlands Grand Prix": "4",
                 "Italy Grand Prix": "6",
                 "Spain Grand Prix (Madrid)": "7",
-                "Chinese Grand Prix": "5",
                 "Azerbaijan Grand Prix": "3",
-                "Bahrain Grand Prix in Malaysia": "6",
-                "Spain Grand Prix": "7"
+                "Bahrain Grand Prix (Malaysia)": "6"
             }
         }
     },
@@ -800,6 +794,7 @@
             "Miami Grand Prix": 4,
             "Canada Grand Prix": -7,
             "Monaco Grand Prix": 3,
+            "Spain Grand Prix": 2,
             "Austria Grand Prix": 3,
             "Great Britain Grand Prix": -3,
             "Belgium Grand Prix": 1,
@@ -807,10 +802,8 @@
             "Netherlands Grand Prix": -2,
             "Italy Grand Prix": 1,
             "Spain Grand Prix (Madrid)": -1,
-            "Chinese Grand Prix": -14,
             "Azerbaijan Grand Prix": -10,
-            "Bahrain Grand Prix in Malaysia": 0,
-            "Spain Grand Prix": 2
+            "Bahrain Grand Prix (Malaysia)": 0
         }
     },
     "driverQualifyingTimes": {
@@ -1208,6 +1201,11 @@
                     "1:12.983",
                     "1:12.624"
                 ],
+                "Spain Grand Prix": [
+                    "1:16.138",
+                    "1:15.518",
+                    "1:15.090"
+                ],
                 "Austria Grand Prix": [
                     "1:07.487",
                     "1:06.890",
@@ -1243,25 +1241,15 @@
                     "1:33.204",
                     "1:32.294"
                 ],
-                "Chinese Grand Prix": [
-                    "1:33.590",
-                    "1:33.130",
-                    "1:32.550"
-                ],
                 "Azerbaijan Grand Prix": [
                     "1:45.014",
                     "1:43.814",
                     "1:43.364"
                 ],
-                "Bahrain Grand Prix in Malaysia": [
+                "Bahrain Grand Prix (Malaysia)": [
                     "1:36.852",
                     "1:36.020",
                     "1:35.762"
-                ],
-                "Spain Grand Prix": [
-                    "1:16.138",
-                    "1:15.518",
-                    "1:15.090"
                 ]
             }
         }
@@ -1280,10 +1268,10 @@
     },
     "rates": {
         "wins": {
-            "2023": 0.0,
+            "2023": 0,
             "2024": 0.08333333333333333,
             "2025": 0.2916666666666667,
-            "2026": 0.0
+            "2026": 0
         },
         "podiums": {
             "2023": 0.09090909090909091,
@@ -1292,22 +1280,22 @@
             "2026": 0.11764705882352941
         },
         "poles": {
-            "2023": 0.0,
-            "2024": 0.0,
+            "2023": 0,
+            "2024": 0,
             "2025": 0.25,
-            "2026": 0.0
+            "2026": 0
         },
         "DNFs": {
             "2023": 0.36363636363636365,
-            "2024": 0.0,
+            "2024": 0,
             "2025": 0.041666666666666664,
-            "2026": 0.0
+            "2026": 0
         }
     },
     "consistency": {
         "mean": {
             "wins": 2.25,
-            "podiums": 7.0,
+            "podiums": 7,
             "poles": 1.5,
             "points": 231.75
         },
