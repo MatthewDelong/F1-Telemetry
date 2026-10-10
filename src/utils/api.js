@@ -618,53 +618,7 @@ const fetchRaceResults = async (
     console.warn("[Cache] Failed to read race results from localStorage:", e);
   }
 
-  const isCurrentYear = String(selectedYear) === "2026";
-  
-  if (!isCurrentYear) {
-    // Skip trying to fetch results.json from our server for historical races
-    // as it doesn't exist and causes a 15-second 404 timeout on every load.
-    console.log(`[API] Historical race (${selectedYear}), skipping local results.json and going straight to Jolpica...`);
-    let raceData = null;
-    try {
-      const jolpiUrl = `${JOLPICA_BASE_URL}ergast/f1/${selectedYear}/${raceId}/results.json`;
-      const jolpiResp = await fetch(jolpiUrl);
-      if (jolpiResp.ok) {
-        const jolpiData = await jolpiResp.json();
-        const results = jolpiData?.MRData?.RaceTable?.Races?.[0]?.Results;
-        if (results && results.length > 0) {
-          raceData = { Results: results };
-        }
-      }
-    } catch (e) {
-      console.warn("[API] Jolpica fallback failed", e);
-    }
-    
-    if (!raceData || !raceData.Results) {
-      return [];
-    }
-    
-    const results = raceData.Results.map((result) => {
-      const drv = result.Driver || {};
-      const con = result.Constructor || {};
-      return {
-        driver: {
-          ...drv,
-          nationality: drv?.nationality || drv?.country_code || drv?.country || "",
-        },
-        fastestLap: result.FastestLap || result.fastestLap,
-        bestLapTime: (result.FastestLap || result.fastestLap)?.Time?.time || result.bestLapTime || "—",
-        grid: result.grid,
-        position: result.position,
-        time: (result.Time || result.time)?.time || result.time || "N/A",
-        status: result.status,
-        number: result.number,
-        constructor: con,
-      };
-    });
-    return results;
-  }
-
-  const resultsUrl = `${BASE_F1_URL}2026/results.json`;
+  const resultsUrl = `${BASE_F1_URL}races/${selectedYear}/results.json`;
   try {
     const rawData = await fetchWithPersistentCache(resultsUrl);
     if (rawData && Array.isArray(rawData)) {
@@ -1160,8 +1114,7 @@ export const fetchRaceResultsByCircuit = async (
   raceName = "",
 ) => {
   try {
-    const isCurrentYear = String(year) === "2026";
-    const url = `${BASE_F1_URL}${isCurrentYear ? "2026/" : ""}results.json`;
+    const url = `${BASE_F1_URL}races/${year}/results.json`;
     const data = await fetchWithPersistentCache(url);
     if (!data || !Array.isArray(data)) return [];
 
@@ -1220,8 +1173,7 @@ export const fetchQualifyingResultsByCircuit = async (
   raceName = "",
 ) => {
   try {
-    const isCurrentYear = String(year) === "2026";
-    const url = `${BASE_F1_URL}${isCurrentYear ? "2026/" : ""}qualifying.json`;
+    const url = `${BASE_F1_URL}races/${year}/qualifying.json`;
     const data = await fetchWithPersistentCache(url);
     if (!data || !Array.isArray(data)) return [];
 
@@ -1279,8 +1231,7 @@ export const fetchSprintResultsByCircuit = async (
   raceName = "",
 ) => {
   try {
-    const isCurrentYear = String(year) === "2026";
-    const url = `${BASE_F1_URL}${isCurrentYear ? "2026/" : ""}sprint.json`;
+    const url = `${BASE_F1_URL}races/${year}/sprint.json`;
     const data = await fetchWithPersistentCache(url);
     if (!data || !Array.isArray(data)) return [];
 
