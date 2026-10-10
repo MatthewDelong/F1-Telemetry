@@ -111,9 +111,27 @@ export const TeammatesComparison = () => {
     try {
       const response = await axios.get(`${BASE_F1_URL}constructors/${year}/${selectedTeam}.json?refresh=true&v=3`);
       const fetchedDrivers = response.data;
+      const defaultPriority = {
+        "max_verstappen": 100,
+        "hadjar": 99,
+        "arvid_lindblad": 100,
+        "lawson": 99,
+        "tsunoda": 98
+      };
+
       const sortedDrivers = [...fetchedDrivers].sort((a, b) => {
+        const prioA = defaultPriority[a.driverId] || 0;
+        const prioB = defaultPriority[b.driverId] || 0;
+        
+        if (prioA !== prioB) {
+          return prioB - prioA; // Higher priority first
+        }
+
         if (a.permanentNumber && !b.permanentNumber) return -1;
         if (!a.permanentNumber && b.permanentNumber) return 1;
+        if (a.permanentNumber && b.permanentNumber) {
+          return parseInt(a.permanentNumber) - parseInt(b.permanentNumber);
+        }
         return 0;
       });
       setDrivers(sortedDrivers);
@@ -446,6 +464,15 @@ export const TeammatesComparison = () => {
 
   const memoizedHeadToHeadData = useMemo(() => headToHeadData, [headToHeadData]);
 
+  const formatTeamName = (teamId) => {
+    if (!teamId) return '';
+    if (teamId.toLowerCase() === 'rb') return 'Racing Bulls';
+    const teamObj = teamsMemo.find(t => t.constructorId === teamId);
+    if (teamObj && teamObj.name) {
+      return teamObj.name.replace(/ F1 Team$/i, '').trim();
+    }
+    return teamId.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+  };
 
 const splitDriverName = (driverName) => {
   if (!driverName) return ['', ''];
@@ -554,7 +581,7 @@ const GridRow = (label, driver1, driver2, title) => {
 
   const formattedTeamOptions = teamOptions.map(team => ({
     value: team.value,
-    label: team.label.replace('F1 Team', '').trim(),
+    label: team.value.toLowerCase() === 'rb' ? 'Racing Bulls' : team.label.replace(/ F1 Team$/i, '').trim(),
   }));
 
   return (
@@ -582,7 +609,7 @@ const GridRow = (label, driver1, driver2, title) => {
           />
           <ReactSelectComponent
             placeholder="Select Team"
-            options={teamOptions}
+            options={formattedTeamOptions}
             onChange={handleTeamChange}
             value={formattedTeamOptions.find(option => option.value === team)}
             disabled={!year}
@@ -638,7 +665,7 @@ const GridRow = (label, driver1, driver2, title) => {
           <div 
               className="text-center leading-none mt-48 mb-48 w-1/2 m-auto"
             >
-            <p className="font-display text-[2.4rem] gradient-text-light">{team}</p>
+            <p className="font-display text-[2.4rem] gradient-text-light">{formatTeamName(team)}</p>
             <p className="text-sm tracking-xs gradient-text-light">HEAD-TO-HEAD</p>
             <div className="divider-glow-dark mt-8" />
           </div>
