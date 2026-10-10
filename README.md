@@ -56,7 +56,6 @@ F1-Telemetry is an interactive web application built for motorsport fans who wan
 | **Driver Comparisons**    | Head-to-head telemetry overlays for any two drivers in a session                                         |
 | **3D Telemetry Viewer**   | Follow drivers around the circuit in a synchronised 3D scene with multiple broadcast-style camera angles |
 | **Procedural Tracks**     | Automatically generated, accurate 3D track geometries from GPS data with dynamic kerbs and environment   |
-| **AR Car Viewer**         | High-fidelity 3D car models with Draco / Meshopt compression (90 MB → 23 MB)                             |
 | **Interactive Calendars** | Up-to-date 2026 schedule and 2027 preview schedule, linking seamlessly to circuit telemetry              |
 | **Future Preview Mode**   | Graceful fallback rendering 3D circuits and metadata for future races when telemetry is unavailable      |
 | **Live Dashboard**        | A fully integrated, real-time live telemetry dashboard (formerly Formula1-Live) with race control feeds  |
@@ -146,19 +145,6 @@ F1-Telemetry features dynamic, procedural 3D tracks powered by `Three.js` and `@
 - **Component Integration**:
   - `ProceduralTrackBackground`: Rotates 3D tracks seamlessly as ambient backdrop headers.
   - `MiniTrackViewer` & `TrackModel`: Provide interactive OrbitControls and modal 3D track visualization.
-
-</details>
-
-<details>
-<summary><strong>AR Model Compression</strong></summary>
-
-Optimize `.glb` files added to `public/ArFiles/glbs/` for web delivery:
-
-```powershell
-npm run compress-models
-```
-
-Script: `scripts/robust-compress-glbs.ps1` (requires PowerShell & Node.js).
 
 </details>
 
