@@ -149,6 +149,15 @@ export const TeamCards = ({ selectedYear }) => {
                     >
                       {constructorTitlesCount}
                     </div>
+                    {constructorTitlesCount > 0 && (
+                      <div className="flex flex-wrap justify-end gap-x-2 gap-y-1 mt-4 max-w-[140px] ml-auto">
+                        {team.constructorTitles.map((year) => (
+                          <span key={year} className="text-[9px] font-mono opacity-40 leading-none">
+                            {year}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   <div>
                     <div className="text-[10px] sm:text-[11px] font-bold uppercase font-display leading-[1.1] opacity-60">
@@ -162,6 +171,15 @@ export const TeamCards = ({ selectedYear }) => {
                     >
                       {driversChampionshipsCount}
                     </div>
+                    {driversChampionshipsCount > 0 && (
+                      <div className="flex flex-wrap justify-end gap-x-2 gap-y-1 mt-4 max-w-[140px] ml-auto">
+                        {team.driversChampionships.map((year) => (
+                          <span key={year} className="text-[9px] font-mono opacity-40 leading-none">
+                            {year}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
