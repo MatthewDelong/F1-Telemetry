@@ -35,7 +35,7 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen flex flex-col md:justify-center px-4 md:px-16 bg-gradient-to-b from-neutral-950/30 to-neutral-950/5 relative snap-start pt-32 pb-16 z-0 overflow-hidden"
+      className="min-h-screen block md:flex md:flex-col md:justify-center px-4 md:px-16 bg-gradient-to-b from-neutral-950/30 to-neutral-950/5 relative snap-start max-md:pt-[100px] md:pt-32 pb-16 z-0 overflow-hidden"
     >
       <div className="divider-glow-dark absolute top-0 left-0 w-full" />
       {/* Heading Animates in & Scrolls */}
@@ -46,7 +46,7 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <h2 className="heading-3 mb-8 gradient-text-white drop-shadow-xl text-3xl md:text-4xl">
+        <h2 className="heading-3 mb-8 gradient-text-white drop-shadow-xl text-3xl md:text-4xl leading-tight py-2">
           Driver and Teammate Comparisons
         </h2>
         <p className="text-neutral-300 text-sm md:text-base">
@@ -86,9 +86,9 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
       <motion.div className="comparison-container relative mt-4 md:mt-8" ref={sectionRef}>
         <div className="comparison-containers--computer z-10 relative max-w-[500px] md:max-w-[700px] mx-auto">
           <motion.div
-            className="flex flex-row items-center justify-center relative [perspective:2000px]"
+            className="flex flex-row items-center justify-center relative [perspective:2000px] max-md:scale-[0.8]"
             initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: layoutMobile ? 1.0 : 1 }}
+            whileInView={{ opacity: 1, scale: layoutMobile ? 0.85 : 1 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: "easeOut" }}
             style={{ y: computerImages }}

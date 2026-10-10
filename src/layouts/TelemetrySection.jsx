@@ -41,8 +41,8 @@ const TelemetrySection = ({ layoutMobile, onClick, container }) => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             style={{ y: yTextContent }}
           >
-            <div className="w-full flex flex-col gap-12 mb-12">
-              <div className="p-24 rounded-[1.6rem] bg-black/40 backdrop-blur-md border border-white/10 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] transition-all duration-300 relative group overflow-hidden text-left">
+            <div className="w-full flex flex-col gap-4 md:gap-12 mb-12">
+              <div className="p-6 md:p-12 lg:p-24 rounded-[1.6rem] bg-black/40 backdrop-blur-md border border-white/10 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] transition-all duration-300 relative group overflow-hidden text-left">
                 <div
                   className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-20 rounded-[1.6rem]"
                   style={{
@@ -59,7 +59,7 @@ const TelemetrySection = ({ layoutMobile, onClick, container }) => {
                 </div>
               </div>
 
-              <div className="p-24 rounded-[1.6rem] bg-black/40 backdrop-blur-md border border-white/10 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] transition-all duration-300 relative group overflow-hidden text-left">
+              <div className="p-6 md:p-12 lg:p-24 rounded-[1.6rem] bg-black/40 backdrop-blur-md border border-white/10 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] transition-all duration-300 relative group overflow-hidden text-left">
                 <div
                   className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-20 rounded-[1.6rem]"
                   style={{
@@ -76,7 +76,7 @@ const TelemetrySection = ({ layoutMobile, onClick, container }) => {
                 </div>
               </div>
 
-              <div className="p-24 rounded-[1.6rem] bg-black/40 backdrop-blur-md border border-white/10 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] transition-all duration-300 relative group overflow-hidden text-left">
+              <div className="p-6 md:p-12 lg:p-24 rounded-[1.6rem] bg-black/40 backdrop-blur-md border border-white/10 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] transition-all duration-300 relative group overflow-hidden text-left">
                 <div
                   className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-20 rounded-[1.6rem]"
                   style={{
