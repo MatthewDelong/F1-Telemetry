@@ -560,31 +560,42 @@ const GridRow = (label, driver1, driver2, title) => {
   return (
     <div className='global-container min-h-[40rem] pb-64'>
 
-      <div className="flex items-center justify-center gap-8 relative z-50">
-        <ReactSelectComponent
-          placeholder="Select Year"
-          options={yearOptions}
-          onChange={handleYearChange}
-          value={yearOptions.find(option => option.value === year)}
-          disabled={!!year}
-          isSearchable={false}
-          className="w-[17rem]"
-        />
-        <ReactSelectComponent
-          placeholder="Select Team"
-          options={teamOptions}
-          onChange={handleTeamChange}
-          value={formattedTeamOptions.find(option => option.value === team)}
-          disabled={!year}
-          isSearchable={false}
-          className="w-[17rem]"
-        />
+      <div className="text-center mt-32 mb-40 md:mb-64 z-10 relative">
+        <h1 className="heading-1 gradient-text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.4)] tracking-tight mb-8">
+            Teammates Comparison
+        </h1>
+        <p className="text-lg md:text-[2rem] text-neutral-400 font-light tracking-wide drop-shadow-md max-w-3xl mx-auto px-16">
+            Analyze head-to-head performance across the season
+        </p>
+      </div>
+
+      <div className="bg-glow-dark border border-white/10 rounded-[2.4rem] p-16 shadow-[0_0_40px_rgba(0,0,0,0.5)] max-w-fit mx-auto relative z-50 mb-32 backdrop-blur-md">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-8 md:gap-16 z-[2] relative">
+          <ReactSelectComponent
+            placeholder="Select Year"
+            options={yearOptions}
+            onChange={handleYearChange}
+            value={yearOptions.find(option => option.value === year)}
+            disabled={!!year}
+            isSearchable={false}
+            className="w-[17rem]"
+          />
+          <ReactSelectComponent
+            placeholder="Select Team"
+            options={teamOptions}
+            onChange={handleTeamChange}
+            value={formattedTeamOptions.find(option => option.value === team)}
+            disabled={!year}
+            isSearchable={false}
+            className="w-[17rem]"
+          />
+        </div>
       </div>
 
       {showDriverSelectors && (
-      <div className="flex flex-col items-center justify-center gap-8">
-        <p className="pt-24 pb-16">This team had more than 2 drivers competing this season. Please select two drivers to compare.</p>
-        <div className="flex items-center gap-8 relative z-40">
+      <div className="flex flex-col items-center justify-center gap-8 mb-32 mt-32">
+        <p className="text-sm uppercase text-neutral-500 tracking-xs mb-16 font-semibold">Select Drivers</p>
+        <div className="bg-glow-dark border border-white/10 rounded-[2.4rem] p-16 shadow-[0_0_40px_rgba(0,0,0,0.5)] max-w-fit mx-auto relative z-40 backdrop-blur-md flex max-md:flex-col items-center gap-8 md:gap-16">
           <ReactSelectComponent
             placeholder="Select Driver 1"
             options={driverOptions.map(driver => ({ ...driver, isDisabled: driver.value === selectedDriver2 }))}
@@ -593,6 +604,9 @@ const GridRow = (label, driver1, driver2, title) => {
             isSearchable={false}
             className="w-fit min-w-[17rem]"
             />
+          <div className="hidden md:flex items-center justify-center bg-white/5 border border-white/10 rounded-full w-12 h-12">
+            <span className="text-neutral-500 text-xs uppercase font-bold tracking-wider">vs</span>
+          </div>
           <ReactSelectComponent
             placeholder="Select Driver 2"
             options={driverOptions.map(driver => ({ ...driver, isDisabled: driver.value === selectedDriver1 }))}

@@ -334,16 +334,13 @@ export function DriverComparison(){
     return(
         <div className='global-container px-8 pb-64'>
 
-            <h2 className='heading-2 text-center mb-40 text-neutral-400'>Drivers Comparison</h2>
-
-            <div className="flex flex-col items-center mb-40">
-                <p className="text-sm uppercase text-neutral-400 tracking-xs">popular comparisons</p>
-                <div className="flex flex-wrap gap-8 mt-16 justify-center">
-                    <Button buttonStyle="hollow" size="sm" onClick={() => navigate('/driver-comparison/max_verstappen/hamilton')}>Hamilton vs Verstappen</Button>
-                    <Button buttonStyle="hollow" size="sm" onClick={() => navigate('/driver-comparison/senna/prost')}>Senna vs Prost</Button>
-                    <Button buttonStyle="hollow" size="sm" onClick={() => navigate('/driver-comparison/vettel/alonso')}>Vettel vs Alonso</Button>
-                    <Button buttonStyle="hollow" size="sm" onClick={() => navigate('/driver-comparison/michael_schumacher/hamilton')}>Schumacher vs Hamilton</Button>
-                </div>
+            <div className="text-center mt-32 mb-40 md:mb-64 z-10 relative">
+                <h1 className="heading-1 gradient-text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.4)] tracking-tight mb-8">
+                    Drivers Comparison
+                </h1>
+                <p className="text-lg md:text-[2rem] text-neutral-400 font-light tracking-wide drop-shadow-md max-w-3xl mx-auto">
+                    Historical head-to-head performance
+                </p>
             </div>
 
             {error && (
@@ -352,23 +349,42 @@ export function DriverComparison(){
                 </div>
             )}
 
+            <div className="bg-glow-dark border border-white/10 rounded-[2.4rem] p-16 shadow-[0_0_40px_rgba(0,0,0,0.5)] max-w-fit mx-auto relative z-50 mb-32 backdrop-blur-md">
+                <div className="flex max-md:flex-col justify-center items-center gap-8 md:gap-16 z-[2] relative">
+                    <ReactSelectComponent
+                        placeholder="Select Driver 1"
+                        options={[...driversList].sort((a,b) => (a.name || '').localeCompare(b.name || '')).map(driver => ({ value: driver.id, label: driver.name }))}
+                        onChange={(selectedOption) => setInputDriver1(selectedOption)}
+                        value={inputdriver1}
+                    />
+                    <div className="hidden md:flex items-center justify-center bg-white/5 border border-white/10 rounded-full w-12 h-12">
+                        <span className="text-neutral-500 text-xs uppercase font-bold tracking-wider">vs</span>
+                    </div>
+                    <ReactSelectComponent
+                        placeholder="Select Driver 2"
+                        options={[...driversList].sort((a,b) => (a.name || '').localeCompare(b.name || '')).map(driver => ({ value: driver.id, label: driver.name }))}
+                        onChange={(selectedOption) => setInputDriver2(selectedOption)}
+                        value={inputdriver2}
+                    />
+                </div>
+            </div>
+
+            {(!driver1Data || !driver2Data) && !isLoading && (
+                <div className="flex flex-col items-center mb-64 mt-32">
+                    <p className="text-sm uppercase text-neutral-500 tracking-xs mb-16 font-semibold">popular comparisons</p>
+                    <div className="flex flex-wrap gap-8 justify-center max-w-[60rem]">
+                        <Button buttonStyle="hollow" size="sm" onClick={() => navigate('/driver-comparison/max_verstappen/hamilton')} className="hover:border-white/40 hover:text-white transition-colors">Hamilton vs Verstappen</Button>
+                        <Button buttonStyle="hollow" size="sm" onClick={() => navigate('/driver-comparison/senna/prost')} className="hover:border-white/40 hover:text-white transition-colors">Senna vs Prost</Button>
+                        <Button buttonStyle="hollow" size="sm" onClick={() => navigate('/driver-comparison/vettel/alonso')} className="hover:border-white/40 hover:text-white transition-colors">Vettel vs Alonso</Button>
+                        <Button buttonStyle="hollow" size="sm" onClick={() => navigate('/driver-comparison/michael_schumacher/hamilton')} className="hover:border-white/40 hover:text-white transition-colors">Schumacher vs Hamilton</Button>
+                    </div>
+                </div>
+            )}
+
             {isLoading ? (
                 <Loading className="mt-[20rem] mb-[20rem]" message={`Comparing ${driversList.find(q=> q.id === driver1)?.name || driver1} and ${driversList.find(q=> q.id === driver2)?.name || driver2}`} />
             ) : (
                 <div>
-                    <div className="flex max-md:flex-col justify-center items-center gap-16 z-[2] relative max-w-[45rem] m-auto">
-                        <ReactSelectComponent
-                            placeholder="Select Driver 1"
-                            options={[...driversList].sort((a,b) => (a.name || '').localeCompare(b.name || '')).map(driver => ({ value: driver.id, label: driver.name }))}
-                            onChange={(selectedOption) => setInputDriver1(selectedOption)}
-                        />
-                        <ReactSelectComponent
-                            placeholder="Select Driver 2"
-                            options={[...driversList].sort((a,b) => (a.name || '').localeCompare(b.name || '')).map(driver => ({ value: driver.id, label: driver.name }))}
-                            onChange={(selectedOption) => setInputDriver2(selectedOption)}
-                        />
-                    </div>
-
                     {driver1Data && driver2Data && (
                         <div>
 
