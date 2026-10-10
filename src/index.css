@@ -2,18 +2,20 @@
 @source "../node_modules/flowbite-react/dist/esm/**/*.js";
 
 @font-face {
-  font-family: 'Formula1';
-  src: url('/fonts/Formula1-Regular.woff2') format('woff2'),
-       url('/fonts/Formula1-Regular.woff') format('woff');
+  font-family: "Formula1";
+  src:
+    url("/fonts/Formula1-Regular.woff2") format("woff2"),
+    url("/fonts/Formula1-Regular.woff") format("woff");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Formula1';
-  src: url('/fonts/Formula1-Bold.woff2') format('woff2'),
-       url('/fonts/Formula1-Bold.woff') format('woff');
+  font-family: "Formula1";
+  src:
+    url("/fonts/Formula1-Bold.woff2") format("woff2"),
+    url("/fonts/Formula1-Bold.woff") format("woff");
   font-weight: bold;
   font-style: normal;
   font-display: swap;
@@ -305,11 +307,32 @@ button:hover {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.flag-red { background: rgba(220, 38, 38, 0.2); color: #fca5a5; border-color: rgba(220, 38, 38, 0.4); }
-.flag-yellow { background: rgba(234, 179, 8, 0.2); color: #fde047; border-color: rgba(234, 179, 8, 0.4); }
-.flag-green { background: rgba(34, 197, 94, 0.2); color: #86efac; border-color: rgba(34, 197, 94, 0.4); }
-.flag-sc { background: rgba(249, 115, 22, 0.2); color: #fdba74; border-color: rgba(249, 115, 22, 0.4); }
-.flag-chequered { background: repeating-conic-gradient(#000 0% 25%, #fff 0% 50%) 50% / 10px 10px; color: #fff; text-shadow: 0 1px 3px #000; border-color: #fff; }
+.flag-red {
+  background: rgba(220, 38, 38, 0.2);
+  color: #fca5a5;
+  border-color: rgba(220, 38, 38, 0.4);
+}
+.flag-yellow {
+  background: rgba(234, 179, 8, 0.2);
+  color: #fde047;
+  border-color: rgba(234, 179, 8, 0.4);
+}
+.flag-green {
+  background: rgba(34, 197, 94, 0.2);
+  color: #86efac;
+  border-color: rgba(34, 197, 94, 0.4);
+}
+.flag-sc {
+  background: rgba(249, 115, 22, 0.2);
+  color: #fdba74;
+  border-color: rgba(249, 115, 22, 0.4);
+}
+.flag-chequered {
+  background: repeating-conic-gradient(#000 0% 25%, #fff 0% 50%) 50% / 10px 10px;
+  color: #fff;
+  text-shadow: 0 1px 3px #000;
+  border-color: #fff;
+}
 
 /* dividers */
 .divider-glow {

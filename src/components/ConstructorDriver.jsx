@@ -5,6 +5,8 @@ import { useInView } from "framer-motion";
 
 import { wildCardDrivers } from "../utils/wildCards";
 import { nationalityToFlag } from "../utils/nationalityToFlag";
+import { darkenColor } from "../utils/colorUtils";
+import "./team-garages/TeamDriverCard.scss";
 
 export const ConstructorDriver = (props) => {
   const {
@@ -34,23 +36,66 @@ export const ConstructorDriver = (props) => {
     : `${"/images/" + year + "/F1A/carSideView/" + image + "-side.png"}`;
   const imageSrc = `${"/images/" + year + "/cars/" + car + ".png"}`;
 
+  const handleMove = (e) => {
+    if (!ref.current) return;
+    const card = ref.current;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const mx = (x / rect.width) * 100;
+    const my = (y / rect.height) * 100;
+    const rx = ((y / rect.height - 0.5) * -15).toFixed(2) + "deg";
+    const ry = ((x / rect.width - 0.5) * 15).toFixed(2) + "deg";
+    card.style.setProperty("--rx", rx);
+    card.style.setProperty("--ry", ry);
+    card.style.setProperty("--mx", `${mx}%`);
+    card.style.setProperty("--my", `${my}%`);
+  };
+
+  const handleLeave = () => {
+    if (!ref.current) return;
+    const card = ref.current;
+    card.style.setProperty("--rx", "0deg");
+    card.style.setProperty("--ry", "0deg");
+    card.style.setProperty("--mx", "50%");
+    card.style.setProperty("--my", "50%");
+  };
+
+  const teamColor = color || "#7500AD";
+
   return (
-    <div className="mb-24 w-full">
+    <div className="mb-24 w-full" style={{ perspective: "900px" }}>
       <div
         className={classNames(
           className,
-          "constructor-driver-card flex justify-center items-end relative bg-glow-dark border border-white/5 shadow-xl hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] rounded-[2rem] duration-300 transition-all hover:scale-[.98] cursor-pointer group px-8 pt-24 pb-8 overflow-hidden",
+          "team-driver-card flex justify-center items-end group px-8 pt-24 pb-8",
         )}
         ref={ref}
-        style={{ boxShadow: color ? `inset 0 -2px 15px ${color}22` : undefined }}
+        onPointerMove={handleMove}
+        onPointerLeave={handleLeave}
+        style={{
+          "--team": teamColor,
+          "--team-dark": darkenColor(teamColor, 45),
+          "--rx": "0deg",
+          "--ry": "0deg",
+          "--mx": "50%",
+          "--my": "50%",
+          height: "auto",
+          aspectRatio: "auto"
+        }}
       >
+        <div className="team-driver-card__livery" aria-hidden="true" />
+        <div className="team-driver-card__grid" aria-hidden="true" />
+        
+        {/* This gradient overlay matches the team-driver-card__info background to provide the correct opacity/darkening over the livery */}
         <div 
-          className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-25"
-          style={{ background: `radial-gradient(circle at 50% 50%, ${color || "rgba(255,255,255,0.5)"} 0%, rgba(0,0,0,0) 70%)` }}
+          className="absolute inset-0 pointer-events-none" 
+          style={{ zIndex: 2, background: 'linear-gradient(90deg, rgba(8, 8, 10, 0.95) 0%, rgba(8, 8, 10, 0.8) 45%, transparent 100%)', borderRadius: 'inherit' }} 
         />
+        
         <img
           alt=""
-          className="constructor-driver-card__person -mr-28 w-[12rem] z-[0] rounded-t-lg"
+          className="constructor-driver-card__person -mr-28 w-[12rem] z-10 relative rounded-t-lg"
           src={
             F2F1A
               ? `${"/images/" + year + "/" + championshipLevel + "/" + image + ".png"}`
@@ -87,9 +132,9 @@ export const ConstructorDriver = (props) => {
           <div className="flex justify-between items-end mb-6">
             <p className="heading-2">{lastName}</p>
             {(nationality || image) && (
-              <img 
-                src={nationalityToFlag(nationality || image)} 
-                alt="flag" 
+              <img
+                src={nationalityToFlag(nationality || image)}
+                alt="flag"
                 className="h-20 mb-4 rounded-sm shadow-sm opacity-80 hover:opacity-100 transition-opacity"
               />
             )}
