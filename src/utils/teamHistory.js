@@ -4,6 +4,7 @@ const currentYear = getCurrentYear();
 export const teamHistory = {
   alpine: {
     name: "alpine",
+    baseNationality: "british",
     color: "#FF87BC",
     constructorTitles: ["1995", "2005", "2006"],
     driversChampionships: ["1994", "1995", "2005", "2006"],
@@ -23,6 +24,7 @@ export const teamHistory = {
   },
   astonmartin: {
     name: "aston_martin",
+    baseNationality: "british",
     color: "#229971",
     constructorTitles: [],
     driversChampionships: [],
@@ -43,6 +45,7 @@ export const teamHistory = {
   },
   audi: {
     name: "audi",
+    baseNationality: "swiss",
     color: "#F50537",
     constructorTitles: [],
     driversChampionships: [],
@@ -62,6 +65,7 @@ export const teamHistory = {
   },
   cadillac: {
     name: "cadillac",
+    baseNationality: "american",
     color: "#909090",
     constructorTitles: [],
     driversChampionships: [],
@@ -74,6 +78,7 @@ export const teamHistory = {
   },
   ferrari: {
     name: "ferrari",
+    baseNationality: "italian",
     color: "#E8002D",
     constructorTitles: [
       "1961",
@@ -119,6 +124,7 @@ export const teamHistory = {
   },
   haas: {
     name: "haas",
+    baseNationality: "american",
     color: "#B6BABD",
     constructorTitles: [],
     driversChampionships: [],
@@ -131,6 +137,7 @@ export const teamHistory = {
   },
   mclaren: {
     name: "mclaren",
+    baseNationality: "british",
     color: "#FF8000",
     constructorTitles: [
       "1974",
@@ -168,6 +175,7 @@ export const teamHistory = {
   },
   mercedes: {
     name: "mercedes",
+    baseNationality: "british",
     color: "#27F4D2",
     constructorTitles: [
       "2014",
@@ -206,6 +214,7 @@ export const teamHistory = {
   },
   rb: {
     name: "rb",
+    baseNationality: "italian",
     color: "#6692FF",
     constructorTitles: [],
     driversChampionships: [],
@@ -223,6 +232,7 @@ export const teamHistory = {
   },
   redbull: {
     name: "red_bull",
+    baseNationality: "british",
     color: "#3671C6",
     constructorTitles: ["2010", "2011", "2012", "2013", "2022", "2023"],
     driversChampionships: [
@@ -248,6 +258,7 @@ export const teamHistory = {
   },
   williams: {
     name: "williams",
+    baseNationality: "british",
     color: "#64C4FF",
     constructorTitles: [
       "1980",
