@@ -157,28 +157,29 @@ export const TeamCards = ({ selectedYear }) => {
                     }}
                   />
                   <div className="flex flex-col">
-                    <div className="flex items-center gap-4">
-                      <h2
-                        className="text-3xl font-display uppercase tracking-widest text-white m-0"
-                        style={{ color: activeThemeColor }}
-                      >
-                        {team.name === "rb"
-                          ? "Racing Bulls"
-                          : team.name.replace(/_/g, " ")}
-                      </h2>
-                      {team.baseNationality && nationalityToFlag(team.baseNationality) && (
-                        <img 
-                          src={nationalityToFlag(team.baseNationality)} 
-                          alt={`${team.baseNationality} flag`}
-                          className="w-14 h-auto rounded-sm ml-2 shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
-                        />
+                    <h2
+                      className="text-3xl font-display uppercase tracking-widest text-white m-0"
+                      style={{ color: activeThemeColor }}
+                    >
+                      {team.name === "rb"
+                        ? "Racing Bulls"
+                        : team.name.replace(/_/g, " ")}
+                    </h2>
+                    <div className="flex items-center gap-2 mt-1">
+                      {team.teamExistedSince && (
+                        <span className="text-[10px] uppercase tracking-widest opacity-60">
+                          {team.teamExistedSince} – Present
+                        </span>
                       )}
+                      {team.baseNationality &&
+                        nationalityToFlag(team.baseNationality) && (
+                          <img
+                            src={nationalityToFlag(team.baseNationality)}
+                            alt={`${team.baseNationality} flag`}
+                            className="w-14 h-9 object-cover rounded-[4px] opacity-80"
+                          />
+                        )}
                     </div>
-                    {team.teamExistedSince && (
-                      <span className="text-[10px] uppercase tracking-widest opacity-60 mt-1">
-                        {team.teamExistedSince} – Present
-                      </span>
-                    )}
                   </div>
                 </div>
 
