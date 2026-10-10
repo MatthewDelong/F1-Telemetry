@@ -136,45 +136,58 @@ export const TeamCards = ({ selectedYear }) => {
                   </h2>
                 </div>
 
-                <div className="flex gap-32 text-right">
-                  <div>
-                    <div className="text-[10px] sm:text-[11px] font-bold uppercase font-display leading-[1.1] opacity-60">
+                <div className="flex flex-wrap sm:flex-nowrap gap-12 w-full sm:w-auto mt-16 sm:mt-0 text-left sm:text-right">
+                  {/* Constructor Titles Card */}
+                  <div className="flex-1 sm:flex-none relative overflow-hidden rounded-xl border border-white/5 p-12 min-w-[140px] bg-gradient-to-br from-[#1a1a1f] to-[#0f0f13] shadow-lg">
+                    <div 
+                      className="absolute inset-0 opacity-15 pointer-events-none transition-opacity duration-300" 
+                      style={{ background: `radial-gradient(circle at top right, ${activeThemeColor}, transparent 80%)` }} 
+                    />
+                    <div className="absolute top-0 left-0 w-full h-[3px]" style={{ backgroundColor: activeThemeColor, opacity: 0.6 }} />
+                    <div className="relative z-10 text-[10px] sm:text-[11px] font-bold uppercase font-display leading-[1.1] opacity-60">
                       Constructor
                       <br />
                       Titles
                     </div>
                     <div
-                      className="font-display font-bold leading-[1] text-[32px] sm:text-[42px] mt-8"
+                      className="relative z-10 font-display font-bold leading-[1] text-[32px] sm:text-[42px] mt-8"
                       style={{ color: activeThemeColor }}
                     >
                       {constructorTitlesCount}
                     </div>
                     {constructorTitlesCount > 0 && (
-                      <div className="flex flex-wrap justify-end gap-x-2 gap-y-1 mt-4 max-w-[140px] ml-auto">
+                      <div className="relative z-10 flex flex-wrap justify-start sm:justify-end gap-x-2 gap-y-1 mt-6 max-w-[140px] sm:ml-auto">
                         {team.constructorTitles.map((year) => (
-                          <span key={year} className="text-[9px] font-mono opacity-40 leading-none">
+                          <span key={year} className="text-[9px] font-mono opacity-50 leading-none">
                             {year}
                           </span>
                         ))}
                       </div>
                     )}
                   </div>
-                  <div>
-                    <div className="text-[10px] sm:text-[11px] font-bold uppercase font-display leading-[1.1] opacity-60">
+
+                  {/* Drivers' Championships Card */}
+                  <div className="flex-1 sm:flex-none relative overflow-hidden rounded-xl border border-white/5 p-12 min-w-[140px] bg-gradient-to-br from-[#1a1a1f] to-[#0f0f13] shadow-lg">
+                    <div 
+                      className="absolute inset-0 opacity-15 pointer-events-none transition-opacity duration-300" 
+                      style={{ background: `radial-gradient(circle at top right, ${activeThemeColor}, transparent 80%)` }} 
+                    />
+                    <div className="absolute top-0 left-0 w-full h-[3px]" style={{ backgroundColor: activeThemeColor, opacity: 0.6 }} />
+                    <div className="relative z-10 text-[10px] sm:text-[11px] font-bold uppercase font-display leading-[1.1] opacity-60">
                       Drivers'
                       <br />
                       Championships
                     </div>
                     <div
-                      className="font-display font-bold leading-[1] text-[32px] sm:text-[42px] mt-8"
+                      className="relative z-10 font-display font-bold leading-[1] text-[32px] sm:text-[42px] mt-8"
                       style={{ color: activeThemeColor }}
                     >
                       {driversChampionshipsCount}
                     </div>
                     {driversChampionshipsCount > 0 && (
-                      <div className="flex flex-wrap justify-end gap-x-2 gap-y-1 mt-4 max-w-[140px] ml-auto">
+                      <div className="relative z-10 flex flex-wrap justify-start sm:justify-end gap-x-2 gap-y-1 mt-6 max-w-[140px] sm:ml-auto">
                         {team.driversChampionships.map((year) => (
-                          <span key={year} className="text-[9px] font-mono opacity-40 leading-none">
+                          <span key={year} className="text-[9px] font-mono opacity-50 leading-none">
                             {year}
                           </span>
                         ))}
