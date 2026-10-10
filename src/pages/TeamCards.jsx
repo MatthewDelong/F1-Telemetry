@@ -128,12 +128,19 @@ export const TeamCards = ({ selectedYear }) => {
                       e.target.style.display = "none";
                     }}
                   />
-                  <h2
-                    className="text-3xl font-display uppercase tracking-widest text-white m-0"
-                    style={{ color: activeThemeColor }}
-                  >
-                    {team.name === "rb" ? "Racing Bulls" : team.name.replace(/_/g, " ")}
-                  </h2>
+                  <div className="flex flex-col">
+                    <h2
+                      className="text-3xl font-display uppercase tracking-widest text-white m-0"
+                      style={{ color: activeThemeColor }}
+                    >
+                      {team.name === "rb" ? "Racing Bulls" : team.name.replace(/_/g, " ")}
+                    </h2>
+                    {team.teamExistedSince && (
+                      <span className="text-[10px] uppercase tracking-widest opacity-60 mt-1">
+                        {team.teamExistedSince} – Present
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <div className="flex flex-wrap sm:flex-nowrap gap-12 w-full sm:w-auto mt-16 sm:mt-0 text-left sm:text-right">
