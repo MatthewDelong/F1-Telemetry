@@ -349,24 +349,24 @@ export function DriverComparison(){
                 </div>
             )}
 
-            <div className="bg-glow-dark border border-white/10 rounded-[2.4rem] p-16 shadow-[0_0_40px_rgba(0,0,0,0.5)] max-w-fit mx-auto relative z-50 mb-32 backdrop-blur-md">
-                <div className="flex max-md:flex-col justify-center items-center gap-8 md:gap-16 z-[2] relative">
-                    <ReactSelectComponent
-                        placeholder="Select Driver 1"
-                        options={[...driversList].sort((a,b) => (a.name || '').localeCompare(b.name || '')).map(driver => ({ value: driver.id, label: driver.name }))}
-                        onChange={(selectedOption) => setInputDriver1(selectedOption)}
-                        value={inputdriver1}
-                    />
-                    <div className="hidden md:flex items-center justify-center bg-white/5 border border-white/10 rounded-full w-12 h-12">
-                        <span className="text-neutral-500 text-xs uppercase font-bold tracking-wider">vs</span>
-                    </div>
-                    <ReactSelectComponent
-                        placeholder="Select Driver 2"
-                        options={[...driversList].sort((a,b) => (a.name || '').localeCompare(b.name || '')).map(driver => ({ value: driver.id, label: driver.name }))}
-                        onChange={(selectedOption) => setInputDriver2(selectedOption)}
-                        value={inputdriver2}
-                    />
+            <div className="flex max-md:flex-col justify-center items-center gap-8 md:gap-12 max-w-fit mx-auto relative z-50 mb-32">
+                <ReactSelectComponent
+                    placeholder="Select Driver 1"
+                    options={[...driversList].sort((a,b) => (a.name || '').localeCompare(b.name || '')).map(driver => ({ value: driver.id, label: driver.name }))}
+                    onChange={(selectedOption) => setInputDriver1(selectedOption)}
+                    value={inputdriver1}
+                    className="w-fit min-w-[18rem]"
+                />
+                <div className="hidden md:flex items-center justify-center bg-white/5 border border-white/10 rounded-full w-10 h-10">
+                    <span className="text-neutral-400 text-xs uppercase font-bold tracking-wider">vs</span>
                 </div>
+                <ReactSelectComponent
+                    placeholder="Select Driver 2"
+                    options={[...driversList].sort((a,b) => (a.name || '').localeCompare(b.name || '')).map(driver => ({ value: driver.id, label: driver.name }))}
+                    onChange={(selectedOption) => setInputDriver2(selectedOption)}
+                    value={inputdriver2}
+                    className="w-fit min-w-[18rem]"
+                />
             </div>
 
             {(!driver1Data || !driver2Data) && !isLoading && (

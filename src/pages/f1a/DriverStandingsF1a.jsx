@@ -207,7 +207,7 @@ export function DriverStandingsF1a({ selectedYear, championshipLevel }) {
 
   return (
     <div className="standard-scroll-container">
-      <div className="max-w-[45rem] m-auto mt-32  pb-64">
+      <div className="max-w-[45rem] m-auto mt-16 pb-64">
         {isLoading ? (
           <Loading
             className="mt-[20rem] mb-[20rem]"

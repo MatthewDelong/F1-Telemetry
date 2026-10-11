@@ -50,27 +50,18 @@ select option {
 
 .custom-select {
     width: 100%;
-
-    .placeholder {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        transition: all 0.2s ease;
-        pointer-events: none;
-        font-size: 1rem;
-        white-space: nowrap;
-    }
-
-    .custom-select-container {
-        &.has-value,
-        &:focus-within  {
-            margin-top: 1.4rem;
-            .placeholder {
-                top: -.2rem;
-            }
-        }
-    }
     
+    [class*="-singleValue"],
+    [class*="-placeholder"] {
+        position: relative !important;
+        top: auto !important;
+        transform: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        line-height: 1 !important;
+        margin: 0 !important;
+    }
+
     [type='text']:focus {
         box-shadow: none;
     }

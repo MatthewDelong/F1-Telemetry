@@ -596,33 +596,30 @@ const GridRow = (label, driver1, driver2, title) => {
         </p>
       </div>
 
-      <div className="bg-glow-dark border border-white/10 rounded-[2.4rem] p-16 shadow-[0_0_40px_rgba(0,0,0,0.5)] max-w-fit mx-auto relative z-50 mb-32 backdrop-blur-md">
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-8 md:gap-16 z-[2] relative">
-          <ReactSelectComponent
-            placeholder="Select Year"
-            options={yearOptions}
-            onChange={handleYearChange}
-            value={yearOptions.find(option => option.value === year)}
-            disabled={!!year}
-            isSearchable={false}
-            className="w-[17rem]"
-          />
-          <ReactSelectComponent
-            placeholder="Select Team"
-            options={formattedTeamOptions}
-            onChange={handleTeamChange}
-            value={formattedTeamOptions.find(option => option.value === team)}
-            disabled={!year}
-            isSearchable={false}
-            className="w-[17rem]"
-          />
-        </div>
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-10 max-w-fit mx-auto relative z-50 mb-32">
+        <ReactSelectComponent
+          placeholder="Select Year"
+          options={yearOptions}
+          onChange={handleYearChange}
+          value={yearOptions.find(option => String(option.value) === String(year)) || null}
+          isSearchable={false}
+          className="w-[15rem]"
+        />
+        <ReactSelectComponent
+          placeholder="Select Team"
+          options={formattedTeamOptions}
+          onChange={handleTeamChange}
+          value={formattedTeamOptions.find(option => option.value === team) || null}
+          isDisabled={!year}
+          isSearchable={false}
+          className="w-[19rem]"
+        />
       </div>
 
       {showDriverSelectors && (
-      <div className="flex flex-col items-center justify-center gap-8 mb-32 mt-32">
-        <p className="text-sm uppercase text-neutral-500 tracking-xs mb-16 font-semibold">Select Drivers</p>
-        <div className="bg-glow-dark border border-white/10 rounded-[2.4rem] p-16 shadow-[0_0_40px_rgba(0,0,0,0.5)] max-w-fit mx-auto relative z-40 backdrop-blur-md flex max-md:flex-col items-center gap-8 md:gap-16">
+      <div className="flex flex-col items-center justify-center gap-6 mb-32 mt-16">
+        <p className="text-[1.1rem] uppercase text-neutral-400 font-mono tracking-widest font-semibold">Select Drivers</p>
+        <div className="flex max-md:flex-col items-center justify-center gap-8 md:gap-12 max-w-fit mx-auto relative z-40">
           <ReactSelectComponent
             placeholder="Select Driver 1"
             options={driverOptions.map(driver => ({ ...driver, isDisabled: driver.value === selectedDriver2 }))}
@@ -631,8 +628,8 @@ const GridRow = (label, driver1, driver2, title) => {
             isSearchable={false}
             className="w-fit min-w-[17rem]"
             />
-          <div className="hidden md:flex items-center justify-center bg-white/5 border border-white/10 rounded-full w-12 h-12">
-            <span className="text-neutral-500 text-xs uppercase font-bold tracking-wider">vs</span>
+          <div className="hidden md:flex items-center justify-center bg-white/5 border border-white/10 rounded-full w-10 h-10">
+            <span className="text-neutral-400 text-xs uppercase font-bold tracking-wider">vs</span>
           </div>
           <ReactSelectComponent
             placeholder="Select Driver 2"

@@ -174,7 +174,10 @@ function MainContent({
       >
         {validPaths.includes(location) && (
           <ResultsSelector
-            className="mt-32 mb-32 relative z-[100]"
+            className={classNames(
+              "mt-32 relative z-[100]",
+              location === "/driver-standings" ? "mb-14" : "mb-24"
+            )}
             setSelectedYear={setSelectedYear}
             selectedYear={selectedYear}
             resultPage={resultPage}
@@ -183,7 +186,7 @@ function MainContent({
           />
         )}
         {(isF1a || isF2) && (
-          <div className="mt-32 mb-32 relative z-[100]">
+          <div className="mt-32 mb-16 relative z-[100]">
             {isF1a && <F1ALogo height={48} className="mx-auto mb-16" />}
             {isF2 && <F2Logo height={48} className="mx-auto mb-16" />}
             <ResultsSelector
