@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { fetchAllRaceResults, fetchDriverInfo, getSeriesBaseUrl } from "../../utils/apiF1a";
 import { calculateSeriesPoints2025 } from "../../utils/calculateSeriesPoints2025";
-import { ConstructorDriver, Loading } from "../../components";
+import { ConstructorDriver, Loading, TeamLegendFilter } from "../../components";
 import { PointsByRaceDropdown } from "../../components/PointsByRaceDropdown";
 import { buildRacePointsMaps } from "../../utils/pointsByRace";
 import teamColors from "../../utils/teamColors.json";
 
 export function DriverStandingsF2({ selectedYear, championshipLevel }) {
   const [standings, setStandings] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [selectedTeam, setSelectedTeam] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [driverRacePoints, setDriverRacePoints] = useState(new Map());
   const [racesMeta, setRacesMeta] = useState([]);
 
   useEffect(() => {
+    setSelectedTeam(null);
+    setIsLoading(true);
+  }, [selectedYear]);
+
+  useEffect(() => {
+    let isCancelled = false;
     const fetchData = async () => {
       setIsLoading(true);
       const allRaceResults = await fetchAllRaceResults(
@@ -173,14 +180,30 @@ export function DriverStandingsF2({ selectedYear, championshipLevel }) {
         }
       }
 
-      setStandings(driverStandings);
-      setIsLoading(false);
+      if (!isCancelled) {
+        setStandings(driverStandings);
+        setIsLoading(false);
+      }
     };
 
     fetchData();
+    return () => {
+      isCancelled = true;
+    };
   }, [selectedYear, championshipLevel]);
 
   // console.log("DriverStandingsF2", standings);
+
+  const standingsWithPosition = standings.map((item, idx) => ({
+    ...item,
+    position: idx + 1,
+  }));
+
+  const filteredStandings = selectedTeam
+    ? standingsWithPosition.filter(
+        (s) => s.constructorId?.toLowerCase() === selectedTeam.toLowerCase(),
+      )
+    : standingsWithPosition;
 
   return (
     <div className="standard-scroll-container">
@@ -191,28 +214,47 @@ export function DriverStandingsF2({ selectedYear, championshipLevel }) {
             message={`Loading ${selectedYear} Driver Standings`}
           />
         ) : (
-          <ul>
-            {standings.map((standing, index) => (
-              <li key={index} className="w-full">
-                <ConstructorDriver
-                  className="mt-32"
-                  image={standing.code}
-                  car={standing.constructorId}
-                  color={standing.constructorColor}
-                  points={standing.points}
-                  firstName={standing.givenName}
-                  lastName={standing.familyName}
-                  year={selectedYear}
-                  nationality={standing.nationality}
-                  showDivider
-                  index={index}
-                  showStanding
-                  championshipLevel={championshipLevel}
-                />
-                {/* <PointsByRaceDropdown ... /> */}
-              </li>
-            ))}
-          </ul>
+          <>
+            <TeamLegendFilter
+              standings={standingsWithPosition}
+              selectedTeam={selectedTeam}
+              onSelectTeam={setSelectedTeam}
+              year={selectedYear}
+            />
+            {selectedTeam && filteredStandings.length === 0 ? (
+              <div className="text-center py-32 text-neutral-400">
+                No drivers found for this team.
+              </div>
+            ) : standings.length === 0 ? (
+              <div className="text-center py-32 text-neutral-400">
+                No standings available for {selectedYear}.
+              </div>
+            ) : (
+              <ul>
+                {filteredStandings.map((standing, index) => (
+                  <li key={`${standing.code || standing.driverId}-${standing.position || index}`} className="w-full">
+                    <ConstructorDriver
+                      className="mt-32"
+                      image={standing.code}
+                      car={standing.constructorId}
+                      color={standing.constructorColor}
+                      points={standing.points}
+                      firstName={standing.givenName}
+                      lastName={standing.familyName}
+                      year={selectedYear}
+                      nationality={standing.nationality}
+                      showDivider
+                      index={index}
+                      position={standing.position}
+                      showStanding
+                      championshipLevel={championshipLevel}
+                    />
+                    {/* <PointsByRaceDropdown ... /> */}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
         )}
       </div>
     </div>

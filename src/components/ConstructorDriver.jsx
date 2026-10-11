@@ -23,6 +23,7 @@ export const ConstructorDriver = (props) => {
     championshipLevel,
     nationality,
     color,
+    position,
   } = props;
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
@@ -146,7 +147,7 @@ export const ConstructorDriver = (props) => {
             {showStanding && (
               <div className="flex items-end mb-4">
                 <div className="font-display text-24 leading-none -mb-4 mr-8 text-neutral-400">
-                  {index + 1}
+                  {position !== undefined ? position : index + 1}
                 </div>
                 <div className="h-1 w-full border-b-[1px] border-solid border-neutral-600 mr-8" />
               </div>
@@ -213,4 +214,5 @@ ConstructorDriver.propTypes = {
   type: PropTypes.string,
   showDivider: PropTypes.bool,
   color: PropTypes.string,
+  position: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
