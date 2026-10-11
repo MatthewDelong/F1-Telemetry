@@ -108,12 +108,17 @@ export const ConstructorDriver = (props) => {
         />
         {championshipLevel === "F1A" && isWildcardDriver && (
           <img
-            alt=""
-            className="absolute left-[4rem] md:left-[6.4rem] bottom-[-1rem] w-64"
+            alt="Wildcard Driver"
+            className="absolute left-[4rem] md:left-[6.4rem] bottom-2 w-64 z-20 drop-shadow-md"
             src="/images/wildcardicon.png"
           />
         )}
-        <div className="-mb-10 relative z-10">
+        <div
+          className={classNames(
+            "relative z-10",
+            championshipLevel === "F1A" ? "mb-4" : "-mb-10",
+          )}
+        >
           {/* position / firstname */}
           <div className="w-fit mb-4">
             {showStanding && (
