@@ -8,7 +8,7 @@ import { F1ALogo } from "../components/F1ALogo";
 import { F2Logo } from "../components/F2Logo";
 import HeroSection from "../layouts/HeroSection";
 import ComparisonsSection from "../layouts/ComparisonsSection";
-import ArSection from "../layouts/ArSection";
+import TeamGaragesSection from "../layouts/TeamGaragesSection";
 import TelemetrySection from "../layouts/TelemetrySection";
 import { getCurrentYear } from "../utils/currentYear";
 
@@ -98,7 +98,10 @@ export function FeaturesPage() {
         layoutMobile={layoutMobile}
         container={snapContainerRef}
       />
-      <ArSection layoutMobile={layoutMobile} container={snapContainerRef} />
+      <TeamGaragesSection
+        layoutMobile={layoutMobile}
+        container={snapContainerRef}
+      />
       <section
         className="snap-start bg-black"
         style={{ scrollSnapAlign: "start" }}

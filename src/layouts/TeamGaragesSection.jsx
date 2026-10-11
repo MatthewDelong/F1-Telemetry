@@ -3,7 +3,7 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button, LumaKeyVideo } from "../components";
 
-const ArSection = ({ layoutMobile, container }) => {
+const TeamGaragesSection = ({ layoutMobile, container }) => {
   const navigate = useNavigate();
   const sectionRef = useRef(null);
 
@@ -22,9 +22,28 @@ const ArSection = ({ layoutMobile, container }) => {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen snap-start block md:flex md:items-center md:justify-center px-16 bg-neutral-950 relative max-md:pt-[100px] md:pt-32 z-0 overflow-x-hidden"
+      className="min-h-screen h-screen snap-start flex items-center justify-center px-4 md:px-16 bg-neutral-950 relative pt-[64px] z-0 overflow-x-hidden"
     >
-      <div className="max-w-[1200px] w-full mx-auto px-16">
+      {/* Centered Horizontal Glassmorphic Feature Image with equal space top and bottom */}
+      <div className="absolute top-[64px] bottom-0 left-0 right-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden px-4 md:px-8">
+        <motion.div
+          className="relative w-full max-w-[1360px] h-[86%] max-h-[760px] rounded-[2.5rem] border border-white/10 bg-white/[0.02] backdrop-blur-md overflow-hidden shadow-[0_0_60px_rgba(0,0,0,0.8)]"
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          <div className="absolute inset-0 z-10 bg-gradient-to-t from-neutral-950/85 via-transparent to-neutral-950/50 pointer-events-none" />
+          <div className="absolute inset-0 z-10 bg-gradient-to-r from-neutral-950/60 via-transparent to-neutral-950/60 pointer-events-none" />
+          <img
+            src="/images/features-3.png"
+            alt="2026 Team Garages"
+            className="w-full h-full object-cover object-center opacity-35"
+          />
+        </motion.div>
+      </div>
+
+      <div className="max-w-[1200px] w-full mx-auto px-16 relative z-10">
         <h2 className="heading-2 text-center mb-16 uppercase">
           Explore the 2026 Team Garages
         </h2>
@@ -62,11 +81,6 @@ const ArSection = ({ layoutMobile, container }) => {
                 View 2026 Team Garages
               </Button>
             </div>
-            <img
-              className="w-[300px] absolute left-full top-32 z-[1] pointer-events-none opacity-50"
-              src={`${"/images/plusPatterns.png"}`}
-              alt=""
-            />
           </motion.div>
           <motion.div
             className="w-2/3 sm:w-1/2 z-10"
@@ -87,4 +101,4 @@ const ArSection = ({ layoutMobile, container }) => {
   );
 };
 
-export default ArSection;
+export default TeamGaragesSection;
