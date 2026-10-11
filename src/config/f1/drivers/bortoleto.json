@@ -2,7 +2,7 @@
     "driverId": "bortoleto",
     "driverCode": "BOR",
     "driverNumber": "5",
-    "lastUpdate": "2026-10-11T10:51:43.835672",
+    "lastUpdate": "2026-10-11T21:35:30.355782",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -11,7 +11,7 @@
     "winRate": 0.0,
     "podiumRate": 0.0,
     "poleRate": 0.0,
-    "dnfRate": 0.3,
+    "dnfRate": 0.22641509433962265,
     "seasonWins": {
         "2025": 0,
         "2026": 0
@@ -87,7 +87,6 @@
             "Miami Grand Prix": "1:33.500",
             "Canada Grand Prix": "1:16.221",
             "Monaco Grand Prix": "1:16.803",
-            "Spain Grand Prix": "1:21.446",
             "Austria Grand Prix": "1:11.866",
             "Great Britain Grand Prix": "1:33.650",
             "Belgium Grand Prix": "1:50.334",
@@ -96,7 +95,10 @@
             "Italy Grand Prix": "1:26.188",
             "Spain Grand Prix (Madrid)": "1:37.837",
             "Azerbaijan Grand Prix": "1:46.336",
-            "Bahrain Grand Prix (Malaysia)": "1:41.382"
+            "Bahrain Grand Prix (Malaysia)": "1:41.382",
+            "Chinese Grand Prix": -1,
+            "Bahrain Grand Prix in Malaysia": "1:41.382",
+            "Spain Grand Prix": "1:37.837"
         }
     },
     "finalStandings": {
@@ -107,7 +109,7 @@
         },
         "2026": {
             "year": "2026",
-            "position": "14",
+            "position": "15",
             "points": "10"
         }
     },
@@ -210,9 +212,6 @@
                 "Monaco Grand Prix": {
                     "points": 10
                 },
-                "Spain Grand Prix": {
-                    "points": 10
-                },
                 "Austria Grand Prix": {
                     "points": 10
                 },
@@ -238,6 +237,15 @@
                     "points": 10
                 },
                 "Bahrain Grand Prix (Malaysia)": {
+                    "points": 10
+                },
+                "Chinese Grand Prix": {
+                    "points": 10
+                },
+                "Bahrain Grand Prix in Malaysia": {
+                    "points": 10
+                },
+                "Spain Grand Prix": {
                     "points": 10
                 }
             }
@@ -280,7 +288,6 @@
                 "Miami Grand Prix": "12",
                 "Canada Grand Prix": "13",
                 "Monaco Grand Prix": "11",
-                "Spain Grand Prix": "11",
                 "Austria Grand Prix": "11",
                 "Great Britain Grand Prix": "8",
                 "Belgium Grand Prix": "8",
@@ -289,7 +296,10 @@
                 "Italy Grand Prix": "11",
                 "Spain Grand Prix (Madrid)": "13",
                 "Azerbaijan Grand Prix": "15",
-                "Bahrain Grand Prix (Malaysia)": "18"
+                "Bahrain Grand Prix (Malaysia)": "18",
+                "Chinese Grand Prix": "21",
+                "Bahrain Grand Prix in Malaysia": "18",
+                "Spain Grand Prix": "13"
             }
         }
     },
@@ -329,7 +339,6 @@
                 "Miami Grand Prix": "21",
                 "Canada Grand Prix": "13",
                 "Monaco Grand Prix": "16",
-                "Spain Grand Prix": "12",
                 "Austria Grand Prix": "12",
                 "Great Britain Grand Prix": "11",
                 "Belgium Grand Prix": "8",
@@ -338,7 +347,10 @@
                 "Italy Grand Prix": "10",
                 "Spain Grand Prix (Madrid)": "12",
                 "Azerbaijan Grand Prix": "17",
-                "Bahrain Grand Prix (Malaysia)": "10"
+                "Bahrain Grand Prix (Malaysia)": "10",
+                "Chinese Grand Prix": "16",
+                "Bahrain Grand Prix in Malaysia": "10",
+                "Spain Grand Prix": "12"
             }
         }
     },
@@ -375,7 +387,6 @@
             "Miami Grand Prix": 9,
             "Canada Grand Prix": 0,
             "Monaco Grand Prix": 5,
-            "Spain Grand Prix": 1,
             "Austria Grand Prix": 1,
             "Great Britain Grand Prix": 3,
             "Belgium Grand Prix": 0,
@@ -384,7 +395,10 @@
             "Italy Grand Prix": -1,
             "Spain Grand Prix (Madrid)": -1,
             "Azerbaijan Grand Prix": 2,
-            "Bahrain Grand Prix (Malaysia)": -8
+            "Bahrain Grand Prix (Malaysia)": -8,
+            "Chinese Grand Prix": -5,
+            "Bahrain Grand Prix in Malaysia": -8,
+            "Spain Grand Prix": -1
         }
     },
     "driverQualifyingTimes": {
@@ -539,11 +553,6 @@
                     "",
                     "N/A"
                 ],
-                "Spain Grand Prix": [
-                    "1:16.616",
-                    "1:16.001",
-                    "N/A"
-                ],
                 "Austria Grand Prix": [
                     "1:08.035",
                     "1:07.293",
@@ -588,17 +597,32 @@
                     "1:37.106",
                     "1:36.814",
                     "1:37.673"
+                ],
+                "Chinese Grand Prix": [
+                    "1:33.549",
+                    "1:33.965",
+                    "N/A"
+                ],
+                "Bahrain Grand Prix in Malaysia": [
+                    "1:37.106",
+                    "1:36.814",
+                    "1:37.673"
+                ],
+                "Spain Grand Prix": [
+                    "1:33.986",
+                    "1:33.388",
+                    "N/A"
                 ]
             }
         }
     },
     "avgRacePositions": {
         "2025": 14.25,
-        "2026": 12.375
+        "2026": 12.344827586206897
     },
     "avgQualiPositions": {
         "2025": 13.956521739130435,
-        "2026": 12.5
+        "2026": 11.931034482758621
     },
     "rates": {
         "wins": {
