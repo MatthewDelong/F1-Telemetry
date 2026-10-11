@@ -466,7 +466,10 @@ export const TeammatesComparison = () => {
 
   const formatTeamName = (teamId) => {
     if (!teamId) return '';
-    if (teamId.toLowerCase() === 'rb') return 'Racing Bulls';
+    const y = Number(year);
+    if (teamId.toLowerCase() === 'rb' || teamId.toLowerCase() === 'racing_bulls') {
+      return y === 2024 ? 'RB' : 'Racing Bulls';
+    }
     const teamObj = teamsMemo.find(t => t.constructorId === teamId);
     if (teamObj && teamObj.name) {
       return teamObj.name.replace(/ F1 Team$/i, '').trim();
@@ -581,7 +584,9 @@ const GridRow = (label, driver1, driver2, title) => {
 
   const formattedTeamOptions = teamOptions.map(team => ({
     value: team.value,
-    label: team.value.toLowerCase() === 'rb' ? 'Racing Bulls' : team.label.replace(/ F1 Team$/i, '').trim(),
+    label: (team.value.toLowerCase() === 'rb' || team.value.toLowerCase() === 'racing_bulls')
+      ? (Number(year) === 2024 ? 'RB' : 'Racing Bulls')
+      : team.label.replace(/ F1 Team$/i, '').trim(),
   }));
 
   return (

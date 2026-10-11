@@ -12,8 +12,8 @@ const TEAM_NAMES = {
   aston_martin: "Aston Martin",
   alpine: "Alpine",
   haas: "Haas",
-  rb: "RB",
-  racing_bulls: "RB",
+  rb: "Racing Bulls",
+  racing_bulls: "Racing Bulls",
   williams: "Williams",
   sauber: "Kick Sauber",
   audi: "Audi",
@@ -39,7 +39,19 @@ const TEAM_NAMES = {
   var: "Van Amersfoort",
 };
 
-const formatTeamName = (id, rawName) => {
+const formatTeamName = (id, rawName, year) => {
+  const y = year ? Number(year) : null;
+  if (id === "rb" || id === "racing_bulls") {
+    // 2024: Rebranded to RB; 2025–Present: Officially renamed to Racing Bulls
+    if (y === 2024) return "RB";
+    return "Racing Bulls";
+  }
+  if (id === "sauber") {
+    if (y && y >= 2026) return "Audi";
+    if (y && y >= 2024) return "Kick Sauber";
+    if (y && y >= 2019 && y <= 2023) return "Alfa Romeo";
+    return "Sauber";
+  }
   if (TEAM_NAMES[id]) return TEAM_NAMES[id];
   if (rawName && rawName.trim().length > 0) return rawName;
   return id
@@ -63,7 +75,7 @@ export const TeamLegendFilter = ({
       if (!id || id === "wildcard") return;
       const normalizedId = id.toLowerCase();
       if (!map.has(normalizedId)) {
-        const displayName = formatTeamName(normalizedId, s.constructorName);
+        const displayName = formatTeamName(normalizedId, s.constructorName, year);
         let color = s.constructorColor;
         if (!color || color === "#888888" || color === "#ffffff") {
           const yStr = year ? String(year) : "2026";
