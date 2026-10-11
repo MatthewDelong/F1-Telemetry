@@ -2,15 +2,15 @@
     "driverId": "bearman",
     "driverCode": "BEA",
     "driverNumber": "87",
-    "lastUpdate": "2026-10-05T18:29:10.590863",
+    "lastUpdate": "2026-10-11T10:51:43.835600",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
     "totalDNFs": 6,
     "totalRaces": 43,
-    "winRate": 0,
-    "podiumRate": 0,
-    "poleRate": 0,
+    "winRate": 0.0,
+    "podiumRate": 0.0,
+    "poleRate": 0.0,
     "dnfRate": 0.13953488372093023,
     "seasonWins": {
         "2024": 0,
@@ -119,7 +119,7 @@
         "2026": {
             "year": "2026",
             "position": "13",
-            "points": "20"
+            "points": "23"
         }
     },
     "posAfterRace": {
@@ -218,52 +218,52 @@
             "year": "2026",
             "pos": {
                 "Australia Grand Prix": {
-                    "points": 20
+                    "points": 23
                 },
                 "China Grand Prix": {
-                    "points": 20
+                    "points": 23
                 },
                 "Japan Grand Prix": {
-                    "points": 20
+                    "points": 23
                 },
                 "Miami Grand Prix": {
-                    "points": 20
+                    "points": 23
                 },
                 "Canada Grand Prix": {
-                    "points": 20
+                    "points": 23
                 },
                 "Monaco Grand Prix": {
-                    "points": 20
+                    "points": 23
                 },
                 "Spain Grand Prix": {
-                    "points": 20
+                    "points": 23
                 },
                 "Austria Grand Prix": {
-                    "points": 20
+                    "points": 23
                 },
                 "Great Britain Grand Prix": {
-                    "points": 20
+                    "points": 23
                 },
                 "Belgium Grand Prix": {
-                    "points": 20
+                    "points": 23
                 },
                 "Hungary Grand Prix": {
-                    "points": 20
+                    "points": 23
                 },
                 "Netherlands Grand Prix": {
-                    "points": 20
+                    "points": 23
                 },
                 "Italy Grand Prix": {
-                    "points": 20
+                    "points": 23
                 },
                 "Spain Grand Prix (Madrid)": {
-                    "points": 20
+                    "points": 23
                 },
                 "Azerbaijan Grand Prix": {
-                    "points": 20
+                    "points": 23
                 },
                 "Bahrain Grand Prix (Malaysia)": {
-                    "points": 20
+                    "points": 23
                 }
             }
         }
@@ -663,63 +663,63 @@
         "2026": 14.125
     },
     "avgQualiPositions": {
-        "2024": 13,
+        "2024": 13.0,
         "2025": 13.666666666666666,
         "2026": 14.875
     },
     "rates": {
         "wins": {
-            "2024": 0,
-            "2025": 0,
-            "2026": 0
+            "2024": 0.0,
+            "2025": 0.0,
+            "2026": 0.0
         },
         "podiums": {
-            "2024": 0,
-            "2025": 0,
-            "2026": 0
+            "2024": 0.0,
+            "2025": 0.0,
+            "2026": 0.0
         },
         "poles": {
-            "2024": 0,
-            "2025": 0,
-            "2026": 0
+            "2024": 0.0,
+            "2025": 0.0,
+            "2026": 0.0
         },
         "DNFs": {
-            "2024": 0,
+            "2024": 0.0,
             "2025": 0.25,
-            "2026": 0
+            "2026": 0.0
         }
     },
     "consistency": {
         "mean": {
-            "wins": 0,
-            "podiums": 0,
-            "poles": 0,
-            "points": 22.666666666666668
+            "wins": 0.0,
+            "podiums": 0.0,
+            "poles": 0.0,
+            "points": 23.666666666666668
         },
         "std": {
-            "wins": 0,
-            "podiums": 0,
-            "poles": 0,
-            "points": 14.007934259633796
+            "wins": 0.0,
+            "podiums": 0.0,
+            "poles": 0.0,
+            "points": 13.888444437333106
         },
         "cv": {
             "wins": 0,
             "podiums": 0,
             "poles": 0,
-            "points": 0.6179970996897263
+            "points": 0.5868356804506946
         }
     },
     "peakSeason": {
         "wins": {
-            "season": "2024",
+            "season": "No peak season",
             "wins": 0
         },
         "podiums": {
-            "season": "2024",
+            "season": "No peak season",
             "podiums": 0
         },
         "poles": {
-            "season": "2024",
+            "season": "No peak season",
             "poles": 0
         }
     },

@@ -2,15 +2,15 @@
     "driverId": "colapinto",
     "driverCode": "COL",
     "driverNumber": "43",
-    "lastUpdate": "2026-10-05T18:29:10.590851",
+    "lastUpdate": "2026-10-11T10:51:43.835585",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
     "totalDNFs": 18,
     "totalRaces": 43,
-    "winRate": 0,
-    "podiumRate": 0,
-    "poleRate": 0,
+    "winRate": 0.0,
+    "podiumRate": 0.0,
+    "poleRate": 0.0,
     "dnfRate": 0.4186046511627907,
     "seasonWins": {
         "2024": 0,
@@ -687,37 +687,37 @@
     },
     "rates": {
         "wins": {
-            "2024": 0,
-            "2025": 0,
-            "2026": 0
+            "2024": 0.0,
+            "2025": 0.0,
+            "2026": 0.0
         },
         "podiums": {
-            "2024": 0,
-            "2025": 0,
-            "2026": 0
+            "2024": 0.0,
+            "2025": 0.0,
+            "2026": 0.0
         },
         "poles": {
-            "2024": 0,
-            "2025": 0,
-            "2026": 0
+            "2024": 0.0,
+            "2025": 0.0,
+            "2026": 0.0
         },
         "DNFs": {
             "2024": 0.5555555555555556,
             "2025": 0.7222222222222222,
-            "2026": 0
+            "2026": 0.0
         }
     },
     "consistency": {
         "mean": {
-            "wins": 0,
-            "podiums": 0,
-            "poles": 0,
+            "wins": 0.0,
+            "podiums": 0.0,
+            "poles": 0.0,
             "points": 10.666666666666666
         },
         "std": {
-            "wins": 0,
-            "podiums": 0,
-            "poles": 0,
+            "wins": 0.0,
+            "podiums": 0.0,
+            "poles": 0.0,
             "points": 11.728408057172787
         },
         "cv": {
@@ -729,15 +729,15 @@
     },
     "peakSeason": {
         "wins": {
-            "season": "2024",
+            "season": "No peak season",
             "wins": 0
         },
         "podiums": {
-            "season": "2024",
+            "season": "No peak season",
             "podiums": 0
         },
         "poles": {
-            "season": "2024",
+            "season": "No peak season",
             "poles": 0
         }
     },

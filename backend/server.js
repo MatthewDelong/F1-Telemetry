@@ -630,9 +630,22 @@ app.get('/api/admin/update/status', requireAdmin, (req, res) => {
   res.json(statuses);
 });
 
+// Helper to execute Python scripts across platforms
+// Prefers 'python' (where user environment packages like requests/numpy are installed),
+// falling back to 'py' if 'python' is not found in PATH.
+function execPython(args, options, callback) {
+  const pythonCmd = process.env.PYTHON_CMD || 'python';
+  execFile(pythonCmd, args, options, (error, stdout, stderr) => {
+    if (error && error.code === 'ENOENT' && pythonCmd === 'python') {
+      return execFile('py', args, options, callback);
+    }
+    callback(error, stdout, stderr);
+  });
+}
+
 app.post('/api/admin/update/f1', requireAdmin, (req, res) => {
   const scriptPath = pathMod.join(__dirname, '..', 'src', 'config', 'f1');
-  execFile('py', ['api_update.py'], { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (error, stdout, stderr) => {
+  execPython(['api_update.py'], { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (error, stdout, stderr) => {
     if (error) {
       console.error(`[Admin Update F1] Error: ${error.message}`);
       return res.status(500).json({ error: error.message, stderr });
@@ -649,18 +662,18 @@ app.post('/api/admin/update/f2', requireAdmin, (req, res) => {
     return res.status(400).json({ error: 'Invalid URL format' });
   }
   const args = url ? ['api_update.py', url] : ['api_update.py'];
-  execFile('py', args, { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (error, stdout, stderr) => {
+  execPython(args, { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (error, stdout, stderr) => {
     if (error) {
       console.error(`[Admin Update F2] Error: ${error.message}`);
       return res.status(500).json({ error: error.message, stderr });
     }
     // Run format.py as a separate step
-    execFile('py', ['format.py'], { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (fmtError, fmtStdout, fmtStderr) => {
+    execPython(['format.py'], { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (fmtError, fmtStdout, fmtStderr) => {
       if (fmtError) {
         return res.status(500).json({ error: fmtError.message, stderr: fmtStderr, partialOutput: stdout });
       }
       // Run scrape_standings.py
-      execFile('py', ['scrape_standings.py'], { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (scrapeError, scrapeStdout, scrapeStderr) => {
+      execPython(['scrape_standings.py'], { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (scrapeError, scrapeStdout, scrapeStderr) => {
         if (scrapeError) {
            return res.status(500).json({ error: scrapeError.message, stderr: scrapeStderr, partialOutput: stdout + '\n' + fmtStdout });
         }
@@ -678,13 +691,13 @@ app.post('/api/admin/update/f1a', requireAdmin, (req, res) => {
     return res.status(400).json({ error: 'Invalid URL format' });
   }
   const args = url ? ['api_update.py', url] : ['api_update.py'];
-  execFile('py', args, { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (error, stdout, stderr) => {
+  execPython(args, { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (error, stdout, stderr) => {
     if (error) {
       console.error(`[Admin Update F1A] Error: ${error.message}`);
       return res.status(500).json({ error: error.message, stderr });
     }
     // Run format.py as a separate step
-    execFile('py', ['format.py'], { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (fmtError, fmtStdout, fmtStderr) => {
+    execPython(['format.py'], { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (fmtError, fmtStdout, fmtStderr) => {
       if (fmtError) {
         return res.status(500).json({ error: fmtError.message, stderr: fmtStderr, partialOutput: stdout });
       }

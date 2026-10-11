@@ -2,16 +2,16 @@
     "driverId": "arvid_lindblad",
     "driverCode": "LIN",
     "driverNumber": "",
-    "lastUpdate": "2026-10-05T18:29:10.590811",
+    "lastUpdate": "2026-10-11T10:51:43.835535",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
     "totalDNFs": 0,
     "totalRaces": 16,
-    "winRate": 0,
-    "podiumRate": 0,
-    "poleRate": 0,
-    "dnfRate": 0,
+    "winRate": 0.0,
+    "podiumRate": 0.0,
+    "poleRate": 0.0,
+    "dnfRate": 0.0,
     "seasonWins": {
         "2025": 0,
         "2026": 0
@@ -85,7 +85,7 @@
                     "points": 38
                 },
                 "China Grand Prix": {
-                    "points": 37
+                    "points": 38
                 },
                 "Japan Grand Prix": {
                     "points": 38
@@ -293,62 +293,62 @@
         }
     },
     "avgRacePositions": {
-        "2025": 0,
+        "2025": 0.0,
         "2026": 10.4375
     },
     "avgQualiPositions": {
-        "2025": 0,
+        "2025": 0.0,
         "2026": 11.625
     },
     "rates": {
         "wins": {
-            "2025": 0,
-            "2026": 0
+            "2025": 0.0,
+            "2026": 0.0
         },
         "podiums": {
-            "2025": 0,
-            "2026": 0
+            "2025": 0.0,
+            "2026": 0.0
         },
         "poles": {
-            "2025": 0,
-            "2026": 0
+            "2025": 0.0,
+            "2026": 0.0
         },
         "DNFs": {
-            "2025": 0,
-            "2026": 0
+            "2025": 0.0,
+            "2026": 0.0
         }
     },
     "consistency": {
         "mean": {
-            "wins": 0,
-            "podiums": 0,
-            "poles": 0,
-            "points": 19
+            "wins": 0.0,
+            "podiums": 0.0,
+            "poles": 0.0,
+            "points": 19.0
         },
         "std": {
-            "wins": 0,
-            "podiums": 0,
-            "poles": 0,
-            "points": 19
+            "wins": 0.0,
+            "podiums": 0.0,
+            "poles": 0.0,
+            "points": 19.0
         },
         "cv": {
             "wins": 0,
             "podiums": 0,
             "poles": 0,
-            "points": 1
+            "points": 1.0
         }
     },
     "peakSeason": {
         "wins": {
-            "season": "2025",
+            "season": "No peak season",
             "wins": 0
         },
         "podiums": {
-            "season": "2025",
+            "season": "No peak season",
             "podiums": 0
         },
         "poles": {
-            "season": "2025",
+            "season": "No peak season",
             "poles": 0
         }
     },

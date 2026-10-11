@@ -2,15 +2,15 @@
     "driverId": "bortoleto",
     "driverCode": "BOR",
     "driverNumber": "5",
-    "lastUpdate": "2026-10-05T18:29:10.590914",
+    "lastUpdate": "2026-10-11T10:51:43.835672",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
     "totalDNFs": 12,
     "totalRaces": 40,
-    "winRate": 0,
-    "podiumRate": 0,
-    "poleRate": 0,
+    "winRate": 0.0,
+    "podiumRate": 0.0,
+    "poleRate": 0.0,
     "dnfRate": 0.3,
     "seasonWins": {
         "2025": 0,
@@ -602,33 +602,33 @@
     },
     "rates": {
         "wins": {
-            "2025": 0,
-            "2026": 0
+            "2025": 0.0,
+            "2026": 0.0
         },
         "podiums": {
-            "2025": 0,
-            "2026": 0
+            "2025": 0.0,
+            "2026": 0.0
         },
         "poles": {
-            "2025": 0,
-            "2026": 0
+            "2025": 0.0,
+            "2026": 0.0
         },
         "DNFs": {
             "2025": 0.5,
-            "2026": 0
+            "2026": 0.0
         }
     },
     "consistency": {
         "mean": {
-            "wins": 0,
-            "podiums": 0,
-            "poles": 0,
+            "wins": 0.0,
+            "podiums": 0.0,
+            "poles": 0.0,
             "points": 14.5
         },
         "std": {
-            "wins": 0,
-            "podiums": 0,
-            "poles": 0,
+            "wins": 0.0,
+            "podiums": 0.0,
+            "poles": 0.0,
             "points": 4.5
         },
         "cv": {
@@ -640,15 +640,15 @@
     },
     "peakSeason": {
         "wins": {
-            "season": "2025",
+            "season": "No peak season",
             "wins": 0
         },
         "podiums": {
-            "season": "2025",
+            "season": "No peak season",
             "podiums": 0
         },
         "poles": {
-            "season": "2025",
+            "season": "No peak season",
             "poles": 0
         }
     },
