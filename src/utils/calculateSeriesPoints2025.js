@@ -117,7 +117,9 @@ export const calculateSeriesPoints2025 = (allRaceResults, championshipLevel) => 
 
         // Add to driver standings
         if (!driverPoints[driverId]) {
-          driverPoints[driverId] = { ...resolvedDriver, points: 0 };
+          driverPoints[driverId] = { ...resolvedDriver, constructorId, points: 0 };
+        } else if (!driverPoints[driverId].constructorId && constructorId) {
+          driverPoints[driverId].constructorId = constructorId;
         }
         driverPoints[driverId].points += totalDriverPoints;
 
@@ -182,7 +184,9 @@ export const calculateSeriesPoints2025 = (allRaceResults, championshipLevel) => 
           
           if (driverId && !hasPrecalculatedPoints) {
             if (!driverPoints[driverId]) {
-              driverPoints[driverId] = { ...resolvedPoleDriver, points: 0 };
+              driverPoints[driverId] = { ...resolvedPoleDriver, constructorId, points: 0 };
+            } else if (!driverPoints[driverId].constructorId && constructorId) {
+              driverPoints[driverId].constructorId = constructorId;
             }
             driverPoints[driverId].points += 2;
 

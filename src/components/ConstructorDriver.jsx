@@ -6,6 +6,7 @@ import { useInView } from "framer-motion";
 import { wildCardDrivers } from "../utils/wildCards";
 import { nationalityToFlag } from "../utils/nationalityToFlag";
 import { darkenColor } from "../utils/colorUtils";
+import teamColors from "../utils/teamColors.json";
 import "./team-garages/TeamDriverCard.scss";
 
 export const ConstructorDriver = (props) => {
@@ -61,7 +62,28 @@ export const ConstructorDriver = (props) => {
     card.style.setProperty("--my", "50%");
   };
 
-  const teamColor = color || "#7500AD";
+  const resolveTeamColor = () => {
+    if (color) {
+      return color.startsWith("#") ? color : `#${color}`;
+    }
+    if (car) {
+      const cid = car.toLowerCase();
+      const yStr = String(year);
+      const hex =
+        teamColors[yStr]?.[cid] ||
+        (cid === "var" ? teamColors[yStr]?.["van_amersfoort"] : undefined) ||
+        (cid === "van_amersfoort" ? teamColors[yStr]?.["var"] : undefined) ||
+        teamColors["2025"]?.[cid] ||
+        teamColors["2026"]?.[cid] ||
+        teamColors["2024"]?.[cid];
+      if (hex) {
+        return hex.startsWith("#") ? hex : `#${hex}`;
+      }
+    }
+    return "#7500AD";
+  };
+
+  const teamColor = resolveTeamColor();
 
   return (
     <div className="mb-24 w-full" style={{ perspective: "900px" }}>
@@ -190,4 +212,5 @@ ConstructorDriver.propTypes = {
   lastName: PropTypes.string,
   type: PropTypes.string,
   showDivider: PropTypes.bool,
+  color: PropTypes.string,
 };

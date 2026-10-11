@@ -77,10 +77,14 @@ const enrichDriverData = (raceData, driverInfo) => {
         }
       };
     }
+    const resolvedDriver =
+      driver.driverId && driverDetails.Driver2?.driverId === driver.driverId
+        ? driverDetails.Driver2
+        : driverDetails.Driver;
     return {
       ...driver,
       Driver: {
-        ...driverDetails.Driver
+        ...resolvedDriver
       },
       Constructor: {
         ...driverDetails.Constructor
