@@ -101,7 +101,19 @@ const Trademarks = () => {
 
         <section className="mb-48">
           <h2 className="text-2xl font-bold mb-16 uppercase tracking-xs">
-            7. Use of Content
+            7. Official Supplier &amp; Partner Trademarks
+          </h2>
+          <p className="text-neutral-300 leading-relaxed">
+            PIRELLI, P ZERO, CINTURATO, and associated logos are registered trademarks of
+            Pirelli &amp; C. S.p.A. Any depictions of Pirelli tyres, branding, or equipment
+            are used solely for informational, editorial, and descriptive purposes.
+            No association, sponsorship, or endorsement by Pirelli is implied.
+          </p>
+        </section>
+
+        <section className="mb-48">
+          <h2 className="text-2xl font-bold mb-16 uppercase tracking-xs">
+            8. Use of Content
           </h2>
           <p className="text-neutral-300 leading-relaxed">
             The data, statistics, and analysis presented on F1-Telemetry are
