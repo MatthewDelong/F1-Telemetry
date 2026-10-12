@@ -165,15 +165,15 @@ export const TeamCards = ({ selectedYear }) => {
   return (
     <div className="flex flex-col items-center justify-center pb-64 max-w-[1400px] mx-auto w-full">
       {/* Hero Banner Section */}
-      <div className="relative w-full h-[180px] sm:h-[220px] md:h-[280px] flex items-center justify-center mb-16 sm:mb-20 overflow-hidden rounded-b-[2rem] shadow-2xl border-b border-white/10 bg-[#0a0a0c]">
+      <div className="relative w-full aspect-[21/9] sm:aspect-[24/9] md:aspect-[3/1] min-h-[220px] max-h-[466px] flex items-center justify-center mb-16 sm:mb-20 overflow-hidden rounded-b-[2rem] shadow-2xl border-b border-white/10 bg-[#0a0a0c]">
         <div className="absolute inset-0 z-0 pointer-events-none">
           <img
             src={GARAGE_HERO_IMAGES[heroBgIndex]}
             alt="Team Garages Banner"
             loading="eager"
-            className="w-full h-full object-cover object-center transition-opacity ease-in-out"
+            className="w-full h-full object-cover object-bottom transition-opacity ease-in-out"
             style={{
-              opacity: isHeroImageVisible ? 0.52 : 0,
+              opacity: isHeroImageVisible ? 0.55 : 0,
               filter: "brightness(1.05) contrast(1.02)",
               transitionDuration: `${GARAGE_FADE_MS}ms`,
             }}
@@ -182,9 +182,9 @@ export const TeamCards = ({ selectedYear }) => {
               e.target.src = "/images/team-garage-hero-1.png";
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c]/80 via-black/25 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c]/60 via-transparent to-black/20" />
         </div>
-        <h1 className="relative z-10 tracking-sm uppercase gradient-text-light text-center text-4xl sm:text-5xl md:text-6xl font-display drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] px-16 mt-8">
+        <h1 className="relative z-10 tracking-sm uppercase gradient-text-light text-center text-4xl sm:text-5xl md:text-6xl font-display drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)] px-16">
           2026 Team Garages
         </h1>
       </div>
