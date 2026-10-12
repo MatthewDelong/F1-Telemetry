@@ -49,9 +49,54 @@ const powerUnits = {
   audi: "Audi",
 };
 
+const GARAGE_HERO_IMAGES = [
+  "/images/team-garage-hero-1.png",
+  "/images/team-garage-hero-2.png",
+  "/images/team-garage-hero-3.png",
+];
+const GARAGE_HOLD_MS = 8000;
+const GARAGE_FADE_MS = 1200;
+
 export const TeamCards = ({ selectedYear }) => {
   const [teamsData, setTeamsData] = useState([]);
+  const [heroBgIndex, setHeroBgIndex] = useState(0);
+  const [isHeroImageVisible, setIsHeroImageVisible] = useState(true);
   const year = selectedYear || "2026";
+
+  useEffect(() => {
+    GARAGE_HERO_IMAGES.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
+  useEffect(() => {
+    let swapTimeoutId;
+
+    const rotationInterval = window.setInterval(
+      () => {
+        setIsHeroImageVisible(false);
+
+        swapTimeoutId = window.setTimeout(() => {
+          setHeroBgIndex(
+            (currentIndex) =>
+              (currentIndex + 1) % GARAGE_HERO_IMAGES.length,
+          );
+          window.requestAnimationFrame(() => {
+            setIsHeroImageVisible(true);
+          });
+        }, GARAGE_FADE_MS);
+      },
+      GARAGE_HOLD_MS + GARAGE_FADE_MS * 2,
+    );
+
+    return () => {
+      window.clearInterval(rotationInterval);
+      if (swapTimeoutId) {
+        window.clearTimeout(swapTimeoutId);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -120,14 +165,24 @@ export const TeamCards = ({ selectedYear }) => {
   return (
     <div className="flex flex-col items-center justify-center pb-64 max-w-[1400px] mx-auto w-full">
       {/* Hero Banner Section */}
-      <div className="relative w-full h-[180px] sm:h-[220px] md:h-[280px] flex items-center justify-center mb-16 sm:mb-20 overflow-hidden rounded-b-[2rem] shadow-2xl border-b border-white/10">
+      <div className="relative w-full h-[180px] sm:h-[220px] md:h-[280px] flex items-center justify-center mb-16 sm:mb-20 overflow-hidden rounded-b-[2rem] shadow-2xl border-b border-white/10 bg-[#0a0a0c]">
         <div className="absolute inset-0 z-0 pointer-events-none">
           <img
-            src="/images/Team-Garage.png"
+            src={GARAGE_HERO_IMAGES[heroBgIndex]}
             alt="Team Garages Banner"
-            className="w-full h-full object-cover object-center"
+            loading="eager"
+            className="w-full h-full object-cover object-center transition-opacity ease-in-out"
+            style={{
+              opacity: isHeroImageVisible ? 0.52 : 0,
+              filter: "brightness(1.05) contrast(1.02)",
+              transitionDuration: `${GARAGE_FADE_MS}ms`,
+            }}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "/images/team-garage-hero-1.png";
+            }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-black/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c]/80 via-black/25 to-transparent" />
         </div>
         <h1 className="relative z-10 tracking-sm uppercase gradient-text-light text-center text-4xl sm:text-5xl md:text-6xl font-display drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] px-16 mt-8">
           2026 Team Garages
