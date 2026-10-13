@@ -97,7 +97,7 @@ git clone https://github.com/your-username/F1-Telemetry.git
 cd F1-Telemetry
 
 # Install dependencies
-npm install
+npm install --legacy-peer-deps
 
 # Install dependencies
 cd backend
