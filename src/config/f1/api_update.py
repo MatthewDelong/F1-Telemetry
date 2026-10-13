@@ -6,6 +6,10 @@ api_url = 'https://api.jolpi.ca/ergast/f1'
 # api_url = 'http://ergast.com/api/f1'
 current_year = datetime.date.today().year
 
+import sys as _sys
+_sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from update_race_names import canonical_race_name
+
 def safe_get(url, timeout=10, **kwargs):
     try:
         return requests.get(url, timeout=timeout, **kwargs)
@@ -131,9 +135,11 @@ def update_driverData():
             quali_races = resp_quali.json()["MRData"]["RaceTable"]["Races"]
 
     # 3. Fetch driver standings
+    standings_by_round = {}
     try:
         with open(f'races/{current_year}/driverStandings.json', 'r', encoding='utf-8') as f:
             standings_data = json.load(f)
+            standings_by_round = standings_data if isinstance(standings_data, dict) else {}
             # Find the latest round in the driver standings
             latest_round_data = standings_data[str(len(standings_data))]
             standings_list = latest_round_data
@@ -145,11 +151,15 @@ def update_driverData():
             standings_list = resp_standings.json()["MRData"]["StandingsTable"]["StandingsLists"][0]["DriverStandings"]
 
     drivers_data = {}
+    reset_seasons = set()  # (driverId, season) pairs whose race-keyed data has been cleared
+
+    races = sorted(races, key=lambda r: (str(r.get("season", "")), int(r.get("round", 0) or 0)))
 
     for race in races:
-        raceName = race["raceName"]
         season = race["season"]
         round = race["round"]
+        circuit = race.get("Circuit", {}) or {}
+        raceName = canonical_race_name(race["raceName"], season, circuit.get("circuitId", ""), circuit.get("Location", {}).get("locality", ""))
         results = race["Results"]
 
         quali_race = next((r for r in quali_races if r["round"] == round), None)
@@ -235,6 +245,20 @@ def update_driverData():
             if season not in data["posAfterRace"]: data["posAfterRace"][season] = {"year": season, "pos": {}}
             if season not in data["poles"]: data["poles"][season] = []
 
+            # Rebuild this season's race-keyed data from scratch so stale/duplicate race names are dropped
+            # and races stay in round order
+            if (driverId, season) not in reset_seasons:
+                reset_seasons.add((driverId, season))
+                data["fastLaps"][season] = {}
+                data["DNFs"][season] = {}
+                data["podiums"][season] = {}
+                data["racePosition"][season] = {"year": season, "positions": {}}
+                data["qualiPosition"][season] = {"year": season, "positions": {}}
+                data["driverQualifyingTimes"][season] = {"year": season, "QualiTimes": {}}
+                data["posAfterRace"][season] = {"year": season, "pos": {}}
+                data["poles"][season] = []
+                data["seasonPoles"][season] = 0
+
             # Update DNF, Podium, and Win Data
             if not (result.get("status", "Finished") == "Finished" or '+' in result.get("status", "Finished")):
                 data["DNFs"][season][raceName] = result.get("status", "Finished")
@@ -274,6 +298,11 @@ def update_driverData():
                 data["finalStandings"][season]["position"] = driverStanding.get("position", "40")
                 data["finalStandings"][season]["points"] = driverStanding["points"]
                 data["posAfterRace"][season]["pos"][raceName] = {"points": int(driverStanding["points"])}
+            round_standings = standings_by_round.get(str(round)) if str(season) == str(current_year) else None
+            if isinstance(round_standings, list):
+                rs = next((s for s in round_standings if get_driver_id(s.get("Driver", {})) == driverId), None)
+                if rs:
+                    data["posAfterRace"][season]["pos"][raceName] = {"points": int(float(rs.get("points", 0)))}
 
             # Process remaining Qualifying data
             if qualifying:
@@ -1340,31 +1369,32 @@ def fix_antonelli_name():
 def update():
     print("==========Updating constructors==========")
     update_constructors()
+    print("==========Updating Race Details==========")
+    checks_ok = pre_checks()
+    if checks_ok:
+        update_races()
+        print("==========Updating Race Results==========")
+        update_raceResults()
+        print("==========Updating Qualifying Sessions==========")
+        update_qualifying()
+        print("==========Updating Sprint Results==========")
+        update_sprintResults()
+        print("==========Updating Driver Standings==========")
+        update_driverStandings()
+        print("==========Updating Constructor Standings==========")
+        update_constructorStandings()
     print("==========Updating constructor drivers==========")
     update_constructor_drivers()
+    # Driver data is built AFTER results are fetched so the latest race is included
     print("==========Updating Driver Data==========")
     update_driverData()
     print("==========Analysing Driver Data==========")
     analyse_driverData()
     print("==========Replacing NaNs in Driver Data==========")
     replace_NaN()  
-    print("==========Updating Race Details==========")
-    if not pre_checks():
-        return
-    update_races()
-    print("==========Updating Race Results==========")
-    update_raceResults()
-    print("==========Updating Qualifying Sessions==========")
-    update_qualifying()
-    print("==========Updating Sprint Results==========")
-    update_sprintResults()
-    print("==========Updating Driver Standings==========")
-    update_driverStandings()
-    print("==========Updating Constructor Standings==========")
-    update_constructorStandings()
     print("==========Removing Jak Crawford==========")
     remove_jak_crawford()
     print("==========Fixing Antonelli Name==========")
     fix_antonelli_name()
-
-update()
+if __name__ == "__main__":
+    update()

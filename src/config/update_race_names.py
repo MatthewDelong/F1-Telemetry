@@ -2,11 +2,13 @@ import os
 import json
 
 mapping = {
-    "Spanish Grand Prix (Madrid)": "Spain Grand Prix (Madrid)",
-    "Madrid Grand Prix": "Spain Grand Prix (Madrid)",
+    "Spanish Grand Prix (Madrid)": "Spain Grand Prix",
+    "Spain Grand Prix (Madrid)": "Spain Grand Prix",
+    "Madrid Grand Prix": "Spain Grand Prix",
     "Spanish Grand Prix": "Spain Grand Prix",
-    "Spain Grand Prix": "Spain Grand Prix",
-    "Barcelona Grand Prix": "Spain Grand Prix",
+    "Barcelona Grand Prix": "Barcelona-Catalunya Grand Prix",
+    "Chinese Grand Prix": "China Grand Prix",
+    "Bahrain Grand Prix in Malaysia": "Bahrain Grand Prix (Malaysia)",
     "Austrian Grand Prix": "Austria Grand Prix",
     "British Grand Prix": "Great Britain Grand Prix",
     "Belgian Grand Prix": "Belgium Grand Prix",
@@ -24,6 +26,31 @@ mapping = {
     "Australian Grand Prix": "Australia Grand Prix"
 }
 
+BARCELONA_LOCATIONS = {"barcelona", "montmeló", "montmelo", "catalunya"}
+
+
+def canonical_race_name(name, season=None, circuit_id="", location=""):
+    """Return the standardised race name used as a key across the site."""
+    if not isinstance(name, str):
+        return name
+    new_name = mapping.get(name, name)
+    if "Spa-francorchamps" in new_name:
+        new_name = "Belgium Grand Prix"
+    try:
+        year = int(season) if season is not None else None
+    except (TypeError, ValueError):
+        year = None
+    loc = (location or "").lower()
+    circ = (circuit_id or "").lower()
+    # From 2026 Barcelona and Madrid are separate rounds
+    if year is not None and year >= 2026 and new_name == "Spain Grand Prix":
+        if circ == "catalunya" or loc in BARCELONA_LOCATIONS:
+            new_name = "Barcelona-Catalunya Grand Prix"
+    if new_name == "Bahrain Grand Prix" and (circ == "sepang" or loc in ("sepang", "kuala lumpur")):
+        new_name = "Bahrain Grand Prix (Malaysia)"
+    return new_name
+
+
 def standardize_names(file_path):
     if not os.path.exists(file_path): return
     with open(file_path, 'r', encoding='utf-8') as f:
@@ -39,41 +66,23 @@ def standardize_names(file_path):
         if isinstance(obj, dict):
             for k, v in obj.items():
                 if k == "raceName" and isinstance(v, str):
-                    for old_name, new_name in mapping.items():
-                        if v == old_name:
-                            if new_name == "Spain Grand Prix":
-                                loc = obj.get("Circuit", {}).get("Location", {}).get("locality", "")
-                                circ_id = obj.get("Circuit", {}).get("circuitId", "")
-                                if loc == "Madrid" or circ_id in ["madrid", "madring"]:
-                                    new_name = "Spain Grand Prix (Madrid)"
-                            if new_name == "Bahrain Grand Prix":
-                                loc = obj.get("Circuit", {}).get("Location", {}).get("locality", "")
-                                circ_id = obj.get("Circuit", {}).get("circuitId", "")
-                                if loc == "Sepang" or circ_id == "sepang":
-                                    new_name = "Bahrain Grand Prix (Malaysia)"
-                            obj[k] = new_name
-                            modified = True
-                            break
-                elif k == "raceName" and isinstance(v, str) and "Spa-francorchamps" in v:
-                    obj[k] = "Belgium Grand Prix"
-                    modified = True
+                    circuit = obj.get("Circuit", {}) if isinstance(obj.get("Circuit"), dict) else {}
+                    loc = circuit.get("Location", {}).get("locality", "") or obj.get("location", "")
+                    new_name = canonical_race_name(v, obj.get("season", obj.get("year")), circuit.get("circuitId", ""), loc)
+                    if new_name != v:
+                        obj[k] = new_name
+                        modified = True
                 else:
                     replace_in_obj(v)
-            
-            # For races.json which has keys as race names
-            keys_to_change = []
-            for k in obj.keys():
-                for old_name, new_name in mapping.items():
-                    if k == old_name:
-                        keys_to_change.append((k, new_name))
-            
+
+            # For files keyed by race name (races.json, driver files)
+            keys_to_change = [(k, mapping[k]) for k in list(obj.keys()) if k in mapping and mapping[k] != k]
             for old_k, new_k in keys_to_change:
-                # Be careful not to overwrite a valid entry with duplicate like Spain
-                if new_k == "Spain Grand Prix" and isinstance(obj[old_k], dict) and obj[old_k].get("location") == "Madrid":
-                    new_k = "Spain Grand Prix (Madrid)"
-                if new_k == "Bahrain Grand Prix" and isinstance(obj[old_k], dict) and (obj[old_k].get("location") == "Sepang" or obj[old_k].get("location") == "Kuala Lumpur"):
-                    new_k = "Bahrain Grand Prix (Malaysia)"
-                obj[new_k] = obj.pop(old_k)
+                if new_k in obj:
+                    # Canonical key already exists - drop the alias instead of duplicating/overwriting
+                    obj.pop(old_k)
+                else:
+                    obj[new_k] = obj.pop(old_k)
                 modified = True
                 
         elif isinstance(obj, list):
