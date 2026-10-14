@@ -34,6 +34,22 @@ const CIRCUIT_NAMES = {
   "f1.circuits.istanbul": "Istanbul Park Circuit",
 };
 
+// Glassmorphic framed background image (matches Features sections)
+const CalendarBackdrop = () => (
+  <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden rounded-[2.5rem]">
+    <div className="absolute inset-0 z-10 bg-gradient-to-t from-neutral-950/60 via-transparent to-neutral-950/30" />
+    <div className="absolute inset-0 z-10 bg-gradient-to-r from-neutral-950/40 via-transparent to-neutral-950/40" />
+    <img
+      src="/images/2026-2027_calendar.png"
+      alt=""
+      className="w-full h-full object-cover object-center opacity-75"
+    />
+  </div>
+);
+
+const BOX_CLASSES =
+  "relative isolate w-full max-w-[1360px] mx-auto text-center rounded-[2.5rem] border border-white/10 bg-white/[0.02] shadow-[0_0_60px_rgba(0,0,0,0.8)] px-4 py-12 md:px-12 md:py-16";
+
 const DatesSection = () => {
   const [selectedTrack2026, setSelectedTrack2026] = useState(null);
   const [selectedTrack2027, setSelectedTrack2027] = useState(null);
@@ -68,7 +84,8 @@ const DatesSection = () => {
         ref={sectionRef}
         className="min-h-screen snap-start scroll-mt-24 flex flex-col items-center max-md:justify-start md:justify-center px-4 md:px-16 bg-neutral-950 relative max-md:pt-[120px] max-md:pb-[80px] md:py-32"
       >
-        <div className="max-w-[1400px] w-full mx-auto text-center z-10">
+        <div className={BOX_CLASSES}>
+          <CalendarBackdrop />
           <motion.h2
             className="heading-2 uppercase mb-8"
             initial={{ opacity: 0, y: 30 }}
@@ -189,17 +206,6 @@ const DatesSection = () => {
             <RaceCalendar onRaceClick={setSelectedTrack2026} />
           </motion.div>
         </div>
-
-        {/* Subtle background decoration */}
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20 z-0">
-          <img
-            className="w-[300px] absolute -left-[100px] top-64 transition-opacity duration-500"
-            style={{ opacity: selectedTrack2026 ? 0 : 1 }}
-            src="/images/plusPatterns.png"
-            alt=""
-          />
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,_rgba(255,0,0,0.05),_transparent_70%)]" />
-        </div>
       </section>
 
       {/* 2027 Calendar — own snap section */}
@@ -207,7 +213,8 @@ const DatesSection = () => {
         ref={section2027Ref}
         className="min-h-screen snap-start scroll-mt-24 flex flex-col items-center max-md:justify-start md:justify-center px-4 md:px-16 bg-neutral-950 relative max-md:pt-[120px] max-md:pb-[80px] md:py-32"
       >
-        <div className="max-w-[1600px] w-full mx-auto text-center z-10">
+        <div className={BOX_CLASSES}>
+          <CalendarBackdrop />
           <motion.h2
             className="heading-2 uppercase mb-8"
             initial={{ opacity: 0, y: 30 }}
@@ -330,11 +337,6 @@ const DatesSection = () => {
             )}
             <RaceCalendar2027 onRaceClick={setSelectedTrack2027} />
           </motion.div>
-        </div>
-
-        {/* Subtle background decoration */}
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20 z-0">
-          <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,_rgba(255,0,0,0.05),_transparent_70%)]" />
         </div>
       </section>
     </>

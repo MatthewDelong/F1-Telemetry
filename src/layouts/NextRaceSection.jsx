@@ -430,19 +430,18 @@ const NextRaceSection = () => {
   }, [currentRaceData, countDownDate]);
 
   return (
-    <section className="min-h-screen snap-start flex flex-col items-center justify-center px-4 md:px-16 bg-black relative pt-[100px] pb-2 md:pb-16 overflow-hidden border-t border-neutral-900">
-      {/* Background with blurred image and gradient overlay */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-[#4f63e3] rounded-full blur-[150px] opacity-20"></div>
-        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-[#00d2be] rounded-full blur-[150px] opacity-20"></div>
-        
-        <img
-          src="/images/plusPatterns.png"
-          className="absolute inset-0 w-full h-full object-cover opacity-10 mix-blend-screen"
-          alt=""
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-80" />
-      </div>
+    <section className="min-h-screen snap-start flex flex-col items-center justify-center px-4 md:px-16 bg-neutral-950 relative pt-[100px] pb-2 md:pb-16 overflow-hidden border-t border-neutral-900">
+      {/* Framed box with background image (matches Features sections) */}
+      <div className="relative isolate w-full max-w-[1360px] mx-auto rounded-[2.5rem] border border-white/10 bg-white/[0.02] shadow-[0_0_60px_rgba(0,0,0,0.8)] px-4 py-10 md:px-12 md:py-14">
+        <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden rounded-[2.5rem]">
+          <div className="absolute inset-0 z-10 bg-gradient-to-t from-neutral-950/60 via-transparent to-neutral-950/30" />
+          <div className="absolute inset-0 z-10 bg-gradient-to-r from-neutral-950/40 via-transparent to-neutral-950/40" />
+          <img
+            src="/images/next-race.png"
+            alt=""
+            className="w-full h-full object-cover object-center opacity-75"
+          />
+        </div>
 
       <div className="max-w-5xl w-full mx-auto z-10">
         <motion.div
@@ -624,6 +623,7 @@ const NextRaceSection = () => {
             </div>
           </div>
         </motion.div>
+      </div>
       </div>
     </section>
   );
