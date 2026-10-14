@@ -164,39 +164,53 @@ export function DriverComparison(){
 
 
     const renderFinalStandings = () => {
+        const posBadge = (pos, win) => (
+            <div className={classNames(
+                "flex items-center justify-center w-[3.6rem] h-[3.6rem] rounded-full font-display text-[1.6rem] border transition-colors",
+                win ? "bg-white/10 border-white/30 text-white shadow-[0_0_16px_rgba(255,255,255,0.15)]" : "bg-black/40 border-white/5 text-neutral-500"
+            )}>{pos ?? '–'}</div>
+        );
+        const pointsBar = (pts, max, win, align) => (
+            <div className={classNames("relative flex-1 h-[3.6rem] rounded-full bg-black/40 border border-white/5 overflow-hidden flex items-center", align === 'right' ? 'justify-end' : 'justify-start')}>
+                {pts != null && (
+                    <div
+                        className={classNames("absolute inset-y-0 rounded-full transition-all duration-700", align === 'right' ? 'right-0' : 'left-0',
+                            win ? "bg-gradient-to-r from-white/25 to-white/10" : "bg-white/[0.06]")}
+                        style={{ width: `${max > 0 ? Math.max(6, (pts / max) * 100) : 6}%` }}
+                    />
+                )}
+                <span className={classNames("relative z-[1] px-16 font-display text-[1.6rem]", win ? "text-white" : "text-neutral-400")}>
+                    {pts ?? 'DNC'}
+                </span>
+            </div>
+        );
         return (
-            <>
-                {yearsToDisplay.map(year => (
-                    <div key={year} className="driver-comparison-row w-[38rem] m-auto mb-16">
-                        <div className="text-center gradient-text-light text-sm">{year}</div>
-                        
-                        <div className="flex item-center justify-center gap-4">
-                            <div>
-                                {driver1Data?.finalStandings?.[year] ? (
-                                    <div className="flex items-center justify-center font-display">
-                                        <div className="w-48 bg-black px-16 py-2 rounded-l-[1rem]"><span className="gradient-text-white">{driver1Data.finalStandings[year].position}</span></div>
-                                        <div className="w-[10rem] text-right bg-glow pr-16 py-2 gradient-text-white">{driver1Data.finalStandings[year].points}</div>
-                                    </div>
-                                ) : (
-                                    <div className="w-[14.8rem] bg-glow-dark pr-16 py-2 gradient-text-white rounded-l-[1rem] text-right">DNC</div>
-                                )}
-                            </div>
-                            <div>
-                                {driver2Data?.finalStandings?.[year] ? (
-                                    <div className="flex items-center justify-center font-display">
-                                        <div className="w-[10rem] bg-glow pl-16 py-2 gradient-text-white">{driver2Data.finalStandings[year].points}</div>
-                                        <div className="w-48 bg-black px-16 py-2 rounded-r-[1rem]"><span className="gradient-text-white">{driver2Data.finalStandings[year].position}</span></div>
-                                    </div>
-                                ) : (
-                                    <div className="w-[14.8rem] bg-glow-dark pr-16 py-2 gradient-text-white rounded-r-[1rem]">DNC</div>
-                                )}
-                            </div>
+            <div className="flex flex-col gap-10">
+                {yearsToDisplay.map(year => {
+                    const s1 = driver1Data?.finalStandings?.[year];
+                    const s2 = driver2Data?.finalStandings?.[year];
+                    const p1 = s1 ? Number(s1.points) : null;
+                    const p2 = s2 ? Number(s2.points) : null;
+                    const max = Math.max(p1 || 0, p2 || 0);
+                    const pos1 = s1 ? Number(s1.position) : Infinity;
+                    const pos2 = s2 ? Number(s2.position) : Infinity;
+                    const w1 = pos1 < pos2;
+                    const w2 = pos2 < pos1;
+                    return (
+                        <div key={year} className="group grid grid-cols-[3.6rem_1fr_5.6rem_1fr_3.6rem] items-center gap-8 md:gap-12 px-8 py-4 rounded-full hover:bg-white/[0.03] transition-colors">
+                            {posBadge(s1?.position, w1)}
+                            {pointsBar(p1, max, w1, 'right')}
+                            <div className="text-center text-sm tracking-xs text-neutral-500 group-hover:text-neutral-300 transition-colors">{year}</div>
+                            {pointsBar(p2, max, w2, 'left')}
+                            {posBadge(s2?.position, w2)}
                         </div>
-                    </div>
-                ))}
-            </>
+                    );
+                })}
+            </div>
         );
     };
+
+
 
     const DriverImage = (driverCode, driverId) => {
         // Build a prioritized list of image paths to try
@@ -425,21 +439,23 @@ export function DriverComparison(){
                                 </>
                             )}
                             
-                            <div className="comparison-container mb-96">
-                                <h2 className="heading-4 text-neutral-400 text-center mb-24">Season Points & Standings</h2>
-                                <div className="driver-comparison-row w-[38rem] m-auto mb-24">
-                                    <div className="flex justify-center gap-64 gradient-text-light text-sm">
-                                        <div>{driversList.find(q => q.id === driver1)?.name}</div>
-                                        Year
-                                        <div>{driversList.find(q => q.id === driver2)?.name}</div>
+                            <div className="comparison-container mb-96 max-w-[64rem] mx-auto relative bg-glow-dark border border-white/5 rounded-[2.4rem] shadow-xl p-16 md:p-32 overflow-hidden">
+                                <div
+                                    className="absolute inset-0 pointer-events-none opacity-10"
+                                    style={{ background: 'radial-gradient(circle at 50% 0%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 60%)' }}
+                                />
+                                <div className="relative">
+                                    <h2 className="heading-4 gradient-text-white text-center mb-4">Season Points & Standings</h2>
+                                    <p className="text-sm text-neutral-500 text-center mb-24">Championship position and points per season</p>
+                                    <div className="grid grid-cols-[3.6rem_1fr_5.6rem_1fr_3.6rem] items-end gap-8 md:gap-12 px-8 pb-12 mb-12 border-b border-white/5">
+                                        <span className="text-[1rem] uppercase tracking-xs text-neutral-500 text-center">Pos</span>
+                                        <span className="font-display text-[1.4rem] md:text-[1.8rem] gradient-text-white text-right truncate">{driversList.find(q => q.id === driver1)?.name}</span>
+                                        <span className="text-[1rem] uppercase tracking-xs text-neutral-500 text-center">Year</span>
+                                        <span className="font-display text-[1.4rem] md:text-[1.8rem] gradient-text-white truncate">{driversList.find(q => q.id === driver2)?.name}</span>
+                                        <span className="text-[1rem] uppercase tracking-xs text-neutral-500 text-center">Pos</span>
                                     </div>
-                                    <div className="flex items-center justify-center font-display">
-                                        <div className="bg-black px-16 py-2 rounded-l-[1rem]"><span className="gradient-text-white">position</span></div>
-                                        <div className="bg-glow bg-neutral-900 max-sm:px-24 sm:px-48 py-2"><span className="gradient-text-white">points</span></div>
-                                        <div className="bg-black px-16 py-2 rounded-r-[1rem]"><span className="gradient-text-white">position</span></div>
-                                    </div>
+                                    {renderFinalStandings()}
                                 </div>
-                                {renderFinalStandings()}
                             </div>
 
                             {displayCompetingYears && ( 
