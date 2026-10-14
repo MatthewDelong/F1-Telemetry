@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export const LineChartByYear = ({ driver1Name, driver2Name, driver1Data, driver2Data, competingYears, displayCompetingYears, type, raceNamesByYear }) => {
-  const [selectedYear, setSelectedYear] = useState(competingYears[0]);
+  const latestYear = (years) => years.length > 0 ? [...years].sort((a, b) => Number(b) - Number(a))[0] : undefined;
+  const [selectedYear, setSelectedYear] = useState(() => latestYear(competingYears));
 
   useEffect(() => {
     if (competingYears.length > 0) {
-      setSelectedYear(competingYears[0]);
+      setSelectedYear(latestYear(competingYears));
     }
   }, [competingYears]);
 
