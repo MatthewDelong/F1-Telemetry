@@ -639,55 +639,85 @@ def update_races():
     races_by_mk_file = 'races/racesbyMK.json'
     ensure_file_exists(races_by_mk_file, {})
     
+    # The official calendar (raceDetails.json, from Jolpica) is the source of truth for
+    # WHICH races exist, their ORDER and their canonical NAMES. OpenF1 is only used to
+    # look up the meeting_key. Previously every OpenF1 meeting whose raw name
+    # (e.g. "São Paulo Grand Prix", "Spanish Grand Prix") didn't match an existing
+    # canonical key was appended to the end of the season - including cancelled
+    # rounds (Bahrain, Saudi Arabia) - which polluted the Race Viewer track list.
+    race_details_file = f'races/{season}/raceDetails.json'
+    if not os.path.exists(race_details_file):
+        print("Warning: raceDetails.json missing, cannot rebuild races.json")
+        return
+    with open(race_details_file, 'r', encoding='utf-8') as f:
+        calendar = json.load(f)
+    if not calendar:
+        print("Warning: raceDetails.json empty, cannot rebuild races.json")
+        return
+
+    meetings = []
     response = safe_get(f'https://api.openf1.org/v1/meetings?year={season}')
     if response.status_code == 200:
-        responsedata = response.json()
-        
-        if not responsedata or len(responsedata) == 0:
-            print("Warning: No race meetings found from OpenF1 API")
-            return
-            
-        with open(races_file, 'r', encoding='utf-8') as file:
-            data = json.load(file)
-        
-        # Create season entry if it doesn't exist
-        if str(season) not in data:
-            data[str(season)] = {}
-        
-        # Add all races to the data structure, not just the last one
-        updated = False
-        for race in responsedata:
-            # Skip "Pre-Season Testing" events
-            if "Pre-Season Testing" in race.get("meeting_name", ""):
-                continue
-                
-            if race["meeting_name"] not in data[str(season)]:
-                data[str(season)][race["meeting_name"]] = {}
-                data[str(season)][race["meeting_name"]]["meeting_key"] = race["meeting_key"]
-                data[str(season)][race["meeting_name"]]["location"] = race["location"]
-                updated = True
-                
-                # Also update racesbyMK.json
-                with open(races_by_mk_file, 'r', encoding='utf-8') as g:
-                    result = json.load(g)
-                
-                result[race["meeting_key"]] = {}
-                result[race["meeting_key"]]["raceName"] = race["meeting_name"]
-                result[race["meeting_key"]]["location"] = race["location"]
-                result[race["meeting_key"]]["year"] = str(season)
-                
-                with open(races_by_mk_file, 'w', encoding='utf-8') as g:
-                    json.dump(result, g, indent=4, ensure_ascii=False, cls=NpEncoder)
-        
-        if updated:
-            with open(races_file, 'w', encoding='utf-8') as f:
-                json.dump(data, f, indent=4, ensure_ascii=False, cls=NpEncoder)
-            print(f"Added new races to races.json and racesbyMK.json")
-        else:
-            print("No new races to add")
+        meetings = [m for m in (response.json() or [])
+                    if "testing" not in m.get("meeting_name", "").lower()]
     else:
         print(f"Failed to get race meetings from OpenF1 API (Status: {response.status_code})")
-    
+
+    with open(races_file, 'r', encoding='utf-8') as file:
+        data = json.load(file)
+    with open(races_by_mk_file, 'r', encoding='utf-8') as g:
+        races_by_mk = json.load(g)
+    old_season = data.get(str(season), {})
+
+    def find_meeting(race):
+        """Match an OpenF1 meeting to a calendar round by date (meeting starts 0-4 days before race day)."""
+        try:
+            race_day = dt.strptime(race['date'], '%Y-%m-%d')
+        except (KeyError, ValueError):
+            return None
+        for m in meetings:
+            start = (m.get('date_start') or '')[:10]
+            try:
+                diff = (race_day - dt.strptime(start, '%Y-%m-%d')).days
+            except ValueError:
+                continue
+            if 0 <= diff <= 4:
+                return m
+        return None
+
+    new_season = {}
+    for race in calendar:
+        circuit = race.get('Circuit', {})
+        locality = circuit.get('Location', {}).get('locality', '')
+        name = canonical_race_name(race.get('raceName', ''), season, circuit.get('circuitId', ''), locality)
+
+        meeting = find_meeting(race)
+        if meeting:
+            entry = {"meeting_key": meeting["meeting_key"], "location": meeting.get("location", locality)}
+        elif name in old_season:
+            entry = old_season[name]  # keep previously known key if OpenF1 is unavailable
+        else:
+            print(f"Warning: no OpenF1 meeting found for {name}, skipping")
+            continue
+
+        new_season[name] = entry
+        races_by_mk[str(entry["meeting_key"])] = {
+            "raceName": name,
+            "location": entry["location"],
+            "year": str(season),
+        }
+
+    if new_season != old_season or list(new_season) != list(old_season):
+        data[str(season)] = new_season
+        with open(races_file, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=4, ensure_ascii=False, cls=NpEncoder)
+        print(f"Rebuilt races.json for {season} with {len(new_season)} races (calendar order)")
+    else:
+        print("races.json already up to date")
+
+    with open(races_by_mk_file, 'w', encoding='utf-8') as g:
+        json.dump(races_by_mk, g, indent=4, ensure_ascii=False, cls=NpEncoder)
+
     print("Race Details updated successfully!")
 
 def format_race_entry(api_race):
