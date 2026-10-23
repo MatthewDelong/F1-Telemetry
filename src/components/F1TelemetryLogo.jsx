@@ -1,7 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export const F1TelemetryLogo = ({ height = 48, className = "", textImageSrc = null }) => {
+export const F1TelemetryLogo = ({
+  height = 48,
+  className = "",
+  textImageSrc = null,
+}) => {
   return (
     <div className={`flex items-center gap-3 ${className}`}>
       <img
