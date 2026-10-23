@@ -449,10 +449,6 @@ export function LandingPage() {
       raceData?.Circuit?.circuitId ||
       raceData?.location?.toLowerCase() ||
       raceData?.country?.toLowerCase();
-    console.log("DEBUG: LandingPage latestResultsLayout", {
-      raceData,
-      circuitIdToUse,
-    });
     return (
       <>
         <div className="flex flex-col items-center z-10 w-full mt-24 md:mt-0">

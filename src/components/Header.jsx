@@ -134,7 +134,7 @@ export const Header = () => {
         >
           <div className="global-header__main-nav__left flex items-center gap-32">
             <Link to="/">
-              <Logo height={48} />
+              <Logo height={48} textImageSrc="/logos/header2.png" />
             </Link>
           </div>
 
@@ -347,7 +347,7 @@ export const Header = () => {
         <div className="flex flex-col pb-8 px-4">
           <div className="pt-2 pb-6 flex justify-center mb-4 relative">
             <Link to="/" onClick={toggleOpen}>
-              <Logo height={48} className="drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]" />
+              <Logo height={48} textImageSrc="/logos/header2.png" className="drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]" />
             </Link>
             <div className="absolute bottom-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-brand-blue-500/50 to-transparent"></div>
           </div>

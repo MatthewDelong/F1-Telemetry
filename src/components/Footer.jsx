@@ -30,7 +30,7 @@ export const Footer = ({ className }) => {
         {/* Left side: Logo, tagline, and social links */}
         <div className="flex flex-col items-center xl:items-start gap-12 mb-16 xl:mb-0">
           <a href="/">
-            <Logo height={48} />
+            <Logo height={48} textImageSrc="/logos/header2.png" />
           </a>
           <div>
             <p className="text-xl uppercase tracking-1xs leading-none gradient-text-electric-blue">
