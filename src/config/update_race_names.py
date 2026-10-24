@@ -92,9 +92,63 @@ def standardize_names(file_path):
     replace_in_obj(data)
 
     if modified:
+        results_key = _compact_results_key(data)
+        if results_key:
+            # Keep race result files in compact one-line-per-driver format
+            write_compact_race_json(data, file_path, results_key)
+            return
         with open(file_path, 'w', encoding='utf-8') as f:
             # f2/results.json uses indent=2, others might use 4. Let's stick to 4.
             json.dump(data, f, indent=4, ensure_ascii=False)
+
+
+RESULT_KEYS = ("QualifyingResults", "SprintResults", "Results")
+
+
+def _compact_results_key(data):
+    """Return the results key if data is a list of race entries, else None."""
+    if not isinstance(data, list) or not data or not all(isinstance(r, dict) for r in data):
+        return None
+    for key in RESULT_KEYS:
+        if all(key in r for r in data):
+            return key
+    return None
+
+
+def write_compact_race_json(data, filepath, results_key="Results"):
+    """Write race data with one line per driver result (matches f1/api_update.py)."""
+    header_keys = ["season", "round", "url", "raceName"]
+    dt_keys = ["date", "time"]
+    lines = ["["]
+    for i, race in enumerate(data):
+        lines.append("    {")
+        parts = []
+        header = ", ".join(f'"{k}": {json.dumps(race[k], ensure_ascii=False)}' for k in header_keys if k in race)
+        if header:
+            parts.append(f"        {header}")
+        if "Circuit" in race:
+            parts.append(f'        "Circuit": {json.dumps(race["Circuit"], ensure_ascii=False)}')
+        dt_parts = ", ".join(f'"{k}": {json.dumps(race[k], ensure_ascii=False)}' for k in dt_keys if k in race)
+        if dt_parts:
+            parts.append(f"        {dt_parts}")
+        # Any other keys not covered above
+        known = set(header_keys + dt_keys + ["Circuit", results_key])
+        for k, v in race.items():
+            if k not in known:
+                parts.append(f'        "{k}": {json.dumps(v, ensure_ascii=False)}')
+        results = race.get(results_key, [])
+        res_lines = [f'        "{results_key}": [']
+        for j, result in enumerate(results):
+            comma = "," if j < len(results) - 1 else ""
+            res_lines.append(f"            {json.dumps(result, ensure_ascii=False)}{comma}")
+        res_lines.append("        ]")
+        parts.append("\n".join(res_lines))
+        lines.append(",\n".join(parts))
+        comma = "," if i < len(data) - 1 else ""
+        lines.append(f"    }}{comma}")
+    lines.append("]")
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write("\n".join(lines) + "\n")
 
 if __name__ == "__main__":
     # Base dir: relative to src/config/
