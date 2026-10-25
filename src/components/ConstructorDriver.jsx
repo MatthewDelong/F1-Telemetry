@@ -6,6 +6,7 @@ import { useInView } from "framer-motion";
 import { wildCardDrivers } from "../utils/wildCards";
 import { nationalityToFlag } from "../utils/nationalityToFlag";
 import { darkenColor } from "../utils/colorUtils";
+import { ChampionBadge } from "./ChampionBadge";
 import teamColors from "../utils/teamColors.json";
 import "./team-garages/TeamDriverCard.scss";
 
@@ -129,6 +130,9 @@ export const ConstructorDriver = (props) => {
             transition: "all 2s cubic-bezier(0.17, 0.55, 0.55, 1)",
           }}
         />
+        {!F2F1A && (
+          <ChampionBadge code={image} size="lg" style={{ top: "12px", right: "12px" }} />
+        )}
         {championshipLevel === "F1A" && isWildcardDriver && (
           <img
             alt="Wildcard Driver"

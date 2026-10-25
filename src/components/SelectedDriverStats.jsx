@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { fetchRaceResultsByCircuit } from "../utils/api";
 import { trackLengths } from "../utils/trackLengths";
 import { nationalityToFlag } from "../utils/nationalityToFlag";
+import { ChampionBadge } from "./ChampionBadge";
 
 export const SelectedDriverStats = (props) => {
     const { selectedDriverData, selectedDriverRaceData, year, speedUnit } = props;
@@ -52,6 +53,7 @@ export const SelectedDriverStats = (props) => {
                     width={120}
                     height={120}
                 />
+                <ChampionBadge code={selectedDriverData?.acronym} size="lg" style={{ top: "0px", left: "0px", right: "auto" }} />
                 <img
                     alt=""
                     className="absolute -bottom-16 left-32"

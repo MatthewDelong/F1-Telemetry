@@ -4,6 +4,7 @@ import { motion, useAnimationControls } from "framer-motion";
 import { darkenColor } from "../../utils/colorUtils";
 import { F1TelemetryLogo as Logo } from "../../components/F1TelemetryLogo";
 import { Loading } from "../../components";
+import { ChampionBadge } from "../../components/ChampionBadge";
 import { getCurrentYear } from "../../utils/currentYear";
 
 const currentYear = getCurrentYear();
@@ -90,14 +91,17 @@ const StartingGrid = ({ startingGrids, raceName, isLoading = false }) => {
                     </div>
                 </div>
                 <div style={reversed ? colorgradientStyletoRight : colorgradientStyletoLeft} className={classNames("grow flex flex-row items-center", reversed ? "flex-row-reverse" : "flex-row")}>
-                    <img
-                        alt=""
-                        className="drop-shadow-[0_0_14px_rgba(0,0,0,0.75)]"
-                        src={`${
-                            `/images/${currentYear}/drivers/` + driver.driver.name_acronym + ".png"
-                        }`}
-                        width={56}
-                    />
+                    <div className="relative shrink-0">
+                        <img
+                            alt=""
+                            className="drop-shadow-[0_0_14px_rgba(0,0,0,0.75)]"
+                            src={`${
+                                `/images/${currentYear}/drivers/` + driver.driver.name_acronym + ".png"
+                            }`}
+                            width={56}
+                        />
+                        <ChampionBadge code={driver.driver.name_acronym} size="sm" style={{ top: "2px", right: "2px" }} />
+                    </div>
                     <div className={classNames("flex flex-col", reversed ? "items-end -mr-12" : "items-start -ml-12")}>
                         <p className="text-xs leading-none gradient-text tracking-xs uppercase ">{driver.driver?.first_name || 'Unknown'}</p>
                         <p className={("text-sm font-display leading-none gradient-text -mt-1")}>{driver.driver?.last_name || 'Unknown'}</p>

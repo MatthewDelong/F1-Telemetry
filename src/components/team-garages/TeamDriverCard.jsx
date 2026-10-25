@@ -4,6 +4,7 @@ import "./TeamDriverCard.scss";
 
 import { nationalityToFlag } from "../../utils/nationalityToFlag";
 import { darkenColor } from "../../utils/colorUtils";
+import { ChampionBadge } from "../ChampionBadge";
 
 const FALLBACK_PHOTO = "/images/2024/drivers/default_driver.png";
 
@@ -113,11 +114,15 @@ export const TeamDriverCard = ({
         }}
       />
 
-      {number && (
-        <div className="team-driver-card__top-left">
-          <span className="team-driver-card__car-number">{number}</span>
-        </div>
-      )}
+      <div
+        className="team-driver-card__top-left"
+        style={{ flexDirection: "row", alignItems: "center", gap: "10px" }}
+      >
+        {number && <span className="team-driver-card__car-number">{number}</span>}
+        {!isPrincipal && (
+          <ChampionBadge code={code} size="lg" style={{ position: "static" }} />
+        )}
+      </div>
 
       <div className="team-driver-card__top">
         <span className="team-driver-card__code">{code}</span>

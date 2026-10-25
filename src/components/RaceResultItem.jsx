@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "flowbite-react";
 import { useInView } from "framer-motion";
 import { nationalityToFlag } from "../utils/nationalityToFlag";
+import { ChampionBadge } from "./ChampionBadge";
 
 export const RaceResultItem = (props) => {
   const {
@@ -68,6 +69,9 @@ export const RaceResultItem = (props) => {
             transition: `all 1s cubic-bezier(0.17, 0.55, 0.55, 1) .${index}s`,
           }}
         />
+        {championshipLevel !== "F1A" && championshipLevel !== "F2" && (
+          <ChampionBadge code={driver.code} size="md" style={{ top: "-8px", left: "52px", right: "auto" }} />
+        )}
         <div 
           className="stand px-14 text-center"
           style={{

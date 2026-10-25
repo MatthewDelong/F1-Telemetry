@@ -5,6 +5,7 @@ import { darkenColor } from "../../utils/colorUtils";
 import { storeStandings } from "./utils";
 import { getCurrentYear } from "../../utils/currentYear";
 import teamColorsByYear from "../../utils/teamColors.json";
+import { ChampionBadge } from "../../components/ChampionBadge";
 
 const currentYear = getCurrentYear();
 
@@ -33,7 +34,7 @@ const DriverStandings = ({ location, round }) => {
         return (
             <div className="top-three-driver bg-neutral-900 bg-glow-dark rounded-lg flex flex-row items-center">
                 <div 
-                    className="ml-8 rounded-md -mb-16"
+                    className="ml-8 rounded-md -mb-16 relative"
                     style={{
                         background: `linear-gradient(to right, ${darkenColor(color)} 0%, #0000 100%)`,
                         backgroundColor: '#000000'
@@ -42,6 +43,7 @@ const DriverStandings = ({ location, round }) => {
                     <div className="w-[70px] h-[150px] items-center justify-end overflow-hidden rounded-md -mt-32">
                         <img className="max-w-[220%] -ml-[40px]" src={`/images/${currentYear}/drivers/${driverData.driver.code}.png`} alt={driverData.driver.givenName} />
                     </div>
+                    <ChampionBadge code={driverData.driver.code} size="md" style={{ top: "-24px", right: "-8px" }} />
                 </div>
                 <div className="grow pr-16 py-16">
                     <div className="flex flex-row items-end gap-4 font-display leading-none mb-4">
@@ -79,8 +81,9 @@ const DriverStandings = ({ location, round }) => {
                             )} */}
                         </div>
                     </div>
-                    <div className="w-[41px] h-[41px] overflow-hidden flex items-start justify-center -mb-3">
+                    <div className="relative w-[41px] h-[41px] overflow-hidden flex items-start justify-center -mb-3">
                         <img className="shrink-0 max-w-[60px]" src={`/images/${currentYear}/drivers/${driverData.driver.code}.png`} alt={driverData.driver.givenName} />
+                        <ChampionBadge code={driverData.driver.code} size="sm" style={{ top: "1px", right: "1px" }} />
                     </div>
                     <div >
                         <p className="text-xs tracking-[2px] gradient-text-light leading-none">{driverData.driver.givenName}</p>

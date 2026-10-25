@@ -4,6 +4,7 @@ import { motion, useAnimationControls } from "framer-motion";
 import { lightenColor } from "../../utils/colorUtils";
 import { getCurrentYear } from "../../utils/currentYear";
 import { Loading } from "../../components";
+import { ChampionBadge } from "../../components/ChampionBadge";
 
 import { F1TelemetryLogo as Logo } from "../../components/F1TelemetryLogo";
 
@@ -130,7 +131,7 @@ const RaceResults = ({ raceResults, raceName, isLoading = false }) => {
                             ? "DNS"
                             : ""}
                     </p>
-                    <div className="w-[63px] h-[63px] overflow-hidden flex items-start justify-center">
+                    <div className="relative w-[63px] h-[63px] overflow-hidden flex items-start justify-center">
                         <img
                             alt=""
                             className="max-w-[100px]"
@@ -140,6 +141,7 @@ const RaceResults = ({ raceResults, raceName, isLoading = false }) => {
                                 ".png"
                             }`}
                         />
+                        <ChampionBadge code={driver.driver.name_acronym} size="sm" style={{ top: "4px", right: "4px" }} />
                     </div>
                     <div
                         className={classNames(

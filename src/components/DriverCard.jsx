@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Popover } from "flowbite-react";
 import { useInView } from "framer-motion";
+import { ChampionBadge } from "./ChampionBadge";
 
 export const DriverCard = (props) => {
   const {
@@ -249,6 +250,9 @@ export const DriverCard = (props) => {
           {isRace && isNaN(endPosition) ? "DNF" : `P${isRace ? endPosition : index + 1}`}
         </div>
         {driverImage}
+        {!championshipLevel && (
+          <ChampionBadge code={driver.code} size="sm" style={{ top: "-6px", left: "52px", right: "auto" }} />
+        )}
         <div className="grow py-0 pl-[8px] pr-4 text-right flex flex-col justify-center relative">
           <div className="flex items-center justify-end gap-3 relative z-10">
             <span className="heading-4 !m-0 !p-0 max-sm:pl-16 sm:pl-16 uppercase font-black italic tracking-tighter text-[13px] leading-none drop-shadow-md">
