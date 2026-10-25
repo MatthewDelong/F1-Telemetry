@@ -1,6 +1,6 @@
 import json
 
-with open('results.json', 'r') as f:
+with open('2026/results.json', 'r') as f:
     data = json.load(f)
 
 def format_race_results(race_list):
@@ -43,7 +43,7 @@ for idx, season_data in enumerate(data):
     output_lines.extend(lines)
 output_lines.append(']')
 
-with open('results.json', 'w') as f:
+with open('2026/results.json', 'w') as f:
     f.write('\n'.join(output_lines) + '\n')
 
 print("Formatted results.json horizontally")

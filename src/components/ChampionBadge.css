@@ -1,4 +1,13 @@
 .champion-badge {
+  /* Default theme: gold */
+  --champ-light: #fff3b0;
+  --champ-mid: #f5c542;
+  --champ-dark: #b8860b;
+  --champ-stroke: #7a5a00;
+  --champ-rgb: 245, 197, 66;
+  --champ-rgb-hi: 255, 228, 120;
+  --champ-text: #f5c542;
+
   position: absolute;
   top: 4px;
   right: 4px;
@@ -8,12 +17,29 @@
   gap: 4px;
   padding: 2px;
   border-radius: 999px;
-  background: radial-gradient(circle, rgba(20, 16, 4, 0.85), rgba(10, 8, 2, 0.7));
-  box-shadow: 0 0 0 1px rgba(245, 197, 66, 0.7), 0 0 10px rgba(245, 197, 66, 0.55);
+  background: radial-gradient(
+    circle,
+    rgba(20, 16, 4, 0.85),
+    rgba(10, 8, 2, 0.7)
+  );
+  box-shadow:
+    0 0 0 1px rgba(var(--champ-rgb), 0.7),
+    0 0 10px rgba(var(--champ-rgb), 0.55);
   animation: champion-glow 2.6s ease-in-out infinite;
   cursor: help;
   pointer-events: auto;
   line-height: 1;
+}
+
+/* Theme: ice blue (2026) */
+.champion-badge--ice {
+  --champ-light: #e8f6ff;
+  --champ-mid: #7cc8f0;
+  --champ-dark: #2a7fb8;
+  --champ-stroke: #14486b;
+  --champ-rgb: 124, 200, 240;
+  --champ-rgb-hi: 190, 230, 255;
+  --champ-text: #7cc8f0;
 }
 
 .champion-badge svg {
@@ -21,9 +47,18 @@
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6));
 }
 
-.champion-badge--sm svg { width: 12px; height: 12px; }
-.champion-badge--md svg { width: 18px; height: 18px; }
-.champion-badge--lg svg { width: 26px; height: 26px; }
+.champion-badge--sm svg {
+  width: 12px;
+  height: 12px;
+}
+.champion-badge--md svg {
+  width: 18px;
+  height: 18px;
+}
+.champion-badge--lg svg {
+  width: 26px;
+  height: 26px;
+}
 
 .champion-badge__label {
   display: none;
@@ -32,19 +67,32 @@
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #f5c542;
+  color: var(--champ-text);
   padding-right: 6px;
   white-space: nowrap;
 }
 
 .champion-badge--lg .champion-badge__label,
-.champion-badge--labelled .champion-badge__label { display: inline; }
+.champion-badge--labelled .champion-badge__label {
+  display: inline;
+}
 
 @keyframes champion-glow {
-  0%, 100% { box-shadow: 0 0 0 1px rgba(245, 197, 66, 0.7), 0 0 8px rgba(245, 197, 66, 0.4); }
-  50%      { box-shadow: 0 0 0 1px rgba(255, 228, 120, 0.95), 0 0 16px rgba(245, 197, 66, 0.8); }
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 1px rgba(var(--champ-rgb), 0.7),
+      0 0 8px rgba(var(--champ-rgb), 0.4);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(var(--champ-rgb-hi), 0.95),
+      0 0 16px rgba(var(--champ-rgb), 0.8);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .champion-badge { animation: none; }
+  .champion-badge {
+    animation: none;
+  }
 }

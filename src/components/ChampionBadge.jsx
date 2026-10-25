@@ -8,7 +8,7 @@ import {
 import "./ChampionBadge.css";
 
 /**
- * Gold crown shown on a reigning champion's image.
+ * Crown shown on a reigning champion's image.
  * Renders nothing for any other driver. Parent must be position: relative
  * (or pass a className / style to position it).
  *
@@ -28,15 +28,18 @@ export const ChampionBadge = ({
 
   let label;
   let short;
+  let theme;
   if (teamId) {
     if (!isConstructorChampion(teamId)) return null;
     label = `${CURRENT_CONSTRUCTOR_CHAMPION.year} Constructors' Champion – ${CURRENT_CONSTRUCTOR_CHAMPION.name}`;
     short = `${CURRENT_CONSTRUCTOR_CHAMPION.year} Constructors' Champion`;
+    theme = CURRENT_CONSTRUCTOR_CHAMPION.theme;
   } else {
     const champion = getChampion(code);
     if (!champion) return null;
     label = `${champion.year} World Champion – ${champion.name}`;
     short = `${champion.year} Champion`;
+    theme = champion.theme;
   }
 
   return (
@@ -45,6 +48,7 @@ export const ChampionBadge = ({
         "champion-badge",
         `champion-badge--${size}`,
         { "champion-badge--labelled": showLabel },
+        theme && `champion-badge--${theme}`,
         className,
       )}
       style={style}
@@ -55,15 +59,15 @@ export const ChampionBadge = ({
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <defs>
           <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#FFF3B0" />
-            <stop offset="50%" stopColor="#F5C542" />
-            <stop offset="100%" stopColor="#B8860B" />
+            <stop offset="0%" style={{ stopColor: "var(--champ-light)" }} />
+            <stop offset="50%" style={{ stopColor: "var(--champ-mid)" }} />
+            <stop offset="100%" style={{ stopColor: "var(--champ-dark)" }} />
           </linearGradient>
         </defs>
         <path
           d="M3 8l4.5 3.5L12 4l4.5 7.5L21 8l-2 10H5L3 8z"
           fill={`url(#${gradientId})`}
-          stroke="#7a5a00"
+          style={{ stroke: "var(--champ-stroke)" }}
           strokeWidth="0.8"
           strokeLinejoin="round"
         />

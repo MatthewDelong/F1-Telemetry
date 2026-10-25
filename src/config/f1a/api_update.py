@@ -5,7 +5,7 @@ import requests
 import os
 
 # PASTE YOUR URL HERE:
-URL_TO_SCRAPE = "https://www.f1academy.com/Racing-Series/Results?raceid=26"
+URL_TO_SCRAPE = "https://www.f1academy.com/Racing-Series/Results?raceid=27"
 
 def parse_time(t_str):
     if not t_str:

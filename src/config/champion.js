@@ -1,16 +1,18 @@
 /**
- * Reigning F1 World Champion.
+ * Reigning F1 World Champions.
  * ---------------------------------------------------------------
- * Update this when a new champion is crowned – the crown badge
- * will automatically move to the new driver everywhere on the site.
+ * Update this when a new champion is crowned. The crown badge
+ * will automatically show for every driver listed here.
  *
- *   code: 3-letter driver code (must match the image filename, e.g. NOR.png)
- *   name: Display name shown in the tooltip
- *   year: Season the title was won
+ *   code:  3-letter driver code (must match the image filename, e.g. NOR.png)
+ *   name:  Display name shown in the tooltip
+ *   year:  Season the title was won
+ *   theme: optional badge colour. Leave out for gold, or use "ice"
+ *          (add more themes in ChampionBadge.css)
  */
 export const CHAMPIONS = [
-  { code: "NOR", name: "Lando Norris", year: 2025 },
-  /* { code: "ANT", name: "Kimi Antonelli", year: 2026 }, */ // replace once confirmed
+  { code: "NOR", name: "Lando Norris", year: 2025 }, // no theme = gold
+  /* { code: "ANT", name: "Kimi Antonelli", year: 2026, theme: "ice" }, */ // replace once confirmed
 ];
 
 const normalise = (code) => (code ? code.trim().toUpperCase() : "");
@@ -19,7 +21,7 @@ const normalise = (code) => (code ? code.trim().toUpperCase() : "");
 export const getChampion = (code) =>
   CHAMPIONS.find((c) => c.code.toUpperCase() === normalise(code));
 
-// Same behaviour as before: true/false
+// true/false
 export const isChampion = (code) => !!getChampion(code);
 
 /**
@@ -29,6 +31,7 @@ export const isChampion = (code) => !!getChampion(code);
  *   teamId: constructor id (e.g. "mclaren", "red_bull", "ferrari", "mercedes")
  *   name:   Display name shown in the tooltip
  *   year:   Season the title was won
+ *   theme:  optional badge colour (omit for gold)
  */
 export const CURRENT_CONSTRUCTOR_CHAMPION = {
   teamId: "mclaren",
