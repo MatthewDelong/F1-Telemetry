@@ -8,14 +8,19 @@
  *   name: Display name shown in the tooltip
  *   year: Season the title was won
  */
-export const CURRENT_CHAMPION = {
-  code: "NOR",
-  name: "Lando Norris",
-  year: 2025,
-};
+export const CHAMPIONS = [
+  { code: "NOR", name: "Lando Norris", year: 2025 },
+  /* { code: "ANT", name: "Kimi Antonelli", year: 2026 }, */ // replace once confirmed
+];
 
-export const isChampion = (code) =>
-  !!code && code.trim().toUpperCase() === CURRENT_CHAMPION.code.toUpperCase();
+const normalise = (code) => (code ? code.trim().toUpperCase() : "");
+
+// Returns the matching champion object, or undefined
+export const getChampion = (code) =>
+  CHAMPIONS.find((c) => c.code.toUpperCase() === normalise(code));
+
+// Same behaviour as before: true/false
+export const isChampion = (code) => !!getChampion(code);
 
 /**
  * Reigning F1 Constructors' Champion.
@@ -33,4 +38,5 @@ export const CURRENT_CONSTRUCTOR_CHAMPION = {
 
 export const isConstructorChampion = (teamId) =>
   !!teamId &&
-  teamId.trim().toLowerCase() === CURRENT_CONSTRUCTOR_CHAMPION.teamId.toLowerCase();
+  teamId.trim().toLowerCase() ===
+    CURRENT_CONSTRUCTOR_CHAMPION.teamId.toLowerCase();
