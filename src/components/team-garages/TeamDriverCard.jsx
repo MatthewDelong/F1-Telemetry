@@ -5,6 +5,7 @@ import "./TeamDriverCard.scss";
 import { nationalityToFlag } from "../../utils/nationalityToFlag";
 import { darkenColor } from "../../utils/colorUtils";
 import { ChampionBadge } from "../ChampionBadge";
+import { CURRENT_CONSTRUCTOR_CHAMPION } from "../../config/champion";
 
 const FALLBACK_PHOTO = "/images/2024/drivers/default_driver.png";
 
@@ -147,6 +148,15 @@ export const TeamDriverCard = ({
         </div>
         <div className="team-driver-card__stats">
           {flag && <img className="team-driver-card__flag" src={flag} alt={nationality} />}
+          {isPrincipal && (
+            <ChampionBadge
+              teamId={teamId}
+              size="sm"
+              showLabel
+              labelText={`${CURRENT_CONSTRUCTOR_CHAMPION.year} Champions`}
+              style={{ position: "static" }}
+            />
+          )}
           {isPrincipal ? (
             <>
               <div className="team-driver-card__stat team-driver-card__stat--full">

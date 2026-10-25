@@ -16,3 +16,21 @@ export const CURRENT_CHAMPION = {
 
 export const isChampion = (code) =>
   !!code && code.trim().toUpperCase() === CURRENT_CHAMPION.code.toUpperCase();
+
+/**
+ * Reigning F1 Constructors' Champion.
+ * Shown on the Team Principal (TP) card in Team Garages.
+ *
+ *   teamId: constructor id (e.g. "mclaren", "red_bull", "ferrari", "mercedes")
+ *   name:   Display name shown in the tooltip
+ *   year:   Season the title was won
+ */
+export const CURRENT_CONSTRUCTOR_CHAMPION = {
+  teamId: "mclaren",
+  name: "McLaren",
+  year: 2025,
+};
+
+export const isConstructorChampion = (teamId) =>
+  !!teamId &&
+  teamId.trim().toLowerCase() === CURRENT_CONSTRUCTOR_CHAMPION.teamId.toLowerCase();

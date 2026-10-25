@@ -1,6 +1,11 @@
 import React from "react";
 import classNames from "classnames";
-import { CURRENT_CHAMPION, isChampion } from "../config/champion";
+import {
+  CURRENT_CHAMPION,
+  CURRENT_CONSTRUCTOR_CHAMPION,
+  isChampion,
+  isConstructorChampion,
+} from "../config/champion";
 import "./ChampionBadge.css";
 
 /**
@@ -10,13 +15,22 @@ import "./ChampionBadge.css";
  *
  * size: "sm" | "md" | "lg"
  */
-export const ChampionBadge = ({ code, size = "md", className, style }) => {
-  if (!isChampion(code)) return null;
-  const label = `${CURRENT_CHAMPION.year} World Champion – ${CURRENT_CHAMPION.name}`;
+export const ChampionBadge = ({ code, teamId, size = "md", className, style, showLabel, labelText }) => {
+  let label;
+  let short;
+  if (teamId) {
+    if (!isConstructorChampion(teamId)) return null;
+    label = `${CURRENT_CONSTRUCTOR_CHAMPION.year} Constructors' Champion – ${CURRENT_CONSTRUCTOR_CHAMPION.name}`;
+    short = `${CURRENT_CONSTRUCTOR_CHAMPION.year} Constructors' Champion`;
+  } else {
+    if (!isChampion(code)) return null;
+    label = `${CURRENT_CHAMPION.year} World Champion – ${CURRENT_CHAMPION.name}`;
+    short = `${CURRENT_CHAMPION.year} Champion`;
+  }
 
   return (
     <span
-      className={classNames("champion-badge", `champion-badge--${size}`, className)}
+      className={classNames("champion-badge", `champion-badge--${size}`, { "champion-badge--labelled": showLabel }, className)}
       style={style}
       title={label}
       aria-label={label}
@@ -39,7 +53,7 @@ export const ChampionBadge = ({ code, size = "md", className, style }) => {
         />
         <rect x="5" y="19" width="14" height="2" rx="0.6" fill="url(#champGold)" />
       </svg>
-      <span className="champion-badge__label">{CURRENT_CHAMPION.year} Champion</span>
+      <span className="champion-badge__label">{labelText || short}</span>
     </span>
   );
 };

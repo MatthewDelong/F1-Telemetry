@@ -37,7 +37,8 @@
   white-space: nowrap;
 }
 
-.champion-badge--lg .champion-badge__label { display: inline; }
+.champion-badge--lg .champion-badge__label,
+.champion-badge--labelled .champion-badge__label { display: inline; }
 
 @keyframes champion-glow {
   0%, 100% { box-shadow: 0 0 0 1px rgba(245, 197, 66, 0.7), 0 0 8px rgba(245, 197, 66, 0.4); }
