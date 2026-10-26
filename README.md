@@ -200,6 +200,11 @@ The project includes Python scripts that fetch the latest season data and format
 - **F1:** `src/config/f1/api_update.py` — Fetches data from the [Jolpica API](https://jolpi.ca/) and [OpenF1 API](https://openf1.org).
 - **F2:** `src/config/f2/api_update.py` — Scrapes F2 results directly from the official FIA Formula 2 website.
 - **F1 Academy:** `src/config/f1a/api_update.py` — Scrapes F1 Academy results directly from the official F1 Academy website.
+- **Manually Updating**
+  - `npm run update:f1` runs f1 api_update.py
+  - `npm run update:f2` runs api_update.py, then python format.py, then python scrape_standings.py
+  - `npm run update:f1a` runs api_update.py, then python format.py then python scrape_standings.py
+  - `npm run update:all` runs all three in order
 
 **Prerequisites**
 
