@@ -799,13 +799,11 @@ app.post("/api/admin/update/f2", requireAdmin, (req, res) => {
         { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 },
         (fmtError, fmtStdout, fmtStderr) => {
           if (fmtError) {
-            return res
-              .status(500)
-              .json({
-                error: fmtError.message,
-                stderr: fmtStderr,
-                partialOutput: stdout,
-              });
+            return res.status(500).json({
+              error: fmtError.message,
+              stderr: fmtStderr,
+              partialOutput: stdout,
+            });
           }
           // Run scrape_standings.py
           execPython(
@@ -813,13 +811,11 @@ app.post("/api/admin/update/f2", requireAdmin, (req, res) => {
             { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 },
             (scrapeError, scrapeStdout, scrapeStderr) => {
               if (scrapeError) {
-                return res
-                  .status(500)
-                  .json({
-                    error: scrapeError.message,
-                    stderr: scrapeStderr,
-                    partialOutput: stdout + "\n" + fmtStdout,
-                  });
+                return res.status(500).json({
+                  error: scrapeError.message,
+                  stderr: scrapeStderr,
+                  partialOutput: stdout + "\n" + fmtStdout,
+                });
               }
               res.json({
                 message: "F2 Data updated successfully",
@@ -855,13 +851,11 @@ app.post("/api/admin/update/f1a", requireAdmin, (req, res) => {
         { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 },
         (fmtError, fmtStdout, fmtStderr) => {
           if (fmtError) {
-            return res
-              .status(500)
-              .json({
-                error: fmtError.message,
-                stderr: fmtStderr,
-                partialOutput: stdout,
-              });
+            return res.status(500).json({
+              error: fmtError.message,
+              stderr: fmtStderr,
+              partialOutput: stdout,
+            });
           }
           res.json({
             message: "F1A Data updated successfully",

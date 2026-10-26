@@ -42,6 +42,10 @@
     "compress-models": "powershell -ExecutionPolicy Bypass -File scripts/robust-compress-glbs.ps1",
     "remove-f2-bg": "node scripts/remove-backgrounds.mjs",
     "py:install": "py -m venv .venv && .venv\\Scripts\\python.exe -m pip install requests numpy",
+    "update:f1": "cd src\\config\\f1 && ..\\..\\..\\.venv\\Scripts\\python.exe api_update.py",
+    "update:f2": "cd src\\config\\f2 && ..\\..\\..\\.venv\\Scripts\\python.exe api_update.py && ..\\..\\..\\.venv\\Scripts\\python.exe format.py && ..\\..\\..\\.venv\\Scripts\\python.exe scrape_standings.py",
+    "update:f1a": "cd src\\config\\f1a && ..\\..\\..\\.venv\\Scripts\\python.exe api_update.py && ..\\..\\..\\.venv\\Scripts\\python.exe format.py",
+    "update:all": "npm run update:f1 && npm run update:f2 && npm run update:f1a",
     "postinstall": "npm install --prefix backend"
   },
   "eslintConfig": {
