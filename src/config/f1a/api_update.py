@@ -4,8 +4,13 @@ import re
 import requests
 import os
 
+# OPTIONAL: set the full path of your project's results.json to force where it is written.
+# Example (Windows): r"C:\Users\you\my-project\src\config\f1a\2026\results.json"
+# Leave as "" to auto-detect <project>/src/config/f1a/<season>/results.json
+RESULTS_PATH = ""
+
 # PASTE YOUR URL HERE:
-URL_TO_SCRAPE = "https://www.f1academy.com/Racing-Series/Results?raceid=27"
+URL_TO_SCRAPE = "https://www.f1academy.com/Racing-Series/Results?raceid=24"
 
 def parse_time(t_str):
     if not t_str:
@@ -115,7 +120,20 @@ def custom_stringify(results):
     json_str = re.sub(r'\{\n\s+"number"[\s\S]*?\n\s+\}', replacer, json_str)
     return json_str
 
+class _Tee:
+    def __init__(self, *streams):
+        self.streams = streams
+    def write(self, data):
+        for st in self.streams:
+            st.write(data)
+    def flush(self):
+        for st in self.streams:
+            st.flush()
+
 def main():
+    _log = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'last_run.log'), 'w', encoding='utf-8')
+    sys.stdout = _Tee(sys.__stdout__, _log)
+    print("api_update.py version: 3-race-fix v4")
     if len(sys.argv) > 1:
         url = sys.argv[1]
     else:
@@ -145,20 +163,60 @@ def main():
         
     session_results = page_data.get('SessionResults', [])
     races_data = {}
-    
+
+    # Dump the raw sessions next to the script so we can see exactly what the site returned
+    debug_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'debug_sessions.json')
+    with open(debug_path, 'w', encoding='utf-8') as f:
+        json.dump([{ 'SessionName': x.get('SessionName'), 'count': len(x.get('Results', []) or []),
+                     'keys': list(x.keys()) } for x in session_results], f, indent=2)
+    print(f"Wrote {debug_path}")
+
+    # Show exactly what the site gave us, so naming problems are obvious
+    print("Sessions found on page:")
+    for session in session_results:
+        print(f"  - {session.get('SessionName', '')!r}: {len(session.get('Results', []) or [])} results")
+
+    def keyword_slot(name):
+        if 'opening' in name:
+            return 'opening'
+        if 'reverse' in name:
+            return 'reverse'
+        if 'feature' in name or 'main race' in name:
+            return 'feature'
+        return None
+
+    race_sessions = []
     for session in session_results:
         name = session.get('SessionName', '').lower()
-        results = session.get('Results', [])
-        
-        # Even if results are empty, let's keep track in case the user runs it before the race finishes
-        if 'opening' in name or 'race 1' in name:
-            races_data['opening'] = results
-        elif 'reverse' in name or 'race 2' in name:
-            races_data['reverse'] = results
-        elif 'feature' in name or 'race 3' in name:
-            races_data['feature'] = results
-        elif 'qualifying' in name:
+        results = session.get('Results', []) or []
+        if 'qualif' in name:
             races_data['qualifying'] = results
+        elif 'practice' in name or 'test' in name:
+            continue
+        else:
+            race_sessions.append((name, results))
+
+    # 3 race sessions = opening / reverse / feature weekend, 2 = reverse / feature
+    if len(race_sessions) >= 3:
+        slots = ['opening', 'reverse', 'feature']
+    elif len(race_sessions) == 2:
+        slots = ['reverse', 'feature']
+    else:
+        slots = ['feature']
+
+    # First assign by name, then fill anything left over by page order
+    unassigned = []
+    for name, results in race_sessions:
+        slot = keyword_slot(name)
+        if slot in slots and slot not in races_data:
+            races_data[slot] = results
+        else:
+            unassigned.append((name, results))
+    for slot in slots:
+        if slot not in races_data and unassigned:
+            name, results = unassigned.pop(0)
+            races_data[slot] = results
+            print(f"  (assigned {name!r} to {slot} by page order)")
 
     fastest_quali_time = float('inf')
     pole_car_number = None
@@ -188,24 +246,26 @@ def main():
     # Map them properly based on the number of races available
     new_results = {}
     if 'opening' in races_data and 'reverse' in races_data and 'feature' in races_data:
-        # 3 Races Weekend
+        # 3 Races Weekend: race1 = opening, race2 = reverse grid, race3 = feature
         new_results['race1'] = format_race(races_data['opening'], pole_car_number=pole_car_number)
         new_results['race2'] = format_race(races_data['reverse'])
         new_results['race3'] = format_race(races_data['feature'], pole_car_number=pole_car_number)
+        if not races_data['feature']:
+            print("WARNING: Feature race has no results yet - race3 will be empty. Re-run after it finishes.")
     elif 'reverse' in races_data and 'feature' in races_data:
         # 2 Races Weekend
         new_results['race1'] = format_race(races_data['reverse'])
         new_results['race2'] = format_race(races_data['feature'], pole_car_number=pole_car_number)
     else:
-        # Fallback if names are slightly different or only 1 race exists
         count = 1
         for k in ['opening', 'reverse', 'feature']:
             if k in races_data:
-                # Apply pole only to the first and last found to be safe, or just opening/feature
                 is_pole_race = k in ['opening', 'feature']
                 new_results[f'race{count}'] = format_race(races_data[k], pole_car_number=pole_car_number if is_pole_race else None)
                 count += 1
-        
+
+    print("Saved races: " + ", ".join(f"{k}={len(v)} drivers" for k, v in new_results.items()))
+
     season = str(page_data.get('SeasonName', '2026'))
     if " " in season:
         season = season.split()[0]
@@ -243,10 +303,28 @@ def main():
         "Results": new_results
     }
     
-    results_dir = os.path.join(os.path.dirname(__file__), season)
+    # Write to <project>/src/config/f1a/<season>/results.json
+    # (project root = the nearest parent folder of this script that contains "src")
+    root = os.path.dirname(os.path.abspath(__file__))
+    probe = root
+    while True:
+        if os.path.isdir(os.path.join(probe, 'src')):
+            root = probe
+            break
+        parent = os.path.dirname(probe)
+        if parent == probe:
+            break
+        probe = parent
+    results_dir = os.path.join(root, 'src', 'config', 'f1a', season)
     os.makedirs(results_dir, exist_ok=True)
     results_path = os.path.join(results_dir, 'results.json')
-        
+    if RESULTS_PATH:
+        results_path = RESULTS_PATH
+        os.makedirs(os.path.dirname(os.path.abspath(results_path)), exist_ok=True)
+    if not os.path.exists(results_path):
+        print("!!! WARNING: results.json did not exist at this path, so a NEW file will be created.")
+        print("!!! If your site's file is somewhere else, set RESULTS_PATH at the top of this script.")
+
     if os.path.exists(results_path):
         with open(results_path, 'r', encoding='utf-8') as f:
             try:
@@ -267,11 +345,18 @@ def main():
     if not replaced:
         results.append(new_round)
         
+    results.sort(key=lambda r: int(r.get('round') or 0))
     out = custom_stringify(results)
     
     with open(results_path, 'w', encoding='utf-8') as f:
         f.write(out)
         
+    print(f"Wrote file: {os.path.abspath(results_path)}")
+    with open(results_path, 'r', encoding='utf-8') as f:
+        check = json.load(f)
+    for r in check:
+        if r.get('round') == round_number:
+            print(f"READ-BACK round {round_number}: " + ", ".join(f"{k}={len(v)}" for k, v in r['Results'].items()))
     print(f"Successfully updated results.json with {race_name} (Round {round_number})")
 
 if __name__ == '__main__':
