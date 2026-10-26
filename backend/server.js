@@ -18,7 +18,7 @@ async function tryGitHubFallback(path, cacheKey) {
         try {
           const response = await axios.get(`${baseUrl}${path}`);
           const resData = response.data;
-          if (typeof resData === 'object' && !resData.lastUpdate) {
+          if (typeof resData === "object" && !resData.lastUpdate) {
             resData.lastUpdate = new Date().toISOString();
           }
           return resData;
@@ -29,19 +29,22 @@ async function tryGitHubFallback(path, cacheKey) {
       }
       throw new Error("Not found on GitHub");
     },
-    1000 * 60 * 60 * 24 // Cache GitHub data for 24h
+    1000 * 60 * 60 * 24, // Cache GitHub data for 24h
   );
 }
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors({
-  origin: process.env.NODE_ENV === 'production'
-    ? ['https://f1-telemetry.co.uk']
-    : ['http://localhost:3006', 'http://localhost:3000'],
-  methods: ['GET', 'POST'],
-}));
+app.use(
+  cors({
+    origin:
+      process.env.NODE_ENV === "production"
+        ? ["https://f1-telemetry.co.uk"]
+        : ["http://localhost:3006", "http://localhost:3000"],
+    methods: ["GET", "POST"],
+  }),
+);
 app.use(express.json());
 
 const fs = require("fs");
@@ -91,29 +94,36 @@ const getCachedData = async (key, fetchCallback, ttlMs = 1000 * 60 * 30) => {
 const { buildDriverStats, getLocal2026Stats } = require("./driverStatsBuilder");
 
 // ─── Admin Auth Middleware ───
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN || '';
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "";
 function requireAdmin(req, res, next) {
-  if (process.env.NODE_ENV === 'production') {
-    const token = req.headers['x-admin-token'] || req.query.token || '';
+  if (process.env.NODE_ENV === "production") {
+    const token = req.headers["x-admin-token"] || req.query.token || "";
     if (!ADMIN_TOKEN || token !== ADMIN_TOKEN) {
-      return res.status(403).json({ error: 'Forbidden: invalid admin token' });
+      return res.status(403).json({ error: "Forbidden: invalid admin token" });
     }
   }
   next();
 }
 
 // ─── Admin: Rebuild all 2026 drivers ───
-app.get('/api/admin/rebuild-2026', requireAdmin, async (req, res) => {
+app.get("/api/admin/rebuild-2026", requireAdmin, async (req, res) => {
   try {
-    const resultsPath = pathMod.join(__dirname, '..', 'src', 'config', 'f1', 'results.json');
+    const resultsPath = pathMod.join(
+      __dirname,
+      "..",
+      "src",
+      "config",
+      "f1",
+      "results.json",
+    );
     if (!fs.existsSync(resultsPath)) {
       return res.status(404).json({ error: "2026 results.json not found" });
     }
-    
-    const resultsData = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
+
+    const resultsData = JSON.parse(fs.readFileSync(resultsPath, "utf8"));
     const driverIds = new Set();
-    resultsData.forEach(race => {
-      race.Results.forEach(r => {
+    resultsData.forEach((race) => {
+      race.Results.forEach((r) => {
         if (r.Driver.driverId) driverIds.add(r.Driver.driverId);
         else {
           let code = r.Driver.code || "";
@@ -127,13 +137,16 @@ app.get('/api/admin/rebuild-2026', requireAdmin, async (req, res) => {
           else if (code === "LAW") driverIds.add("lawson");
           else if (code === "PER") driverIds.add("perez");
           else if (code === "HUL") driverIds.add("hulkenberg");
-          else if (r.Driver.familyName) driverIds.add(r.Driver.familyName.toLowerCase().replace(' ', '_'));
+          else if (r.Driver.familyName)
+            driverIds.add(r.Driver.familyName.toLowerCase().replace(" ", "_"));
           else if (code) driverIds.add(code.toLowerCase());
         }
       });
     });
 
-    console.log(`[Admin] Starting batch rebuild for ${driverIds.size} drivers...`);
+    console.log(
+      `[Admin] Starting batch rebuild for ${driverIds.size} drivers...`,
+    );
     const results = [];
     const teamDrivers = {}; // { constructorId: [DriverObjects] }
 
@@ -154,50 +167,69 @@ app.get('/api/admin/rebuild-2026', requireAdmin, async (req, res) => {
           }
 
           // Write to local JSON file so it can be committed to GitHub for the live site
-          const driverPath = pathMod.join(__dirname, '..', 'src', 'config', 'f1', 'drivers', `${id}.json`);
+          const driverPath = pathMod.join(
+            __dirname,
+            "..",
+            "src",
+            "config",
+            "f1",
+            "drivers",
+            `${id}.json`,
+          );
           if (fs.existsSync(pathMod.dirname(driverPath))) {
-            fs.writeFileSync(driverPath, value, 'utf8');
+            fs.writeFileSync(driverPath, value, "utf8");
             console.log(`[Admin] Wrote full historical stats to ${driverPath}`);
           }
-          results.push({ id, status: 'success' });
+          results.push({ id, status: "success" });
 
           // Track driver for team roster
           const lastRace = resultsData[resultsData.length - 1];
-          const driverResult = lastRace.Results.find(r => 
-            (r.Driver.driverId && r.Driver.driverId.toLowerCase() === id) || 
-            (r.Driver.code && r.Driver.code.toLowerCase() === id) ||
-            (r.Driver.familyName && r.Driver.familyName.toLowerCase() === id)
+          const driverResult = lastRace.Results.find(
+            (r) =>
+              (r.Driver.driverId && r.Driver.driverId.toLowerCase() === id) ||
+              (r.Driver.code && r.Driver.code.toLowerCase() === id) ||
+              (r.Driver.familyName && r.Driver.familyName.toLowerCase() === id),
           );
-          
+
           if (driverResult && driverResult.Constructor) {
             const teamId = driverResult.Constructor.constructorId;
             if (!teamDrivers[teamId]) teamDrivers[teamId] = [];
             // Only add if not already in list
-            if (!teamDrivers[teamId].some(d => d.driverId === id)) {
+            if (!teamDrivers[teamId].some((d) => d.driverId === id)) {
               teamDrivers[teamId].push({
                 driverId: id,
                 permanentNumber: driverResult.number,
                 code: driverResult.Driver.code,
                 givenName: driverResult.Driver.givenName,
-                familyName: driverResult.Driver.familyName
+                familyName: driverResult.Driver.familyName,
               });
             }
           }
         }
       } catch (e) {
-        results.push({ id, status: 'error', message: e.message });
+        results.push({ id, status: "error", message: e.message });
       }
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise((r) => setTimeout(r, 200));
     }
 
     // Save team rosters to cache
     for (const [teamId, drivers] of Object.entries(teamDrivers)) {
       const cacheKey = `f1:constructors/2026/${teamId}.json`;
-      await Cache.upsert({ key: cacheKey, value: JSON.stringify(drivers), lastUpdated: new Date() });
-      console.log(`[Admin] Updated 2026 roster for ${teamId}: ${drivers.map(d => d.driverId).join(', ')}`);
+      await Cache.upsert({
+        key: cacheKey,
+        value: JSON.stringify(drivers),
+        lastUpdated: new Date(),
+      });
+      console.log(
+        `[Admin] Updated 2026 roster for ${teamId}: ${drivers.map((d) => d.driverId).join(", ")}`,
+      );
     }
 
-    return res.json({ message: "Batch rebuild complete", results, rosters: Object.keys(teamDrivers) });
+    return res.json({
+      message: "Batch rebuild complete",
+      results,
+      rosters: Object.keys(teamDrivers),
+    });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
@@ -206,19 +238,19 @@ app.get('/api/admin/rebuild-2026', requireAdmin, async (req, res) => {
 // Generic Proxy Route — cache-first for F1, passthrough for F1A/F2
 app.use("/api/proxy/:source", async (req, res) => {
   const { source } = req.params;
-  const allowedSources = ['f1', 'f2', 'f1a', 'jolpica'];
+  const allowedSources = ["f1", "f2", "f1a", "jolpica"];
   if (!allowedSources.includes(source)) {
     return res.status(400).json({ error: "Invalid source" });
   }
   const path = req.path.replace(/^\//, "");
   if (!path) return res.status(400).json({ error: "Path required" });
   // Block path traversal attempts
-  if (path.includes('..') || path.includes('~')) {
+  if (path.includes("..") || path.includes("~")) {
     return res.status(400).json({ error: "Invalid path" });
   }
 
   const cacheKey = `${source}:${path}`;
-  const forceRefresh = req.query.refresh === 'true';
+  const forceRefresh = req.query.refresh === "true";
 
   if (source === "f1") {
     const fileName = pathMod.basename(path);
@@ -228,27 +260,66 @@ app.use("/api/proxy/:source", async (req, res) => {
     // 1. Try local file first
     let localConfigPath = null;
     if (year) {
-      localConfigPath = pathMod.join(__dirname, "..", "src", "config", "f1", year, fileName);
+      localConfigPath = pathMod.join(
+        __dirname,
+        "..",
+        "src",
+        "config",
+        "f1",
+        year,
+        fileName,
+      );
     }
     if (!localConfigPath || !fs.existsSync(localConfigPath)) {
       // Use 'path' instead of 'fileName' so we preserve subdirectories like 'drivers/'
-      localConfigPath = pathMod.join(__dirname, "..", "src", "config", "f1", path);
+      localConfigPath = pathMod.join(
+        __dirname,
+        "..",
+        "src",
+        "config",
+        "f1",
+        path,
+      );
     }
-    
+
     // Fallback for files that the API requests from 'races/2026/' but are actually in the root 'f1/'
-    if (!fs.existsSync(localConfigPath) && ["results.json", "qualifying.json", "sprint.json"].includes(fileName)) {
-      localConfigPath = pathMod.join(__dirname, "..", "src", "config", "f1", fileName);
+    if (
+      !fs.existsSync(localConfigPath) &&
+      ["results.json", "qualifying.json", "sprint.json"].includes(fileName)
+    ) {
+      localConfigPath = pathMod.join(
+        __dirname,
+        "..",
+        "src",
+        "config",
+        "f1",
+        fileName,
+      );
     }
 
     if (fs.existsSync(localConfigPath)) {
-      const isGlobal = ["races.json", "raceDetails.json", "results.json", "qualifying.json", "sprint.json"].includes(fileName);
-      const isYearSpecificMatch = year && localConfigPath.includes(pathMod.join(year, fileName));
-      const isRootAnd2026 = (!year || year === "2026") && localConfigPath.endsWith(pathMod.join("f1", path));
+      const isGlobal = [
+        "races.json",
+        "raceDetails.json",
+        "results.json",
+        "qualifying.json",
+        "sprint.json",
+      ].includes(fileName);
+      const isYearSpecificMatch =
+        year && localConfigPath.includes(pathMod.join(year, fileName));
+      const isRootAnd2026 =
+        (!year || year === "2026") &&
+        localConfigPath.endsWith(pathMod.join("f1", path));
 
-      if (isGlobal || isYearSpecificMatch || isRootAnd2026 || path.includes("2026")) {
+      if (
+        isGlobal ||
+        isYearSpecificMatch ||
+        isRootAnd2026 ||
+        path.includes("2026")
+      ) {
         console.log(`[Proxy] Serving local file: ${localConfigPath}`);
         try {
-          const content = fs.readFileSync(localConfigPath, 'utf8');
+          const content = fs.readFileSync(localConfigPath, "utf8");
           return res.json(JSON.parse(content));
         } catch (e) {
           console.error(`[Proxy] Error reading local file: ${e.message}`);
@@ -259,41 +330,50 @@ app.use("/api/proxy/:source", async (req, res) => {
     // 2. Specialized Handler: Driver Stats Building (on-demand)
     const driverMatch = path.match(/^drivers\/([^/]+)\.json$/);
     if (driverMatch) {
-        const driverId = driverMatch[1];
-        try {
-            // Check cache first
-            const cached = await Cache.findOne({ where: { key: cacheKey } });
-            if (cached && !forceRefresh) {
-                const now = new Date();
-                const diff = now - cached.lastUpdated;
-                const ageHours = diff / (1000 * 60 * 60);
-                console.log(`[Debug Cache] driver=${driverId}, lastUpdated=${cached.lastUpdated}, typeof=${typeof cached.lastUpdated}, now=${now}, diff=${diff}, ageHours=${ageHours}`);
-                if (ageHours < 24) return res.json(JSON.parse(cached.value));
-            }
-
-            // Try GitHub first to avoid Jolpica 429s
-            if (!forceRefresh) {
-                try {
-                    const githubData = await tryGitHubFallback(path, cacheKey);
-                    if (githubData) return res.json(githubData);
-                } catch (e) {
-                    console.warn(`[Proxy] GitHub fallback failed for ${path}:`, e.message);
-                }
-            }
-
-            // Build fresh from Jolpica
-            console.log(`[Proxy] Building stats from Jolpica for: ${driverId}`);
-            const stats = await buildDriverStats(driverId);
-            if (stats) {
-                await Cache.upsert({ key: cacheKey, value: JSON.stringify(stats), lastUpdated: new Date() });
-                return res.json(stats);
-            }
-        } catch (err) {
-            console.error(`[Proxy] Builder failed for ${driverId}: ${err.message}`);
-            // Last fallback to whatever we have in cache
-            const cached = await Cache.findOne({ where: { key: cacheKey } });
-            if (cached) return res.json(JSON.parse(cached.value));
+      const driverId = driverMatch[1];
+      try {
+        // Check cache first
+        const cached = await Cache.findOne({ where: { key: cacheKey } });
+        if (cached && !forceRefresh) {
+          const now = new Date();
+          const diff = now - cached.lastUpdated;
+          const ageHours = diff / (1000 * 60 * 60);
+          console.log(
+            `[Debug Cache] driver=${driverId}, lastUpdated=${cached.lastUpdated}, typeof=${typeof cached.lastUpdated}, now=${now}, diff=${diff}, ageHours=${ageHours}`,
+          );
+          if (ageHours < 24) return res.json(JSON.parse(cached.value));
         }
+
+        // Try GitHub first to avoid Jolpica 429s
+        if (!forceRefresh) {
+          try {
+            const githubData = await tryGitHubFallback(path, cacheKey);
+            if (githubData) return res.json(githubData);
+          } catch (e) {
+            console.warn(
+              `[Proxy] GitHub fallback failed for ${path}:`,
+              e.message,
+            );
+          }
+        }
+
+        // Build fresh from Jolpica
+        console.log(`[Proxy] Building stats from Jolpica for: ${driverId}`);
+        const stats = await buildDriverStats(driverId);
+        if (stats) {
+          await Cache.upsert({
+            key: cacheKey,
+            value: JSON.stringify(stats),
+            lastUpdated: new Date(),
+          });
+          return res.json(stats);
+        }
+      } catch (err) {
+        console.error(`[Proxy] Builder failed for ${driverId}: ${err.message}`);
+        // Last fallback to whatever we have in cache
+        const cached = await Cache.findOne({ where: { key: cacheKey } });
+        if (cached) return res.json(JSON.parse(cached.value));
+      }
     }
 
     // 3. GitHub fallback for general F1 data
@@ -313,7 +393,11 @@ app.use("/api/proxy/:source", async (req, res) => {
           const response = await axios.get(url, { timeout: 10000 });
           if (response.data) {
             console.log(`[Proxy] Found on GitHub: ${url}`);
-            await Cache.upsert({ key: cacheKey, value: JSON.stringify(response.data), lastUpdated: new Date() });
+            await Cache.upsert({
+              key: cacheKey,
+              value: JSON.stringify(response.data),
+              lastUpdated: new Date(),
+            });
             return res.json(response.data);
           }
         } catch (e) {
@@ -366,8 +450,7 @@ app.use("/api/proxy/:source", async (req, res) => {
   }
 
   if (fs.existsSync(localConfigPath)) {
-    const isGlobal =
-      fileName === "racesbyMK.json" || fileName === "races.json";
+    const isGlobal = fileName === "racesbyMK.json" || fileName === "races.json";
     const isYearSpecificMatch =
       year && localConfigPath.includes(pathMod.join(year, fileName));
     const isRootAnd2026 =
@@ -399,9 +482,13 @@ app.use("/api/proxy/:source", async (req, res) => {
 
   const baseUrls = [];
   if (source === "f1a") {
-    baseUrls.push("https://raw.githubusercontent.com/MatthewDelong/f1aapi/main/");
+    baseUrls.push(
+      "https://raw.githubusercontent.com/MatthewDelong/f1aapi/main/",
+    );
   } else if (source === "f2") {
-    baseUrls.push("https://raw.githubusercontent.com/MatthewDelong/f2api/main/");
+    baseUrls.push(
+      "https://raw.githubusercontent.com/MatthewDelong/f2api/main/",
+    );
   } else if (source === "jolpica") {
     baseUrls.push("https://api.jolpi.ca/");
   } else {
@@ -435,7 +522,9 @@ app.use("/api/proxy/:source", async (req, res) => {
     );
     res.json(data);
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch data", message: err.message });
+    res
+      .status(500)
+      .json({ error: "Failed to fetch data", message: err.message });
   }
 });
 
@@ -447,14 +536,14 @@ async function getOpenF1Token() {
   // Try dotenv or fallback to parsing .env files manually if process.env isn't populated
   let username = process.env.OPENF1_USERNAME;
   let password = process.env.OPENF1_PASSWORD;
-  
+
   if (!username || !password) {
     try {
-      const devPath = pathMod.join(__dirname, '..', '.env.development');
-      const prodPath = pathMod.join(__dirname, '..', '.env.production');
+      const devPath = pathMod.join(__dirname, "..", ".env.development");
+      const prodPath = pathMod.join(__dirname, "..", ".env.production");
       const envPath = fs.existsSync(prodPath) ? prodPath : devPath;
       if (fs.existsSync(envPath)) {
-        const envContent = fs.readFileSync(envPath, 'utf8');
+        const envContent = fs.readFileSync(envPath, "utf8");
         const usernameMatch = envContent.match(/^OPENF1_USERNAME=(.*)$/m);
         const passwordMatch = envContent.match(/^OPENF1_PASSWORD=(.*)$/m);
         if (usernameMatch) username = usernameMatch[1].trim();
@@ -462,44 +551,48 @@ async function getOpenF1Token() {
       }
     } catch (e) {}
   }
-  
+
   if (!username || !password) return null;
   if (openf1Token && Date.now() < openf1TokenExpiresAt) return openf1Token;
-  
+
   // If a fetch is already in progress, wait for it instead of starting a new one
   if (tokenFetchPromise) {
     return tokenFetchPromise;
   }
-  
+
   tokenFetchPromise = (async () => {
     try {
       const params = new URLSearchParams();
-      params.append('username', username);
-      params.append('password', password);
+      params.append("username", username);
+      params.append("password", password);
       // grant_type is standard for OAuth2 password credentials
-      params.append('grant_type', 'password');
-      
-      const res = await axios.post('https://api.openf1.org/token', params.toString(), {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        timeout: 5000
-      });
-      
+      params.append("grant_type", "password");
+
+      const res = await axios.post(
+        "https://api.openf1.org/token",
+        params.toString(),
+        {
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          timeout: 5000,
+        },
+      );
+
       if (res.data && res.data.access_token) {
         openf1Token = res.data.access_token;
         const expiresIn = res.data.expires_in || 3600;
         // Expire 1 minute early to be safe
-        openf1TokenExpiresAt = Date.now() + (expiresIn * 1000) - 60000;
-        console.log('[OpenF1 Auth] Successfully obtained sponsor token');
+        openf1TokenExpiresAt = Date.now() + expiresIn * 1000 - 60000;
+        console.log("[OpenF1 Auth] Successfully obtained sponsor token");
         return openf1Token;
       }
     } catch (error) {
-      console.error('[OpenF1 Auth] Failed to fetch token:', error.message);
+      console.error("[OpenF1 Auth] Failed to fetch token:", error.message);
     } finally {
       tokenFetchPromise = null;
     }
     return null;
   })();
-  
+
   return tokenFetchPromise;
 }
 
@@ -508,19 +601,19 @@ app.get("/openf1/*", async (req, res) => {
   try {
     const token = await getOpenF1Token();
     let targetUrl;
-    const headers = { 
-      Accept: "application/json"
+    const headers = {
+      Accept: "application/json",
     };
 
     if (token) {
-      targetUrl = `https://api.openf1.org${req.url.replace('/openf1', '')}`;
-      headers['Authorization'] = `Bearer ${token}`;
+      targetUrl = `https://api.openf1.org${req.url.replace("/openf1", "")}`;
+      headers["Authorization"] = `Bearer ${token}`;
     } else {
       // Fallback to Cloudflare Worker if .env token is missing
-      targetUrl = `https://openf1-proxy.matthew-delong73.workers.dev${req.url.replace('/openf1', '')}`;
-      headers['Origin'] = 'https://f1-telemetry.co.uk';
+      targetUrl = `https://openf1-proxy.matthew-delong73.workers.dev${req.url.replace("/openf1", "")}`;
+      headers["Origin"] = "https://f1-telemetry.co.uk";
     }
-    
+
     console.log(`[OpenF1 Proxy] Proxying: ${req.method} ${targetUrl}`);
 
     try {
@@ -531,13 +624,15 @@ app.get("/openf1/*", async (req, res) => {
       });
 
       res.writeHead(response.status, {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
       });
       res.end(JSON.stringify(response.data));
     } catch (error) {
       console.error("[OpenF1 Proxy] Proxy Error:", error.message);
-      res.status(500).json({ error: "Failed to fetch from OpenF1", message: error.message });
+      res
+        .status(500)
+        .json({ error: "Failed to fetch from OpenF1", message: error.message });
     }
   } catch (error) {
     if (error.response) {
@@ -596,10 +691,10 @@ const {
 } = require("./updater");
 
 // ─── Admin API Update Endpoints ───
-app.get('/api/admin/update/status', requireAdmin, (req, res) => {
-  res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-  const rootDir = pathMod.join(__dirname, '..');
-  
+app.get("/api/admin/update/status", requireAdmin, (req, res) => {
+  res.set("Cache-Control", "no-cache, no-store, must-revalidate");
+  const rootDir = pathMod.join(__dirname, "..");
+
   function getLatestMtime(dirPath) {
     let latest = null;
     if (!fs.existsSync(dirPath)) return null;
@@ -608,9 +703,13 @@ app.get('/api/admin/update/status', requireAdmin, (req, res) => {
         const entries = fs.readdirSync(dir, { withFileTypes: true });
         for (const e of entries) {
           const full = pathMod.join(dir, e.name);
-          if (e.isDirectory() && e.name !== '__pycache__' && e.name !== 'node_modules') {
+          if (
+            e.isDirectory() &&
+            e.name !== "__pycache__" &&
+            e.name !== "node_modules"
+          ) {
             scan(full);
-          } else if (e.isFile() && e.name.endsWith('.json')) {
+          } else if (e.isFile() && e.name.endsWith(".json")) {
             const stat = fs.statSync(full);
             if (!latest || stat.mtime > latest) latest = stat.mtime;
           }
@@ -622,94 +721,164 @@ app.get('/api/admin/update/status', requireAdmin, (req, res) => {
   }
 
   const statuses = {
-    f1: { lastUpdated: getLatestMtime(pathMod.join(rootDir, 'src', 'config', 'f1')) },
-    f2: { lastUpdated: getLatestMtime(pathMod.join(rootDir, 'src', 'config', 'f2')) },
-    f1a: { lastUpdated: getLatestMtime(pathMod.join(rootDir, 'src', 'config', 'f1a')) }
+    f1: {
+      lastUpdated: getLatestMtime(pathMod.join(rootDir, "src", "config", "f1")),
+    },
+    f2: {
+      lastUpdated: getLatestMtime(pathMod.join(rootDir, "src", "config", "f2")),
+    },
+    f1a: {
+      lastUpdated: getLatestMtime(
+        pathMod.join(rootDir, "src", "config", "f1a"),
+      ),
+    },
   };
-  
+
   res.json(statuses);
 });
 
-// Helper to execute Python scripts across platforms
-// Prefers 'python' (where user environment packages like requests/numpy are installed),
-// falling back to 'py' if 'python' is not found in PATH.
+// Helper to execute Python scripts across platforms.
+// Interpreter priority:
+//   1. PYTHON_CMD environment variable (explicit override)
+//   2. The project's .venv (created by `npm run py:install`), which holds requests/numpy
+//   3. 'python' on PATH, then the 'py' launcher if 'python' is not found
+const venvPython = pathMod.join(
+  __dirname,
+  "..",
+  ".venv",
+  process.platform === "win32" ? "Scripts" : "bin",
+  process.platform === "win32" ? "python.exe" : "python",
+);
+
 function execPython(args, options, callback) {
-  const pythonCmd = process.env.PYTHON_CMD || 'python';
+  const pythonCmd =
+    process.env.PYTHON_CMD ||
+    (fs.existsSync(venvPython) ? venvPython : "python");
   execFile(pythonCmd, args, options, (error, stdout, stderr) => {
-    if (error && error.code === 'ENOENT' && pythonCmd === 'python') {
-      return execFile('py', args, options, callback);
+    if (error && error.code === "ENOENT" && pythonCmd === "python") {
+      return execFile("py", args, options, callback);
     }
     callback(error, stdout, stderr);
   });
 }
 
-app.post('/api/admin/update/f1', requireAdmin, (req, res) => {
-  const scriptPath = pathMod.join(__dirname, '..', 'src', 'config', 'f1');
-  execPython(['api_update.py'], { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`[Admin Update F1] Error: ${error.message}`);
-      return res.status(500).json({ error: error.message, stderr });
-    }
-    res.json({ message: 'F1 Data updated successfully', output: stdout });
-  });
+app.post("/api/admin/update/f1", requireAdmin, (req, res) => {
+  const scriptPath = pathMod.join(__dirname, "..", "src", "config", "f1");
+  execPython(
+    ["api_update.py"],
+    { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 },
+    (error, stdout, stderr) => {
+      if (error) {
+        console.error(`[Admin Update F1] Error: ${error.message}`);
+        return res.status(500).json({ error: error.message, stderr });
+      }
+      res.json({ message: "F1 Data updated successfully", output: stdout });
+    },
+  );
 });
 
-app.post('/api/admin/update/f2', requireAdmin, (req, res) => {
-  const url = req.body.url || '';
-  const scriptPath = pathMod.join(__dirname, '..', 'src', 'config', 'f2');
+app.post("/api/admin/update/f2", requireAdmin, (req, res) => {
+  const url = req.body.url || "";
+  const scriptPath = pathMod.join(__dirname, "..", "src", "config", "f2");
   // Validate URL to prevent command injection
   if (url && !/^https?:\/\/[^\s;|&`$]+$/.test(url)) {
-    return res.status(400).json({ error: 'Invalid URL format' });
+    return res.status(400).json({ error: "Invalid URL format" });
   }
-  const args = url ? ['api_update.py', url] : ['api_update.py'];
-  execPython(args, { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`[Admin Update F2] Error: ${error.message}`);
-      return res.status(500).json({ error: error.message, stderr });
-    }
-    // Run format.py as a separate step
-    execPython(['format.py'], { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (fmtError, fmtStdout, fmtStderr) => {
-      if (fmtError) {
-        return res.status(500).json({ error: fmtError.message, stderr: fmtStderr, partialOutput: stdout });
+  const args = url ? ["api_update.py", url] : ["api_update.py"];
+  execPython(
+    args,
+    { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 },
+    (error, stdout, stderr) => {
+      if (error) {
+        console.error(`[Admin Update F2] Error: ${error.message}`);
+        return res.status(500).json({ error: error.message, stderr });
       }
-      // Run scrape_standings.py
-      execPython(['scrape_standings.py'], { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (scrapeError, scrapeStdout, scrapeStderr) => {
-        if (scrapeError) {
-           return res.status(500).json({ error: scrapeError.message, stderr: scrapeStderr, partialOutput: stdout + '\n' + fmtStdout });
-        }
-        res.json({ message: 'F2 Data updated successfully', output: stdout + '\n' + fmtStdout + '\n' + scrapeStdout });
-      });
-    });
-  });
+      // Run format.py as a separate step
+      execPython(
+        ["format.py"],
+        { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 },
+        (fmtError, fmtStdout, fmtStderr) => {
+          if (fmtError) {
+            return res
+              .status(500)
+              .json({
+                error: fmtError.message,
+                stderr: fmtStderr,
+                partialOutput: stdout,
+              });
+          }
+          // Run scrape_standings.py
+          execPython(
+            ["scrape_standings.py"],
+            { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 },
+            (scrapeError, scrapeStdout, scrapeStderr) => {
+              if (scrapeError) {
+                return res
+                  .status(500)
+                  .json({
+                    error: scrapeError.message,
+                    stderr: scrapeStderr,
+                    partialOutput: stdout + "\n" + fmtStdout,
+                  });
+              }
+              res.json({
+                message: "F2 Data updated successfully",
+                output: stdout + "\n" + fmtStdout + "\n" + scrapeStdout,
+              });
+            },
+          );
+        },
+      );
+    },
+  );
 });
 
-app.post('/api/admin/update/f1a', requireAdmin, (req, res) => {
-  const url = req.body.url || '';
-  const scriptPath = pathMod.join(__dirname, '..', 'src', 'config', 'f1a');
+app.post("/api/admin/update/f1a", requireAdmin, (req, res) => {
+  const url = req.body.url || "";
+  const scriptPath = pathMod.join(__dirname, "..", "src", "config", "f1a");
   // Validate URL to prevent command injection
   if (url && !/^https?:\/\/[^\s;|&`$]+$/.test(url)) {
-    return res.status(400).json({ error: 'Invalid URL format' });
+    return res.status(400).json({ error: "Invalid URL format" });
   }
-  const args = url ? ['api_update.py', url] : ['api_update.py'];
-  execPython(args, { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`[Admin Update F1A] Error: ${error.message}`);
-      return res.status(500).json({ error: error.message, stderr });
-    }
-    // Run format.py as a separate step
-    execPython(['format.py'], { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 }, (fmtError, fmtStdout, fmtStderr) => {
-      if (fmtError) {
-        return res.status(500).json({ error: fmtError.message, stderr: fmtStderr, partialOutput: stdout });
+  const args = url ? ["api_update.py", url] : ["api_update.py"];
+  execPython(
+    args,
+    { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 },
+    (error, stdout, stderr) => {
+      if (error) {
+        console.error(`[Admin Update F1A] Error: ${error.message}`);
+        return res.status(500).json({ error: error.message, stderr });
       }
-      res.json({ message: 'F1A Data updated successfully', output: stdout + '\n' + fmtStdout });
-    });
-  });
+      // Run format.py as a separate step
+      execPython(
+        ["format.py"],
+        { cwd: scriptPath, maxBuffer: 10 * 1024 * 1024 },
+        (fmtError, fmtStdout, fmtStderr) => {
+          if (fmtError) {
+            return res
+              .status(500)
+              .json({
+                error: fmtError.message,
+                stderr: fmtStderr,
+                partialOutput: stdout,
+              });
+          }
+          res.json({
+            message: "F1A Data updated successfully",
+            output: stdout + "\n" + fmtStdout,
+          });
+        },
+      );
+    },
+  );
 });
 
-app.get('/api/admin/clear-cache', requireAdmin, async (req, res) => {
+app.get("/api/admin/clear-cache", requireAdmin, async (req, res) => {
   try {
     const deletedCount = await Cache.destroy({ where: {}, truncate: true });
-    res.json({ message: `Successfully deleted all ${deletedCount} cache entries across F1-Telemetry.` });
+    res.json({
+      message: `Successfully deleted all ${deletedCount} cache entries across F1-Telemetry.`,
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
