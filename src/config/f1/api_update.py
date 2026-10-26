@@ -136,17 +136,20 @@ def update_driverData():
 
     # 3. Fetch driver standings
     standings_by_round = {}
+    standings_list = []
     try:
         with open(f'races/{current_year}/driverStandings.json', 'r', encoding='utf-8') as f:
             standings_data = json.load(f)
-            standings_by_round = standings_data if isinstance(standings_data, dict) else {}
-            # Find the latest round in the driver standings
-            latest_round_data = standings_data[str(len(standings_data))]
-            standings_list = latest_round_data
-    except Exception:
+        standings_by_round = standings_data if isinstance(standings_data, dict) else {}
+        round_keys = [int(k) for k in standings_by_round if str(k).isdigit()]
+        if not round_keys:
+            raise ValueError("driverStandings.json has no round entries")
+        # Latest round = highest numeric key (ignores the 'latest' alias)
+        standings_list = standings_by_round[str(max(round_keys))]
+    except Exception as e:
+        print(f"Local driverStandings unavailable ({e}); falling back to API")
         url_standings = f'{api_url}/current/driverStandings.json?limit=1000'
         resp_standings = safe_get(url_standings)
-        standings_list = []
         if resp_standings.status_code == 200:
             standings_list = resp_standings.json()["MRData"]["StandingsTable"]["StandingsLists"][0]["DriverStandings"]
 

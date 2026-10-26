@@ -1,30 +1,43 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import classNames from 'classnames';
-import axios from 'axios';
-import { useLocation, useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useMemo } from "react";
+import classNames from "classnames";
+import axios from "axios";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 
-
-import { fetchDriverStats, BASE_F1_URL } from '../utils/api';
-import { getCurrentYear } from '../utils/currentYear';
-import { HeadToHeadChart, PositionsGainedLostChart, QualifyingLapTimesChart, QualifyingLapTimesDeltaChart, PositionsComparisonChart, ReactSelectComponent, Loading, Button } from '../components';
-import teamColors from '../utils/teamColors.json';
-
+import { fetchDriverStats, BASE_F1_URL } from "../utils/api";
+import { getCurrentYear } from "../utils/currentYear";
+import {
+  HeadToHeadChart,
+  PositionsGainedLostChart,
+  QualifyingLapTimesChart,
+  QualifyingLapTimesDeltaChart,
+  PositionsComparisonChart,
+  ReactSelectComponent,
+  Loading,
+  Button,
+} from "../components";
+import teamColors from "../utils/teamColors.json";
 
 export const TeammatesComparison = () => {
   const currentYear = getCurrentYear();
-  const years = Array.from({ length: currentYear - 1975 + 1 }, (_, i) => currentYear - i);
+  const years = Array.from(
+    { length: currentYear - 1975 + 1 },
+    (_, i) => currentYear - i,
+  );
 
   const { state, search } = useLocation();
-  const isAdmin = useMemo(() => import.meta.env.DEV || search.includes('admin=true'), [search]);
+  const isAdmin = useMemo(
+    () => import.meta.env.DEV || search.includes("admin=true"),
+    [search],
+  );
 
   const { urlYear, urlTeam } = useParams();
   const navigate = useNavigate();
 
-  const [year, setYear] = useState('');
-  const [team, setTeam] = useState('');
+  const [year, setYear] = useState("");
+  const [team, setTeam] = useState("");
   const [drivers, setDrivers] = useState([]);
-  const [selectedDriver1, setSelectedDriver1] = useState('');
-  const [selectedDriver2, setSelectedDriver2] = useState('');
+  const [selectedDriver1, setSelectedDriver1] = useState("");
+  const [selectedDriver2, setSelectedDriver2] = useState("");
   const [headToHeadData, setHeadToHeadData] = useState(null);
   const [showDriverSelectors, setShowDriverSelectors] = useState(false);
   const [teamCache, setTeamCache] = useState({});
@@ -32,7 +45,7 @@ export const TeammatesComparison = () => {
   const [ambR, setAmbR] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [teamColor, setTeamColor] = useState('5F0B84');
+  const [teamColor, setTeamColor] = useState("5F0B84");
   const [renderHead, setRenderHead] = useState(true);
   const [showTimes, setShowTimes] = useState(true);
 
@@ -47,9 +60,10 @@ export const TeammatesComparison = () => {
   };
 
   useEffect(() => {
-    const validYear = urlYear && parseInt(urlYear) <= currentYear ? urlYear : '';
+    const validYear =
+      urlYear && parseInt(urlYear) <= currentYear ? urlYear : "";
     setYear(validYear);
-    setTeam(urlTeam || '');
+    setTeam(urlTeam || "");
   }, [urlYear, urlTeam, currentYear]);
 
   useEffect(() => {
@@ -65,13 +79,20 @@ export const TeammatesComparison = () => {
     if (year && !teamCache[year]) {
       setIsLoading(true);
       try {
-        const response = await axios.get(`${BASE_F1_URL}constructors/${year}.json`);
+        const response = await axios.get(
+          `${BASE_F1_URL}constructors/${year}.json`,
+        );
         const constructors = response.data;
-        setTeamCache(prevCache => ({ ...prevCache, [year]: constructors }));
+        setTeamCache((prevCache) => ({ ...prevCache, [year]: constructors }));
 
-        if (team && !constructors.some(constructor => constructor.constructorId === team)) {
+        if (
+          team &&
+          !constructors.some(
+            (constructor) => constructor.constructorId === team,
+          )
+        ) {
           window.alert(`${team} did not participate in ${year}`);
-          setTeam('');
+          setTeam("");
           navigate(`/teammates-comparison/${year}${search}`, { replace: true });
         }
       } catch (error) {
@@ -87,42 +108,50 @@ export const TeammatesComparison = () => {
   const handleYearChange = (selectedOption) => {
     const selectedYear = selectedOption.value;
     setYear(selectedYear);
-    setTeam('');
+    setTeam("");
     setDrivers([]);
-    setSelectedDriver1('');
-    setSelectedDriver2('');
+    setSelectedDriver1("");
+    setSelectedDriver2("");
     setShowDriverSelectors(false);
     setHeadToHeadData(null);
-    navigate(team ? `/teammates-comparison/${selectedYear}/${team}${search}` : `/teammates-comparison/${selectedYear}${search}`, { replace: true });
+    navigate(
+      team
+        ? `/teammates-comparison/${selectedYear}/${team}${search}`
+        : `/teammates-comparison/${selectedYear}${search}`,
+      { replace: true },
+    );
   };
 
-  
   const handleTeamChange = (selectedOption) => {
     const selectedTeam = selectedOption.value;
     setTeam(selectedTeam);
-    setSelectedDriver1('');
-    setSelectedDriver2('');
+    setSelectedDriver1("");
+    setSelectedDriver2("");
     setShowDriverSelectors(false);
-    navigate(`/teammates-comparison/${year}/${selectedTeam}${search}`, { replace: true });
+    navigate(`/teammates-comparison/${year}/${selectedTeam}${search}`, {
+      replace: true,
+    });
     submit(selectedTeam);
   };
 
   const submit = async (selectedTeam) => {
     try {
-      const response = await axios.get(`${BASE_F1_URL}constructors/${year}/${selectedTeam}.json?refresh=true&v=3`);
+      const response = await axios.get(
+        `${BASE_F1_URL}constructors/${year}/${selectedTeam}.json?refresh=true&v=3`,
+      );
       const fetchedDrivers = response.data;
       const defaultPriority = {
-        "max_verstappen": 100,
-        "hadjar": 99,
-        "arvid_lindblad": 100,
-        "lawson": 99,
-        "tsunoda": 98
+        max_verstappen: 100,
+        hadjar: 99,
+        arvid_lindblad: 100,
+        lawson: 99,
+        tsunoda: 98,
       };
 
       const sortedDrivers = [...fetchedDrivers].sort((a, b) => {
         const prioA = defaultPriority[a.driverId] || 0;
         const prioB = defaultPriority[b.driverId] || 0;
-        
+
         if (prioA !== prioB) {
           return prioB - prioA; // Higher priority first
         }
@@ -136,7 +165,7 @@ export const TeammatesComparison = () => {
       });
       setDrivers(sortedDrivers);
 
-      setTeamColor(teamColors[year]?.[selectedTeam] || '5F0B84');
+      setTeamColor(teamColors[year]?.[selectedTeam] || "5F0B84");
 
       if (sortedDrivers.length > 2) {
         setSelectedDriver1(sortedDrivers[0].driverId);
@@ -145,8 +174,8 @@ export const TeammatesComparison = () => {
         setShowDriverSelectors(true);
         setRenderHead(true);
       } else {
-        setSelectedDriver1(sortedDrivers[0]?.driverId || '');
-        setSelectedDriver2(sortedDrivers[1]?.driverId || '');
+        setSelectedDriver1(sortedDrivers[0]?.driverId || "");
+        setSelectedDriver2(sortedDrivers[1]?.driverId || "");
         fetchDriverData(sortedDrivers);
         setShowDriverSelectors(false);
         setRenderHead(true);
@@ -157,44 +186,91 @@ export const TeammatesComparison = () => {
   };
 
   const fetchDriverData = async (drivers, refresh = false) => {
-    if (!drivers || drivers.some(d => !d)) return;
+    if (!drivers || drivers.some((d) => !d)) return;
     setIsLoading(true);
     try {
-      const driverPromises = drivers.map(driver => driver.driverId);
-      const driverResults = await fetchDriverStats(driverPromises[0], driverPromises[1], refresh);
+      const driverPromises = drivers.map((driver) => driver.driverId);
+      const driverResults = await fetchDriverStats(
+        driverPromises[0],
+        driverPromises[1],
+        refresh,
+      );
 
-      if (!driverResults || !driverResults.driver1 || !driverResults.driver2 || driverResults.driver1.error || driverResults.driver2.error) {
-        throw new Error("Failed to fetch driver statistics. The data source might be temporarily unavailable.");
+      if (
+        !driverResults ||
+        !driverResults.driver1 ||
+        !driverResults.driver2 ||
+        driverResults.driver1.error ||
+        driverResults.driver2.error
+      ) {
+        throw new Error(
+          "Failed to fetch driver statistics. The data source might be temporarily unavailable.",
+        );
       }
 
-      const filterDataByYear = (data, year) => ({
-        qualifyingTimes: (data.driverQualifyingTimes && data.driverQualifyingTimes[year]) || {},
-        racePosition: (data.racePosition && data.racePosition[year]) || {},
-        qualiPosition: (data.qualiPosition && data.qualiPosition[year]) || {},
-        finalStandings: (data.finalStandings && data.finalStandings[year]) || {},
-        seasonPodiums: (data.seasonPodiums && data.seasonPodiums[year]) || 0,
-        seasonPoles: (data.seasonPoles && data.seasonPoles[year]) || 0,
-        seasonWins: (data.seasonWins && data.seasonWins[year]) || 0,
-        lastUpdate: data.lastUpdate,
-        positionsGainLost: (data.positionsGainLost && data.positionsGainLost[year]) || {},
-        avgRacePositions: (data.avgRacePositions && data.avgRacePositions[year]) || {},
-        avgQualiPositions: (data.avgQualiPositions && data.avgQualiPositions[year]) || {},
-        win_rates: (data.rates && data.rates.wins && data.rates.wins[year]) || {},
-        podium_rates: (data.rates && data.rates.podiums && data.rates.podiums[year]) || {},
-        pole_rates: (data.rates && data.rates.poles && data.rates.poles[year]) || {},
-        seasonDNFs: (data.seasonDNFs && data.seasonDNFs[year]) || 0
-      });
+      // finalStandings can lag behind the race results, so prefer the latest
+      // cumulative total from posAfterRace when it is higher.
+      const latestPoints = (data, year) => {
+        const races = data.posAfterRace && data.posAfterRace[year];
+        if (!races) return null;
+        const vals = Object.values(races)
+          .map((r) => Number(r?.points))
+          .filter(Number.isFinite);
+        return vals.length ? Math.max(...vals) : null;
+      };
+
+      const filterDataByYear = (data, year) => {
+        const standings =
+          (data.finalStandings && data.finalStandings[year]) || {};
+        const latest = latestPoints(data, year);
+        const finalStandings =
+          latest !== null && latest > (Number(standings.points) || 0)
+            ? { ...standings, points: String(latest) }
+            : standings;
+
+        return {
+          qualifyingTimes:
+            (data.driverQualifyingTimes && data.driverQualifyingTimes[year]) ||
+            {},
+          racePosition: (data.racePosition && data.racePosition[year]) || {},
+          qualiPosition: (data.qualiPosition && data.qualiPosition[year]) || {},
+          finalStandings,
+          seasonPodiums: (data.seasonPodiums && data.seasonPodiums[year]) || 0,
+          seasonPoles: (data.seasonPoles && data.seasonPoles[year]) || 0,
+          seasonWins: (data.seasonWins && data.seasonWins[year]) || 0,
+          lastUpdate: data.lastUpdate,
+          positionsGainLost:
+            (data.positionsGainLost && data.positionsGainLost[year]) || {},
+          avgRacePositions:
+            (data.avgRacePositions && data.avgRacePositions[year]) || {},
+          avgQualiPositions:
+            (data.avgQualiPositions && data.avgQualiPositions[year]) || {},
+          win_rates:
+            (data.rates && data.rates.wins && data.rates.wins[year]) || {},
+          podium_rates:
+            (data.rates && data.rates.podiums && data.rates.podiums[year]) ||
+            {},
+          pole_rates:
+            (data.rates && data.rates.poles && data.rates.poles[year]) || {},
+          seasonDNFs: (data.seasonDNFs && data.seasonDNFs[year]) || 0,
+        };
+      };
 
       const filteredDriver1Data = filterDataByYear(driverResults.driver1, year);
       const filteredDriver2Data = filterDataByYear(driverResults.driver2, year);
 
       const driverResultsMap = {
         [driverResults.driver1.driverId]: filteredDriver1Data,
-        [driverResults.driver2.driverId]: filteredDriver2Data
+        [driverResults.driver2.driverId]: filteredDriver2Data,
       };
 
       if (drivers.length >= 2) {
-        await calculateHeadToHead(driverResultsMap, drivers[0].driverId, drivers[1].driverId, drivers);
+        await calculateHeadToHead(
+          driverResultsMap,
+          drivers[0].driverId,
+          drivers[1].driverId,
+          drivers,
+        );
       }
     } catch (error) {
       console.error("Error fetching driver data:", error);
@@ -207,8 +283,12 @@ export const TeammatesComparison = () => {
   const handleRefresh = async () => {
     setError(null);
     if (memoizedHeadToHeadData) {
-      const d1 = drivers.find(d => d.driverId === memoizedHeadToHeadData.driver1Id);
-      const d2 = drivers.find(d => d.driverId === memoizedHeadToHeadData.driver2Id);
+      const d1 = drivers.find(
+        (d) => d.driverId === memoizedHeadToHeadData.driver1Id,
+      );
+      const d2 = drivers.find(
+        (d) => d.driverId === memoizedHeadToHeadData.driver2Id,
+      );
       if (d1 && d2) {
         await fetchDriverData([d1, d2], true);
       }
@@ -220,10 +300,12 @@ export const TeammatesComparison = () => {
     setIsLoading(true);
     setError(null);
     let successCount = 0;
-    
+
     try {
       if (year === "2026") {
-        console.log(`[Admin] Starting batch rebuild for all 2026 drivers via API...`);
+        console.log(
+          `[Admin] Starting batch rebuild for all 2026 drivers via API...`,
+        );
         const res = await fetch("http://localhost:3000/api/admin/rebuild-2026");
         if (!res.ok) throw new Error("Batch rebuild failed on server");
         const data = await res.json();
@@ -236,27 +318,37 @@ export const TeammatesComparison = () => {
             driversToRefresh = res.data.MRData.DriverTable.Drivers;
           }
         } catch (e) {
-          console.warn("Failed to fetch full driver list, falling back to team roster");
+          console.warn(
+            "Failed to fetch full driver list, falling back to team roster",
+          );
         }
 
-        console.log(`[Admin] Starting batch refresh for ${driversToRefresh.length} drivers...`);
+        console.log(
+          `[Admin] Starting batch refresh for ${driversToRefresh.length} drivers...`,
+        );
         for (const driver of driversToRefresh) {
           try {
             const url = `${BASE_F1_URL}drivers/${driver.driverId}.json?refresh=true&t=${Date.now()}`;
             await fetch(url);
             successCount++;
-            console.log(`[Admin] Refreshed ${driver.driverId} (${successCount}/${driversToRefresh.length})`);
+            console.log(
+              `[Admin] Refreshed ${driver.driverId} (${successCount}/${driversToRefresh.length})`,
+            );
           } catch (e) {
             console.error(`[Admin] Failed to refresh ${driver.driverId}:`, e);
           }
-          await new Promise(r => setTimeout(r, 100));
+          await new Promise((r) => setTimeout(r, 100));
         }
       }
-      
+
       // Finally, refresh the current view to show new data
       if (memoizedHeadToHeadData) {
-        const d1 = drivers.find(d => d.driverId === memoizedHeadToHeadData.driver1Id);
-        const d2 = drivers.find(d => d.driverId === memoizedHeadToHeadData.driver2Id);
+        const d1 = drivers.find(
+          (d) => d.driverId === memoizedHeadToHeadData.driver1Id,
+        );
+        const d2 = drivers.find(
+          (d) => d.driverId === memoizedHeadToHeadData.driver2Id,
+        );
         if (d1 && d2) {
           await fetchDriverData([d1, d2], false); // false because we already refreshed
         }
@@ -271,10 +363,12 @@ export const TeammatesComparison = () => {
 
   const handleDriver1Change = async (selectedOption) => {
     setSelectedDriver1(selectedOption.value);
-    
+
     let currentDriver2 = selectedDriver2;
     if (!currentDriver2) {
-      const otherDriver = drivers.find(d => d.driverId !== selectedOption.value);
+      const otherDriver = drivers.find(
+        (d) => d.driverId !== selectedOption.value,
+      );
       if (otherDriver) {
         currentDriver2 = otherDriver.driverId;
         setSelectedDriver2(currentDriver2);
@@ -285,8 +379,12 @@ export const TeammatesComparison = () => {
       setAmbQ(true);
       setAmbR(true);
       setRenderHead(true);
-      const driver1Data = drivers.find(driver => driver.driverId === selectedOption.value);
-      const driver2Data = drivers.find(driver => driver.driverId === currentDriver2);
+      const driver1Data = drivers.find(
+        (driver) => driver.driverId === selectedOption.value,
+      );
+      const driver2Data = drivers.find(
+        (driver) => driver.driverId === currentDriver2,
+      );
       if (driver1Data && driver2Data) {
         await fetchDriverData([driver1Data, driver2Data]);
       }
@@ -295,10 +393,12 @@ export const TeammatesComparison = () => {
 
   const handleDriver2Change = async (selectedOption) => {
     setSelectedDriver2(selectedOption.value);
-    
+
     let currentDriver1 = selectedDriver1;
     if (!currentDriver1) {
-      const otherDriver = drivers.find(d => d.driverId !== selectedOption.value);
+      const otherDriver = drivers.find(
+        (d) => d.driverId !== selectedOption.value,
+      );
       if (otherDriver) {
         currentDriver1 = otherDriver.driverId;
         setSelectedDriver1(currentDriver1);
@@ -309,8 +409,12 @@ export const TeammatesComparison = () => {
       setAmbQ(true);
       setAmbR(true);
       setRenderHead(true);
-      const driver1Data = drivers.find(driver => driver.driverId === currentDriver1);
-      const driver2Data = drivers.find(driver => driver.driverId === selectedOption.value);
+      const driver1Data = drivers.find(
+        (driver) => driver.driverId === currentDriver1,
+      );
+      const driver2Data = drivers.find(
+        (driver) => driver.driverId === selectedOption.value,
+      );
       if (driver1Data && driver2Data) {
         await fetchDriverData([driver1Data, driver2Data]);
       }
@@ -318,9 +422,9 @@ export const TeammatesComparison = () => {
   };
 
   const normalizeToNumber = (val) => {
-    if (typeof val === 'number') return val;
-    if (typeof val === 'string') return parseFloat(val) || 0;
-    if (val && typeof val === 'object') {
+    if (typeof val === "number") return val;
+    if (typeof val === "string") return parseFloat(val) || 0;
+    if (val && typeof val === "object") {
       // If it's an object with race names/rounds as keys, sum the values
       return Object.values(val).reduce((acc, curr) => {
         const num = parseFloat(curr);
@@ -330,7 +434,12 @@ export const TeammatesComparison = () => {
     return 0;
   };
 
-  const calculateHeadToHead = async (driverResults, driver1Id, driver2Id, drivers) => {
+  const calculateHeadToHead = async (
+    driverResults,
+    driver1Id,
+    driver2Id,
+    drivers,
+  ) => {
     if (drivers.length < 2) return;
 
     let driver1QualifyingWins = 0;
@@ -339,12 +448,15 @@ export const TeammatesComparison = () => {
     let driver2RaceWins = 0;
 
     const processQualifyingResults = (qualifyingResults) => {
-      if (!qualifyingResults || !qualifyingResults.QualiTimes) return { qualifyingTimes: [] };
+      if (!qualifyingResults || !qualifyingResults.QualiTimes)
+        return { qualifyingTimes: [] };
 
-      const qualifyingTimes = Object.entries(qualifyingResults.QualiTimes).map(([raceName, times]) => ({
-        race: raceName,
-        QualiTimes: [times[0] || 'N/A', times[1] || 'N/A', times[2] || 'N/A']
-      }));
+      const qualifyingTimes = Object.entries(qualifyingResults.QualiTimes).map(
+        ([raceName, times]) => ({
+          race: raceName,
+          QualiTimes: [times[0] || "N/A", times[1] || "N/A", times[2] || "N/A"],
+        }),
+      );
 
       return { qualifyingTimes };
     };
@@ -355,19 +467,27 @@ export const TeammatesComparison = () => {
       return {
         pos: Object.entries(positions.positions).map(([raceName, pos]) => ({
           raceName,
-          pos: parseInt(pos)
-        }))
+          pos: parseInt(pos),
+        })),
       };
     };
 
-    const { qualifyingTimes: driver1QualifyingTimesProcessed } = processQualifyingResults(driverResults[driver1Id]?.qualifyingTimes);
-    const { qualifyingTimes: driver2QualifyingTimesProcessed } = processQualifyingResults(driverResults[driver2Id]?.qualifyingTimes);
+    const { qualifyingTimes: driver1QualifyingTimesProcessed } =
+      processQualifyingResults(driverResults[driver1Id]?.qualifyingTimes);
+    const { qualifyingTimes: driver2QualifyingTimesProcessed } =
+      processQualifyingResults(driverResults[driver2Id]?.qualifyingTimes);
 
-    const { pos: driver1QualifyingPos } = processPositions(driverResults[driver1Id]?.qualiPosition);
-    const { pos: driver2QualifyingPos } = processPositions(driverResults[driver2Id]?.qualiPosition);
-    
-    driver1QualifyingPos.forEach(race1 => {
-      let race2 = driver2QualifyingPos.find(el => el.raceName === race1.raceName);
+    const { pos: driver1QualifyingPos } = processPositions(
+      driverResults[driver1Id]?.qualiPosition,
+    );
+    const { pos: driver2QualifyingPos } = processPositions(
+      driverResults[driver2Id]?.qualiPosition,
+    );
+
+    driver1QualifyingPos.forEach((race1) => {
+      let race2 = driver2QualifyingPos.find(
+        (el) => el.raceName === race1.raceName,
+      );
       if (race2) {
         setAmbQ(false);
         if (race1.pos < race2.pos) driver1QualifyingWins++;
@@ -375,11 +495,17 @@ export const TeammatesComparison = () => {
       }
     });
 
-    const { pos: driver1RacePosProcessed } = processPositions(driverResults[driver1Id]?.racePosition);
-    const { pos: driver2RacePosProcessed } = processPositions(driverResults[driver2Id]?.racePosition);
-    
-    driver1RacePosProcessed.forEach(race1 => {
-      let race2 = driver2RacePosProcessed.find(el => el.raceName === race1.raceName);
+    const { pos: driver1RacePosProcessed } = processPositions(
+      driverResults[driver1Id]?.racePosition,
+    );
+    const { pos: driver2RacePosProcessed } = processPositions(
+      driverResults[driver2Id]?.racePosition,
+    );
+
+    driver1RacePosProcessed.forEach((race1) => {
+      let race2 = driver2RacePosProcessed.find(
+        (el) => el.raceName === race1.raceName,
+      );
       if (race2) {
         setAmbR(false);
         if (race1.pos < race2.pos) driver1RaceWins++;
@@ -387,54 +513,92 @@ export const TeammatesComparison = () => {
       }
     });
 
-    const driver1QualifyingPosList = driverResults[driver1Id]?.qualiPosition.positions || {};
-    const driver2QualifyingPosList = driverResults[driver2Id]?.qualiPosition.positions || {};
-    const driver1RacePosList = driverResults[driver1Id]?.racePosition.positions || {};
-    const driver2RacePosList = driverResults[driver2Id]?.racePosition.positions || {};
-    
-    const commonQualifyingRaces = Object.keys(driver1QualifyingPosList).filter(race => race in driver2QualifyingPosList);
-    const commonRaceRaces = Object.keys(driver1RacePosList).filter(race => race in driver2RacePosList);
-    
-    const filteredDriver1QualifyingPosList = commonQualifyingRaces.reduce((result, race) => {
+    const driver1QualifyingPosList =
+      driverResults[driver1Id]?.qualiPosition.positions || {};
+    const driver2QualifyingPosList =
+      driverResults[driver2Id]?.qualiPosition.positions || {};
+    const driver1RacePosList =
+      driverResults[driver1Id]?.racePosition.positions || {};
+    const driver2RacePosList =
+      driverResults[driver2Id]?.racePosition.positions || {};
+
+    const commonQualifyingRaces = Object.keys(driver1QualifyingPosList).filter(
+      (race) => race in driver2QualifyingPosList,
+    );
+    const commonRaceRaces = Object.keys(driver1RacePosList).filter(
+      (race) => race in driver2RacePosList,
+    );
+
+    const filteredDriver1QualifyingPosList = commonQualifyingRaces.reduce(
+      (result, race) => {
         result[race] = driver1QualifyingPosList[race];
         return result;
-    }, {});
-    
-    const filteredDriver2QualifyingPosList = commonQualifyingRaces.reduce((result, race) => {
+      },
+      {},
+    );
+
+    const filteredDriver2QualifyingPosList = commonQualifyingRaces.reduce(
+      (result, race) => {
         result[race] = driver2QualifyingPosList[race];
         return result;
-    }, {});
-    
-    const filteredDriver1RacePosList = commonRaceRaces.reduce((result, race) => {
+      },
+      {},
+    );
+
+    const filteredDriver1RacePosList = commonRaceRaces.reduce(
+      (result, race) => {
         result[race] = driver1RacePosList[race];
         return result;
-    }, {});
-    
-    const filteredDriver2RacePosList = commonRaceRaces.reduce((result, race) => {
+      },
+      {},
+    );
+
+    const filteredDriver2RacePosList = commonRaceRaces.reduce(
+      (result, race) => {
         result[race] = driver2RacePosList[race];
         return result;
-    }, {});
-    
+      },
+      {},
+    );
+
     setHeadToHeadData({
-      lastUpdate: typeof driverResults[driver1Id]?.lastUpdate === 'string' 
-        ? driverResults[driver1Id].lastUpdate 
-        : (driverResults[driver1Id]?.lastUpdate && typeof driverResults[driver1Id].lastUpdate === 'object' 
-           ? Object.values(driverResults[driver1Id].lastUpdate)[0] 
-           : ''),
-      driver1: drivers.find(d => d.driverId === driver1Id).givenName + ' ' + drivers.find(d => d.driverId === driver1Id).familyName,
-      driver2: drivers.find(d => d.driverId === driver2Id).givenName + ' ' + drivers.find(d => d.driverId === driver2Id).familyName,
-      driver1Code: drivers.find(d => d.driverId === driver1Id).code,
-      driver2Code: drivers.find(d => d.driverId === driver2Id).code,
+      lastUpdate:
+        typeof driverResults[driver1Id]?.lastUpdate === "string"
+          ? driverResults[driver1Id].lastUpdate
+          : driverResults[driver1Id]?.lastUpdate &&
+              typeof driverResults[driver1Id].lastUpdate === "object"
+            ? Object.values(driverResults[driver1Id].lastUpdate)[0]
+            : "",
+      driver1:
+        drivers.find((d) => d.driverId === driver1Id).givenName +
+        " " +
+        drivers.find((d) => d.driverId === driver1Id).familyName,
+      driver2:
+        drivers.find((d) => d.driverId === driver2Id).givenName +
+        " " +
+        drivers.find((d) => d.driverId === driver2Id).familyName,
+      driver1Code: drivers.find((d) => d.driverId === driver1Id).code,
+      driver2Code: drivers.find((d) => d.driverId === driver2Id).code,
       driver1Id: driver1Id,
       driver2Id: driver2Id,
       driver1QualifyingWins,
       driver2QualifyingWins,
       driver1RaceWins,
       driver2RaceWins,
-      driver1Points: normalizeToNumber(driverResults[driver1Id]?.finalStandings?.points ?? driverResults[driver1Id]?.finalStandings),
-      driver2Points: normalizeToNumber(driverResults[driver2Id]?.finalStandings?.points ?? driverResults[driver2Id]?.finalStandings),
-      driver1Podiums: normalizeToNumber(driverResults[driver1Id]?.seasonPodiums),
-      driver2Podiums: normalizeToNumber(driverResults[driver2Id]?.seasonPodiums),
+      driver1Points: normalizeToNumber(
+        driverResults[driver1Id]?.finalStandings?.points ??
+          driverResults[driver1Id]?.finalStandings,
+      ),
+      driver2Points: normalizeToNumber(
+        driverResults[driver2Id]?.finalStandings?.points ??
+          driverResults[driver2Id]?.finalStandings,
+      ),
+      driver1Podiums: normalizeToNumber(
+        driverResults[driver1Id]?.seasonPodiums,
+      ),
+      driver2Podiums: normalizeToNumber(
+        driverResults[driver2Id]?.seasonPodiums,
+      ),
       driver1Poles: normalizeToNumber(driverResults[driver1Id]?.seasonPoles),
       driver2Poles: normalizeToNumber(driverResults[driver2Id]?.seasonPoles),
       driver1QualifyingTimes: driver1QualifyingTimesProcessed,
@@ -443,18 +607,44 @@ export const TeammatesComparison = () => {
       driver2QualifyingPosList: filteredDriver2QualifyingPosList,
       driver1RacePosList: filteredDriver1RacePosList,
       driver2RacePosList: filteredDriver2RacePosList,
-      driver1AvgRacePosition: normalizeToNumber(driverResults[driver1Id]?.avgRacePositions).toFixed(2),
-      driver2AvgRacePosition: normalizeToNumber(driverResults[driver2Id]?.avgRacePositions).toFixed(2),
-      driver1AvgQualiPositions: normalizeToNumber(driverResults[driver1Id]?.avgQualiPositions).toFixed(2),
-      driver2AvgQualiPositions: normalizeToNumber(driverResults[driver2Id]?.avgQualiPositions).toFixed(2),
-      driver1_win_rates: normalizeToNumber(driverResults[driver1Id]?.win_rates).toFixed(2),
-      driver2_win_rates: normalizeToNumber(driverResults[driver2Id]?.win_rates).toFixed(2),
-      driver1_podium_rates: normalizeToNumber(driverResults[driver1Id]?.podium_rates).toFixed(2),
-      driver2_podium_rates: normalizeToNumber(driverResults[driver2Id]?.podium_rates).toFixed(2),
-      driver1_pole_rates: normalizeToNumber(driverResults[driver1Id]?.pole_rates).toFixed(2),
-      driver2_pole_rates: normalizeToNumber(driverResults[driver2Id]?.pole_rates).toFixed(2),
-      driver1PositionsGainLost: driverResults[driver1Id]?.positionsGainLost?.positions || driverResults[driver1Id]?.positionsGainLost || {},
-      driver2PositionsGainLost: driverResults[driver2Id]?.positionsGainLost?.positions || driverResults[driver2Id]?.positionsGainLost || {},
+      driver1AvgRacePosition: normalizeToNumber(
+        driverResults[driver1Id]?.avgRacePositions,
+      ).toFixed(2),
+      driver2AvgRacePosition: normalizeToNumber(
+        driverResults[driver2Id]?.avgRacePositions,
+      ).toFixed(2),
+      driver1AvgQualiPositions: normalizeToNumber(
+        driverResults[driver1Id]?.avgQualiPositions,
+      ).toFixed(2),
+      driver2AvgQualiPositions: normalizeToNumber(
+        driverResults[driver2Id]?.avgQualiPositions,
+      ).toFixed(2),
+      driver1_win_rates: normalizeToNumber(
+        driverResults[driver1Id]?.win_rates,
+      ).toFixed(2),
+      driver2_win_rates: normalizeToNumber(
+        driverResults[driver2Id]?.win_rates,
+      ).toFixed(2),
+      driver1_podium_rates: normalizeToNumber(
+        driverResults[driver1Id]?.podium_rates,
+      ).toFixed(2),
+      driver2_podium_rates: normalizeToNumber(
+        driverResults[driver2Id]?.podium_rates,
+      ).toFixed(2),
+      driver1_pole_rates: normalizeToNumber(
+        driverResults[driver1Id]?.pole_rates,
+      ).toFixed(2),
+      driver2_pole_rates: normalizeToNumber(
+        driverResults[driver2Id]?.pole_rates,
+      ).toFixed(2),
+      driver1PositionsGainLost:
+        driverResults[driver1Id]?.positionsGainLost?.positions ||
+        driverResults[driver1Id]?.positionsGainLost ||
+        {},
+      driver2PositionsGainLost:
+        driverResults[driver2Id]?.positionsGainLost?.positions ||
+        driverResults[driver2Id]?.positionsGainLost ||
+        {},
       driver1DNF: normalizeToNumber(driverResults[driver1Id]?.seasonDNFs),
       driver2DNF: normalizeToNumber(driverResults[driver2Id]?.seasonDNFs),
       driver1Wins: normalizeToNumber(driverResults[driver1Id]?.seasonWins),
@@ -462,142 +652,174 @@ export const TeammatesComparison = () => {
     });
   };
 
-  const memoizedHeadToHeadData = useMemo(() => headToHeadData, [headToHeadData]);
+  const memoizedHeadToHeadData = useMemo(
+    () => headToHeadData,
+    [headToHeadData],
+  );
 
   const formatTeamName = (teamId) => {
-    if (!teamId) return '';
+    if (!teamId) return "";
     const y = Number(year);
-    if (teamId.toLowerCase() === 'rb' || teamId.toLowerCase() === 'racing_bulls') {
-      return y === 2024 ? 'RB' : 'Racing Bulls';
+    if (
+      teamId.toLowerCase() === "rb" ||
+      teamId.toLowerCase() === "racing_bulls"
+    ) {
+      return y === 2024 ? "RB" : "Racing Bulls";
     }
-    const teamObj = teamsMemo.find(t => t.constructorId === teamId);
+    const teamObj = teamsMemo.find((t) => t.constructorId === teamId);
     if (teamObj && teamObj.name) {
-      return teamObj.name.replace(/ F1 Team$/i, '').trim();
+      return teamObj.name.replace(/ F1 Team$/i, "").trim();
     }
-    return teamId.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+    return teamId
+      .split("_")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
   };
 
-const splitDriverName = (driverName) => {
-  if (!driverName) return ['', ''];
-  const parts = String(driverName).trim().split(" ");
-  if (parts.length <= 1) return [driverName, ''];
-  return [parts.slice(0, -1).join(' '), parts[parts.length - 1]];
-};
+  const splitDriverName = (driverName) => {
+    if (!driverName) return ["", ""];
+    const parts = String(driverName).trim().split(" ");
+    if (parts.length <= 1) return [driverName, ""];
+    return [parts.slice(0, -1).join(" "), parts[parts.length - 1]];
+  };
 
-const driverLockup = (driverCode, driverId, driverName) => {
-  const driverSplitName = splitDriverName(driverName);
-  
-  // Build a prioritized fallback chain for image sources
-  const fallbackChain = [];
-  const imgId = driverCode || driverId;
-  
-  // 1. Try year-specific image with code/id
-  if (year >= 2023 && imgId) {
-    fallbackChain.push(`/images/${year}/drivers/${imgId}.png`);
-  }
-  // 2. Try year-specific with driverId if different from code
-  if (year >= 2023 && driverId && driverId !== imgId) {
-    fallbackChain.push(`/images/${year}/drivers/${driverId}.png`);
-  }
-  // 3. Try 2024 fallback with code
-  if (imgId) {
-    fallbackChain.push(`/images/2024/drivers/${imgId}.png`);
-  }
-  // 4. Try 2024 fallback with driverId
-  if (driverId && driverId !== imgId) {
-    fallbackChain.push(`/images/2024/drivers/${driverId}.png`);
-  }
-  // 5. Try historical with driverId (files named by driverId)
-  if (driverId) {
-    fallbackChain.push(`/images/historical/drivers/${driverId}.png`);
-  }
-  // 6. Try historical with code
-  if (driverCode && driverCode !== driverId) {
-    fallbackChain.push(`/images/historical/drivers/${driverCode}.png`);
-  }
-  // 7. Default silhouette
-  fallbackChain.push('/images/2024/drivers/default_driver.png');
-  
-  return (
-    <div>
-      <div 
-        className="flex flex-col items-center max-w-[16rem] md:max-w-[25rem] bg-glow-dark border border-white/5 rounded-[2.4rem] shadow-xl hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] transition-all duration-300 relative group"
-      >
-        <div 
+  const driverLockup = (driverCode, driverId, driverName) => {
+    const driverSplitName = splitDriverName(driverName);
+
+    // Build a prioritized fallback chain for image sources
+    const fallbackChain = [];
+    const imgId = driverCode || driverId;
+
+    // 1. Try year-specific image with code/id
+    if (year >= 2023 && imgId) {
+      fallbackChain.push(`/images/${year}/drivers/${imgId}.png`);
+    }
+    // 2. Try year-specific with driverId if different from code
+    if (year >= 2023 && driverId && driverId !== imgId) {
+      fallbackChain.push(`/images/${year}/drivers/${driverId}.png`);
+    }
+    // 3. Try 2024 fallback with code
+    if (imgId) {
+      fallbackChain.push(`/images/2024/drivers/${imgId}.png`);
+    }
+    // 4. Try 2024 fallback with driverId
+    if (driverId && driverId !== imgId) {
+      fallbackChain.push(`/images/2024/drivers/${driverId}.png`);
+    }
+    // 5. Try historical with driverId (files named by driverId)
+    if (driverId) {
+      fallbackChain.push(`/images/historical/drivers/${driverId}.png`);
+    }
+    // 6. Try historical with code
+    if (driverCode && driverCode !== driverId) {
+      fallbackChain.push(`/images/historical/drivers/${driverCode}.png`);
+    }
+    // 7. Default silhouette
+    fallbackChain.push("/images/2024/drivers/default_driver.png");
+
+    return (
+      <div>
+        <div className="flex flex-col items-center max-w-[16rem] md:max-w-[25rem] bg-glow-dark border border-white/5 rounded-[2.4rem] shadow-xl hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] transition-all duration-300 relative group">
+          <div
             className="absolute inset-0 z-0 opacity-10 transition-opacity duration-300 group-hover:opacity-20 rounded-[2.4rem] overflow-hidden"
-            style={{ background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 70%)` }}
-        />
-        <div className="-mt-32 z-[1] relative">
-          <img 
-            alt="" 
-            src={fallbackChain[0]}
-            data-fallback-step="0"
-            onError={(e) => {
-              const currentStep = parseInt(e.target.dataset.fallbackStep || '0', 10);
-              const nextStep = currentStep + 1;
-              if (nextStep < fallbackChain.length) {
-                e.target.dataset.fallbackStep = nextStep;
-                e.target.src = fallbackChain[nextStep];
-              }
+            style={{
+              background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 70%)`,
             }}
-            className={classNames("w-[15rem] md:w-[22rem] max-h-[15rem] md:max-h-[22rem] object-contain object-bottom", {"group-[:first-of-type]:scale-x-[-1]" : year <= 2023 })}
           />
-        </div>
-        <div className="constructor-stand bg-glow-md py-8 md:py-16 mt-4 w-[110%] text-center relative z-[1]">
-          <p className="gradient-text-light uppercase tracking-xs -mb-8">{driverSplitName[0]}</p>
-          <h2 className="font-display md:text-[3.2rem] gradient-text-white">{driverSplitName[1]}</h2>
+          <div className="-mt-32 z-[1] relative">
+            <img
+              alt=""
+              src={fallbackChain[0]}
+              data-fallback-step="0"
+              onError={(e) => {
+                const currentStep = parseInt(
+                  e.target.dataset.fallbackStep || "0",
+                  10,
+                );
+                const nextStep = currentStep + 1;
+                if (nextStep < fallbackChain.length) {
+                  e.target.dataset.fallbackStep = nextStep;
+                  e.target.src = fallbackChain[nextStep];
+                }
+              }}
+              className={classNames(
+                "w-[15rem] md:w-[22rem] max-h-[15rem] md:max-h-[22rem] object-contain object-bottom",
+                { "group-[:first-of-type]:scale-x-[-1]": year <= 2023 },
+              )}
+            />
+          </div>
+          <div className="constructor-stand bg-glow-md py-8 md:py-16 mt-4 w-[110%] text-center relative z-[1]">
+            <p className="gradient-text-light uppercase tracking-xs -mb-8">
+              {driverSplitName[0]}
+            </p>
+            <h2 className="font-display md:text-[3.2rem] gradient-text-white">
+              {driverSplitName[1]}
+            </h2>
+          </div>
         </div>
       </div>
-    </div>
-  )
-}
+    );
+  };
 
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleString();
+  };
 
-const formatDate = (isoString) => {
-  const date = new Date(isoString);
-  return date.toLocaleString();
-};
+  const GridRow = (label, driver1, driver2, title) => {
+    const driver1SplitName = splitDriverName(String(driver1));
+    const driver2SplitName = splitDriverName(String(driver2));
 
-const GridRow = (label, driver1, driver2, title) => {
-  const driver1SplitName = splitDriverName(String(driver1));
-  const driver2SplitName = splitDriverName(String(driver2));
+    return (
+      <>
+        <div
+          className={classNames(
+            "grid grid-cols-3 gap-4 mb-16 text-neutral-400 items-center",
+            { "text-xs": title },
+          )}
+        >
+          <span className="tracking-xs uppercase text-xs">{label}</span>
+          <span className="tracking-xs uppercase text-center">
+            {title ? driver1SplitName[1] : driver1}
+          </span>
+          <span className="tracking-xs uppercase text-center">
+            {title ? driver2SplitName[1] : driver2}
+          </span>
+        </div>
+        <div className="divider-glow-medium " />
+      </>
+    );
+  };
 
-  return (
-    <>
-      <div className={classNames("grid grid-cols-3 gap-4 mb-16 text-neutral-400 items-center", {'text-xs': title})}>
-        <span className="tracking-xs uppercase text-xs">{label}</span>
-        <span className="tracking-xs uppercase text-center">
-          {title ? driver1SplitName[1] : driver1}
-        </span>
-        <span className="tracking-xs uppercase text-center">
-          {title ? driver2SplitName[1] : driver2}
-        </span>
-      </div>
-      <div className='divider-glow-medium ' />
-    </>
-  );
-}
+  const yearOptions = years.map((year) => ({ value: year, label: year }));
+  const teamOptions = teamsMemo.map((team) => ({
+    value: team.constructorId,
+    label: team.name,
+  }));
+  const driverOptions = drivers.map((driver) => ({
+    value: driver.driverId,
+    label: `${driver.givenName} ${driver.familyName}`,
+  }));
 
-  const yearOptions = years.map(year => ({ value: year, label: year }));
-  const teamOptions = teamsMemo.map(team => ({ value: team.constructorId, label: team.name }));
-  const driverOptions = drivers.map(driver => ({ value: driver.driverId, label: `${driver.givenName} ${driver.familyName}` }));
-
-  const formattedTeamOptions = teamOptions.map(team => ({
+  const formattedTeamOptions = teamOptions.map((team) => ({
     value: team.value,
-    label: (team.value.toLowerCase() === 'rb' || team.value.toLowerCase() === 'racing_bulls')
-      ? (Number(year) === 2024 ? 'RB' : 'Racing Bulls')
-      : team.label.replace(/ F1 Team$/i, '').trim(),
+    label:
+      team.value.toLowerCase() === "rb" ||
+      team.value.toLowerCase() === "racing_bulls"
+        ? Number(year) === 2024
+          ? "RB"
+          : "Racing Bulls"
+        : team.label.replace(/ F1 Team$/i, "").trim(),
   }));
 
   return (
-    <div className='global-container min-h-[40rem] pb-64'>
-
+    <div className="global-container min-h-[40rem] pb-64">
       <div className="text-center mt-32 mb-40 md:mb-64 z-10 relative">
         <h1 className="heading-1 gradient-text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.4)] tracking-tight mb-8">
-            Teammates Comparison
+          Teammates Comparison
         </h1>
         <p className="text-lg md:text-[2rem] text-neutral-400 font-light tracking-wide drop-shadow-md max-w-3xl mx-auto px-16">
-            Analyze head-to-head performance across the season
+          Analyze head-to-head performance across the season
         </p>
       </div>
 
@@ -606,7 +828,11 @@ const GridRow = (label, driver1, driver2, title) => {
           placeholder="Select Year"
           options={yearOptions}
           onChange={handleYearChange}
-          value={yearOptions.find(option => String(option.value) === String(year)) || null}
+          value={
+            yearOptions.find(
+              (option) => String(option.value) === String(year),
+            ) || null
+          }
           isSearchable={false}
           className="w-[15rem]"
         />
@@ -614,7 +840,9 @@ const GridRow = (label, driver1, driver2, title) => {
           placeholder="Select Team"
           options={formattedTeamOptions}
           onChange={handleTeamChange}
-          value={formattedTeamOptions.find(option => option.value === team) || null}
+          value={
+            formattedTeamOptions.find((option) => option.value === team) || null
+          }
           isDisabled={!year}
           isSearchable={false}
           className="w-[19rem]"
@@ -622,31 +850,45 @@ const GridRow = (label, driver1, driver2, title) => {
       </div>
 
       {showDriverSelectors && (
-      <div className="flex flex-col items-center justify-center gap-6 mb-32 mt-16">
-        <p className="text-[1.1rem] uppercase text-neutral-400 font-mono tracking-widest font-semibold">Select Drivers</p>
-        <div className="flex max-md:flex-col items-center justify-center gap-8 md:gap-12 max-w-fit mx-auto relative z-40">
-          <ReactSelectComponent
-            placeholder="Select Driver 1"
-            options={driverOptions.map(driver => ({ ...driver, isDisabled: driver.value === selectedDriver2 }))}
-            onChange={handleDriver1Change}
-            value={driverOptions.find(option => option.value === selectedDriver1)}
-            isSearchable={false}
-            className="w-fit min-w-[17rem]"
+        <div className="flex flex-col items-center justify-center gap-6 mb-32 mt-16">
+          <p className="text-[1.1rem] uppercase text-neutral-400 font-mono tracking-widest font-semibold">
+            Select Drivers
+          </p>
+          <div className="flex max-md:flex-col items-center justify-center gap-8 md:gap-12 max-w-fit mx-auto relative z-40">
+            <ReactSelectComponent
+              placeholder="Select Driver 1"
+              options={driverOptions.map((driver) => ({
+                ...driver,
+                isDisabled: driver.value === selectedDriver2,
+              }))}
+              onChange={handleDriver1Change}
+              value={driverOptions.find(
+                (option) => option.value === selectedDriver1,
+              )}
+              isSearchable={false}
+              className="w-fit min-w-[17rem]"
             />
-          <div className="hidden md:flex items-center justify-center bg-white/5 border border-white/10 rounded-full w-10 h-10">
-            <span className="text-neutral-400 text-xs uppercase font-bold tracking-wider">vs</span>
+            <div className="hidden md:flex items-center justify-center bg-white/5 border border-white/10 rounded-full w-10 h-10">
+              <span className="text-neutral-400 text-xs uppercase font-bold tracking-wider">
+                vs
+              </span>
+            </div>
+            <ReactSelectComponent
+              placeholder="Select Driver 2"
+              options={driverOptions.map((driver) => ({
+                ...driver,
+                isDisabled: driver.value === selectedDriver1,
+              }))}
+              onChange={handleDriver2Change}
+              value={driverOptions.find(
+                (option) => option.value === selectedDriver2,
+              )}
+              isSearchable={false}
+              className="w-fit min-w-[17rem]"
+            />
           </div>
-          <ReactSelectComponent
-            placeholder="Select Driver 2"
-            options={driverOptions.map(driver => ({ ...driver, isDisabled: driver.value === selectedDriver1 }))}
-            onChange={handleDriver2Change}
-            value={driverOptions.find(option => option.value === selectedDriver2)}
-            isSearchable={false}
-            className="w-fit min-w-[17rem]"
-          />
         </div>
-      </div>
-    )}
+      )}
 
       {error && (
         <div className="bg-red-500/10 border border-red-500 text-red-500 p-16 rounded-lg mb-32 text-center max-w-[40rem] mx-auto">
@@ -658,144 +900,190 @@ const GridRow = (label, driver1, driver2, title) => {
         <Loading message={`Comparing selected drivers`} />
       ) : (
         <div className="max-md:px-8">
+          {memoizedHeadToHeadData && renderHead && urlTeam && urlYear && (
+            <>
+              {/* <button onClick={() => {navigator.clipboard.writeText(`http://localhost:3000/#/teammates-comparison/${year}/${team}`)}}   style={{ cursor: 'pointer', padding: '10px 20px', backgroundColor: '#007BFF', color: '#FFF', border: 'none', borderRadius: '4px' }}>Share</button> */}
 
-        {memoizedHeadToHeadData && renderHead && urlTeam && urlYear && (
-        <>
-
-          {/* <button onClick={() => {navigator.clipboard.writeText(`http://localhost:3000/#/teammates-comparison/${year}/${team}`)}}   style={{ cursor: 'pointer', padding: '10px 20px', backgroundColor: '#007BFF', color: '#FFF', border: 'none', borderRadius: '4px' }}>Share</button> */}
-
-          <div 
-              className="text-center leading-none mt-48 mb-48 w-1/2 m-auto"
-            >
-            <p className="font-display text-[2.4rem] gradient-text-light">{formatTeamName(team)}</p>
-            <p className="text-sm tracking-xs gradient-text-light">HEAD-TO-HEAD</p>
-            <div className="divider-glow-dark mt-8" />
-          </div>
-          <div 
-            className="flex items-center justify-center gap-64 mb-64 md:w-2/3 m-auto relative px-16"
-          >
-            {driverLockup(memoizedHeadToHeadData.driver1Code, memoizedHeadToHeadData.driver1Id, memoizedHeadToHeadData.driver1)}
-            <div 
-              className="text-center leading-none rounded-md absolute top-48 left-1/2 -translate-x-1/2 -z-[1] w-1/2"
-            >
-              <p className="font-display text-[2.4rem] gradient-text-light">VS</p>
-            </div>
-            {driverLockup(memoizedHeadToHeadData.driver2Code, memoizedHeadToHeadData.driver2Id, memoizedHeadToHeadData.driver2)}
-          </div>
-
-          {(ambQ || ambR) &&( 
-            <p className="text-center text-sm tracking-xs gradient-text-light mb-32">
-              The drivers have not competed against each other this season
-            </p>
-          )}
-
-          <div className="flex flex-col items-center gap-8 mb-32">
-            <p className="text-center text-sm tracking-xs gradient-text-light">
-              Last Updated {formatDate(memoizedHeadToHeadData.lastUpdate)}
-            </p>
-            {isAdmin && (
-              <div className="flex gap-8">
-                <Button
-                  size="xs"
-                  buttonStyle="hollow"
-                  onClick={handleRefresh}
-                  disabled={isLoading}
-                >
-                  {isLoading ? "Refreshing..." : "Refresh Current Drivers"}
-                </Button>
-                <Button
-                  size="xs"
-                  buttonStyle="hollow"
-                  onClick={handleRefreshAll}
-                  disabled={isLoading}
-                >
-                  {isLoading ? "Batch Refreshing..." : "Refresh All Season Data"}
-                </Button>
+              <div className="text-center leading-none mt-48 mb-48 w-1/2 m-auto">
+                <p className="font-display text-[2.4rem] gradient-text-light">
+                  {formatTeamName(team)}
+                </p>
+                <p className="text-sm tracking-xs gradient-text-light">
+                  HEAD-TO-HEAD
+                </p>
+                <div className="divider-glow-dark mt-8" />
               </div>
-            )}
-          </div>
-          <HeadToHeadChart headToHeadData={memoizedHeadToHeadData} color={`#${teamColor}`} />
-
-          <h3 className="heading-4 mb-16 text-neutral-400 ml-24 text-center">Driver Statistics Comparison</h3>
-          <div className="bg-glow-large rounded-lg mb-64 p-8 md:px-32 md:pt-16 md:pb-32"> 
-            {GridRow( " ", memoizedHeadToHeadData.driver1, memoizedHeadToHeadData.driver2, true)}
-            {GridRow( "Average Race Position", memoizedHeadToHeadData.driver1AvgRacePosition, memoizedHeadToHeadData.driver2AvgRacePosition)}
-            {GridRow( "Average Qualifying Position", memoizedHeadToHeadData.driver1AvgQualiPositions, memoizedHeadToHeadData.driver2AvgQualiPositions)}
-            {GridRow( "Win Rate", memoizedHeadToHeadData.driver1_win_rates, memoizedHeadToHeadData.driver2_win_rates)}
-            {GridRow( "Podium Rate", memoizedHeadToHeadData.driver1_podium_rates, memoizedHeadToHeadData.driver2_podium_rates)}
-            {GridRow( "Pole Rate", memoizedHeadToHeadData.driver1_pole_rates, memoizedHeadToHeadData.driver2_pole_rates)}
-          </div>
-
-
-          {(!ambQ && !ambR) && (<div>
-            <div>
-              <div>
-                <h3 className="heading-4 mb-16 text-neutral-400 ml-24 text-center">Positions Gained or Lost During Race</h3>
-                <div className="bg-glow-large rounded-lg mb-64 p-8 md:px-32 md:pt-16 md:pb-32">
-                  <PositionsGainedLostChart 
-                    headToHeadData={memoizedHeadToHeadData}
-                    teamColor={teamColor}
-                  />
+              <div className="flex items-center justify-center gap-64 mb-64 md:w-2/3 m-auto relative px-16">
+                {driverLockup(
+                  memoizedHeadToHeadData.driver1Code,
+                  memoizedHeadToHeadData.driver1Id,
+                  memoizedHeadToHeadData.driver1,
+                )}
+                <div className="text-center leading-none rounded-md absolute top-48 left-1/2 -translate-x-1/2 -z-[1] w-1/2">
+                  <p className="font-display text-[2.4rem] gradient-text-light">
+                    VS
+                  </p>
                 </div>
-                
-                <h3 className="heading-4 mb-16 text-neutral-400 ml-24 text-center">Qualifying Lap Time Differences</h3>
-                <div className="bg-glow-large rounded-lg mb-64 p-8 md:px-32 md:pt-16 md:pb-32">
+                {driverLockup(
+                  memoizedHeadToHeadData.driver2Code,
+                  memoizedHeadToHeadData.driver2Id,
+                  memoizedHeadToHeadData.driver2,
+                )}
+              </div>
+
+              {(ambQ || ambR) && (
+                <p className="text-center text-sm tracking-xs gradient-text-light mb-32">
+                  The drivers have not competed against each other this season
+                </p>
+              )}
+
+              <div className="flex flex-col items-center gap-8 mb-32">
+                <p className="text-center text-sm tracking-xs gradient-text-light">
+                  Last Updated {formatDate(memoizedHeadToHeadData.lastUpdate)}
+                </p>
+                {isAdmin && (
                   <div className="flex gap-8">
-                    <Button 
-                        onClick={handleShowTimes}
-                        buttonStyle="hollow" 
-                        active={showTimes}
-                        size='sm'
+                    <Button
+                      size="xs"
+                      buttonStyle="hollow"
+                      onClick={handleRefresh}
+                      disabled={isLoading}
                     >
-                        Show Times
+                      {isLoading ? "Refreshing..." : "Refresh Current Drivers"}
                     </Button>
-                    <Button 
-                        onClick={handleShowDifference}
-                        buttonStyle="hollow" 
-                        active={!showTimes}
-                        size='sm'
+                    <Button
+                      size="xs"
+                      buttonStyle="hollow"
+                      onClick={handleRefreshAll}
+                      disabled={isLoading}
                     >
-                        Show Deltas
+                      {isLoading
+                        ? "Batch Refreshing..."
+                        : "Refresh All Season Data"}
                     </Button>
                   </div>
-                  {showTimes ? (
-                    <QualifyingLapTimesChart 
-                      headToHeadData={memoizedHeadToHeadData}
-                      teamColor={teamColor}
-                    />
-                  ) : (
-                    <QualifyingLapTimesDeltaChart
-                      headToHeadData={memoizedHeadToHeadData}
-                      teamColor={teamColor}
-                    />
-                  )}
-                </div>
+                )}
               </div>
+              <HeadToHeadChart
+                headToHeadData={memoizedHeadToHeadData}
+                color={`#${teamColor}`}
+              />
 
-              <h3 className="heading-4 mb-16 text-neutral-400 ml-24 text-center">Qualifying Positions Comparison</h3>
+              <h3 className="heading-4 mb-16 text-neutral-400 ml-24 text-center">
+                Driver Statistics Comparison
+              </h3>
               <div className="bg-glow-large rounded-lg mb-64 p-8 md:px-32 md:pt-16 md:pb-32">
-                <PositionsComparisonChart
-                  headToHeadData={memoizedHeadToHeadData}
-                  teamColor={teamColor}
-                  isQualifying={true}
-                />
+                {GridRow(
+                  " ",
+                  memoizedHeadToHeadData.driver1,
+                  memoizedHeadToHeadData.driver2,
+                  true,
+                )}
+                {GridRow(
+                  "Average Race Position",
+                  memoizedHeadToHeadData.driver1AvgRacePosition,
+                  memoizedHeadToHeadData.driver2AvgRacePosition,
+                )}
+                {GridRow(
+                  "Average Qualifying Position",
+                  memoizedHeadToHeadData.driver1AvgQualiPositions,
+                  memoizedHeadToHeadData.driver2AvgQualiPositions,
+                )}
+                {GridRow(
+                  "Win Rate",
+                  memoizedHeadToHeadData.driver1_win_rates,
+                  memoizedHeadToHeadData.driver2_win_rates,
+                )}
+                {GridRow(
+                  "Podium Rate",
+                  memoizedHeadToHeadData.driver1_podium_rates,
+                  memoizedHeadToHeadData.driver2_podium_rates,
+                )}
+                {GridRow(
+                  "Pole Rate",
+                  memoizedHeadToHeadData.driver1_pole_rates,
+                  memoizedHeadToHeadData.driver2_pole_rates,
+                )}
               </div>
 
-              <h3 className="heading-4 mb-16 text-neutral-400 ml-24 text-center">Race Positions Comparison</h3>
-              <div className="bg-glow-large rounded-lg mb-96 p-8 md:px-32 md:pt-16 md:pb-32">
-                <PositionsComparisonChart
-                  headToHeadData={memoizedHeadToHeadData}
-                  teamColor={teamColor}
-                  isQualifying={false}
-                />
-              </div>
-              </div>
-          </div>)}
-        </>
-      )}
-      </div>
+              {!ambQ && !ambR && (
+                <div>
+                  <div>
+                    <div>
+                      <h3 className="heading-4 mb-16 text-neutral-400 ml-24 text-center">
+                        Positions Gained or Lost During Race
+                      </h3>
+                      <div className="bg-glow-large rounded-lg mb-64 p-8 md:px-32 md:pt-16 md:pb-32">
+                        <PositionsGainedLostChart
+                          headToHeadData={memoizedHeadToHeadData}
+                          teamColor={teamColor}
+                        />
+                      </div>
+
+                      <h3 className="heading-4 mb-16 text-neutral-400 ml-24 text-center">
+                        Qualifying Lap Time Differences
+                      </h3>
+                      <div className="bg-glow-large rounded-lg mb-64 p-8 md:px-32 md:pt-16 md:pb-32">
+                        <div className="flex gap-8">
+                          <Button
+                            onClick={handleShowTimes}
+                            buttonStyle="hollow"
+                            active={showTimes}
+                            size="sm"
+                          >
+                            Show Times
+                          </Button>
+                          <Button
+                            onClick={handleShowDifference}
+                            buttonStyle="hollow"
+                            active={!showTimes}
+                            size="sm"
+                          >
+                            Show Deltas
+                          </Button>
+                        </div>
+                        {showTimes ? (
+                          <QualifyingLapTimesChart
+                            headToHeadData={memoizedHeadToHeadData}
+                            teamColor={teamColor}
+                          />
+                        ) : (
+                          <QualifyingLapTimesDeltaChart
+                            headToHeadData={memoizedHeadToHeadData}
+                            teamColor={teamColor}
+                          />
+                        )}
+                      </div>
+                    </div>
+
+                    <h3 className="heading-4 mb-16 text-neutral-400 ml-24 text-center">
+                      Qualifying Positions Comparison
+                    </h3>
+                    <div className="bg-glow-large rounded-lg mb-64 p-8 md:px-32 md:pt-16 md:pb-32">
+                      <PositionsComparisonChart
+                        headToHeadData={memoizedHeadToHeadData}
+                        teamColor={teamColor}
+                        isQualifying={true}
+                      />
+                    </div>
+
+                    <h3 className="heading-4 mb-16 text-neutral-400 ml-24 text-center">
+                      Race Positions Comparison
+                    </h3>
+                    <div className="bg-glow-large rounded-lg mb-96 p-8 md:px-32 md:pt-16 md:pb-32">
+                      <PositionsComparisonChart
+                        headToHeadData={memoizedHeadToHeadData}
+                        teamColor={teamColor}
+                        isQualifying={false}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
       )}
     </div>
   );
 };
-
