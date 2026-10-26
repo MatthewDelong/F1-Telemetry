@@ -2,7 +2,7 @@
     "driverId": "lawson",
     "driverCode": "LAW",
     "driverNumber": "30",
-    "lastUpdate": "2026-10-19T16:29:04.424945",
+    "lastUpdate": "2026-10-26T08:02:28.711228",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -11,7 +11,7 @@
     "winRate": 0.0,
     "podiumRate": 0.0,
     "poleRate": 0.0,
-    "dnfRate": 0.25,
+    "dnfRate": 0.24528301886792453,
     "seasonWins": {
         "2023": 0,
         "2024": 0,
@@ -129,7 +129,8 @@
             "Spain Grand Prix": "1:36.846",
             "Azerbaijan Grand Prix": "1:46.906",
             "Bahrain Grand Prix (Malaysia)": "1:40.254",
-            "Singapore Grand Prix": "1:37.193"
+            "Singapore Grand Prix": "1:37.193",
+            "United States Grand Prix": "1:39.652"
         }
     },
     "finalStandings": {
@@ -328,6 +329,9 @@
                 },
                 "Singapore Grand Prix": {
                     "points": 75
+                },
+                "United States Grand Prix": {
+                    "points": 77
                 }
             }
         }
@@ -399,7 +403,8 @@
                 "Spain Grand Prix": "6",
                 "Azerbaijan Grand Prix": "12",
                 "Bahrain Grand Prix (Malaysia)": "7",
-                "Singapore Grand Prix": "7"
+                "Singapore Grand Prix": "7",
+                "United States Grand Prix": "9"
             }
         }
     },
@@ -470,7 +475,8 @@
                 "Spain Grand Prix": "8",
                 "Azerbaijan Grand Prix": "11",
                 "Bahrain Grand Prix (Malaysia)": "11",
-                "Singapore Grand Prix": "8"
+                "Singapore Grand Prix": "8",
+                "United States Grand Prix": "9"
             }
         }
     },
@@ -533,7 +539,8 @@
             "Spain Grand Prix": 2,
             "Azerbaijan Grand Prix": -1,
             "Bahrain Grand Prix (Malaysia)": 4,
-            "Singapore Grand Prix": 1
+            "Singapore Grand Prix": 1,
+            "United States Grand Prix": 0
         }
     },
     "driverQualifyingTimes": {
@@ -811,6 +818,11 @@
                     "1:32.885",
                     "1:32.319",
                     "1:32.369"
+                ],
+                "United States Grand Prix": [
+                    "1:35.662",
+                    "1:35.058",
+                    ""
                 ]
             }
         }
@@ -819,13 +831,13 @@
         "2023": 12.2,
         "2024": 13.5,
         "2025": 12.791666666666666,
-        "2026": 9.235294117647058
+        "2026": 9.222222222222221
     },
     "avgQualiPositions": {
         "2023": 14.2,
         "2024": 12.666666666666666,
         "2025": 12.541666666666666,
-        "2026": 10.823529411764707
+        "2026": 10.722222222222221
     },
     "rates": {
         "wins": {

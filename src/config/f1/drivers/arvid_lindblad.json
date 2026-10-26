@@ -2,7 +2,7 @@
     "driverId": "arvid_lindblad",
     "driverCode": "LIN",
     "driverNumber": "",
-    "lastUpdate": "2026-10-19T16:29:04.425107",
+    "lastUpdate": "2026-10-26T08:02:28.711270",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -59,7 +59,8 @@
             "Spain Grand Prix": "1:38.211",
             "Azerbaijan Grand Prix": "1:46.849",
             "Bahrain Grand Prix (Malaysia)": "1:40.315",
-            "Singapore Grand Prix": "1:38.154"
+            "Singapore Grand Prix": "1:38.154",
+            "United States Grand Prix": "1:39.422"
         }
     },
     "finalStandings": {
@@ -132,6 +133,9 @@
                 },
                 "Singapore Grand Prix": {
                     "points": 38
+                },
+                "United States Grand Prix": {
+                    "points": 38
                 }
             }
         }
@@ -159,7 +163,8 @@
                 "Spain Grand Prix": "9",
                 "Azerbaijan Grand Prix": "7",
                 "Bahrain Grand Prix (Malaysia)": "10",
-                "Singapore Grand Prix": "15"
+                "Singapore Grand Prix": "15",
+                "United States Grand Prix": "12"
             }
         }
     },
@@ -186,7 +191,8 @@
                 "Spain Grand Prix": "10",
                 "Azerbaijan Grand Prix": "15",
                 "Bahrain Grand Prix (Malaysia)": "22",
-                "Singapore Grand Prix": "9"
+                "Singapore Grand Prix": "9",
+                "United States Grand Prix": "14"
             }
         }
     },
@@ -209,7 +215,8 @@
             "Spain Grand Prix": 1,
             "Azerbaijan Grand Prix": 8,
             "Bahrain Grand Prix (Malaysia)": 12,
-            "Singapore Grand Prix": -6
+            "Singapore Grand Prix": -6,
+            "United States Grand Prix": 2
         }
     },
     "driverQualifyingTimes": {
@@ -303,17 +310,22 @@
                     "1:33.288",
                     "1:32.498",
                     "1:32.781"
+                ],
+                "United States Grand Prix": [
+                    "1:35.755",
+                    "1:34.950",
+                    "1:36.049"
                 ]
             }
         }
     },
     "avgRacePositions": {
         "2025": 0.0,
-        "2026": 10.705882352941176
+        "2026": 10.777777777777779
     },
     "avgQualiPositions": {
         "2025": 0.0,
-        "2026": 11.470588235294118
+        "2026": 11.61111111111111
     },
     "rates": {
         "wins": {

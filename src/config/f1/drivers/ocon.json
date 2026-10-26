@@ -2,16 +2,16 @@
     "driverId": "ocon",
     "driverCode": "OCO",
     "driverNumber": "31",
-    "lastUpdate": "2026-10-19T16:29:04.425062",
+    "lastUpdate": "2026-10-26T08:02:28.711297",
     "totalWins": 1,
     "totalPodiums": 4,
     "totalPoles": 0,
     "totalDNFs": 48,
     "totalRaces": 195,
-    "winRate": 0.00510204081632653,
-    "podiumRate": 0.02040816326530612,
+    "winRate": 0.005076142131979695,
+    "podiumRate": 0.02030456852791878,
     "poleRate": 0.0,
-    "dnfRate": 0.24489795918367346,
+    "dnfRate": 0.2436548223350254,
     "seasonWins": {
         "2016": 0,
         "2017": 0,
@@ -375,7 +375,8 @@
             "Spain Grand Prix": "1:38.119",
             "Azerbaijan Grand Prix": "1:47.068",
             "Bahrain Grand Prix (Malaysia)": "1:42.062",
-            "Singapore Grand Prix": "1:38.129"
+            "Singapore Grand Prix": "1:38.129",
+            "United States Grand Prix": "1:41.418"
         }
     },
     "finalStandings": {
@@ -1066,6 +1067,9 @@
                 },
                 "Singapore Grand Prix": {
                     "points": 7
+                },
+                "United States Grand Prix": {
+                    "points": 7
                 }
             }
         }
@@ -1305,7 +1309,8 @@
                 "Spain Grand Prix": "11",
                 "Azerbaijan Grand Prix": "8",
                 "Bahrain Grand Prix (Malaysia)": "15",
-                "Singapore Grand Prix": "13"
+                "Singapore Grand Prix": "13",
+                "United States Grand Prix": "14"
             }
         }
     },
@@ -1543,7 +1548,8 @@
                 "Spain Grand Prix": "13",
                 "Azerbaijan Grand Prix": "13",
                 "Bahrain Grand Prix (Malaysia)": "17",
-                "Singapore Grand Prix": "12"
+                "Singapore Grand Prix": "12",
+                "United States Grand Prix": "15"
             }
         }
     },
@@ -1761,7 +1767,8 @@
             "Spain Grand Prix": 2,
             "Azerbaijan Grand Prix": 5,
             "Bahrain Grand Prix (Malaysia)": 2,
-            "Singapore Grand Prix": -1
+            "Singapore Grand Prix": -1,
+            "United States Grand Prix": 1
         }
     },
     "driverQualifyingTimes": {
@@ -2778,6 +2785,11 @@
                     "1:33.803",
                     "1:33.323",
                     "N/A"
+                ],
+                "United States Grand Prix": [
+                    "1:36.531",
+                    "N/A",
+                    "N/A"
                 ]
             }
         }
@@ -2792,7 +2804,7 @@
         "2023": 11.863636363636363,
         "2024": 13.695652173913043,
         "2025": 12.5,
-        "2026": 13.411764705882353
+        "2026": 13.444444444444445
     },
     "avgQualiPositions": {
         "2016": 20.25,
@@ -2804,7 +2816,7 @@
         "2023": 11.181818181818182,
         "2024": 14.391304347826088,
         "2025": 15.125,
-        "2026": 14.705882352941176
+        "2026": 14.722222222222221
     },
     "rates": {
         "wins": {

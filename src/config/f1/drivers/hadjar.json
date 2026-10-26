@@ -2,16 +2,16 @@
     "driverId": "hadjar",
     "driverCode": "HAD",
     "driverNumber": "6",
-    "lastUpdate": "2026-10-19T16:29:04.425000",
+    "lastUpdate": "2026-10-26T08:02:28.711197",
     "totalWins": 0,
     "totalPodiums": 3,
     "totalPoles": 0,
     "totalDNFs": 11,
     "totalRaces": 37,
     "winRate": 0.0,
-    "podiumRate": 0.07894736842105263,
+    "podiumRate": 0.07692307692307693,
     "poleRate": 0.0,
-    "dnfRate": 0.2894736842105263,
+    "dnfRate": 0.28205128205128205,
     "seasonWins": {
         "2025": 0,
         "2026": 0
@@ -98,7 +98,8 @@
             "Hungary Grand Prix": "1:23.218",
             "Azerbaijan Grand Prix": "1:45.618",
             "Bahrain Grand Prix (Malaysia)": "1:39.792",
-            "Singapore Grand Prix": "1:35.917"
+            "Singapore Grand Prix": "1:35.917",
+            "United States Grand Prix": "1:39.399"
         }
     },
     "finalStandings": {
@@ -235,6 +236,9 @@
                 },
                 "Singapore Grand Prix": {
                     "points": 97
+                },
+                "United States Grand Prix": {
+                    "points": 105
                 }
             }
         }
@@ -284,7 +288,8 @@
                 "Hungary Grand Prix": "6",
                 "Azerbaijan Grand Prix": "3",
                 "Bahrain Grand Prix (Malaysia)": "5",
-                "Singapore Grand Prix": "10"
+                "Singapore Grand Prix": "10",
+                "United States Grand Prix": "6"
             }
         }
     },
@@ -333,7 +338,8 @@
                 "Hungary Grand Prix": "8",
                 "Azerbaijan Grand Prix": "4",
                 "Bahrain Grand Prix (Malaysia)": "8",
-                "Singapore Grand Prix": "22"
+                "Singapore Grand Prix": "22",
+                "United States Grand Prix": "3"
             }
         }
     },
@@ -378,7 +384,8 @@
             "Hungary Grand Prix": 2,
             "Azerbaijan Grand Prix": 1,
             "Bahrain Grand Prix (Malaysia)": 3,
-            "Singapore Grand Prix": 12
+            "Singapore Grand Prix": 12,
+            "United States Grand Prix": -3
         }
     },
     "driverQualifyingTimes": {
@@ -578,17 +585,22 @@
                     "",
                     "N/A",
                     "N/A"
+                ],
+                "United States Grand Prix": [
+                    "1:35.286",
+                    "1:34.887",
+                    "1:34.250"
                 ]
             }
         }
     },
     "avgRacePositions": {
         "2025": 11.791666666666666,
-        "2026": 8.357142857142858
+        "2026": 8.2
     },
     "avgQualiPositions": {
         "2025": 9.666666666666666,
-        "2026": 9.714285714285714
+        "2026": 9.266666666666667
     },
     "rates": {
         "wins": {
@@ -597,7 +609,7 @@
         },
         "podiums": {
             "2025": 0.041666666666666664,
-            "2026": 0.14285714285714285
+            "2026": 0.13333333333333333
         },
         "poles": {
             "2025": 0.0,
