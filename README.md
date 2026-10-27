@@ -88,6 +88,7 @@ F1-Telemetry is an interactive web application built for motorsport fans who wan
 
 - **Node.js** ≥ 18
 - **npm** ≥ 9
+- **Python** ≥ 3.9 (only needed for the `/admin` data update buttons) — [python.org/downloads](https://www.python.org/downloads/)
 
 ### Install & Run
 
@@ -96,17 +97,16 @@ F1-Telemetry is an interactive web application built for motorsport fans who wan
 git clone https://github.com/your-username/F1-Telemetry.git
 cd F1-Telemetry
 
-# Install dependencies
+# Install everything: frontend, backend AND the Python .venv
+# (requirements.txt + Playwright Chromium are installed automatically)
 npm install --legacy-peer-deps
-
-# Install dependencies
-cd backend
-npm install
-cd..
 
 # Start the dev server
 npm run dev
 ```
+
+> If Python wasn't installed when you ran `npm install`, install it and then run `npm run py:install`.
+> If an admin update ever fails with `ModuleNotFoundError`, run `npm run py:install` and restart `npm run dev`.
 
 The app will be available at **http://localhost:3006** (or the port shown in your terminal).
 
@@ -208,12 +208,14 @@ The project includes Python scripts that fetch the latest season data and format
 
 **Prerequisites**
 
-- **Python** ≥ 3.8 — on Windows use the `py` launcher (avoids Microsoft Store alias issues)
-- Install the required Python packages (this uses `pip`, Python's own package manager — separate from npm):
+- **Python** ≥ 3.9 on your PATH (`py`, `python3` or `python`)
+- Python packages are listed in [`requirements.txt`](requirements.txt) (`requests`, `numpy`, `playwright`). They're installed into a project-local `.venv` automatically by `npm install`, or manually with:
 
 ```bash
-py -m pip install requests numpy
+npm run py:install
 ```
+
+The backend and the `npm run update:*` scripts always use `.venv` when it exists, so your global Python is never touched. Override the interpreter with the `PYTHON_CMD` env var if needed, or set `SKIP_PYTHON_SETUP=1` to skip the Python step during `npm install` (e.g. CI).
 
 **Updating Data via Admin Dashboard**
 

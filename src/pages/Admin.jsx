@@ -113,11 +113,17 @@ export const AdminPage = () => {
   };
 
   const addLog = (msg) => {
+    const stamped = `[${new Date().toLocaleString()}] ${msg}`;
     setLogs(prev => {
-      const next = [msg, ...prev].slice(0, 50);
+      const next = [stamped, ...prev].slice(0, 50);
       try { localStorage.setItem('admin_logs', JSON.stringify(next)); } catch(e){}
       return next;
     });
+  };
+
+  const clearLogs = () => {
+    setLogs([]);
+    try { localStorage.removeItem('admin_logs'); } catch(e){}
   };
 
   const formatDate = (dateString) => {
@@ -215,7 +221,12 @@ export const AdminPage = () => {
       </div>
 
       <div className="bg-gray-900 p-6 rounded-lg shadow-lg border border-gray-800 h-96 flex flex-col">
-        <h3 className="text-xl font-bold mb-4 text-gray-300">Execution Logs</h3>
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-xl font-bold text-gray-300">Execution Logs</h3>
+          <button id="admin-clear-logs" onClick={clearLogs} className="text-sm text-gray-400 hover:text-white underline">
+            Clear Logs
+          </button>
+        </div>
         <div className="font-mono text-sm overflow-y-auto flex-grow bg-black p-4 rounded border border-gray-800">
           {logs.map((log, i) => (
             <div key={i} className="mb-3 border-b border-gray-800 pb-3 last:border-b-0 last:pb-0">

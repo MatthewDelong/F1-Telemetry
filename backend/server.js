@@ -754,11 +754,22 @@ function execPython(args, options, callback) {
   const pythonCmd =
     process.env.PYTHON_CMD ||
     (fs.existsSync(venvPython) ? venvPython : "python");
-  execFile(pythonCmd, args, options, (error, stdout, stderr) => {
-    if (error && error.code === "ENOENT" && pythonCmd === "python") {
-      return execFile("py", args, options, callback);
+  const done = (error, stdout, stderr) => {
+    if (error && /ModuleNotFoundError|No module named/.test(stderr || "")) {
+      const hint =
+        "\n\n[Setup required] Python packages are missing. From the project root run:\n" +
+        "  npm run py:install\n" +
+        "then restart `npm run dev`. (Creates .venv with requirements.txt + Playwright Chromium.)";
+      error.message += hint;
+      stderr = (stderr || "") + hint;
     }
     callback(error, stdout, stderr);
+  };
+  execFile(pythonCmd, args, options, (error, stdout, stderr) => {
+    if (error && error.code === "ENOENT" && pythonCmd === "python") {
+      return execFile("py", args, options, done);
+    }
+    done(error, stdout, stderr);
   });
 }
 

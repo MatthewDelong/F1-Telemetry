@@ -41,3 +41,7 @@ yarn-error.log*
 /2027/
 /scratch/
 
+
+# Python virtual environment (created by npm run py:install)
+.venv/
+__pycache__/
