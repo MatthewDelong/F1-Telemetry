@@ -14,7 +14,7 @@ const CustomizedXAxisTick = ({ x, y, payload }) => {
         transform="rotate(-15) translate(8,0)"
         fontSize={12}
       >
-        GP {payload.value + 1}
+        {payload.value}
       </text>
     </g>
   );
@@ -23,35 +23,39 @@ const CustomizedXAxisTick = ({ x, y, payload }) => {
 export const QualifyingLapTimesDeltaChart = ({ headToHeadData, teamColor }) => {
   const chartData = useMemo(() => {
     if (!headToHeadData) return [];
-    return headToHeadData.driver1QualifyingTimes.map((q, index) => {
-      const driver2Race = headToHeadData.driver2QualifyingTimes.find(r => r.race === q.race);
-      if (driver2Race && driver2Race.race === q.race) {
-        const getTime = (times) => {
-          const validTimes = times.filter(t => t !== 'N/A');
-          if (validTimes.length === 3) return validTimes[2];
-          if (validTimes.length === 2) return validTimes[1];
-          if (validTimes.length === 1) return validTimes[0];
-          return null;
-        };
+    const getTime = (times) => {
+      if (!times) return null;
+      const validTimes = times.filter(t => t && t !== 'N/A');
+      return validTimes.length ? validTimes[validTimes.length - 1] : null;
+    };
 
-        const convertToSeconds = (time) => {
-          const [minutes, seconds] = time.split(':');
-          const [secs, millis] = seconds.split('.');
-          return parseInt(minutes) * 60 + parseInt(secs) + parseInt(millis) / 1000;
-        };
-
-        const bestTime1 = getTime(q.QualiTimes);
-        const bestTime2 = getTime(driver2Race.QualiTimes);
-
-        return { 
-          index,
-          race: q.race,
-          [headToHeadData.driver1Code]: bestTime1 && bestTime2 ? Math.max(convertToSeconds(bestTime1) - convertToSeconds(bestTime2), 0) : null,
-          [headToHeadData.driver2Code]: bestTime1 && bestTime2 ? Math.min(convertToSeconds(bestTime1) - convertToSeconds(bestTime2), 0) : null,
-        };        
+    const convertToSeconds = (time) => {
+      if (!time.includes(':')) {
+        const [secs, millis] = time.split('.');
+        return parseInt(secs) + parseInt(millis || 0) / 1000;
       }
-      return null;
-    }).filter(item => item !== null);
+      const [minutes, seconds] = time.split(':');
+      const [secs, millis] = seconds.split('.');
+      return parseInt(minutes) * 60 + parseInt(secs) + parseInt(millis || 0) / 1000;
+    };
+
+    const d1 = headToHeadData.driver1QualifyingTimes || [];
+    const d2 = headToHeadData.driver2QualifyingTimes || [];
+    const allRaces = [...new Set([...d1.map(r => r.race), ...d2.map(r => r.race)])];
+
+    return allRaces.map((race, index) => {
+      const bestTime1 = getTime(d1.find(r => r.race === race)?.QualiTimes);
+      const bestTime2 = getTime(d2.find(r => r.race === race)?.QualiTimes);
+      const diff = bestTime1 && bestTime2 ? convertToSeconds(bestTime1) - convertToSeconds(bestTime2) : null;
+      const round = headToHeadData.raceRounds?.[race] ?? index + 1;
+      return {
+        round,
+        gp: `GP ${round}`,
+        race,
+        [headToHeadData.driver1Code]: diff === null ? null : Math.max(diff, 0),
+        [headToHeadData.driver2Code]: diff === null ? null : Math.min(diff, 0),
+      };
+    }).sort((a, b) => a.round - b.round);
   }, [headToHeadData]);
 
   return (
@@ -68,18 +72,18 @@ export const QualifyingLapTimesDeltaChart = ({ headToHeadData, teamColor }) => {
           </linearGradient>
         </defs>
         <CartesianGrid strokeDasharray="3 3" stroke="#444444" />
-        <XAxis dataKey="index" tick={<CustomizedXAxisTick />} />
+        <XAxis dataKey="gp" interval={0} tick={<CustomizedXAxisTick />} />
         <YAxis 
           tickFormatter={(value) => value >= 0 ? `${value}` : `${Math.abs(value)}`}
         />
         <Tooltip
-          labelFormatter={(name) => {
-            const data = chartData[name];
-            if (data && typeof data.race === 'object') return 'Race';
-            return data ? data.race : name;
+          labelFormatter={(label, payload) => {
+            const data = payload?.[0]?.payload;
+            if (data && typeof data.race === 'object') return label;
+            return data?.race ? `${label} – ${data.race}` : label;
           }}
           formatter={(value) => {
-            if (typeof value === 'object') return '0.000';
+            if (value === null || typeof value === 'object') return 'No comparison';
             return value === 0 ? 'Leader' : `+${Math.abs(value).toFixed(3)}`;
           }}
         />

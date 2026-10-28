@@ -14,7 +14,7 @@ const CustomizedXAxisTick = ({ x, y, payload }) => {
         transform="rotate(-15) translate(8,0)"
         fontSize={12}
       >
-        GP {payload.value + 1}
+        {payload.value}
       </text>
     </g>
   );
@@ -24,28 +24,39 @@ export const PositionsGainedLostChart = ({ headToHeadData, teamColor }) => {
   const chartData = useMemo(() => {
     if (!headToHeadData) return [];
     
-    return Object.keys(headToHeadData.driver1PositionsGainLost).map((race, index) => {
-      const driver1Data = headToHeadData.driver1PositionsGainLost[race];
-      const driver2Data = headToHeadData.driver2PositionsGainLost[race];
+    const allRaces = [...new Set([
+      ...Object.keys(headToHeadData.driver1PositionsGainLost || {}),
+      ...Object.keys(headToHeadData.driver2PositionsGainLost || {}),
+    ])];
+    return allRaces.map((race, index) => {
+      const driver1Data = headToHeadData.driver1PositionsGainLost?.[race];
+      const driver2Data = headToHeadData.driver2PositionsGainLost?.[race];
+      const toNum = (v) => (v === undefined || v === null ? null : parseInt(v) || 0);
 
-      return driver1Data !== undefined && driver2Data !== undefined ? {
+      const round = headToHeadData.raceRounds?.[race] ?? index + 1;
+      return {
         race,
-        index,
-        [headToHeadData.driver1Code]: parseInt(driver1Data) || 0,
-        [headToHeadData.driver2Code]: parseInt(driver2Data) || 0
-      } : null;
-    }).filter(item => item !== null);
+        round,
+        gp: `GP ${round}`,
+        [headToHeadData.driver1Code]: toNum(driver1Data),
+        [headToHeadData.driver2Code]: toNum(driver2Data),
+      };
+    }).sort((a, b) => a.round - b.round);
   }, [headToHeadData]);
 
   return (
     <ResponsiveContainer width="100%" height={400}>
       <BarChart width={730} height={250} data={chartData} margin={{ top: 20, right: 30 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="#444444" />
-        <XAxis dataKey="index" tick={<CustomizedXAxisTick />} />
+        <XAxis dataKey="gp" interval={0} tick={<CustomizedXAxisTick />} />
         <YAxis tick={{ fontSize: 12, fill: '#f1f1f1' }} />
         <Tooltip
-          labelFormatter={(index) => chartData[index] ? chartData[index].race : index}
-          formatter={(value) => typeof value === 'object' ? '0' : value}
+          labelFormatter={(label, payload) => {
+            const data = payload?.[0]?.payload;
+            if (data && typeof data.race === 'object') return label;
+            return data?.race ? `${label} – ${data.race}` : label;
+          }}
+          formatter={(value) => (value === null || typeof value === 'object') ? '—' : value}
         />
         <Legend verticalAlign="top" height={36} />
         <Bar dataKey={headToHeadData.driver1Code} fillOpacity={1} fill={teamColor.startsWith('#') ? teamColor : `#${teamColor}`} />

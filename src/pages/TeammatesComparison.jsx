@@ -3,7 +3,11 @@ import classNames from "classnames";
 import axios from "axios";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 
-import { fetchDriverStats, BASE_F1_URL } from "../utils/api";
+import {
+  fetchDriverStats,
+  fetchRaceMeetingKeys,
+  BASE_F1_URL,
+} from "../utils/api";
 import { getCurrentYear } from "../utils/currentYear";
 import {
   HeadToHeadChart,
@@ -561,7 +565,38 @@ export const TeammatesComparison = () => {
       {},
     );
 
+    // Map race name -> actual season round so charts label bars correctly
+    // even when a driver missed races (e.g. a substitute driver).
+    const raceRounds = {};
+    try {
+      const schedule = await fetchRaceMeetingKeys(year);
+      Object.keys(schedule || {}).forEach((name, i) => {
+        raceRounds[name] = i + 1;
+      });
+    } catch (e) {
+      console.warn("Failed to load season schedule for round labels", e);
+    }
+    // Fallback: merge both drivers' race orders for any races not in schedule
+    const mergedOrder = [];
+    [
+      driver1RacePosList,
+      driver2RacePosList,
+      driver1QualifyingPosList,
+      driver2QualifyingPosList,
+    ].forEach((list) =>
+      Object.keys(list).forEach((race) => {
+        if (!mergedOrder.includes(race)) mergedOrder.push(race);
+      }),
+    );
+    if (mergedOrder.some((race) => !(race in raceRounds))) {
+      Object.keys(raceRounds).forEach((k) => delete raceRounds[k]);
+      mergedOrder.forEach((race, i) => {
+        raceRounds[race] = i + 1;
+      });
+    }
+
     setHeadToHeadData({
+      raceRounds,
       lastUpdate:
         typeof driverResults[driver1Id]?.lastUpdate === "string"
           ? driverResults[driver1Id].lastUpdate
@@ -603,10 +638,10 @@ export const TeammatesComparison = () => {
       driver2Poles: normalizeToNumber(driverResults[driver2Id]?.seasonPoles),
       driver1QualifyingTimes: driver1QualifyingTimesProcessed,
       driver2QualifyingTimes: driver2QualifyingTimesProcessed,
-      driver1QualifyingPosList: filteredDriver1QualifyingPosList,
-      driver2QualifyingPosList: filteredDriver2QualifyingPosList,
-      driver1RacePosList: filteredDriver1RacePosList,
-      driver2RacePosList: filteredDriver2RacePosList,
+      driver1QualifyingPosList: driver1QualifyingPosList,
+      driver2QualifyingPosList: driver2QualifyingPosList,
+      driver1RacePosList: driver1RacePosList,
+      driver2RacePosList: driver2RacePosList,
       driver1AvgRacePosition: normalizeToNumber(
         driverResults[driver1Id]?.avgRacePositions,
       ).toFixed(2),

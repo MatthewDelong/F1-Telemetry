@@ -14,7 +14,7 @@ const CustomizedXAxisTick = ({ x, y, payload }) => {
         transform="rotate(-15) translate(8,0)"
         fontSize={12}
       >
-        GP {payload.value + 1}
+        {payload.value}
       </text>
     </g>
   );
@@ -27,30 +27,33 @@ export const PositionsComparisonChart = ({ headToHeadData, teamColor, isQualifyi
     const driver1PosList = isQualifying ? headToHeadData.driver1QualifyingPosList : headToHeadData.driver1RacePosList;
     const driver2PosList = isQualifying ? headToHeadData.driver2QualifyingPosList : headToHeadData.driver2RacePosList;
 
-    return Object.keys(driver1PosList).map((raceName, index) => {
+    const allRaces = [...new Set([...Object.keys(driver1PosList || {}), ...Object.keys(driver2PosList || {})])];
+    return allRaces.map((raceName, index) => {
       const driver1Pos = driver1PosList[raceName];
       const driver2Pos = driver2PosList[raceName];
   
+      const round = headToHeadData.raceRounds?.[raceName] ?? index + 1;
       return {
-        index,
+        round,
+        gp: `GP ${round}`,
         race: raceName,
         [headToHeadData.driver1Code]: driver1Pos ? parseInt(driver1Pos) : null,
         [headToHeadData.driver2Code]: driver2Pos ? parseInt(driver2Pos) : null,
       };
-    });
+    }).sort((a, b) => a.round - b.round);
   }, [headToHeadData, isQualifying]);
 
   return (
     <ResponsiveContainer width="100%" height={400}>
       <LineChart data={chartData} margin={{ top: 20, right: 30 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="#444444" />
-        <XAxis dataKey="index" tick={<CustomizedXAxisTick />} />
+        <XAxis dataKey="gp" tick={<CustomizedXAxisTick />} />
         <YAxis reversed={true} domain={[1, 22]} />
         <Tooltip 
-          labelFormatter={(name) => {
-            const data = chartData[name];
-            if (data && typeof data.race === 'object') return 'Race';
-            return data && data.race ? data.race : name;
+          labelFormatter={(label, payload) => {
+            const data = payload?.[0]?.payload;
+            if (data && typeof data.race === 'object') return label;
+            return data?.race ? `${label} – ${data.race}` : label;
           }}
           formatter={(value) => typeof value === 'object' ? '—' : `P${value}`}
         />
