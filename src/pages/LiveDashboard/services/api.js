@@ -29,7 +29,10 @@ async function fetchWithRetry(urlStr, retries = 3, backoff = 1000) {
   
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
-      const response = await fetch(currentUrl);
+      const response = await fetch(currentUrl, {
+        cache: "no-store",
+        headers: { Accept: "application/json" },
+      });
       if (response.status === 429) {
         // Rate limited - wait and retry
         const waitTime = backoff * Math.pow(2, attempt);
@@ -63,7 +66,7 @@ async function fetchWithRetry(urlStr, retries = 3, backoff = 1000) {
 }
 
 async function fetchAPI(endpoint, params = {}) {
-  let url = `${BASE_URL}${endpoint}`;
+  let upstreamPath = endpoint;
   const queryParts = [];
   
   Object.entries(params).forEach(([key, value]) => {
@@ -77,8 +80,12 @@ async function fetchAPI(endpoint, params = {}) {
   });
 
   if (queryParts.length > 0) {
-    url += '?' + queryParts.join('&');
+    upstreamPath += '?' + queryParts.join('&');
   }
+
+  const url = isProd
+    ? `/api.php?source=openf1&path=${encodeURIComponent(`/v1${upstreamPath}`)}`
+    : `/openf1/v1${upstreamPath}`;
 
   // Enqueue requests to strictly stagger them and avoid rate limiting
   return enqueueFetch(url);

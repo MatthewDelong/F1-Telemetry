@@ -10,6 +10,11 @@ error_reporting(0);
 
 $source = $_GET['source'] ?? '';
 $path = $_GET['path'] ?? '';
+if ($source === 'openf1') {
+    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+}
 
 // Validate source against allowed values
 if (!in_array($source, ['f1', 'f2', 'f1a', 'openf1', 'gpfans', 'jolpica'], true)) {
@@ -100,7 +105,8 @@ function getOpenF1Token() {
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
         'username' => $username,
-        'password' => $password
+        'password' => $password,
+        'grant_type' => 'password'
     ]));
     $res = curl_exec($ch);
     $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -118,7 +124,7 @@ function getOpenF1Token() {
 }
 
 // Function to fetch data via cURL with file_get_contents fallback
-function fetchUrl($url, $timeout = 10, &$errorMsg = null, $headers = []) {
+function fetchUrl($url, $timeout = 10, &$errorMsg = null, $headers = [], &$httpStatus = null) {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -136,6 +142,7 @@ function fetchUrl($url, $timeout = 10, &$errorMsg = null, $headers = []) {
     
     $response = curl_exec($ch);
     $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $httpStatus = $httpcode;
     $errorMsg = curl_error($ch);
     
     if ($httpcode == 200 && $response) {
@@ -179,7 +186,7 @@ $pathWithoutQuery = explode('&', $pathWithoutQuery)[0];
 $cachePath = in_array($source, ['f1', 'f2', 'f1a']) ? $pathWithoutQuery : $path;
 $cacheKey = md5($cachePath);
 $cacheFile = $cacheDir . '/' . $cacheKey . '.json';
-$cacheTTL = 60 * 30; // 30 minutes
+$cacheTTL = $source === 'openf1' ? 0 : 60 * 30;
 if ($source === 'gpfans') {
     $cacheTTL = 60 * 5; // 5 minutes for news
 }
@@ -189,7 +196,12 @@ $flush = (isset($_GET['flush']) && $_GET['flush'] == '1') ||
          (isset($_GET['refresh']) && $_GET['refresh'] == 'true') ||
          (strpos($path, 'refresh=true') !== false); // Safety catch
 
-if ($flush) {
+if ($source === 'openf1') {
+    // Live OpenF1 telemetry must always be requested fresh.
+    if (file_exists($cacheFile)) {
+        @unlink($cacheFile);
+    }
+} else if ($flush) {
     if (file_exists($cacheFile)) {
         @unlink($cacheFile); // Delete old cache to be safe
     }
@@ -274,7 +286,14 @@ if ($source === 'f1') {
         $headers['Origin'] = 'https://f1-telemetry.co.uk';
     }
     
-    $data = fetchUrl($baseUrl . $requestPath, 60, $lastError, $headers);
+    $httpStatus = null;
+    $data = fetchUrl($baseUrl . $requestPath, 60, $lastError, $headers, $httpStatus);
+
+    // OpenF1 returns 404 while live endpoints have not produced any records yet.
+    // Normalize that expected "not available yet" response to an empty array.
+    if ($data === false && $httpStatus === 404) {
+        $data = '[]';
+    }
 } else if ($source === 'f1a' || $source === 'f2') {
     $urlsToTry = [];
     $basePath = ($source === 'f1a') ? 'f1a' : 'f2';
@@ -326,11 +345,13 @@ if ($source === 'f1') {
 
 // Serve Data
 if ($data && strlen($data) >= 2) { // Allow [] which is a valid but empty response
-    file_put_contents($cacheFile, $data);
+    if ($source !== 'openf1') {
+        file_put_contents($cacheFile, $data);
+    }
     echo $data;
 } else {
     // If fetch failed completely, output stale cache if it exists
-    if (file_exists($cacheFile)) {
+    if ($source !== 'openf1' && file_exists($cacheFile)) {
         echo file_get_contents($cacheFile);
     } else {
         http_response_code(404);
