@@ -11,8 +11,8 @@
  *          (add more themes in ChampionBadge.css)
  */
 export const CHAMPIONS = [
-  { code: "NOR", name: "Lando Norris", year: 2025 }, // no theme = gold
-  /* { code: "ANT", name: "Kimi Antonelli", year: 2026, theme: "ice" }, */ // replace once confirmed
+  { code: "ANT", name: "Kimi Antonelli", year: 2026 }, // no theme = gold
+  { code: "NOR", name: "Lando Norris", year: 2025, theme: "ice" }, // theme = ice
 ];
 
 const normalise = (code) => (code ? code.trim().toUpperCase() : "");
