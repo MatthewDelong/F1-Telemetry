@@ -143,7 +143,17 @@ export const TeammatesComparison = () => {
       const response = await axios.get(
         `${BASE_F1_URL}constructors/${year}/${selectedTeam}.json?refresh=true&v=3`,
       );
-      const fetchedDrivers = response.data;
+      const driverIdAliases = {
+        ryo_hirakawa: "hirakawa",
+      };
+      const fetchedDrivers = (response.data || []).map((driver) => {
+        const canonicalId =
+          driverIdAliases[driver.driverId?.toLowerCase()] ||
+          driver.driverId;
+        return canonicalId === driver.driverId
+          ? driver
+          : { ...driver, driverId: canonicalId };
+      });
 
       let raceEntries = [];
       try {
@@ -274,13 +284,63 @@ export const TeammatesComparison = () => {
         return vals.length ? Math.max(...vals) : null;
       };
 
-      const filterDataByYear = (data, year) => {
+      let racePointsByDriver = {};
+      try {
+        const resultsResponse = await axios.get(
+          `${BASE_F1_URL}races/${year}/results.json`,
+        );
+        const raceResults = Array.isArray(resultsResponse.data)
+          ? resultsResponse.data
+          : Object.values(resultsResponse.data || {});
+
+        raceResults.forEach((race) => {
+          (race?.Results || []).forEach((result) => {
+            const driver = result?.Driver || {};
+            const points = Number(result?.points || 0);
+            const ids = [
+              driver.driverId?.toLowerCase(),
+              driver.code?.toLowerCase(),
+              `${driver.givenName || ""}_${driver.familyName || ""}`
+                .trim()
+                .toLowerCase(),
+              driver.familyName?.toLowerCase(),
+            ].filter(Boolean);
+
+            ids.forEach((id) => {
+              racePointsByDriver[id] =
+                (racePointsByDriver[id] || 0) + points;
+            });
+          });
+        });
+      } catch (raceError) {
+        console.warn(`Could not calculate direct race points for ${year}.`);
+      }
+
+      const filterDataByYear = (data, year, driver) => {
         const standings =
           (data.finalStandings && data.finalStandings[year]) || {};
         const latest = latestPoints(data, year);
+        const driverIds = [
+          data.driverId?.toLowerCase(),
+          data.driverCode?.toLowerCase(),
+          driver?.driverId?.toLowerCase(),
+          driver?.code?.toLowerCase(),
+          driver?.givenName &&
+            `${driver.givenName}_${driver.familyName}`.toLowerCase(),
+          driver?.familyName?.toLowerCase(),
+        ].filter(Boolean);
+        const directRacePoints = Math.max(
+          0,
+          ...driverIds.map((id) => racePointsByDriver[id] || 0),
+        );
+        const highestPointTotal = Math.max(
+          Number(standings.points) || 0,
+          latest || 0,
+          directRacePoints,
+        );
         const finalStandings =
-          latest !== null && latest > (Number(standings.points) || 0)
-            ? { ...standings, points: String(latest) }
+          highestPointTotal > (Number(standings.points) || 0)
+            ? { ...standings, points: String(highestPointTotal) }
             : standings;
 
         return {
@@ -311,8 +371,16 @@ export const TeammatesComparison = () => {
         };
       };
 
-      const filteredDriver1Data = filterDataByYear(driverResults.driver1, year);
-      const filteredDriver2Data = filterDataByYear(driverResults.driver2, year);
+      const filteredDriver1Data = filterDataByYear(
+        driverResults.driver1,
+        year,
+        drivers[0],
+      );
+      const filteredDriver2Data = filterDataByYear(
+        driverResults.driver2,
+        year,
+        drivers[1],
+      );
 
       const driverResultsMap = {
         [driverResults.driver1.driverId]: filteredDriver1Data,
