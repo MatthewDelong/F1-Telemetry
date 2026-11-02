@@ -327,20 +327,39 @@ export const fetchDriversList = async () => {
     }
     return `${driver.givenName} ${driver.familyName}`;
   };
+  const normalizeDriver = (driver) => {
+    const canonicalId =
+      driver.driverId?.toLowerCase() === "ryo_hirakawa"
+        ? "hirakawa"
+        : driver.driverId;
+    return {
+      id: canonicalId,
+      name: formatDriverName(driver),
+    };
+  };
+  const normalizeDrivers = (drivers) =>
+    drivers
+      .filter((driver) => driver?.driverId && driver?.givenName && driver?.familyName)
+      .map(normalizeDriver)
+      .filter(
+        (driver, index, list) =>
+          list.findIndex((candidate) => candidate.id === driver.id) === index,
+      );
+  const unwrapDrivers = (data) =>
+    Array.isArray(data)
+      ? data
+      : data?.MRData?.DriverTable?.Drivers || [];
 
   try {
     const response = await fetchWithPersistentCache(
       `${BASE_F1_URL}driversList.json?v=2026_v3`,
     );
+    const drivers = unwrapDrivers(response);
     if (
-      Array.isArray(response) &&
-      response.length > 50 &&
-      response[0]?.driverId
+      drivers.length > 0 &&
+      drivers[0]?.driverId
     ) {
-      return response.map((driver) => ({
-        id: driver.driverId,
-        name: formatDriverName(driver),
-      }));
+      return normalizeDrivers(drivers);
     }
     console.warn(
       "[API] fetchDriversList response was not a valid driver array. Triggering static/GitHub fallback...",
@@ -354,11 +373,9 @@ export const fetchDriversList = async () => {
     const staticResp = await fetch("/driversList.json");
     if (staticResp.ok) {
       const data = await staticResp.json();
-      if (Array.isArray(data) && data.length > 50) {
-        return data.map((driver) => ({
-          id: driver.driverId,
-          name: formatDriverName(driver),
-        }));
+      const drivers = unwrapDrivers(data);
+      if (drivers.length > 0) {
+        return normalizeDrivers(drivers);
       }
     }
   } catch (e) {}
@@ -374,11 +391,9 @@ export const fetchDriversList = async () => {
         const ghResp = await fetch(ghUrl);
         if (ghResp.ok) {
           const data = await ghResp.json();
-          if (Array.isArray(data) && data.length > 50) {
-            return data.map((driver) => ({
-              id: driver.driverId,
-              name: formatDriverName(driver),
-            }));
+          const drivers = unwrapDrivers(data);
+          if (drivers.length > 0) {
+            return normalizeDrivers(drivers);
           }
         }
       } catch (err) {}
