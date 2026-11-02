@@ -3,7 +3,7 @@
     "xmlns": "",
     "series": "f1",
     "url": "https://api.jolpi.ca/ergast/f1/2026/drivers/",
-    "limit": "35",
+    "limit": "24",
     "offset": "0",
     "total": "35",
     "DriverTable": {
@@ -39,7 +39,6 @@
           "dateOfBirth": "2006-08-25",
           "nationality": "Italian"
         },
-        { "driverId": "paul_aron", "givenName": "Paul", "familyName": "Aron" },
         {
           "driverId": "bearman",
           "permanentNumber": "87",
@@ -49,11 +48,6 @@
           "familyName": "Bearman",
           "dateOfBirth": "2005-05-08",
           "nationality": "British"
-        },
-        {
-          "driverId": "dino_beganovic",
-          "givenName": "Dino",
-          "familyName": "Beganovic"
         },
         {
           "driverId": "bortoleto",
@@ -76,11 +70,6 @@
           "nationality": "Finnish"
         },
         {
-          "driverId": "luke_browning",
-          "givenName": "Luke",
-          "familyName": "Browning"
-        },
-        {
           "driverId": "colapinto",
           "permanentNumber": "43",
           "code": "COL",
@@ -89,16 +78,6 @@
           "familyName": "Colapinto",
           "dateOfBirth": "2003-05-27",
           "nationality": "Argentine"
-        },
-        {
-          "driverId": "jak_crawford",
-          "givenName": "Jak",
-          "familyName": "Crawford"
-        },
-        {
-          "driverId": "leonardo_fornaroli",
-          "givenName": "Leonardo",
-          "familyName": "Fornaroli"
         },
         {
           "driverId": "gasly",
@@ -131,11 +110,6 @@
           "nationality": "British"
         },
         {
-          "driverId": "colton_herta",
-          "givenName": "Colton",
-          "familyName": "Herta"
-        },
-        {
           "driverId": "ryo_hirakawa",
           "permanentNumber": "50",
           "code": "HIR",
@@ -154,11 +128,6 @@
           "familyName": "Hülkenberg",
           "dateOfBirth": "1987-08-19",
           "nationality": "German"
-        },
-        {
-          "driverId": "ayumu_iwasa",
-          "givenName": "Ayumu",
-          "familyName": "Iwasa"
         },
         {
           "driverId": "lawson",
@@ -189,11 +158,6 @@
           "familyName": "Lindblad",
           "dateOfBirth": "2007-08-08",
           "nationality": "British"
-        },
-        {
-          "driverId": "gabriele_mini",
-          "givenName": "Gabriele",
-          "familyName": "Mini"
         },
         {
           "driverId": "norris",
@@ -256,11 +220,6 @@
           "nationality": "Spanish"
         },
         {
-          "driverId": "freddie_slater",
-          "givenName": "Freddie",
-          "familyName": "Slater"
-        },
-        {
           "driverId": "stroll",
           "permanentNumber": "18",
           "code": "STR",
@@ -269,11 +228,6 @@
           "familyName": "Stroll",
           "dateOfBirth": "1998-10-29",
           "nationality": "Canadian"
-        },
-        {
-          "driverId": "nikola_tsolov",
-          "givenName": "Nikola",
-          "familyName": "Tsolov"
         },
         {
           "driverId": "tsunoda",
@@ -294,11 +248,6 @@
           "familyName": "Verstappen",
           "dateOfBirth": "1997-09-30",
           "nationality": "Dutch"
-        },
-        {
-          "driverId": "frederik_vesti",
-          "givenName": "Frederik",
-          "familyName": "Vesti"
         }
       ]
     }
