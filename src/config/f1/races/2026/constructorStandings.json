@@ -2411,11 +2411,11 @@
             }
         }
     ],
-    "latest": [
+    "19": [
         {
             "position": "1",
             "positionText": "1",
-            "points": "607",
+            "points": "630",
             "wins": "12",
             "Constructor": {
                 "constructorId": "mercedes",
@@ -2427,7 +2427,7 @@
         {
             "position": "2",
             "positionText": "2",
-            "points": "474",
+            "points": "504",
             "wins": "2",
             "Constructor": {
                 "constructorId": "ferrari",
@@ -2439,8 +2439,8 @@
         {
             "position": "3",
             "positionText": "3",
-            "points": "355",
-            "wins": "2",
+            "points": "380",
+            "wins": "3",
             "Constructor": {
                 "constructorId": "red_bull",
                 "url": "https://en.wikipedia.org/wiki/Red_Bull_Racing",
@@ -2451,7 +2451,7 @@
         {
             "position": "4",
             "positionText": "4",
-            "points": "355",
+            "points": "371",
             "wins": "2",
             "Constructor": {
                 "constructorId": "mclaren",
@@ -2463,7 +2463,7 @@
         {
             "position": "5",
             "positionText": "5",
-            "points": "102",
+            "points": "104",
             "wins": "0",
             "Constructor": {
                 "constructorId": "rb",
@@ -2475,7 +2475,141 @@
         {
             "position": "6",
             "positionText": "6",
-            "points": "69",
+            "points": "74",
+            "wins": "0",
+            "Constructor": {
+                "constructorId": "alpine",
+                "url": "https://en.wikipedia.org/wiki/Alpine_F1_Team",
+                "name": "Alpine F1 Team",
+                "nationality": "French"
+            }
+        },
+        {
+            "position": "7",
+            "positionText": "7",
+            "points": "30",
+            "wins": "0",
+            "Constructor": {
+                "constructorId": "haas",
+                "url": "https://en.wikipedia.org/wiki/Haas_F1_Team",
+                "name": "Haas F1 Team",
+                "nationality": "American"
+            }
+        },
+        {
+            "position": "8",
+            "positionText": "8",
+            "points": "23",
+            "wins": "0",
+            "Constructor": {
+                "constructorId": "audi",
+                "url": "https://en.wikipedia.org/wiki/Audi_in_Formula_One",
+                "name": "Audi",
+                "nationality": "German"
+            }
+        },
+        {
+            "position": "9",
+            "positionText": "9",
+            "points": "12",
+            "wins": "0",
+            "Constructor": {
+                "constructorId": "williams",
+                "url": "https://en.wikipedia.org/wiki/Williams_Racing",
+                "name": "Williams",
+                "nationality": "British"
+            }
+        },
+        {
+            "position": "10",
+            "positionText": "10",
+            "points": "7",
+            "wins": "0",
+            "Constructor": {
+                "constructorId": "aston_martin",
+                "url": "https://en.wikipedia.org/wiki/Aston_Martin_in_Formula_One",
+                "name": "Aston Martin",
+                "nationality": "British"
+            }
+        },
+        {
+            "position": "11",
+            "positionText": "11",
+            "points": "0",
+            "wins": "0",
+            "Constructor": {
+                "constructorId": "cadillac",
+                "url": "https://en.wikipedia.org/wiki/Cadillac_in_Formula_One",
+                "name": "Cadillac F1 Team",
+                "nationality": "American"
+            }
+        }
+    ],
+    "latest": [
+        {
+            "position": "1",
+            "positionText": "1",
+            "points": "630",
+            "wins": "12",
+            "Constructor": {
+                "constructorId": "mercedes",
+                "url": "https://en.wikipedia.org/wiki/Mercedes-Benz_in_Formula_One",
+                "name": "Mercedes",
+                "nationality": "German"
+            }
+        },
+        {
+            "position": "2",
+            "positionText": "2",
+            "points": "504",
+            "wins": "2",
+            "Constructor": {
+                "constructorId": "ferrari",
+                "url": "https://en.wikipedia.org/wiki/Scuderia_Ferrari",
+                "name": "Ferrari",
+                "nationality": "Italian"
+            }
+        },
+        {
+            "position": "3",
+            "positionText": "3",
+            "points": "380",
+            "wins": "3",
+            "Constructor": {
+                "constructorId": "red_bull",
+                "url": "https://en.wikipedia.org/wiki/Red_Bull_Racing",
+                "name": "Red Bull",
+                "nationality": "Austrian"
+            }
+        },
+        {
+            "position": "4",
+            "positionText": "4",
+            "points": "371",
+            "wins": "2",
+            "Constructor": {
+                "constructorId": "mclaren",
+                "url": "https://en.wikipedia.org/wiki/McLaren",
+                "name": "McLaren",
+                "nationality": "British"
+            }
+        },
+        {
+            "position": "5",
+            "positionText": "5",
+            "points": "104",
+            "wins": "0",
+            "Constructor": {
+                "constructorId": "rb",
+                "url": "https://en.wikipedia.org/wiki/Racing_Bulls",
+                "name": "RB F1 Team",
+                "nationality": "Italian"
+            }
+        },
+        {
+            "position": "6",
+            "positionText": "6",
+            "points": "74",
             "wins": "0",
             "Constructor": {
                 "constructorId": "alpine",

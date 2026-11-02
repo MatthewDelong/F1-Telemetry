@@ -2,16 +2,16 @@
     "driverId": "gasly",
     "driverCode": "GAS",
     "driverNumber": "10",
-    "lastUpdate": "2026-10-27T19:20:09.095872",
+    "lastUpdate": "2026-11-02T07:09:34.553870",
     "totalWins": 1,
     "totalPodiums": 5,
     "totalPoles": 1,
     "totalDNFs": 46,
     "totalRaces": 193,
-    "winRate": 0.005128205128205128,
-    "podiumRate": 0.02564102564102564,
-    "poleRate": 0.005128205128205128,
-    "dnfRate": 0.2358974358974359,
+    "winRate": 0.00510204081632653,
+    "podiumRate": 0.025510204081632654,
+    "poleRate": 0.00510204081632653,
+    "dnfRate": 0.23469387755102042,
     "seasonWins": {
         "2017": 0,
         "2018": 0,
@@ -376,7 +376,8 @@
             "Azerbaijan Grand Prix": "1:47.822",
             "Bahrain Grand Prix (Malaysia)": "1:41.514",
             "Singapore Grand Prix": "1:37.390",
-            "United States Grand Prix": "1:40.193"
+            "United States Grand Prix": "1:40.193",
+            "Mexico Grand Prix": "1:20.754"
         }
     },
     "finalStandings": {
@@ -428,7 +429,7 @@
         "2026": {
             "year": "2026",
             "position": "10",
-            "points": "42"
+            "points": "43"
         }
     },
     "posAfterRace": {
@@ -1064,6 +1065,9 @@
                 },
                 "United States Grand Prix": {
                     "points": 42
+                },
+                "Mexico Grand Prix": {
+                    "points": 43
                 }
             }
         }
@@ -1302,7 +1306,8 @@
                 "Azerbaijan Grand Prix": "18",
                 "Bahrain Grand Prix (Malaysia)": "16",
                 "Singapore Grand Prix": "11",
-                "United States Grand Prix": "10"
+                "United States Grand Prix": "10",
+                "Mexico Grand Prix": "10"
             }
         }
     },
@@ -1539,7 +1544,8 @@
                 "Azerbaijan Grand Prix": "7",
                 "Bahrain Grand Prix (Malaysia)": "9",
                 "Singapore Grand Prix": "7",
-                "United States Grand Prix": "10"
+                "United States Grand Prix": "10",
+                "Mexico Grand Prix": "9"
             }
         }
     },
@@ -1756,7 +1762,8 @@
             "Azerbaijan Grand Prix": -11,
             "Bahrain Grand Prix (Malaysia)": -7,
             "Singapore Grand Prix": -4,
-            "United States Grand Prix": 0
+            "United States Grand Prix": 0,
+            "Mexico Grand Prix": -1
         }
     },
     "driverQualifyingTimes": {
@@ -2768,6 +2775,11 @@
                     "1:35.969",
                     "1:35.080",
                     "N/A"
+                ],
+                "Mexico Grand Prix": [
+                    "1:18.194",
+                    "1:17.278",
+                    "1:17.153"
                 ]
             }
         }
@@ -2782,7 +2794,7 @@
         "2023": 10.681818181818182,
         "2024": 12.875,
         "2025": 14.583333333333334,
-        "2026": 10.88888888888889
+        "2026": 10.842105263157896
     },
     "avgQualiPositions": {
         "2017": 16.5,
@@ -2794,7 +2806,7 @@
         "2023": 11.045454545454545,
         "2024": 13.208333333333334,
         "2025": 13.416666666666666,
-        "2026": 10.055555555555555
+        "2026": 10.0
     },
     "rates": {
         "wins": {
@@ -2831,7 +2843,7 @@
             "2023": 0.0,
             "2024": 0.0,
             "2025": 0.0,
-            "2026": 0.05555555555555555
+            "2026": 0.05263157894736842
         },
         "DNFs": {
             "2017": 0.0,
@@ -2851,19 +2863,19 @@
             "wins": 0.1,
             "podiums": 0.5,
             "poles": 0.1,
-            "points": 50.0
+            "points": 50.1
         },
         "std": {
             "wins": 0.30000000000000004,
             "podiums": 0.5,
             "poles": 0.30000000000000004,
-            "points": 33.13004678535785
+            "points": 33.10724996130002
         },
         "cv": {
             "wins": 3.0000000000000004,
             "podiums": 1.0,
             "poles": 3.0000000000000004,
-            "points": 0.662600935707157
+            "points": 0.6608233525209585
         }
     },
     "peakSeason": {

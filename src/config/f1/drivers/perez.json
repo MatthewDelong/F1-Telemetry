@@ -2,16 +2,16 @@
     "driverId": "perez",
     "driverCode": "PER",
     "driverNumber": "11",
-    "lastUpdate": "2026-10-27T19:20:09.096418",
+    "lastUpdate": "2026-11-02T07:09:34.554488",
     "totalWins": 6,
     "totalPodiums": 39,
     "totalPoles": 3,
     "totalDNFs": 44,
     "totalRaces": 298,
-    "winRate": 0.02,
-    "podiumRate": 0.13,
-    "poleRate": 0.01,
-    "dnfRate": 0.14666666666666667,
+    "winRate": 0.019933554817275746,
+    "podiumRate": 0.12956810631229235,
+    "poleRate": 0.009966777408637873,
+    "dnfRate": 0.1461794019933555,
     "seasonWins": {
         "2011": 0,
         "2012": 0,
@@ -572,7 +572,8 @@
             "Azerbaijan Grand Prix": "1:47.363",
             "Bahrain Grand Prix (Malaysia)": "1:42.688",
             "Singapore Grand Prix": "1:38.574",
-            "United States Grand Prix": "1:41.680"
+            "United States Grand Prix": "1:41.680",
+            "Mexico Grand Prix": "1:21.256"
         }
     },
     "finalStandings": {
@@ -648,7 +649,7 @@
         },
         "2026": {
             "year": "2026",
-            "position": "23",
+            "position": "24",
             "points": "0"
         }
     },
@@ -1625,6 +1626,9 @@
                 },
                 "United States Grand Prix": {
                     "points": 0
+                },
+                "Mexico Grand Prix": {
+                    "points": 0
                 }
             }
         }
@@ -1988,7 +1992,8 @@
                 "Azerbaijan Grand Prix": "14",
                 "Bahrain Grand Prix (Malaysia)": "19",
                 "Singapore Grand Prix": "17",
-                "United States Grand Prix": "19"
+                "United States Grand Prix": "19",
+                "Mexico Grand Prix": "17"
             }
         }
     },
@@ -2350,7 +2355,8 @@
                 "Azerbaijan Grand Prix": "20",
                 "Bahrain Grand Prix (Malaysia)": "20",
                 "Singapore Grand Prix": "17",
-                "United States Grand Prix": "18"
+                "United States Grand Prix": "18",
+                "Mexico Grand Prix": "20"
             }
         }
     },
@@ -2682,7 +2688,8 @@
             "Azerbaijan Grand Prix": 6,
             "Bahrain Grand Prix (Malaysia)": 1,
             "Singapore Grand Prix": 0,
-            "United States Grand Prix": -1
+            "United States Grand Prix": -1,
+            "Mexico Grand Prix": 3
         }
     },
     "driverQualifyingTimes": {
@@ -4239,6 +4246,11 @@
                     "1:37.433",
                     "N/A",
                     "N/A"
+                ],
+                "Mexico Grand Prix": [
+                    "1:19.105",
+                    "N/A",
+                    "N/A"
                 ]
             }
         }
@@ -4258,7 +4270,7 @@
         "2022": 5.409090909090909,
         "2023": 5.863636363636363,
         "2024": 9.625,
-        "2026": 17.166666666666668
+        "2026": 17.157894736842106
     },
     "avgQualiPositions": {
         "2011": 13.61111111111111,
@@ -4275,7 +4287,7 @@
         "2022": 5.0,
         "2023": 9.045454545454545,
         "2024": 9.25,
-        "2026": 19.22222222222222
+        "2026": 19.263157894736842
     },
     "rates": {
         "wins": {

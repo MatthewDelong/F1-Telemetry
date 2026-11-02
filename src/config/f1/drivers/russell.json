@@ -2,16 +2,16 @@
     "driverId": "russell",
     "driverCode": "RUS",
     "driverNumber": "63",
-    "lastUpdate": "2026-10-27T19:20:09.095795",
+    "lastUpdate": "2026-11-02T07:09:34.553743",
     "totalWins": 8,
     "totalPodiums": 32,
     "totalPoles": 11,
     "totalDNFs": 20,
     "totalRaces": 167,
-    "winRate": 0.047337278106508875,
-    "podiumRate": 0.1893491124260355,
-    "poleRate": 0.0650887573964497,
-    "dnfRate": 0.11834319526627218,
+    "winRate": 0.047058823529411764,
+    "podiumRate": 0.18823529411764706,
+    "poleRate": 0.06470588235294118,
+    "dnfRate": 0.11764705882352941,
     "seasonWins": {
         "2019": 0,
         "2020": 0,
@@ -346,7 +346,8 @@
             "Azerbaijan Grand Prix": "1:44.916",
             "Bahrain Grand Prix (Malaysia)": "1:40.715",
             "Singapore Grand Prix": "1:36.722",
-            "United States Grand Prix": "1:39.928"
+            "United States Grand Prix": "1:39.928",
+            "Mexico Grand Prix": "1:20.147"
         }
     },
     "finalStandings": {
@@ -387,8 +388,8 @@
         },
         "2026": {
             "year": "2026",
-            "position": "2",
-            "points": "242"
+            "position": "4",
+            "points": "250"
         }
     },
     "posAfterRace": {
@@ -936,6 +937,9 @@
                 },
                 "United States Grand Prix": {
                     "points": 242
+                },
+                "Mexico Grand Prix": {
+                    "points": 250
                 }
             }
         }
@@ -1140,7 +1144,8 @@
                 "Azerbaijan Grand Prix": "1",
                 "Bahrain Grand Prix (Malaysia)": "20",
                 "Singapore Grand Prix": "9",
-                "United States Grand Prix": "8"
+                "United States Grand Prix": "8",
+                "Mexico Grand Prix": "6"
             }
         }
     },
@@ -1344,7 +1349,8 @@
                 "Azerbaijan Grand Prix": "1",
                 "Bahrain Grand Prix (Malaysia)": "7",
                 "Singapore Grand Prix": "19",
-                "United States Grand Prix": "6"
+                "United States Grand Prix": "6",
+                "Mexico Grand Prix": "2"
             }
         }
     },
@@ -1532,7 +1538,8 @@
             "Azerbaijan Grand Prix": 0,
             "Bahrain Grand Prix (Malaysia)": -13,
             "Singapore Grand Prix": 10,
-            "United States Grand Prix": -2
+            "United States Grand Prix": -2,
+            "Mexico Grand Prix": -4
         }
     },
     "driverQualifyingTimes": {
@@ -2411,6 +2418,11 @@
                     "1:35.730",
                     "1:34.305",
                     "1:34.476"
+                ],
+                "Mexico Grand Prix": [
+                    "1:17.659",
+                    "1:17.027",
+                    "1:16.523"
                 ]
             }
         }
@@ -2423,7 +2435,7 @@
         "2023": 8.090909090909092,
         "2024": 6.75,
         "2025": 4.541666666666667,
-        "2026": 6.888888888888889
+        "2026": 6.842105263157895
     },
     "avgQualiPositions": {
         "2019": 18.285714285714285,
@@ -2433,7 +2445,7 @@
         "2023": 6.5,
         "2024": 5.166666666666667,
         "2025": 4.375,
-        "2026": 4.166666666666667
+        "2026": 4.052631578947368
     },
     "rates": {
         "wins": {
@@ -2444,7 +2456,7 @@
             "2023": 0.0,
             "2024": 0.08333333333333333,
             "2025": 0.08333333333333333,
-            "2026": 0.16666666666666666
+            "2026": 0.15789473684210525
         },
         "podiums": {
             "2019": 0.0,
@@ -2454,7 +2466,7 @@
             "2023": 0.09090909090909091,
             "2024": 0.16666666666666666,
             "2025": 0.375,
-            "2026": 0.4444444444444444
+            "2026": 0.42105263157894735
         },
         "poles": {
             "2019": 0.0,
@@ -2464,7 +2476,7 @@
             "2023": 0.0,
             "2024": 0.125,
             "2025": 0.08333333333333333,
-            "2026": 0.2777777777777778
+            "2026": 0.2631578947368421
         },
         "DNFs": {
             "2019": 0.09523809523809523,
@@ -2482,19 +2494,19 @@
             "wins": 1.0,
             "podiums": 4.0,
             "poles": 1.375,
-            "points": 159.375
+            "points": 160.375
         },
         "std": {
             "wins": 1.118033988749895,
             "podiums": 3.570714214271425,
             "poles": 1.7275343701356567,
-            "points": 124.32913727280504
+            "points": 125.01993591023793
         },
         "cv": {
             "wins": 1.118033988749895,
             "podiums": 0.8926785535678563,
             "poles": 1.2563886328259322,
-            "points": 0.7801043907313258
+            "points": 0.7795475349040557
         }
     },
     "peakSeason": {
