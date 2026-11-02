@@ -197,6 +197,7 @@ export const teamHistory = {
       "2018",
       "2019",
       "2020",
+      "2026",
     ],
     teamExistedSince: "2010",
     teamHistory: [
