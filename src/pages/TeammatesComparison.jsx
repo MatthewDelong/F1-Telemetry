@@ -144,6 +144,50 @@ export const TeammatesComparison = () => {
         `${BASE_F1_URL}constructors/${year}/${selectedTeam}.json?refresh=true&v=3`,
       );
       const fetchedDrivers = response.data;
+
+      let raceEntries = [];
+      try {
+        const resultsResponse = await axios.get(
+          `${BASE_F1_URL}races/${year}/results.json`,
+        );
+        const raceResults = Array.isArray(resultsResponse.data)
+          ? resultsResponse.data
+          : Object.values(resultsResponse.data || {});
+        raceEntries = raceResults.flatMap((race) =>
+          Array.isArray(race?.Results) ? race.Results : [],
+        );
+      } catch (resultsError) {
+        console.warn(
+          `No race results available for ${year}; hiding unconfirmed team drivers.`,
+        );
+      }
+
+      const raceDriverIdsForTeam = new Set(
+        raceEntries
+          .filter(
+            (entry) =>
+              entry?.Constructor?.constructorId?.toLowerCase() ===
+              selectedTeam.toLowerCase(),
+          )
+          .map((entry) => entry?.Driver?.driverId?.toLowerCase())
+          .filter(Boolean),
+      );
+      const raceDriverCodesForTeam = new Set(
+        raceEntries
+          .filter(
+            (entry) =>
+              entry?.Constructor?.constructorId?.toLowerCase() ===
+              selectedTeam.toLowerCase(),
+          )
+          .map((entry) => entry?.Driver?.code?.toLowerCase())
+          .filter(Boolean),
+      );
+
+      const confirmedRaceDrivers = (fetchedDrivers || []).filter((driver) =>
+        raceDriverIdsForTeam.has(driver.driverId?.toLowerCase()) ||
+        raceDriverCodesForTeam.has(driver.code?.toLowerCase()),
+      );
+
       const defaultPriority = {
         max_verstappen: 100,
         hadjar: 99,
@@ -152,7 +196,7 @@ export const TeammatesComparison = () => {
         tsunoda: 98,
       };
 
-      const sortedDrivers = [...fetchedDrivers].sort((a, b) => {
+      const sortedDrivers = [...confirmedRaceDrivers].sort((a, b) => {
         const prioA = defaultPriority[a.driverId] || 0;
         const prioB = defaultPriority[b.driverId] || 0;
 
@@ -168,10 +212,17 @@ export const TeammatesComparison = () => {
         return 0;
       });
       setDrivers(sortedDrivers);
+      setError(null);
 
       setTeamColor(teamColors[year]?.[selectedTeam] || "5F0B84");
 
-      if (sortedDrivers.length > 2) {
+      if (sortedDrivers.length === 0) {
+        setSelectedDriver1("");
+        setSelectedDriver2("");
+        setHeadToHeadData(null);
+        setShowDriverSelectors(false);
+        setError(`No race drivers are confirmed for ${selectedTeam} in ${year}.`);
+      } else if (sortedDrivers.length > 2) {
         setSelectedDriver1(sortedDrivers[0].driverId);
         setSelectedDriver2(sortedDrivers[1].driverId);
         fetchDriverData([sortedDrivers[0], sortedDrivers[1]]);
