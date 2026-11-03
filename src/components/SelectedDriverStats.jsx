@@ -53,7 +53,7 @@ export const SelectedDriverStats = (props) => {
                     width={120}
                     height={120}
                 />
-                <ChampionBadge code={selectedDriverData?.acronym} size="lg" style={{ top: "0px", left: "0px", right: "auto" }} />
+                <ChampionBadge code={selectedDriverData?.acronym} year={year} size="lg" style={{ top: "0px", left: "0px", right: "auto" }} />
                 <img
                     alt=""
                     className="absolute -bottom-16 left-32"

@@ -184,6 +184,7 @@ export const ConstructorCar = (props) => {
           {championshipLevel !== "f2" && (
             <ChampionBadge
               teamId={image}
+              year={year}
               size="md"
               showLabel
               labelText={`${CURRENT_CONSTRUCTOR_CHAMPION.year} Constructors' Champions`}

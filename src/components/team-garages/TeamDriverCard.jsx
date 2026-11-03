@@ -121,7 +121,7 @@ export const TeamDriverCard = ({
       >
         {number && <span className="team-driver-card__car-number">{number}</span>}
         {!isPrincipal && (
-          <ChampionBadge code={code} size="lg" style={{ position: "static" }} />
+          <ChampionBadge code={code} year={year} size="lg" style={{ position: "static" }} />
         )}
       </div>
 
@@ -151,6 +151,7 @@ export const TeamDriverCard = ({
           {isPrincipal && (
             <ChampionBadge
               teamId={teamId}
+              year={year}
               size="sm"
               showLabel
               labelText={`${CURRENT_CONSTRUCTOR_CHAMPION.year} Champions`}

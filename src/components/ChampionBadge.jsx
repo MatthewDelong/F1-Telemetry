@@ -5,6 +5,7 @@ import {
   CURRENT_CONSTRUCTOR_CHAMPION,
   isConstructorChampion,
 } from "../config/champion";
+import { getCurrentYear } from "../utils/currentYear";
 import "./ChampionBadge.css";
 
 /**
@@ -22,20 +23,22 @@ export const ChampionBadge = ({
   style,
   showLabel,
   labelText,
+  year, // season being viewed – badge only shows for that season's champion
 }) => {
   // Hooks must run before any early return
   const gradientId = `champGold-${useId().replace(/:/g, "")}`;
+  const season = year ?? getCurrentYear();
 
   let label;
   let short;
   let theme;
   if (teamId) {
-    if (!isConstructorChampion(teamId)) return null;
+    if (!isConstructorChampion(teamId, season)) return null;
     label = `${CURRENT_CONSTRUCTOR_CHAMPION.year} Constructors' Champion – ${CURRENT_CONSTRUCTOR_CHAMPION.name}`;
     short = `${CURRENT_CONSTRUCTOR_CHAMPION.year} Constructors' Champion`;
     theme = CURRENT_CONSTRUCTOR_CHAMPION.theme;
   } else {
-    const champion = getChampion(code);
+    const champion = getChampion(code, season);
     if (!champion) return null;
     label = `${champion.year} World Champion – ${champion.name}`;
     short = `${champion.year} Champion`;

@@ -70,7 +70,7 @@ export const RaceResultItem = (props) => {
           }}
         />
         {championshipLevel !== "F1A" && championshipLevel !== "F2" && (
-          <ChampionBadge code={driver.code} size="md" style={{ top: "-8px", left: "52px", right: "auto" }} />
+          <ChampionBadge code={driver.code} year={year} size="md" style={{ top: "-8px", left: "52px", right: "auto" }} />
         )}
         <div 
           className="stand px-14 text-center"

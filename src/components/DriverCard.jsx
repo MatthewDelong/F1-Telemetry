@@ -251,7 +251,7 @@ export const DriverCard = (props) => {
         </div>
         {driverImage}
         {!championshipLevel && (
-          <ChampionBadge code={driver.code} size="sm" style={{ top: "-6px", left: "52px", right: "auto" }} />
+          <ChampionBadge code={driver.code} year={year} size="sm" style={{ top: "-6px", left: "52px", right: "auto" }} />
         )}
         <div className="grow py-0 pl-[8px] pr-4 text-right flex flex-col justify-center relative">
           <div className="flex items-center justify-end gap-3 relative z-10">

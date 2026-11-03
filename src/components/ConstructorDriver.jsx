@@ -131,7 +131,7 @@ export const ConstructorDriver = (props) => {
           }}
         />
         {!F2F1A && (
-          <ChampionBadge code={image} size="lg" style={{ top: "12px", right: "12px" }} />
+          <ChampionBadge code={image} year={year} size="lg" style={{ top: "12px", right: "12px" }} />
         )}
         {championshipLevel === "F1A" && isWildcardDriver && (
           <img

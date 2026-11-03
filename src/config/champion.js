@@ -17,12 +17,18 @@ export const CHAMPIONS = [
 
 const normalise = (code) => (code ? code.trim().toUpperCase() : "");
 
-// Returns the matching champion object, or undefined
-export const getChampion = (code) =>
-  CHAMPIONS.find((c) => c.code.toUpperCase() === normalise(code));
+// Returns the matching champion object, or undefined.
+// If a season is given, only the champion of THAT season matches,
+// so a 2026 champion never shows on 2025 (or older) pages.
+export const getChampion = (code, season) =>
+  CHAMPIONS.find(
+    (c) =>
+      c.code.toUpperCase() === normalise(code) &&
+      (season === undefined || Number(c.year) === Number(season)),
+  );
 
 // true/false
-export const isChampion = (code) => !!getChampion(code);
+export const isChampion = (code, season) => !!getChampion(code, season);
 
 /**
  * Reigning F1 Constructors' Champion.
@@ -39,7 +45,9 @@ export const CURRENT_CONSTRUCTOR_CHAMPION = {
   year: 2025,
 };
 
-export const isConstructorChampion = (teamId) =>
+export const isConstructorChampion = (teamId, season) =>
   !!teamId &&
   teamId.trim().toLowerCase() ===
-    CURRENT_CONSTRUCTOR_CHAMPION.teamId.toLowerCase();
+    CURRENT_CONSTRUCTOR_CHAMPION.teamId.toLowerCase() &&
+  (season === undefined ||
+    Number(CURRENT_CONSTRUCTOR_CHAMPION.year) === Number(season));
