@@ -10,6 +10,7 @@ import {
 } from "../components";
 import { fetchMostRecentRace } from "../utils/api";
 import { nationalityToFlag } from "../utils/nationalityToFlag";
+import { ChampionBadge } from "../components/ChampionBadge";
 import { getCurrentYear } from "../utils/currentYear";
 import DatesSection from "../layouts/DatesSection";
 import NextRaceSection from "../layouts/NextRaceSection";
@@ -368,6 +369,7 @@ export function LandingPage() {
                   style={{ height: "14px", borderRadius: "2px" }}
                 />
               )}
+              <ChampionBadge code={driver.code} size="sm" style={{ position: "static" }} />
             </div>
           </div>
           {/* Team name */}

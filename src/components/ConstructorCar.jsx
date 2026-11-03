@@ -6,6 +6,8 @@ import { useInView } from "framer-motion";
 import "./ConstructorCar.scss";
 import { Button } from "./Button";
 import { darkenColor } from "../utils/colorUtils";
+import { ChampionBadge } from "./ChampionBadge";
+import { CURRENT_CONSTRUCTOR_CHAMPION } from "../config/champion";
 import "./team-garages/TeamDriverCard.scss";
 
 export const ConstructorCar = (props) => {
@@ -64,12 +66,12 @@ export const ConstructorCar = (props) => {
   const teamColor = color || "#7500AD";
 
   return (
-    <div className="w-full mb-24 relative group" style={{ perspective: "900px" }}>
+    <div
+      className="w-full mb-24 relative group"
+      style={{ perspective: "900px" }}
+    >
       <div
-        className={classNames(
-          className,
-          "team-driver-card pb-8 pt-8",
-        )}
+        className={classNames(className, "team-driver-card pb-8 pt-8")}
         ref={ref}
         onPointerMove={handleMove}
         onPointerLeave={handleLeave}
@@ -81,18 +83,23 @@ export const ConstructorCar = (props) => {
           "--mx": "50%",
           "--my": "50%",
           height: "auto",
-          aspectRatio: "auto"
+          aspectRatio: "auto",
         }}
       >
         <div className="team-driver-card__livery" aria-hidden="true" />
         <div className="team-driver-card__grid" aria-hidden="true" />
-        
+
         {/* This gradient overlay matches the team-driver-card__info background to provide the correct opacity/darkening over the livery */}
-        <div 
-          className="absolute inset-0 pointer-events-none" 
-          style={{ zIndex: 2, background: 'linear-gradient(90deg, rgba(8, 8, 10, 0.95) 0%, rgba(8, 8, 10, 0.8) 45%, transparent 100%)', borderRadius: 'inherit' }} 
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            zIndex: 2,
+            background:
+              "linear-gradient(90deg, rgba(8, 8, 10, 0.95) 0%, rgba(8, 8, 10, 0.8) 45%, transparent 100%)",
+            borderRadius: "inherit",
+          }}
         />
-        
+
         <div className="flex flex-col items-center pb-40 relative z-10">
           <div className="flex items-end mb-4">
             <div className="h-1 w-32 border-b-[1px] border-solid border-neutral-500" />
@@ -174,6 +181,19 @@ export const ConstructorCar = (props) => {
               />
             )}
           </div>
+          {championshipLevel !== "f2" && (
+            <ChampionBadge
+              teamId={image}
+              size="md"
+              showLabel
+              labelText={`${CURRENT_CONSTRUCTOR_CHAMPION.year} Constructors' Champions`}
+              style={{
+                position: "static",
+                marginTop: "2.4rem",
+                marginBottom: "-2.4rem",
+              }}
+            />
+          )}
         </div>
       </div>
       {championshipLevel !== "f2" && (
