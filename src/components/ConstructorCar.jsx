@@ -7,7 +7,6 @@ import "./ConstructorCar.scss";
 import { Button } from "./Button";
 import { darkenColor } from "../utils/colorUtils";
 import { ChampionBadge } from "./ChampionBadge";
-import { CURRENT_CONSTRUCTOR_CHAMPION } from "../config/champion";
 import "./team-garages/TeamDriverCard.scss";
 
 export const ConstructorCar = (props) => {
@@ -187,7 +186,6 @@ export const ConstructorCar = (props) => {
               year={year}
               size="md"
               showLabel
-              labelText={`${CURRENT_CONSTRUCTOR_CHAMPION.year} Constructors' Champions`}
               style={{
                 position: "static",
                 marginTop: "2.4rem",

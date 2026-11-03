@@ -1,29 +1,27 @@
 import React, { useId } from "react";
 import classNames from "classnames";
-import {
-  getChampion,
-  CURRENT_CONSTRUCTOR_CHAMPION,
-  isConstructorChampion,
-} from "../config/champion";
+import { getChampion, getConstructorChampion } from "../config/champion";
 import { getCurrentYear } from "../utils/currentYear";
 import "./ChampionBadge.css";
 
 /**
- * Crown shown on a reigning champion's image.
- * Renders nothing for any other driver. Parent must be position: relative
+ * Crown shown on a champion's or reigning champion's image.
+ * Renders nothing for any other driver/team. Parent must be position: relative
  * (or pass a className / style to position it).
  *
  * size: "sm" | "md" | "lg"
+ * variant: "default" | "compact" (used on tight cards like Team Principal)
  */
 export const ChampionBadge = ({
   code,
   teamId,
   size = "md",
+  variant = "default",
   className,
   style,
   showLabel,
   labelText,
-  year, // season being viewed – badge only shows for that season's champion
+  year, // season being viewed – shows "{year} Champion" or "Reigning Champion"
 }) => {
   // Hooks must run before any early return
   const gradientId = `champGold-${useId().replace(/:/g, "")}`;
@@ -33,15 +31,32 @@ export const ChampionBadge = ({
   let short;
   let theme;
   if (teamId) {
-    if (!isConstructorChampion(teamId, season)) return null;
-    label = `${CURRENT_CONSTRUCTOR_CHAMPION.year} Constructors' Champion – ${CURRENT_CONSTRUCTOR_CHAMPION.name}`;
-    short = `${CURRENT_CONSTRUCTOR_CHAMPION.year} Constructors' Champion`;
-    theme = CURRENT_CONSTRUCTOR_CHAMPION.theme;
+    const constructorChamp = getConstructorChampion(teamId, season);
+    if (!constructorChamp) return null;
+    if (constructorChamp.isReigning) {
+      label = `Reigning Constructors' Champion (${constructorChamp.year}) – ${constructorChamp.name}`;
+      short =
+        variant === "compact"
+          ? "Reigning Champions"
+          : "Reigning Constructors' Champions";
+    } else {
+      label = `${constructorChamp.year} Constructors' Champion – ${constructorChamp.name}`;
+      short =
+        variant === "compact"
+          ? `${constructorChamp.year} Champions`
+          : `${constructorChamp.year} Constructors' Champions`;
+    }
+    theme = constructorChamp.theme;
   } else {
     const champion = getChampion(code, season);
     if (!champion) return null;
-    label = `${champion.year} World Champion – ${champion.name}`;
-    short = `${champion.year} Champion`;
+    if (champion.isReigning) {
+      label = `Reigning World Champion (${champion.year}) – ${champion.name}`;
+      short = "Reigning Champion";
+    } else {
+      label = `${champion.year} World Champion – ${champion.name}`;
+      short = `${champion.year} Champion`;
+    }
     theme = champion.theme;
   }
 

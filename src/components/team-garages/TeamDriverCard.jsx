@@ -5,7 +5,6 @@ import "./TeamDriverCard.scss";
 import { nationalityToFlag } from "../../utils/nationalityToFlag";
 import { darkenColor } from "../../utils/colorUtils";
 import { ChampionBadge } from "../ChampionBadge";
-import { CURRENT_CONSTRUCTOR_CHAMPION } from "../../config/champion";
 
 const FALLBACK_PHOTO = "/images/2024/drivers/default_driver.png";
 
@@ -153,8 +152,8 @@ export const TeamDriverCard = ({
               teamId={teamId}
               year={year}
               size="sm"
+              variant="compact"
               showLabel
-              labelText={`${CURRENT_CONSTRUCTOR_CHAMPION.year} Champions`}
               style={{ position: "static" }}
             />
           )}
