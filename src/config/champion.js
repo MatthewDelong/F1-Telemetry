@@ -11,7 +11,9 @@
  */
 export const CHAMPIONS = [
   { code: "ANT", name: "Kimi Antonelli", year: 2026 }, // no theme = gold
-  { code: "NOR", name: "Lando Norris", year: 2025 }, // no theme = gold
+  { code: "NOR", name: "Lando Norris", year: 2025 },
+  { code: "VER", name: "Max Verstappen", year: 2024 },
+  { code: "VER", name: "Max Verstappen", year: 2023 },
 ];
 
 /**

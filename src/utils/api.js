@@ -778,6 +778,21 @@ export const fetchUpcomingRace = async (selectedYear) => {
   return upcomingRace || null;
 };
 
+/**
+ * Returns the key of the most recent round in a per-round standings object
+ * (e.g. { "1": [...], "2": [...], ..., "24": [...], "latest": [...] }).
+ * Prefers "latest" when present, otherwise the highest numeric round.
+ * NOTE: a plain Object.keys(...).sort() is lexicographic ("9" > "24"), which
+ * picked round 9 for seasons without a "latest" key (e.g. 2025).
+ */
+const getLatestRoundKey = (standingsByRound) => {
+  if (!standingsByRound || typeof standingsByRound !== "object") return null;
+  if (Array.isArray(standingsByRound.latest)) return "latest";
+  const roundKeys = Object.keys(standingsByRound).filter((k) => /^\d+$/.test(k));
+  if (roundKeys.length === 0) return null;
+  return String(Math.max(...roundKeys.map(Number)));
+};
+
 export const getPartialConstructorStandings = async (
   selectedYear,
   start,
@@ -870,9 +885,8 @@ export const getPartialConstructorStandings = async (
     // const baseURL = `https://matthewdelong.github.io/f1-telemetry-api/constructors/${selectedYear}`
 
     // const driverStandings = driverData['latest'];
-    const Keys = Object.keys(driverData).sort();
-    const lastKey = Keys[Keys.length - 1];
-    const driverStandings = driverData[lastKey] || [];
+    const lastKey = getLatestRoundKey(driverData);
+    const driverStandings = (lastKey && driverData[lastKey]) || [];
 
     driverStandings.forEach((standing) => {
       standing.Constructors.forEach((constructor) => {
@@ -911,9 +925,8 @@ export const getConstructorStandings = async (selectedYear) => {
     }
     const constructorData = await constructorResponse.json();
 
-    const raceKeys = Object.keys(constructorData).sort();
-    const lastRaceKey = raceKeys[raceKeys.length - 1];
-    const data_constructor = constructorData[lastRaceKey] || [];
+    const lastRaceKey = getLatestRoundKey(constructorData);
+    const data_constructor = (lastRaceKey && constructorData[lastRaceKey]) || [];
 
     const constructorStandings = data_constructor.map((standing) => ({
       constructorName: standing.Constructor.name,
@@ -964,9 +977,8 @@ export const getDriverStandings = async (selectedYear) => {
     const response = await fetch(url);
     if (response.ok) {
       const data = await response.json();
-      const raceKeys = Object.keys(data).sort();
-      const lastRaceKey = raceKeys[raceKeys.length - 1];
-      const standings = data[lastRaceKey] || [];
+      const lastRaceKey = getLatestRoundKey(data);
+      const standings = (lastRaceKey && data[lastRaceKey]) || [];
       return standings.map((standing) => ({
         driverCode: standing.Driver.code,
         firstName: standing.Driver.givenName,
