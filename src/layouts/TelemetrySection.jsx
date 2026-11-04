@@ -21,7 +21,7 @@ const TelemetrySection = ({ layoutMobile, onClick, container }) => {
   );
 
   return (
-    <section className="telemetry-section min-h-screen h-screen snap-start flex items-center justify-center bg-neutral-950 pt-[64px] relative z-0 overflow-x-hidden">
+    <section className="telemetry-section min-h-screen h-screen snap-start flex items-center justify-center pt-[64px] relative z-0 overflow-x-hidden">
       {/* Centered Horizontal Glassmorphic Feature Image with equal space top and bottom */}
       <div className="absolute top-[64px] bottom-0 left-0 right-0 flex items-center justify-center pointer-events-none z-0 overflow-hidden px-4 md:px-8">
         <motion.div

@@ -196,24 +196,30 @@ F1-Telemetry displays animated crown badges (`ChampionBadge`) on F1 driver heads
 
 - **Season Champions (`CHAMPIONS` & `CONSTRUCTOR_CHAMPIONS`)**:
   Lists confirmed title winners by season. Badges only appear when viewing the matching season (e.g., a `2026` champion shows **"2026 Champion"** on `2026` pages and never leaks onto `2025` or older seasons):
+
   ```js
   export const CHAMPIONS = [
-    { code: "ANT", name: "Kimi Antonelli", year: 2026 }, // omit theme for gold
-    { code: "NOR", name: "Lando Norris", year: 2025, theme: "ice" },
+    { code: "ANT", name: "Kimi Antonelli", year: 2026 }, // no theme = gold
+    { code: "NOR", name: "Lando Norris", year: 2025 },
+    { code: "VER", name: "Max Verstappen", year: 2024 },
+    { code: "VER", name: "Max Verstappen", year: 2023 },
   ];
 
   export const CONSTRUCTOR_CHAMPIONS = [
     { teamId: "mclaren", name: "McLaren", year: 2025 },
+    { teamId: "mclaren", name: "McLaren", year: 2024 },
+    { teamId: "red_bull", name: "Red Bull", year: 2023 },
   ];
   ```
 
 - **Reigning Champions (`REIGNING_CHAMPION` & `REIGNING_CONSTRUCTOR_CHAMPION`)**:
   Displays a **"Reigning Champion"** / **"Reigning Constructors' Champions"** badge during the following season (`reigningSeason`):
+
   ```js
   export const REIGNING_CHAMPION = {
     code: "NOR",
     name: "Lando Norris",
-    year: 2025,           // Season the title was won
+    year: 2025, // Season the title was won
     reigningSeason: 2026, // Season they carry the Reigning Champion badge
     theme: "ice",
   };
@@ -226,6 +232,7 @@ F1-Telemetry displays animated crown badges (`ChampionBadge`) on F1 driver heads
     theme: "ice",
   };
   ```
+
   Set either object to `null` to hide the reigning badge, or update `code` / `teamId`, `year`, and `reigningSeason` when a new season begins.
 
 - **Badge Themes**:

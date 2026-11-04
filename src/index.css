@@ -25,6 +25,8 @@
   --color-accent: #3b82f6;
   --color-accent-hover: #2563eb;
   --color-border: rgba(255, 255, 255, 0.1);
+  /* Site background image opacity: 0 = hidden, 1 = full strength */
+  --bg-image-opacity: 0.08;
 }
 
 @theme {
@@ -144,11 +146,7 @@ html {
 
 body {
   background: #000000;
-  background-image: url("/images/bg.png");
-  background-attachment: fixed;
-  background-position: top;
-  background-repeat: no-repeat;
-  background-size: cover;
+  /* background image is rendered in body::before (see below) so opacity can be controlled */
   color: #f1f1f1;
   font-family: "Formula1", sans-serif;
   font-size: 1.6rem;
@@ -161,6 +159,20 @@ body {
 
 body::-webkit-scrollbar {
   display: none;
+}
+
+/* Static background image layer: fixed, no repeat, adjustable opacity via --bg-image-opacity */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: url("/images/background_image.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: var(--bg-image-opacity);
 }
 
 .snap-container {
