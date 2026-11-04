@@ -430,7 +430,7 @@ const NextRaceSection = () => {
   }, [currentRaceData, countDownDate]);
 
   return (
-    <section className="min-h-screen snap-start flex flex-col items-center justify-center px-4 md:px-16 relative pt-[100px] pb-2 md:pb-16 overflow-hidden border-t border-neutral-900">
+    <section className="min-h-screen snap-start flex flex-col items-center justify-center px-4 md:px-16 max-md:bg-neutral-950 relative pt-[100px] pb-2 md:pb-16 overflow-hidden border-t border-neutral-900">
       {/* Framed box with background image (matches Features sections) */}
       <div className="relative isolate w-full max-w-[1360px] mx-auto rounded-[2.5rem] border border-white/10 bg-white/[0.02] shadow-[0_0_60px_rgba(0,0,0,0.8)] px-4 py-10 md:px-12 md:py-14">
         <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden rounded-[2.5rem]">

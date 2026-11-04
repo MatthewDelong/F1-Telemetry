@@ -175,6 +175,13 @@ body::before {
   opacity: var(--bg-image-opacity);
 }
 
+/* Mobile: keep the plain black background (no image) */
+@media (max-width: 767px) {
+  body::before {
+    display: none;
+  }
+}
+
 .snap-container {
   height: 100dvh;
   width: 100%;

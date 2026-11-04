@@ -82,7 +82,7 @@ const DatesSection = () => {
       {/* 2026 Calendar — own snap section */}
       <section
         ref={sectionRef}
-        className="min-h-screen snap-start scroll-mt-24 flex flex-col items-center max-md:justify-start md:justify-center px-4 md:px-16 relative max-md:pt-[120px] max-md:pb-[80px] md:py-32"
+        className="min-h-screen snap-start scroll-mt-24 flex flex-col items-center max-md:justify-start md:justify-center px-4 md:px-16 max-md:bg-neutral-950 relative max-md:pt-[120px] max-md:pb-[80px] md:py-32"
       >
         <div className={BOX_CLASSES}>
           <CalendarBackdrop />
@@ -211,7 +211,7 @@ const DatesSection = () => {
       {/* 2027 Calendar — own snap section */}
       <section
         ref={section2027Ref}
-        className="min-h-screen snap-start scroll-mt-24 flex flex-col items-center max-md:justify-start md:justify-center px-4 md:px-16 relative max-md:pt-[120px] max-md:pb-[80px] md:py-32"
+        className="min-h-screen snap-start scroll-mt-24 flex flex-col items-center max-md:justify-start md:justify-center px-4 md:px-16 max-md:bg-neutral-950 relative max-md:pt-[120px] max-md:pb-[80px] md:py-32"
       >
         <div className={BOX_CLASSES}>
           <CalendarBackdrop />
