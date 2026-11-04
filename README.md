@@ -190,6 +190,50 @@ Draco and Meshopt decoders are bundled locally in `public/decoders/` to bypass b
 </details>
 
 <details>
+<summary><strong>World & Constructors' Champion Badges (<code>src/config/champion.js</code>)</strong></summary>
+
+F1-Telemetry displays animated crown badges (`ChampionBadge`) on F1 driver headshots, team garage cards, constructor standings, landing page podiums, and social media graphics. Everything is controlled from a single configuration file: [`src/config/champion.js`](src/config/champion.js).
+
+- **Season Champions (`CHAMPIONS` & `CONSTRUCTOR_CHAMPIONS`)**:
+  Lists confirmed title winners by season. Badges only appear when viewing the matching season (e.g., a `2026` champion shows **"2026 Champion"** on `2026` pages and never leaks onto `2025` or older seasons):
+  ```js
+  export const CHAMPIONS = [
+    { code: "ANT", name: "Kimi Antonelli", year: 2026 }, // omit theme for gold
+    { code: "NOR", name: "Lando Norris", year: 2025, theme: "ice" },
+  ];
+
+  export const CONSTRUCTOR_CHAMPIONS = [
+    { teamId: "mclaren", name: "McLaren", year: 2025 },
+  ];
+  ```
+
+- **Reigning Champions (`REIGNING_CHAMPION` & `REIGNING_CONSTRUCTOR_CHAMPION`)**:
+  Displays a **"Reigning Champion"** / **"Reigning Constructors' Champions"** badge during the following season (`reigningSeason`):
+  ```js
+  export const REIGNING_CHAMPION = {
+    code: "NOR",
+    name: "Lando Norris",
+    year: 2025,           // Season the title was won
+    reigningSeason: 2026, // Season they carry the Reigning Champion badge
+    theme: "ice",
+  };
+
+  export const REIGNING_CONSTRUCTOR_CHAMPION = {
+    teamId: "mclaren",
+    name: "McLaren",
+    year: 2025,
+    reigningSeason: 2026,
+    theme: "ice",
+  };
+  ```
+  Set either object to `null` to hide the reigning badge, or update `code` / `teamId`, `year`, and `reigningSeason` when a new season begins.
+
+- **Badge Themes**:
+  Omit `theme` for the default **gold** crown, or set `theme: "ice"` for the **ice-blue** reigning styling (additional themes can be added in [`src/components/ChampionBadge.css`](src/components/ChampionBadge.css)).
+
+</details>
+
+<details>
 <summary><strong>API Data Update Scripts (F1, F2 & F1 Academy)</strong></summary>
 
 **Self-Contained Data Architecture**
