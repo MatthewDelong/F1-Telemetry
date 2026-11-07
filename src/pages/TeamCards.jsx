@@ -402,17 +402,69 @@ export const TeamCards = ({ selectedYear }) => {
 
       {/* 2026 Pirelli Tyre Compounds Section */}
       <div className="w-full px-16 mt-64 flex flex-col items-center">
-        <div className="w-full max-w-[900px] rounded-large border border-white/10 bg-gradient-to-br from-[#1a1a1f]/90 to-[#0f0f13]/90 backdrop-blur-sm px-24 py-20 shadow-2xl flex flex-col items-center gap-12">
-          <span className="text-12 font-display uppercase tracking-sm gradient-text-light text-center">
+        <article
+          className="team-driver-card w-full max-w-[900px] px-24 py-24 flex flex-col items-center gap-16"
+          style={{
+            "--team": "#FFD100",
+            "--team-dark": "#5C4B00",
+            aspectRatio: "auto",
+          }}
+          onPointerMove={(event) => {
+            if (event.pointerType === "touch") return;
+            const card = event.currentTarget;
+            const rect = card.getBoundingClientRect();
+            const px = (event.clientX - rect.left) / rect.width;
+            const py = (event.clientY - rect.top) / rect.height;
+            card.style.setProperty("--ry", `${(px - 0.5) * 6}deg`);
+            card.style.setProperty("--rx", `${(0.5 - py) * 6}deg`);
+            card.style.setProperty("--mx", `${px * 100}%`);
+            card.style.setProperty("--my", `${py * 100}%`);
+          }}
+          onPointerLeave={(event) => {
+            const card = event.currentTarget;
+            card.style.setProperty("--ry", "0deg");
+            card.style.setProperty("--rx", "0deg");
+          }}
+        >
+          {/* Driver-card background layers (carbon weave, Pirelli yellow livery stripes, tech grid) */}
+          <div className="team-driver-card__livery" aria-hidden="true" />
+          <div className="team-driver-card__grid" aria-hidden="true" />
+          <div
+            className="absolute inset-0 z-[2] bg-gradient-to-t from-[#08080a]/90 via-[#08080a]/55 to-transparent pointer-events-none"
+            aria-hidden="true"
+          />
+
+          {/* Top badges matching driver card style */}
+          <div className="team-driver-card__top-left">
+            <span
+              className="team-driver-card__car-number"
+              style={{ color: "#0a0a0c", fontWeight: 700 }}
+            >
+              PIRELLI
+            </span>
+          </div>
+          <div className="team-driver-card__top">
+            <span
+              className="team-driver-card__code"
+              style={{ color: "#0a0a0c", fontWeight: 700 }}
+            >
+              2026
+            </span>
+          </div>
+
+          {/* Header & Tyres Image */}
+          <span className="relative z-10 text-14 sm:text-18 font-display uppercase tracking-sm gradient-text-light text-center mt-8">
             2026 Pirelli Tyre Compounds
           </span>
           <img
             src="/images/f1_tyres_2026.png"
             alt="2026 F1 Pirelli Tyre Compounds"
             loading="lazy"
-            className="w-full max-w-[760px] h-auto object-contain drop-shadow-[0_8px_20px_rgba(0,0,0,0.6)]"
+            className="relative z-10 w-full max-w-[760px] h-auto object-contain drop-shadow-[0_10px_24px_rgba(0,0,0,0.85)] transition-transform duration-500 hover:scale-[1.02]"
           />
-        </div>
+
+          <div className="team-driver-card__sheen" aria-hidden="true" />
+        </article>
       </div>
     </div>
   );
