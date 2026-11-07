@@ -36,7 +36,7 @@ const TelemetrySection = ({ layoutMobile, onClick, container }) => {
           <img
             src="/images/features-1.png"
             alt="Interactive Telemetry"
-            className="w-full h-full object-cover object-center opacity-35"
+            className="w-full h-full object-fill object-center opacity-35"
           />
         </motion.div>
       </div>

@@ -42,7 +42,7 @@ const CalendarBackdrop = () => (
     <img
       src="/images/2026-2027_calendar.png"
       alt=""
-      className="w-full h-full object-cover object-center opacity-75"
+      className="w-full h-full object-fill object-center opacity-75"
     />
   </div>
 );

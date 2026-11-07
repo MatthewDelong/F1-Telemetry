@@ -52,7 +52,7 @@ const ComparisonsSection = ({ layoutMobile, container }) => {
           <img
             src="/images/features-2.png"
             alt="Driver and Teammate Comparisons"
-            className="w-full h-full object-cover object-center opacity-35"
+            className="w-full h-full object-fill object-center opacity-35"
           />
         </motion.div>
       </div>

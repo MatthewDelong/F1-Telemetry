@@ -38,7 +38,7 @@ const TeamGaragesSection = ({ layoutMobile, container }) => {
           <img
             src="/images/features-3.png"
             alt="2026 Team Garages"
-            className="w-full h-full object-cover object-center opacity-35"
+            className="w-full h-full object-fill object-center opacity-35"
           />
         </motion.div>
       </div>
@@ -56,14 +56,20 @@ const TeamGaragesSection = ({ layoutMobile, container }) => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             style={{ y: yTextContent }}
           >
-            <div className="absolute inset-0 z-0 opacity-10 rounded-[2.4rem] pointer-events-none" style={{ background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 70%)` }} />
+            <div
+              className="absolute inset-0 z-0 opacity-10 rounded-[2.4rem] pointer-events-none"
+              style={{
+                background: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.5) 0%, rgba(0,0,0,0) 70%)`,
+              }}
+            />
             <div className="relative z-10 flex flex-col gap-8 sm:gap-12">
               <p className="text-neutral-300 text-lg">
                 Discover the latest 2026 driver line-ups and team principals.
                 <br />
                 <br />
-                Dive into the team garages to learn about the history of the 
-                constructors and see who is leading them into the new era of Formula 1!
+                Dive into the team garages to learn about the history of the
+                constructors and see who is leading them into the new era of
+                Formula 1!
               </p>
               <Button
                 as="button"

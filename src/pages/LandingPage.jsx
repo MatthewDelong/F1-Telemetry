@@ -452,8 +452,24 @@ export function LandingPage() {
       raceData?.location?.toLowerCase() ||
       raceData?.country?.toLowerCase();
     return (
-      <>
-        <div className="flex flex-col items-center z-10 w-full mt-24 md:mt-0">
+      <div className="relative isolate w-full max-w-[1360px] mx-auto text-center rounded-[2.5rem] border border-white/10 bg-white/[0.02] shadow-[0_0_60px_rgba(0,0,0,0.8)] px-4 py-12 md:px-12 md:py-16">
+        <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden rounded-[2.5rem]">
+          <img
+            src="/images/last-race.png"
+            alt=""
+            className="relative z-0 w-full h-full object-fill object-center opacity-60"
+          />
+          <div className="absolute inset-0 z-10 bg-gradient-to-t from-neutral-950/60 via-transparent to-neutral-950/30" />
+          <div className="absolute inset-0 z-10 bg-gradient-to-r from-neutral-950/40 via-transparent to-neutral-950/40" />
+          {circuitIdToUse && (
+            <div className="absolute inset-0 z-20 w-full h-full overflow-hidden">
+              <ProceduralTrackBackground trackKey={circuitIdToUse} />
+            </div>
+          )}
+          <div className="absolute inset-0 z-30 bg-neutral-950/25" />
+        </div>
+
+        <div className="relative z-10 flex flex-col items-center w-full">
           <p className="text-xl tracking-xl uppercase gradient-text-light mb-16">
             Latest F1 Race Results
           </p>
@@ -494,23 +510,14 @@ export function LandingPage() {
           <Button
             as="button"
             onClick={() => navigateToRaceResult(raceData)}
-            className="mb-48 -mt-24 mx-auto font-display tracking-wide uppercase"
+            className="-mt-24 mx-auto font-display tracking-wide uppercase"
             buttonStyle="hollow"
             size="md"
           >
             View Full Race Details
           </Button>
         </div>
-
-        <div
-          className="bg-neutral-950/40 absolute inset-0 w-full h-full overflow-hidden"
-          style={{ opacity: 0.5 }}
-        >
-          {circuitIdToUse && (
-            <ProceduralTrackBackground trackKey={circuitIdToUse} />
-          )}
-        </div>
-      </>
+      </div>
     );
   };
 
@@ -643,7 +650,7 @@ export function LandingPage() {
           </div>
         </div>
       </section>
-      <section className="h-[100dvh] snap-start relative flex items-center justify-start md:justify-center bg-neutral-950 bg-glow-dark-bottom overflow-hidden pt-[100px] md:pt-[64px]">
+      <section className="min-h-screen snap-start scroll-mt-24 flex flex-col items-center max-md:justify-start md:justify-center px-4 md:px-16 max-md:bg-neutral-950 relative max-md:pt-[120px] max-md:pb-[80px] md:py-32">
         {latestResultsLayout()}
       </section>
 
