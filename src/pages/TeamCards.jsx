@@ -79,8 +79,7 @@ export const TeamCards = ({ selectedYear }) => {
 
         swapTimeoutId = window.setTimeout(() => {
           setHeroBgIndex(
-            (currentIndex) =>
-              (currentIndex + 1) % GARAGE_HERO_IMAGES.length,
+            (currentIndex) => (currentIndex + 1) % GARAGE_HERO_IMAGES.length,
           );
           window.requestAnimationFrame(() => {
             setIsHeroImageVisible(true);
@@ -399,6 +398,21 @@ export const TeamCards = ({ selectedYear }) => {
             </div>
           );
         })}
+      </div>
+
+      {/* 2026 Pirelli Tyre Compounds Section */}
+      <div className="w-full px-16 mt-64 flex flex-col items-center">
+        <div className="w-full max-w-[900px] rounded-large border border-white/10 bg-gradient-to-br from-[#1a1a1f]/90 to-[#0f0f13]/90 backdrop-blur-sm px-24 py-20 shadow-2xl flex flex-col items-center gap-12">
+          <span className="text-12 font-display uppercase tracking-sm gradient-text-light text-center">
+            2026 Pirelli Tyre Compounds
+          </span>
+          <img
+            src="/images/f1_tyres_2026.png"
+            alt="2026 F1 Pirelli Tyre Compounds"
+            loading="lazy"
+            className="w-full max-w-[760px] h-auto object-contain drop-shadow-[0_8px_20px_rgba(0,0,0,0.6)]"
+          />
+        </div>
       </div>
     </div>
   );
