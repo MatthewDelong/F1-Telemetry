@@ -85,6 +85,7 @@ export const isChampion = (code, season) => !!getChampion(code, season);
  *   theme:  optional badge colour (omit for gold)
  */
 export const CONSTRUCTOR_CHAMPIONS = [
+  { teamId: "mercedes", name: "Mercedes", year: 2026 },
   { teamId: "mclaren", name: "McLaren", year: 2025 },
   { teamId: "mclaren", name: "McLaren", year: 2024 },
   { teamId: "red_bull", name: "Red Bull", year: 2023 },

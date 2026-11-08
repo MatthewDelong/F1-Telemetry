@@ -186,6 +186,7 @@ export const teamHistory = {
       "2019",
       "2020",
       "2021",
+      "2026",
     ],
     driversChampionships: [
       "1954",
