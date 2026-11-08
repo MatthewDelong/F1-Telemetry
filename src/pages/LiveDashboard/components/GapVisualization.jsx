@@ -33,6 +33,21 @@ export default function GapVisualization({ drivers, positions, intervals, laps }
     }
   }
 
+  // Get best lap per driver (fallback for Practice / Qualifying when /intervals is empty)
+  const bestLap = {};
+  let overallBestLap = Infinity;
+  if (laps) {
+    for (const lap of laps) {
+      const dn = lap.driver_number;
+      if (lap.lap_duration && (!bestLap[dn] || lap.lap_duration < bestLap[dn])) {
+        bestLap[dn] = lap.lap_duration;
+      }
+      if (lap.lap_duration && lap.lap_duration < overallBestLap) {
+        overallBestLap = lap.lap_duration;
+      }
+    }
+  }
+
   // Build sorted driver list with gaps
   const seenNumbers = new Set();
   const uniqueDrivers = drivers.filter(d => {
@@ -41,13 +56,32 @@ export default function GapVisualization({ drivers, positions, intervals, laps }
     return true;
   });
 
-  const driverGaps = uniqueDrivers.map(d => ({
-    driver: d,
-    position: latestPos[d.driver_number]?.position ?? 99,
-    gap: latestInterval[d.driver_number]?.gap_to_leader ?? null,
-  }))
+  const sortedDrivers = uniqueDrivers
+    .map(d => ({
+      driver: d,
+      position: latestPos[d.driver_number]?.position ?? 99,
+    }))
     .sort((a, b) => a.position - b.position)
     .slice(0, 20);
+
+  const leaderBestLap =
+    bestLap[sortedDrivers[0]?.driver.driver_number] ?? overallBestLap;
+
+  const driverGaps = sortedDrivers.map(({ driver, position }, idx) => {
+    const dn = driver.driver_number;
+    const rawGap = latestInterval[dn]?.gap_to_leader;
+    const fallbackGap =
+      idx === 0 || position === 1
+        ? 0
+        : bestLap[dn] != null && Number.isFinite(leaderBestLap)
+          ? Math.max(0, bestLap[dn] - leaderBestLap)
+          : null;
+    return {
+      driver,
+      position,
+      gap: rawGap != null ? rawGap : fallbackGap,
+    };
+  });
 
   // Find max gap for scaling
   const maxGap = Math.max(...driverGaps.map(d => (typeof d.gap === 'number' ? d.gap : 0)), 1);

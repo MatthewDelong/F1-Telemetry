@@ -623,11 +623,18 @@ app.get("/openf1/*", async (req, res) => {
         timeout: 60000,
       });
 
-      res.writeHead(response.status, {
+      // OpenF1 returns 404 while live endpoints (or race-only endpoints like /intervals)
+      // have not produced any records for the session. Normalize 404 to an empty array.
+      const isNotFound = response.status === 404;
+      const status = isNotFound ? 200 : response.status;
+      const payload = isNotFound ? [] : response.data;
+
+      res.writeHead(status, {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
       });
-      res.end(JSON.stringify(response.data));
+      res.end(JSON.stringify(payload));
     } catch (error) {
       console.error("[OpenF1 Proxy] Proxy Error:", error.message);
       res

@@ -93,25 +93,6 @@ export default function LiveDashboard() {
     setSelectedYear(yr);
   };
 
-  // Get overall best sectors for highlights
-  const overallBestSectors = useMemo(() => {
-    return getOverallBestSectors(laps);
-  }, [laps]);
-
-  const fastestLap = useMemo(() => {
-    if (!laps || laps.length === 0) return null;
-    const validLaps = laps.filter((l) => l.lap_duration != null);
-    if (validLaps.length === 0) return null;
-    return validLaps.reduce((min, lap) => lap.lap_duration < min.lap_duration ? lap : min, validLaps[0]);
-  }, [laps]);
-
-  const fastestPitStop = useMemo(() => {
-    if (!pitStops || pitStops.length === 0) return null;
-    const validPits = pitStops.filter((p) => p.pit_duration != null);
-    if (validPits.length === 0) return null;
-    return validPits.reduce((min, pit) => pit.pit_duration < min.pit_duration ? pit : min, validPits[0]);
-  }, [pitStops]);
-
   // Group sessions by meeting
   const groupedSessions = useMemo(() => {
     const groupsMap = new Map();
@@ -134,15 +115,58 @@ export default function LiveDashboard() {
     return Array.from(groupsMap.values()).sort((a, b) => new Date(a.date_start) - new Date(b.date_start));
   }, [sessions]);
 
-  // Time Machine Data Filtering
+  // Reset playbackTime when session changes
+  useEffect(() => {
+    setPlaybackTime(null);
+  }, [selectedSessionKey]);
+
+  // Time Machine Data Filtering — expand sessionEnd to actual latest telemetry timestamp
+  // so delayed/extended sessions (e.g. rain-delayed Brazil Qualifying) are never cut off at scheduled date_end
   const sessionStart = selectedSession?.date_start ? new Date(selectedSession.date_start).getTime() : null;
-  const sessionEnd = selectedSession?.date_end ? new Date(selectedSession.date_end).getTime() : null;
+  const { sessionEnd, onTrackEnd } = useMemo(() => {
+    const scheduledEnd = selectedSession?.date_end
+      ? new Date(selectedSession.date_end).getTime()
+      : null;
+    let maxOnTrack = 0;
+    let maxAny = scheduledEnd || 0;
 
-  const currentPlaybackTime = (!isLive && playbackTime !== null) ? playbackTime : (sessionEnd || new Date().getTime());
+    const checkDates = (arr, field = "date", isOnTrack = false) => {
+      if (!arr || arr.length === 0) return;
+      for (let i = 0; i < arr.length; i++) {
+        const raw = arr[i]?.[field];
+        if (!raw) continue;
+        let t = new Date(raw).getTime();
+        if (field === "date_start" && arr[i]?.lap_duration) {
+          t += arr[i].lap_duration * 1000;
+        }
+        if (t > maxAny) maxAny = t;
+        if (isOnTrack && t > maxOnTrack) maxOnTrack = t;
+      }
+    };
 
-  // Helper to safely parse dates for filtering
+    checkDates(laps, "date_start", true);
+    checkDates(positions, "date", true);
+    checkDates(intervals, "date", true);
+    checkDates(pitStops, "date", false);
+    checkDates(raceControl, "date", false);
+    checkDates(teamRadio, "date", false);
+    checkDates(weather, "date", false);
+
+    return {
+      sessionEnd: maxAny > 0 ? maxAny : scheduledEnd,
+      onTrackEnd: maxOnTrack > 0 ? maxOnTrack : (maxAny > 0 ? maxAny : scheduledEnd),
+    };
+  }, [selectedSession, laps, positions, intervals, pitStops, raceControl, teamRadio, weather]);
+
+  const currentPlaybackTime =
+    !isLive && playbackTime !== null
+      ? playbackTime
+      : onTrackEnd || sessionEnd || new Date().getTime();
+
+  // Helper to safely parse dates for filtering.
+  // When live or when scrubber is at 100% (playbackTime === null), return full unfiltered data.
   const filterByTime = (arr, dateField = "date") => {
-    if (isLive) return arr; // Don't filter if it's live
+    if (isLive || playbackTime === null) return arr;
     return arr.filter(item => {
       if (!item[dateField]) return true; // keep if no date
       return new Date(item[dateField]).getTime() <= currentPlaybackTime;
@@ -155,6 +179,25 @@ export default function LiveDashboard() {
   const filteredIntervals = filterByTime(intervals, "date");
   const filteredRaceControl = filterByTime(raceControl, "date");
   const filteredTeamRadio = filterByTime(teamRadio, "date");
+
+  // Get overall best sectors and highlights from active/filtered data
+  const overallBestSectors = useMemo(() => {
+    return getOverallBestSectors(filteredLaps);
+  }, [filteredLaps]);
+
+  const fastestLap = useMemo(() => {
+    if (!filteredLaps || filteredLaps.length === 0) return null;
+    const validLaps = filteredLaps.filter((l) => l.lap_duration != null);
+    if (validLaps.length === 0) return null;
+    return validLaps.reduce((min, lap) => lap.lap_duration < min.lap_duration ? lap : min, validLaps[0]);
+  }, [filteredLaps]);
+
+  const fastestPitStop = useMemo(() => {
+    if (!filteredPitStops || filteredPitStops.length === 0) return null;
+    const validPits = filteredPitStops.filter((p) => p.pit_duration != null);
+    if (validPits.length === 0) return null;
+    return validPits.reduce((min, pit) => pit.pit_duration < min.pit_duration ? pit : min, validPits[0]);
+  }, [filteredPitStops]);
   let currentFilteredWeather = null;
   if (weather && weather.length > 0) {
     if (!isLive) {

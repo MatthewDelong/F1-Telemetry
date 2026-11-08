@@ -1,32 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-export default function PlaybackScrubber({ sessionStart, sessionEnd, playbackTime, setPlaybackTime, isLive }) {
+export default function PlaybackScrubber({
+  sessionStart,
+  sessionEnd,
+  playbackTime,
+  setPlaybackTime,
+  isLive,
+}) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [sliderValue, setSliderValue] = useState(100);
 
-  const totalDuration = sessionEnd - sessionStart;
+  const totalDuration = Math.max(0, (sessionEnd || 0) - (sessionStart || 0));
 
-  // Initialize playbackTime to end of session
+  // Reset scrubber to 100% (end of session / full data) when switching sessions
   useEffect(() => {
-    if (playbackTime === null && sessionEnd) {
-      setPlaybackTime(sessionEnd);
-      setSliderValue(100);
-    }
-  }, [sessionEnd, playbackTime, setPlaybackTime]);
-
+    setIsPlaying(false);
+    setSliderValue(100);
+    setPlaybackTime(null);
+  }, [sessionStart, setPlaybackTime]);
 
   useEffect(() => {
     let interval;
-    if (isPlaying) {
+    if (isPlaying && totalDuration > 0) {
       interval = setInterval(() => {
-        setSliderValue(prev => {
-          const next = prev + (100 / (totalDuration / 1000)); // advance by 1 simulated second every 100ms
-          // Wait, if totalDuration is 2 hours (7200s). 
-          // 100% / 7200 = 0.0138% per second.
-          // To playback faster (e.g. 10x speed), we advance by 10 simulated seconds every 100ms
+        setSliderValue((prev) => {
           const speedMultiplier = 30; // 30x realtime
-          const newPerc = prev + ((100 * (100 * speedMultiplier)) / totalDuration);
-          
+          const newPerc =
+            prev + (100 * (100 * speedMultiplier)) / totalDuration;
+
           if (newPerc >= 100) {
             setIsPlaying(false);
             return 100;
@@ -38,11 +39,16 @@ export default function PlaybackScrubber({ sessionStart, sessionEnd, playbackTim
     return () => clearInterval(interval);
   }, [isPlaying, totalDuration]);
 
-  // Sync slider to playback time
+  // Sync slider to playback time (null when at 100% so full session data is shown without truncation)
   useEffect(() => {
-    const newTime = sessionStart + (totalDuration * (sliderValue / 100));
-    setPlaybackTime(newTime);
-  }, [sliderValue, sessionStart, totalDuration, setPlaybackTime]);
+    if (!sessionStart || !sessionEnd) return;
+    if (sliderValue >= 100) {
+      setPlaybackTime(null);
+    } else {
+      const newTime = sessionStart + totalDuration * (sliderValue / 100);
+      setPlaybackTime(newTime);
+    }
+  }, [sliderValue, sessionStart, sessionEnd, totalDuration, setPlaybackTime]);
 
   if (isLive || !sessionStart || !sessionEnd) return null;
 
@@ -51,12 +57,12 @@ export default function PlaybackScrubber({ sessionStart, sessionEnd, playbackTim
       <div className="text-f1-red font-bold uppercase tracking-widest text-sm flex items-center gap-4">
         <span>⏱️ Time Machine</span>
       </div>
-      
-      <button 
+
+      <button
         className="bg-white/10 hover:bg-white/20 text-white px-12 py-4 rounded text-xs tracking-widest uppercase transition-colors"
         onClick={() => setIsPlaying(!isPlaying)}
       >
-        {isPlaying ? 'PAUSE' : 'PLAY'}
+        {isPlaying ? "PAUSE" : "PLAY"}
       </button>
 
       <span className="text-neutral-400 text-xs w-24 text-right">

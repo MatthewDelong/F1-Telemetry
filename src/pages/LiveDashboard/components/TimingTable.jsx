@@ -25,6 +25,7 @@ export default function TimingTable({ drivers, laps, stints, positions, interval
   }
 
   const latestLap = {};
+  const latestCompletedLap = {};
   const bestLap = {};
   const personalBests = {};
   if (laps) {
@@ -32,6 +33,12 @@ export default function TimingTable({ drivers, laps, stints, positions, interval
       const dn = lap.driver_number;
       if (!latestLap[dn] || lap.lap_number > latestLap[dn].lap_number) {
         latestLap[dn] = lap;
+      }
+      if (
+        lap.lap_duration != null &&
+        (!latestCompletedLap[dn] || lap.lap_number > latestCompletedLap[dn].lap_number)
+      ) {
+        latestCompletedLap[dn] = lap;
       }
       if (lap.lap_duration && (!bestLap[dn] || lap.lap_duration < bestLap[dn].lap_duration)) {
         bestLap[dn] = lap;
@@ -127,12 +134,38 @@ export default function TimingTable({ drivers, laps, stints, positions, interval
           {uniqueDrivers.map((driver, idx) => {
             const dn = driver.driver_number;
             const pos = latestPos[dn]?.position ?? idx + 1;
-            const lap = latestLap[dn];
+            const rawLap = latestLap[dn];
+            const completedLap = latestCompletedLap[dn];
+            const lap = rawLap?.lap_duration != null ? rawLap : (completedLap || rawLap);
+            const sectorLap =
+              rawLap?.duration_sector_1 != null ||
+              rawLap?.duration_sector_2 != null ||
+              rawLap?.duration_sector_3 != null
+                ? rawLap
+                : (completedLap || rawLap);
             const best = bestLap[dn];
             const stint = latestStint[dn];
             const iv = latestInterval[dn];
             const tireInfo = getTireInfo(stint?.compound);
             const teamColor = getTeamColor(driver.team_name, driver.team_colour);
+
+            // Fallback gap & interval from best lap times for Practice / Qualifying sessions
+            const leaderBest = bestLap[uniqueDrivers[0]?.driver_number]?.lap_duration ?? overallBestTime;
+            const prevBest = idx > 0 ? bestLap[uniqueDrivers[idx - 1]?.driver_number]?.lap_duration : null;
+            const computedGap =
+              iv?.gap_to_leader != null
+                ? iv.gap_to_leader
+                : pos === 1 || idx === 0
+                  ? 0
+                  : best?.lap_duration != null && Number.isFinite(leaderBest)
+                    ? Math.max(0, best.lap_duration - leaderBest)
+                    : null;
+            const computedInterval =
+              iv?.interval != null
+                ? iv.interval
+                : idx > 0 && best?.lap_duration != null && prevBest != null
+                  ? Math.max(0, best.lap_duration - prevBest)
+                  : null;
 
             const posClass = pos === 1 ? 'pos-1' : pos === 2 ? 'pos-2' : pos === 3 ? 'pos-3' : '';
 
@@ -159,13 +192,13 @@ export default function TimingTable({ drivers, laps, stints, positions, interval
                   ) : '—'}
                 </td>
                 <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 500 }}>
-                  {lap?.lap_number ?? '—'}
+                  {rawLap?.lap_number ?? '—'}
                 </td>
                 <td className="gap-cell">
-                  {iv?.gap_to_leader != null ? formatGap(iv.gap_to_leader) : (pos === 1 ? 'LEADER' : '—')}
+                  {computedGap != null ? formatGap(computedGap) : (pos === 1 ? 'LEADER' : '—')}
                 </td>
                 <td className="gap-cell">
-                  {iv?.interval != null ? formatInterval(iv.interval) : '—'}
+                  {computedInterval != null ? formatInterval(computedInterval) : '—'}
                 </td>
                 <td className={`time-cell ${lap?.lap_duration ? (lap.is_pit_out_lap ? 'time-red' : 'time-white') : ''}`}>
                   {formatLapTime(lap?.lap_duration)}
@@ -173,14 +206,14 @@ export default function TimingTable({ drivers, laps, stints, positions, interval
                 <td className={`time-cell ${getLapTimeClass(dn)}`}>
                   {formatLapTime(best?.lap_duration)}
                 </td>
-                <td className={`time-cell ${getSectorClass(lap?.duration_sector_1, dn, 's1')}`}>
-                  {lap?.duration_sector_1 ? lap.duration_sector_1.toFixed(3) : '—'}
+                <td className={`time-cell ${getSectorClass(sectorLap?.duration_sector_1, dn, 's1')}`}>
+                  {sectorLap?.duration_sector_1 ? sectorLap.duration_sector_1.toFixed(3) : '—'}
                 </td>
-                <td className={`time-cell ${getSectorClass(lap?.duration_sector_2, dn, 's2')}`}>
-                  {lap?.duration_sector_2 ? lap.duration_sector_2.toFixed(3) : '—'}
+                <td className={`time-cell ${getSectorClass(sectorLap?.duration_sector_2, dn, 's2')}`}>
+                  {sectorLap?.duration_sector_2 ? sectorLap.duration_sector_2.toFixed(3) : '—'}
                 </td>
-                <td className={`time-cell ${getSectorClass(lap?.duration_sector_3, dn, 's3')}`}>
-                  {lap?.duration_sector_3 ? lap.duration_sector_3.toFixed(3) : '—'}
+                <td className={`time-cell ${getSectorClass(sectorLap?.duration_sector_3, dn, 's3')}`}>
+                  {sectorLap?.duration_sector_3 ? sectorLap.duration_sector_3.toFixed(3) : '—'}
                 </td>
               </tr>
             );

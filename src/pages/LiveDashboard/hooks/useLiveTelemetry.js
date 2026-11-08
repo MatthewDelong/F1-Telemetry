@@ -132,6 +132,14 @@ export function useLiveTelemetry(selectedYear) {
 
     try {
       setDataError(null);
+      const currentSession =
+        selectedSession ||
+        sessions.find((s) => s.session_key === selectedSessionKey);
+      const sName = `${currentSession?.session_name || ""} ${currentSession?.session_type || ""}`;
+      const isRaceOrSprint =
+        !currentSession ||
+        (/race|sprint/i.test(sName) && !/qualifying|shootout/i.test(sName));
+
       const [
         driversData,
         lapsData,
@@ -147,32 +155,47 @@ export function useLiveTelemetry(selectedYear) {
         getLaps(selectedSessionKey).catch(() => []),
         getStints(selectedSessionKey).catch(() => []),
         getPositions(selectedSessionKey).catch(() => []),
-        getIntervals(selectedSessionKey).catch(() => []),
+        isRaceOrSprint
+          ? getIntervals(selectedSessionKey).catch(() => [])
+          : Promise.resolve([]),
         getWeather(selectedSessionKey).catch(() => []),
         getRaceControl(selectedSessionKey).catch(() => []),
         getPitStops(selectedSessionKey).catch(() => []),
         getTeamRadio(selectedSessionKey).catch(() => []),
       ]);
 
+      const safeRc = rcData || [];
       setDrivers(driversData || []);
       setLaps(lapsData || []);
       setStints(stintsData || []);
       setPositions(positionsData || []);
       setIntervals(intervalsData || []);
       setWeather(weatherData || []);
-      setRaceControl(rcData || []);
+      setRaceControl(safeRc);
       setPitStops(pitData || []);
       setTeamRadio(radioData || []);
       setLastUpdated(new Date());
       setCountdown(refreshInterval / 1000);
       setConnectionStatus("connected");
+
+      if (selectedSession) {
+        const now = new Date();
+        const start = new Date(selectedSession.date_start);
+        const end = new Date(selectedSession.date_end);
+        const hasChequered = safeRc.some((m) => m.flag === "CHEQUERED");
+        const isOvertimeLive =
+          now > end &&
+          now.getTime() - end.getTime() <= 3 * 60 * 60 * 1000 &&
+          !hasChequered;
+        setIsLive((now >= start && now <= end && !hasChequered) || isOvertimeLive);
+      }
     } catch (err) {
       setDataError(err.message);
       setConnectionStatus("disconnected");
     } finally {
       setDataLoading(false);
     }
-  }, [selectedSessionKey, refreshInterval]);
+  }, [selectedSessionKey, selectedSession, refreshInterval]);
 
   // Initial load
   useEffect(() => {
@@ -188,7 +211,7 @@ export function useLiveTelemetry(selectedYear) {
     if (intervalRef.current) clearInterval(intervalRef.current);
     if (countdownRef.current) clearInterval(countdownRef.current);
 
-    if (autoRefresh && selectedSessionKey && isLive) {
+    if (autoRefresh && selectedSessionKey) {
       intervalRef.current = setInterval(() => {
         if (sessionKeyRef.current === selectedSessionKey) {
           loadData();
@@ -196,7 +219,7 @@ export function useLiveTelemetry(selectedYear) {
       }, refreshInterval);
 
       countdownRef.current = setInterval(() => {
-        setCountdown((prev) => Math.max(0, prev - 1));
+        setCountdown((prev) => (prev <= 1 ? refreshInterval / 1000 : prev - 1));
       }, 1000);
     }
 
@@ -204,7 +227,7 @@ export function useLiveTelemetry(selectedYear) {
       if (intervalRef.current) clearInterval(intervalRef.current);
       if (countdownRef.current) clearInterval(countdownRef.current);
     };
-  }, [autoRefresh, selectedSessionKey, refreshInterval, loadData, isLive]);
+  }, [autoRefresh, selectedSessionKey, refreshInterval, loadData]);
 
   const handleSessionChange = (key) => {
     setSelectedSessionKey(key);
