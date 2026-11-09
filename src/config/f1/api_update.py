@@ -83,13 +83,13 @@ def update_constructors():
 def update_constructor_drivers():
     season = current_year
 
-    with open(f'constructors/{current_year}.json', 'r', encoding='utf-8') as file:
+    with open(f'constructors/{current_year}.json', 'r', encoding='utf-8-sig') as file:
         data = json.load(file)
 
     active_drivers = set()
     for filename in [f'{current_year}/results.json', f'{current_year}/qualifying.json', f'{current_year}/sprint.json']:
         try:
-            with open(filename, 'r', encoding='utf-8') as f:
+            with open(filename, 'r', encoding='utf-8-sig') as f:
                 r_data = json.load(f)
                 for race in r_data:
                     results_list = race.get("Results", []) + race.get("QualifyingResults", []) + race.get("SprintResults", [])
@@ -141,7 +141,7 @@ def update_driverData():
 
     # 1. Fetch all races results
     try:
-        with open(f'{current_year}/results.json', 'r', encoding='utf-8') as f:
+        with open(f'{current_year}/results.json', 'r', encoding='utf-8-sig') as f:
             races = json.load(f)
     except Exception:
         url_results = f'{api_url}/current/results.json?limit=1000'
@@ -153,7 +153,7 @@ def update_driverData():
 
     # 2. Fetch all qualifying results
     try:
-        with open(f'{current_year}/qualifying.json', 'r', encoding='utf-8') as f:
+        with open(f'{current_year}/qualifying.json', 'r', encoding='utf-8-sig') as f:
             quali_races = json.load(f)
     except Exception:
         url_quali = f'{api_url}/current/qualifying.json?limit=1000'
@@ -166,7 +166,7 @@ def update_driverData():
     standings_by_round = {}
     standings_list = []
     try:
-        with open(f'races/{current_year}/driverStandings.json', 'r', encoding='utf-8') as f:
+        with open(f'races/{current_year}/driverStandings.json', 'r', encoding='utf-8-sig') as f:
             standings_data = json.load(f)
         standings_by_round = standings_data if isinstance(standings_data, dict) else {}
         round_keys = [int(k) for k in standings_by_round if str(k).isdigit()]
@@ -221,7 +221,7 @@ def update_driverData():
             if driverId not in drivers_data:
                 input_file = os.path.join(input_directory, f'{driverId}.json')
                 if os.path.exists(input_file):
-                    with open(input_file, 'r', encoding='utf-8') as file:
+                    with open(input_file, 'r', encoding='utf-8-sig') as file:
                         drivers_data[driverId] = json.load(file)
                 else:
                     drivers_data[driverId] = {
@@ -423,7 +423,7 @@ def analyse_driverData():
                 convert_np_int_to_int(value)
 
     def process(input_file):
-        with open(input_file, 'r', encoding='utf-8') as file:
+        with open(input_file, 'r', encoding='utf-8-sig') as file:
             data = json.load(file)
         if(data):
             seasons = sorted(data['seasonWins'].keys())
@@ -616,7 +616,7 @@ def replace_NaN():
         files_done += 1
         print("Current file: ", input_file)
 
-        with open(input_file, 'r', encoding='utf-8') as file:
+        with open(input_file, 'r', encoding='utf-8-sig') as file:
             data = json.load(file)
         if(data):
             updated_data = replace_nan_with_minus_one(data)
@@ -681,7 +681,7 @@ def update_races():
     if not os.path.exists(race_details_file):
         print("Warning: raceDetails.json missing, cannot rebuild races.json")
         return
-    with open(race_details_file, 'r', encoding='utf-8') as f:
+    with open(race_details_file, 'r', encoding='utf-8-sig') as f:
         calendar = json.load(f)
     if not calendar:
         print("Warning: raceDetails.json empty, cannot rebuild races.json")
@@ -695,9 +695,9 @@ def update_races():
     else:
         print(f"Failed to get race meetings from OpenF1 API (Status: {response.status_code})")
 
-    with open(races_file, 'r', encoding='utf-8') as file:
+    with open(races_file, 'r', encoding='utf-8-sig') as file:
         data = json.load(file)
-    with open(races_by_mk_file, 'r', encoding='utf-8') as g:
+    with open(races_by_mk_file, 'r', encoding='utf-8-sig') as g:
         races_by_mk = json.load(g)
     old_season = data.get(str(season), {})
 
@@ -920,7 +920,7 @@ def update_raceResults():
         race_details_file = f'races/{season}/raceDetails.json'
     ensure_file_exists(race_details_file, [])
 
-    with open(race_details_file, 'r', encoding='utf-8') as file:
+    with open(race_details_file, 'r', encoding='utf-8-sig') as file:
         races = json.load(file)
 
     result = []
@@ -955,7 +955,7 @@ def update_raceResults():
 
     # Patch missing grid positions from qualifying.json
     try:
-        with open(f'{current_year}/qualifying.json', 'r', encoding='utf-8') as qf:
+        with open(f'{current_year}/qualifying.json', 'r', encoding='utf-8-sig') as qf:
             quali_races = json.load(qf)
             for race in result:
                 qrace = next((qr for qr in quali_races if qr.get("round") == race.get("round")), None)
@@ -982,7 +982,7 @@ def update_qualifying():
         race_details_file = f'races/{season}/raceDetails.json'
     ensure_file_exists(race_details_file, [])
 
-    with open(race_details_file, 'r', encoding='utf-8') as file:
+    with open(race_details_file, 'r', encoding='utf-8-sig') as file:
         races = json.load(file)
 
     result = []
@@ -1027,7 +1027,7 @@ def update_sprintResults():
         race_details_file = f'races/{season}/raceDetails.json'
     ensure_file_exists(race_details_file, [])
 
-    with open(race_details_file, 'r', encoding='utf-8') as file:
+    with open(race_details_file, 'r', encoding='utf-8-sig') as file:
         races = json.load(file)
 
     result = []
@@ -1079,7 +1079,7 @@ def update_driverStandings():
         race_details_file = f'{season_dir}/raceDetails.json'
         ensure_file_exists(race_details_file, [])
         
-        with open(race_details_file, 'r', encoding='utf-8') as file:
+        with open(race_details_file, 'r', encoding='utf-8-sig') as file:
             races = json.load(file)
         
         result = {}
@@ -1129,12 +1129,12 @@ def update_driverStandings():
         
         # Patch driverStandings with correct points from results.json and sprint.json
         try:
-            with open(f'{current_year}/results.json', 'r', encoding='utf-8') as rf:
+            with open(f'{current_year}/results.json', 'r', encoding='utf-8-sig') as rf:
                 race_results = json.load(rf)
             
             sprint_results = []
             try:
-                with open(f'{current_year}/sprint.json', 'r', encoding='utf-8') as sf:
+                with open(f'{current_year}/sprint.json', 'r', encoding='utf-8-sig') as sf:
                     sprint_results = json.load(sf)
             except Exception:
                 pass
@@ -1201,7 +1201,7 @@ def update_constructorStandings():
         race_details_file = f'{season_dir}/raceDetails.json'
         ensure_file_exists(race_details_file, [])
         
-        with open(race_details_file, 'r', encoding='utf-8') as file:
+        with open(race_details_file, 'r', encoding='utf-8-sig') as file:
             races = json.load(file)
         
         result = {}
@@ -1251,12 +1251,12 @@ def update_constructorStandings():
         
         # Patch constructorStandings with correct points from results.json and sprint.json
         try:
-            with open(f'{current_year}/results.json', 'r', encoding='utf-8') as rf:
+            with open(f'{current_year}/results.json', 'r', encoding='utf-8-sig') as rf:
                 race_results = json.load(rf)
             
             sprint_results = []
             try:
-                with open(f'{current_year}/sprint.json', 'r', encoding='utf-8') as sf:
+                with open(f'{current_year}/sprint.json', 'r', encoding='utf-8-sig') as sf:
                     sprint_results = json.load(sf)
             except Exception:
                 pass
@@ -1379,7 +1379,7 @@ def pre_checks():
         print(f"Initialized raceDetails.json with {len(races)} races for {season}")
     
     # Verify race details file has data before proceeding
-    with open(race_details_file, 'r', encoding='utf-8') as f:
+    with open(race_details_file, 'r', encoding='utf-8-sig') as f:
         race_data = json.load(f)
     
     if not race_data or len(race_data) == 0:
@@ -1405,7 +1405,7 @@ def remove_jak_crawford():
     path = os.path.join(os.path.dirname(__file__), 'constructors', '2026', 'aston_martin.json')
     try:
         if os.path.exists(path):
-            with open(path, 'r', encoding='utf-8') as file:
+            with open(path, 'r', encoding='utf-8-sig') as file:
                 data = json.load(file)
             
             if isinstance(data, list):
@@ -1425,7 +1425,7 @@ def fix_antonelli_name():
             if f.endswith('.json'):
                 path = os.path.join(root, f)
                 try:
-                    with open(path, 'r', encoding='utf-8') as file:
+                    with open(path, 'r', encoding='utf-8-sig') as file:
                         content = file.read()
                     if '"Andrea Kimi"' in content:
                         content = content.replace('"Andrea Kimi"', '"Kimi"')
