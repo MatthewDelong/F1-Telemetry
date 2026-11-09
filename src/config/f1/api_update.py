@@ -10,6 +10,34 @@ import sys as _sys
 _sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from update_race_names import canonical_race_name
 
+DRIVER_DEFAULTS = {
+    "rafael_camara": {
+        "permanentNumber": "51",
+        "code": "CAM",
+        "url": "https://en.wikipedia.org/wiki/Rafael_C%C3%A2mara",
+        "dateOfBirth": "2005-05-05",
+        "nationality": "Brazilian",
+    },
+}
+
+def enrich_driver(driver_obj, number=""):
+    if not isinstance(driver_obj, dict):
+        return driver_obj
+    driver_id = driver_obj.get("driverId", "")
+    family_lower = driver_obj.get("familyName", "").lower()
+    defaults = DRIVER_DEFAULTS.get(driver_id) or (
+        DRIVER_DEFAULTS["rafael_camara"] if family_lower in ("camara", "câmara") else None
+    )
+    if defaults:
+        for k, v in defaults.items():
+            if not driver_obj.get(k):
+                driver_obj[k] = v
+    if not driver_obj.get("code") and driver_obj.get("familyName"):
+        driver_obj["code"] = driver_obj["familyName"][:3].upper()
+    if not driver_obj.get("permanentNumber") and number:
+        driver_obj["permanentNumber"] = str(number)
+    return driver_obj
+
 def safe_get(url, timeout=10, **kwargs):
     try:
         return requests.get(url, timeout=timeout, **kwargs)
@@ -77,7 +105,7 @@ def update_constructor_drivers():
         response = safe_get(f'{api_url}/{season}/constructors/{team}/drivers.json')
         if response.status_code == 200:
             responsedata = response.json()
-            drivers = responsedata["MRData"]["DriverTable"]["Drivers"]
+            drivers = [enrich_driver(d) for d in responsedata["MRData"]["DriverTable"]["Drivers"]]
             
             if active_drivers:
                 filtered = [d for d in drivers if d.get("driverId") in active_drivers]
@@ -181,6 +209,7 @@ def update_driverData():
                 elif code == "LAW": return "lawson"
                 elif code == "PER": return "perez"
                 elif code == "HUL": return "hulkenberg"
+                elif code == "CAM": return "rafael_camara"
                 else: return driver_obj.get("familyName", "").lower().replace(' ', '_')
             return driver_id
 
@@ -743,15 +772,16 @@ def format_race_entry(api_race):
         "Results": []
     }
     for r in api_race.get("Results", []):
+        drv = enrich_driver(dict(r.get("Driver", {})), r.get("number", ""))
         result_entry = {
             "number": r.get("number", ""),
             "position": r.get("position", ""),
             "points": r.get("points", "0"),
             "grid": r.get("grid", ""),
             "Driver": {
-                "code": r.get("Driver", {}).get("code", ""),
-                "givenName": r.get("Driver", {}).get("givenName", ""),
-                "familyName": r.get("Driver", {}).get("familyName", "")
+                "code": drv.get("code", ""),
+                "givenName": drv.get("givenName", ""),
+                "familyName": drv.get("familyName", "")
             },
             "Constructor": {
                 "constructorId": r.get("Constructor", {}).get("constructorId", ""),
@@ -796,13 +826,14 @@ def format_qualifying_entry(api_race):
         "QualifyingResults": []
     }
     for qr in api_race.get("QualifyingResults", []):
+        drv = enrich_driver(dict(qr.get("Driver", {})), qr.get("number", ""))
         qr_entry = {
             "number": qr.get("number", ""),
             "position": qr.get("position", ""),
             "Driver": {
-                "code": qr.get("Driver", {}).get("code", ""),
-                "givenName": qr.get("Driver", {}).get("givenName", ""),
-                "familyName": qr.get("Driver", {}).get("familyName", "")
+                "code": drv.get("code", ""),
+                "givenName": drv.get("givenName", ""),
+                "familyName": drv.get("familyName", "")
             },
             "Constructor": {
                 "constructorId": qr.get("Constructor", {}).get("constructorId", ""),
@@ -839,15 +870,16 @@ def format_sprint_entry(api_race):
         "Results": []
     }
     for r in api_race.get("SprintResults", api_race.get("Results", [])):
+        drv = enrich_driver(dict(r.get("Driver", {})), r.get("number", ""))
         result_entry = {
             "number": r.get("number", ""),
             "position": r.get("position", ""),
             "points": r.get("points", "0"),
             "grid": r.get("grid", ""),
             "Driver": {
-                "code": r.get("Driver", {}).get("code", ""),
-                "givenName": r.get("Driver", {}).get("givenName", ""),
-                "familyName": r.get("Driver", {}).get("familyName", "")
+                "code": drv.get("code", ""),
+                "givenName": drv.get("givenName", ""),
+                "familyName": drv.get("familyName", "")
             },
             "Constructor": {
                 "constructorId": r.get("Constructor", {}).get("constructorId", ""),
@@ -1069,6 +1101,9 @@ def update_driverStandings():
                         mt = data.get('MRData', {}).get('StandingsTable', {}) \
                                  .get('StandingsLists', [])
                         if mt and 'DriverStandings' in mt[0]:
+                            for st in mt[0]['DriverStandings']:
+                                if 'Driver' in st:
+                                    enrich_driver(st['Driver'])
                             result[race['round']] = mt[0]['DriverStandings']
                             prev = result[race['round']]
                         break

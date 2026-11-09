@@ -137,6 +137,7 @@ app.get("/api/admin/rebuild-2026", requireAdmin, async (req, res) => {
           else if (code === "LAW") driverIds.add("lawson");
           else if (code === "PER") driverIds.add("perez");
           else if (code === "HUL") driverIds.add("hulkenberg");
+          else if (code === "CAM") driverIds.add("rafael_camara");
           else if (r.Driver.familyName)
             driverIds.add(r.Driver.familyName.toLowerCase().replace(" ", "_"));
           else if (code) driverIds.add(code.toLowerCase());

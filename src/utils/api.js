@@ -980,7 +980,11 @@ export const getDriverStandings = async (selectedYear) => {
       const lastRaceKey = getLatestRoundKey(data);
       const standings = (lastRaceKey && data[lastRaceKey]) || [];
       return standings.map((standing) => ({
-        driverCode: standing.Driver.code,
+        driverCode:
+          standing.Driver.code ||
+          (standing.Driver.familyName || standing.Driver.lastName || "")
+            .slice(0, 3)
+            .toUpperCase(),
         firstName: standing.Driver.givenName,
         lastName: standing.Driver.familyName || standing.Driver.lastName,
         constructorName: standing.Constructors[0].name,
@@ -1068,7 +1072,11 @@ export const getPartialDriverStandings = async (selectedYear, start, end) => {
           (start) => start.Driver.driverId === end.Driver.driverId,
         );
         return {
-          driverCode: end.Driver.code,
+          driverCode:
+            end.Driver.code ||
+            (end.Driver.familyName || end.Driver.lastName || "")
+              .slice(0, 3)
+              .toUpperCase(),
           firstName: end.Driver.givenName,
           lastName: end.Driver.familyName || end.Driver.lastName,
           constructorName: end.Constructors[0].name,

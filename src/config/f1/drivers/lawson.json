@@ -2,7 +2,7 @@
     "driverId": "lawson",
     "driverCode": "LAW",
     "driverNumber": "30",
-    "lastUpdate": "2026-11-02T20:18:31.897827",
+    "lastUpdate": "2026-11-09T09:28:35.852765",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -11,7 +11,7 @@
     "winRate": 0.0,
     "podiumRate": 0.0,
     "poleRate": 0.0,
-    "dnfRate": 0.24074074074074073,
+    "dnfRate": 0.23636363636363636,
     "seasonWins": {
         "2023": 0,
         "2024": 0,
@@ -131,7 +131,8 @@
             "Bahrain Grand Prix (Malaysia)": "1:40.254",
             "Singapore Grand Prix": "1:37.193",
             "United States Grand Prix": "1:39.652",
-            "Mexico Grand Prix": "1:20.713"
+            "Mexico Grand Prix": "1:20.713",
+            "Brazil Grand Prix": "1:13.495"
         }
     },
     "finalStandings": {
@@ -153,7 +154,7 @@
         "2026": {
             "year": "2026",
             "position": "9",
-            "points": "83"
+            "points": "89"
         }
     },
     "posAfterRace": {
@@ -336,6 +337,9 @@
                 },
                 "Mexico Grand Prix": {
                     "points": 83
+                },
+                "Brazil Grand Prix": {
+                    "points": 89
                 }
             }
         }
@@ -409,7 +413,8 @@
                 "Bahrain Grand Prix (Malaysia)": "7",
                 "Singapore Grand Prix": "7",
                 "United States Grand Prix": "9",
-                "Mexico Grand Prix": "7"
+                "Mexico Grand Prix": "7",
+                "Brazil Grand Prix": "7"
             }
         }
     },
@@ -482,7 +487,8 @@
                 "Bahrain Grand Prix (Malaysia)": "11",
                 "Singapore Grand Prix": "8",
                 "United States Grand Prix": "9",
-                "Mexico Grand Prix": "22"
+                "Mexico Grand Prix": "22",
+                "Brazil Grand Prix": "3"
             }
         }
     },
@@ -547,7 +553,8 @@
             "Bahrain Grand Prix (Malaysia)": 4,
             "Singapore Grand Prix": 1,
             "United States Grand Prix": 0,
-            "Mexico Grand Prix": 15
+            "Mexico Grand Prix": 15,
+            "Brazil Grand Prix": -4
         }
     },
     "driverQualifyingTimes": {
@@ -835,6 +842,11 @@
                     "",
                     "1:17.207",
                     "1:17.029"
+                ],
+                "Brazil Grand Prix": [
+                    "",
+                    "",
+                    ""
                 ]
             }
         }
@@ -843,13 +855,13 @@
         "2023": 12.2,
         "2024": 13.5,
         "2025": 12.791666666666666,
-        "2026": 9.105263157894736
+        "2026": 9.0
     },
     "avgQualiPositions": {
         "2023": 14.2,
         "2024": 12.666666666666666,
         "2025": 12.541666666666666,
-        "2026": 11.31578947368421
+        "2026": 10.9
     },
     "rates": {
         "wins": {
@@ -882,19 +894,19 @@
             "wins": 0.0,
             "podiums": 0.0,
             "poles": 0.0,
-            "points": 31.75
+            "points": 33.25
         },
         "std": {
             "wins": 0.0,
             "podiums": 0.0,
             "poles": 0.0,
-            "points": 32.86620604815834
+            "points": 35.223394214640926
         },
         "cv": {
             "wins": 0,
             "podiums": 0,
             "poles": 0,
-            "points": 1.035156096004987
+            "points": 1.059350201944088
         }
     },
     "peakSeason": {

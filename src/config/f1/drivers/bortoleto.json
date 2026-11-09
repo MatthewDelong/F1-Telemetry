@@ -2,7 +2,7 @@
     "driverId": "bortoleto",
     "driverCode": "BOR",
     "driverNumber": "5",
-    "lastUpdate": "2026-11-02T20:18:31.897843",
+    "lastUpdate": "2026-11-09T09:28:35.853369",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -11,7 +11,7 @@
     "winRate": 0.0,
     "podiumRate": 0.0,
     "poleRate": 0.0,
-    "dnfRate": 0.27906976744186046,
+    "dnfRate": 0.2727272727272727,
     "seasonWins": {
         "2025": 0,
         "2026": 0
@@ -99,7 +99,8 @@
             "Bahrain Grand Prix (Malaysia)": "1:41.382",
             "Singapore Grand Prix": "1:40.486",
             "United States Grand Prix": "1:38.393",
-            "Mexico Grand Prix": "1:20.872"
+            "Mexico Grand Prix": "1:20.872",
+            "Brazil Grand Prix": "1:14.940"
         }
     },
     "finalStandings": {
@@ -251,6 +252,9 @@
                 },
                 "Mexico Grand Prix": {
                     "points": 14
+                },
+                "Brazil Grand Prix": {
+                    "points": 14
                 }
             }
         }
@@ -305,7 +309,8 @@
                 "Bahrain Grand Prix (Malaysia)": "18",
                 "Singapore Grand Prix": "22",
                 "United States Grand Prix": "13",
-                "Mexico Grand Prix": "8"
+                "Mexico Grand Prix": "8",
+                "Brazil Grand Prix": "16"
             }
         }
     },
@@ -358,7 +363,8 @@
                 "Bahrain Grand Prix (Malaysia)": "10",
                 "Singapore Grand Prix": "14",
                 "United States Grand Prix": "21",
-                "Mexico Grand Prix": "13"
+                "Mexico Grand Prix": "13",
+                "Brazil Grand Prix": "19"
             }
         }
     },
@@ -407,7 +413,8 @@
             "Bahrain Grand Prix (Malaysia)": -8,
             "Singapore Grand Prix": -8,
             "United States Grand Prix": 8,
-            "Mexico Grand Prix": 5
+            "Mexico Grand Prix": 5,
+            "Brazil Grand Prix": 3
         }
     },
     "driverQualifyingTimes": {
@@ -627,17 +634,22 @@
                     "1:17.727",
                     "1:17.680",
                     "N/A"
+                ],
+                "Brazil Grand Prix": [
+                    "",
+                    "N/A",
+                    "N/A"
                 ]
             }
         }
     },
     "avgRacePositions": {
         "2025": 14.25,
-        "2026": 12.68421052631579
+        "2026": 12.85
     },
     "avgQualiPositions": {
         "2025": 13.956521739130435,
-        "2026": 13.052631578947368
+        "2026": 13.35
     },
     "rates": {
         "wins": {

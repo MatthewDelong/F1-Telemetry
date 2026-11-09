@@ -2,16 +2,16 @@
     "driverId": "bottas",
     "driverCode": "BOT",
     "driverNumber": "77",
-    "lastUpdate": "2026-11-02T20:18:31.898274",
+    "lastUpdate": "2026-11-09T09:28:35.854463",
     "totalWins": 10,
     "totalPodiums": 67,
     "totalPoles": 19,
     "totalDNFs": 54,
     "totalRaces": 262,
-    "winRate": 0.03773584905660377,
-    "podiumRate": 0.2528301886792453,
-    "poleRate": 0.07169811320754717,
-    "dnfRate": 0.2037735849056604,
+    "winRate": 0.03759398496240601,
+    "podiumRate": 0.2518796992481203,
+    "poleRate": 0.07142857142857142,
+    "dnfRate": 0.20300751879699247,
     "seasonWins": {
         "2013": 0,
         "2014": 0,
@@ -572,7 +572,8 @@
             "Bahrain Grand Prix (Malaysia)": "1:59.953",
             "Singapore Grand Prix": "1:40.171",
             "United States Grand Prix": "1:42.012",
-            "Mexico Grand Prix": "1:22.487"
+            "Mexico Grand Prix": "1:22.487",
+            "Brazil Grand Prix": -1
         }
     },
     "finalStandings": {
@@ -1500,6 +1501,9 @@
                 },
                 "Mexico Grand Prix": {
                     "points": 0
+                },
+                "Brazil Grand Prix": {
+                    "points": 0
                 }
             }
         }
@@ -1820,7 +1824,8 @@
                 "Bahrain Grand Prix (Malaysia)": "22",
                 "Singapore Grand Prix": "19",
                 "United States Grand Prix": "20",
-                "Mexico Grand Prix": "20"
+                "Mexico Grand Prix": "20",
+                "Brazil Grand Prix": "22"
             }
         }
     },
@@ -2140,7 +2145,8 @@
                 "Bahrain Grand Prix (Malaysia)": "19",
                 "Singapore Grand Prix": "18",
                 "United States Grand Prix": "19",
-                "Mexico Grand Prix": "21"
+                "Mexico Grand Prix": "21",
+                "Brazil Grand Prix": "17"
             }
         }
     },
@@ -2434,7 +2440,8 @@
             "Bahrain Grand Prix (Malaysia)": -3,
             "Singapore Grand Prix": -1,
             "United States Grand Prix": -1,
-            "Mexico Grand Prix": 1
+            "Mexico Grand Prix": 1,
+            "Brazil Grand Prix": -5
         }
     },
     "driverQualifyingTimes": {
@@ -3813,6 +3820,11 @@
                     "1:19.852",
                     "N/A",
                     "N/A"
+                ],
+                "Brazil Grand Prix": [
+                    "",
+                    "N/A",
+                    "N/A"
                 ]
             }
         }
@@ -3830,7 +3842,7 @@
         "2022": 12.090909090909092,
         "2023": 13.954545454545455,
         "2024": 15.833333333333334,
-        "2026": 18.789473684210527
+        "2026": 18.95
     },
     "avgQualiPositions": {
         "2013": 15.105263157894736,
@@ -3845,7 +3857,7 @@
         "2022": 11.681818181818182,
         "2023": 13.863636363636363,
         "2024": 15.125,
-        "2026": 19.263157894736842
+        "2026": 19.15
     },
     "rates": {
         "wins": {

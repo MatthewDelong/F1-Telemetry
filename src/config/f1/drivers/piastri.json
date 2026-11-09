@@ -2,16 +2,16 @@
     "driverId": "piastri",
     "driverCode": "PIA",
     "driverNumber": "81",
-    "lastUpdate": "2026-11-02T20:18:31.898110",
+    "lastUpdate": "2026-11-09T09:28:35.852700",
     "totalWins": 9,
     "totalPodiums": 28,
     "totalPoles": 6,
     "totalDNFs": 9,
     "totalRaces": 86,
-    "winRate": 0.10112359550561797,
-    "podiumRate": 0.3146067415730337,
-    "poleRate": 0.06741573033707865,
-    "dnfRate": 0.10112359550561797,
+    "winRate": 0.1,
+    "podiumRate": 0.3111111111111111,
+    "poleRate": 0.06666666666666667,
+    "dnfRate": 0.1,
     "seasonWins": {
         "2023": 0,
         "2024": 2,
@@ -200,7 +200,8 @@
             "Bahrain Grand Prix (Malaysia)": "1:39.485",
             "Singapore Grand Prix": "1:35.665",
             "United States Grand Prix": "1:40.328",
-            "Mexico Grand Prix": "1:20.690"
+            "Mexico Grand Prix": "1:20.690",
+            "Brazil Grand Prix": "1:13.018"
         }
     },
     "finalStandings": {
@@ -222,7 +223,7 @@
         "2026": {
             "year": "2026",
             "position": "7",
-            "points": "144"
+            "points": "152"
         }
     },
     "posAfterRace": {
@@ -510,6 +511,9 @@
                 },
                 "Mexico Grand Prix": {
                     "points": 144
+                },
+                "Brazil Grand Prix": {
+                    "points": 152
                 }
             }
         }
@@ -618,7 +622,8 @@
                 "Bahrain Grand Prix (Malaysia)": "6",
                 "Singapore Grand Prix": "5",
                 "United States Grand Prix": "7",
-                "Mexico Grand Prix": "13"
+                "Mexico Grand Prix": "13",
+                "Brazil Grand Prix": "6"
             }
         }
     },
@@ -726,7 +731,8 @@
                 "Bahrain Grand Prix (Malaysia)": "6",
                 "Singapore Grand Prix": "6",
                 "United States Grand Prix": "7",
-                "Mexico Grand Prix": "12"
+                "Mexico Grand Prix": "12",
+                "Brazil Grand Prix": "10"
             }
         }
     },
@@ -826,7 +832,8 @@
             "Bahrain Grand Prix (Malaysia)": 0,
             "Singapore Grand Prix": 1,
             "United States Grand Prix": 0,
-            "Mexico Grand Prix": -1
+            "Mexico Grand Prix": -1,
+            "Brazil Grand Prix": 4
         }
     },
     "driverQualifyingTimes": {
@@ -1289,6 +1296,11 @@
                     "1:17.659",
                     "1:17.646",
                     "N/A"
+                ],
+                "Brazil Grand Prix": [
+                    "",
+                    "",
+                    "N/A"
                 ]
             }
         }
@@ -1297,13 +1309,13 @@
         "2023": 10.909090909090908,
         "2024": 5.125,
         "2025": 4.208333333333333,
-        "2026": 8.842105263157896
+        "2026": 8.7
     },
     "avgQualiPositions": {
         "2023": 9.863636363636363,
         "2024": 5.416666666666667,
         "2025": 3.0416666666666665,
-        "2026": 5.947368421052632
+        "2026": 6.15
     },
     "rates": {
         "wins": {
@@ -1316,7 +1328,7 @@
             "2023": 0.09090909090909091,
             "2024": 0.3333333333333333,
             "2025": 0.6666666666666666,
-            "2026": 0.10526315789473684
+            "2026": 0.1
         },
         "poles": {
             "2023": 0.0,
@@ -1336,19 +1348,19 @@
             "wins": 2.25,
             "podiums": 7.0,
             "poles": 1.5,
-            "points": 235.75
+            "points": 237.75
         },
         "std": {
             "wins": 2.8613807855648994,
             "podiums": 5.744562646538029,
             "poles": 2.598076211353316,
-            "points": 123.6898843883363
+            "points": 122.24642121551044
         },
         "cv": {
             "wins": 1.2717247935843998,
             "podiums": 0.8206518066482898,
             "poles": 1.7320508075688774,
-            "points": 0.5246654693036534
+            "points": 0.5141805308749124
         }
     },
     "peakSeason": {

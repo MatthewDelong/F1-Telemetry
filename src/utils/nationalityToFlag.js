@@ -402,6 +402,9 @@ export const nationalityToFlag = (nationality) => {
     "ANT": "it",
     "BOR": "br",
     "DOO": "au",
+    "CAM": "br",
+    "LIN": "gb",
+    "HIR": "jp",
     // F1 Academy Drivers
     "GAD": "nl",
     "BRU": "gb",
