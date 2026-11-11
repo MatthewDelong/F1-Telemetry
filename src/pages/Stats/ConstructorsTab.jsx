@@ -632,7 +632,7 @@ export default function ConstructorsTab({ season, setSeason, tabSwitcher }) {
                 <LineChart data={chartRounds}>
                   <CartesianGrid stroke="#d3d9e2" vertical={false} />
                   <XAxis dataKey="round" tickLine={false} />
-                  <YAxis tickLine={false} axisLine={false} />
+                  <YAxis width={36} tickLine={false} axisLine={false} />
                   <Tooltip {...TIP} labelFormatter={roundName} />
                   <Line
                     dataKey="cumulative"
@@ -648,6 +648,7 @@ export default function ConstructorsTab({ season, setSeason, tabSwitcher }) {
                   <CartesianGrid stroke="#d3d9e2" vertical={false} />
                   <XAxis dataKey="round" tickLine={false} />
                   <YAxis
+                    width={32}
                     reversed
                     domain={[1, "dataMax"]}
                     tickLine={false}
@@ -686,6 +687,7 @@ export default function ConstructorsTab({ season, setSeason, tabSwitcher }) {
                     fontSize={11}
                   />
                   <YAxis
+                    width={32}
                     allowDecimals={false}
                     tickLine={false}
                     axisLine={false}

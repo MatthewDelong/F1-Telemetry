@@ -321,7 +321,14 @@ export default function DriversTab({ season, setSeason, tabSwitcher }) {
             <div className="garage-hero-card__sheen" aria-hidden="true" />
           </section>
 
-          {career && <dl className="panel career"><Kv k="Career starts" v={career.starts} /><Kv k="Career wins" v={career.wins} /><Kv k="Career podiums" v={career.podiums} /><Kv k="Career poles" v={career.poles} /></dl>}
+          {career && (
+            <dl className="panel career">
+              <Kv k="Career starts" v={career.starts} sub={`+${career.sprintStarts ?? 0} ${career.sprintStarts === 1 ? 'sprint' : 'sprints'}`} />
+              <Kv k="Career wins" v={career.wins} sub={`+${career.sprintWins ?? 0} sprint ${career.sprintWins === 1 ? 'win' : 'wins'}`} />
+              <Kv k="Career podiums" v={career.podiums} sub={`+${career.sprintPodiums ?? 0} sprint ${career.sprintPodiums === 1 ? 'podium' : 'podiums'}`} />
+              <Kv k="Career poles" v={career.poles} sub={`+${career.sprintPoles ?? 0} sprint ${career.sprintPoles === 1 ? 'pole' : 'poles'}`} />
+            </dl>
+          )}
 
           <div className="legend"><span className="tile hit" /> Counted <span className="tile dnf" /> Did not finish <span className="tile miss" /> Other <span className="tile soon" /> Upcoming. Each square is one race.</div>
           <div className="cards">
@@ -358,7 +365,7 @@ export default function DriversTab({ season, setSeason, tabSwitcher }) {
           <div className="charts">
             <ChartPanel title={`Points through the season${prev.length ? `, against ${season - 1}` : ''}`}>
               <LineChart data={line}>
-                <CartesianGrid stroke="#d3d9e2" vertical={false} /><XAxis dataKey="round" tickLine={false} /><YAxis tickLine={false} axisLine={false} />
+                <CartesianGrid stroke="#d3d9e2" vertical={false} /><XAxis dataKey="round" tickLine={false} /><YAxis width={36} tickLine={false} axisLine={false} />
                 <Tooltip {...TIP} labelFormatter={roundName} />
                 {prev.length > 0 && <Line dataKey="last" name={`${season - 1}`} stroke="#8b95a7" strokeWidth={2} strokeDasharray="4 4" dot={false} />}
                 <Line dataKey="points" name={`${season}`} stroke={color} strokeWidth={3} dot={false} />
@@ -366,7 +373,7 @@ export default function DriversTab({ season, setSeason, tabSwitcher }) {
             </ChartPanel>
             <ChartPanel title="Starting grid and race finish">
               <LineChart data={raced}>
-                <CartesianGrid stroke="#d3d9e2" vertical={false} /><XAxis dataKey="round" tickLine={false} /><YAxis reversed domain={[1, 20]} tickLine={false} axisLine={false} />
+                <CartesianGrid stroke="#d3d9e2" vertical={false} /><XAxis dataKey="round" tickLine={false} /><YAxis width={32} reversed domain={[1, 20]} tickLine={false} axisLine={false} />
                 <Tooltip {...TIP} labelFormatter={roundName} />
                 <Line dataKey="grid" name="Grid" stroke="#8b95a7" strokeWidth={2} strokeDasharray="4 4" dot={false} connectNulls />
                 <Line dataKey="pos" name="Finish" stroke={color} strokeWidth={3} dot={{ r: 3 }} connectNulls />
@@ -374,7 +381,7 @@ export default function DriversTab({ season, setSeason, tabSwitcher }) {
             </ChartPanel>
             <ChartPanel title="Finishing positions" className="finish-chart">
               <BarChart data={distribution(rounds)}>
-                <CartesianGrid stroke="#d3d9e2" vertical={false} /><XAxis dataKey="label" tickLine={false} interval={0} fontSize={11} /><YAxis allowDecimals={false} tickLine={false} axisLine={false} />
+                <CartesianGrid stroke="#d3d9e2" vertical={false} /><XAxis dataKey="label" tickLine={false} interval={0} fontSize={11} /><YAxis width={32} allowDecimals={false} tickLine={false} axisLine={false} />
                 <Tooltip {...TIP} cursor={BAR_CURSOR} /><Bar dataKey="count" name="Races" fill={color} />
               </BarChart>
             </ChartPanel>
@@ -394,7 +401,7 @@ export default function DriversTab({ season, setSeason, tabSwitcher }) {
                 <Kv k="Median stop" v={allStops.length ? `${f1(median(allStops), 2)}s` : '–'} sub={allStops.length ? `Fastest ${f1(Math.min(...allStops), 2)}s` : ''} />
               </dl>
               <div className="chartbox short"><ResponsiveContainer width="100%" height="100%">
-                <BarChart data={rows}><CartesianGrid stroke="#d3d9e2" vertical={false} /><XAxis dataKey="round" tickLine={false} /><YAxis allowDecimals={false} tickLine={false} axisLine={false} />
+                <BarChart data={rows}><CartesianGrid stroke="#d3d9e2" vertical={false} /><XAxis dataKey="round" tickLine={false} /><YAxis width={32} allowDecimals={false} tickLine={false} axisLine={false} />
                   <Tooltip {...TIP} cursor={BAR_CURSOR} labelFormatter={roundName} /><Bar dataKey="led" name="Laps led" fill={color} /></BarChart>
               </ResponsiveContainer></div>
               {hasTyres ? (<>
@@ -443,7 +450,7 @@ export default function DriversTab({ season, setSeason, tabSwitcher }) {
                 <Kv k="Vs race winner" v={sec(paceAvg('vsWinner'))} sub="Average over races someone else won" />
               </dl>
               <div className="chartbox short"><ResponsiveContainer width="100%" height="100%">
-                <BarChart data={pace}><CartesianGrid stroke="#d3d9e2" vertical={false} /><XAxis dataKey="round" tickLine={false} /><YAxis tickLine={false} axisLine={false} />
+                <BarChart data={pace}><CartesianGrid stroke="#d3d9e2" vertical={false} /><XAxis dataKey="round" tickLine={false} /><YAxis width={40} tickLine={false} axisLine={false} />
                   <Tooltip {...TIP} cursor={BAR_CURSOR} labelFormatter={roundName} formatter={(v) => sec(v)} />
                   <Bar dataKey="vsMate" name="Vs teammate" fill={color} /><Bar dataKey="vsWinner" name="Vs winner" fill="#8b95a7" /></BarChart>
               </ResponsiveContainer></div>

@@ -119,12 +119,26 @@ async function buildCareerFile(ids, refresh) {
   console.log(`career ${ids.length} drivers in ${season}, ${todo.length} not in career.json yet`);
   if (!todo.length) return;
   const count = async (p) => +(await get(JOLPICA, `${p}?limit=1`)).MRData.total;
+  const countPoles = async (id) => {
+    const races = (await get(JOLPICA, `/drivers/${id}/qualifying/1.json?limit=200`)).MRData.RaceTable.Races;
+    return races.filter((r) => r.QualifyingResults?.[0]?.position === '1').length;
+  };
+  const countSprints = async (id) => {
+    const races = (await get(JOLPICA, `/drivers/${id}/sprint.json?limit=100`)).MRData.RaceTable.Races;
+    const sprints = races.map((r) => r.SprintResults?.[0]).filter(Boolean);
+    return {
+      sprintStarts: sprints.length,
+      sprintWins: sprints.filter((s) => s.position === '1').length,
+      sprintPodiums: sprints.filter((s) => ['1', '2', '3'].includes(s.position)).length,
+      sprintPoles: sprints.filter((s) => s.grid === '1').length,
+    };
+  };
   try {
     for (const id of todo) {
-      const [starts, w, p2, p3, poles] = [
+      const [starts, w, p2, p3, poles, sprintStats] = [
         await count(`/drivers/${id}/results.json`), await count(`/drivers/${id}/results/1.json`), await count(`/drivers/${id}/results/2.json`),
-        await count(`/drivers/${id}/results/3.json`), await count(`/drivers/${id}/qualifying/1.json`)];
-      drivers[id] = { starts, wins: w, podiums: w + p2 + p3, poles };
+        await count(`/drivers/${id}/results/3.json`), await countPoles(id), await countSprints(id)];
+      drivers[id] = { starts, wins: w, podiums: w + p2 + p3, poles, ...sprintStats };
       console.log(`career ${id}`);
     }
   } finally {

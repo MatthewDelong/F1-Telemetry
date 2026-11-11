@@ -178,11 +178,25 @@ export async function getCareer(id) {
   const c = await staticJson('career.json');
   if (c?.drivers?.[id]) return c.drivers[id];
   const n = async (p) => +(await jget(`${p}?limit=1`)).total;
-  const [starts, w, p2, p3, poles] = await Promise.all([
+  const countPoles = async () => {
+    const d = await jget(`/drivers/${id}/qualifying/1.json?limit=200`);
+    return (d.RaceTable?.Races ?? []).filter((r) => r.QualifyingResults?.[0]?.position === '1').length;
+  };
+  const countSprints = async () => {
+    const d = await jget(`/drivers/${id}/sprint.json?limit=100`);
+    const sprints = (d.RaceTable?.Races ?? []).map((r) => r.SprintResults?.[0]).filter(Boolean);
+    return {
+      sprintStarts: sprints.length,
+      sprintWins: sprints.filter((s) => s.position === '1').length,
+      sprintPodiums: sprints.filter((s) => ['1', '2', '3'].includes(s.position)).length,
+      sprintPoles: sprints.filter((s) => s.grid === '1').length,
+    };
+  };
+  const [starts, w, p2, p3, poles, sprintStats] = await Promise.all([
     n(`/drivers/${id}/results.json`), n(`/drivers/${id}/results/1.json`), n(`/drivers/${id}/results/2.json`),
-    n(`/drivers/${id}/results/3.json`), n(`/drivers/${id}/qualifying/1.json`),
+    n(`/drivers/${id}/results/3.json`), countPoles(), countSprints(),
   ]);
-  return { starts, wins: w, podiums: w + p2 + p3, poles };
+  return { starts, wins: w, podiums: w + p2 + p3, poles, ...sprintStats };
 }
 
 export async function getTeamSeason(season, constructorId) {

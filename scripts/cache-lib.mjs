@@ -68,7 +68,7 @@ const team = (c, withName = true) => (withName ? { constructorId: c.constructorI
 const trimResult = (x) => ({ grid: x.grid, position: x.position, points: x.points, status: x.status,
   ...(x.FastestLap?.rank ? { FastestLap: { rank: x.FastestLap.rank } } : {}), Constructor: team(x.Constructor) });
 const trimQuali = (x) => ({ position: x.position, Q3: x.Q3 ?? '', Constructor: team(x.Constructor, false) });
-const trimSprint = (x) => ({ position: x.position, points: x.points });
+const trimSprint = (x) => ({ ...(x.grid ? { grid: x.grid } : {}), position: x.position, points: x.points });
 const trimDriver = (d) => ({ driverId: d.driverId, code: d.code, permanentNumber: d.permanentNumber, givenName: d.givenName, familyName: d.familyName, nationality: d.nationality });
 
 // Same shape as the live API (trimmed to the fields the site reads), so the site can use it unchanged.

@@ -908,7 +908,14 @@
   .recharts-cartesian-axis-tick-value {
     fill: #9ca3af;
     font-family: "Lato", sans-serif;
-    font-size: 12px;
+    font-size: 1.6rem;
+  }
+
+  .finish-chart .recharts-xAxis-tick-labels .recharts-cartesian-axis-tick-value,
+  .finish-chart .recharts-xAxis .recharts-cartesian-axis-tick-value,
+  .constructor-finishing-chart .recharts-xAxis-tick-labels .recharts-cartesian-axis-tick-value,
+  .constructor-finishing-chart .recharts-xAxis .recharts-cartesian-axis-tick-value {
+    font-size: 1.1rem;
   }
 
   /* Teammate Head-to-Head Bars & Tyre Strategy */
@@ -1454,7 +1461,9 @@
     .constructor-charts .chartbox {
       height: 260px;
     }
+    .finish-chart .recharts-xAxis-tick-labels .recharts-cartesian-axis-tick-label:nth-child(even),
     .finish-chart .recharts-xAxis .recharts-cartesian-axis-tick:nth-child(even),
+    .constructor-finishing-chart .recharts-xAxis-tick-labels .recharts-cartesian-axis-tick-label:nth-child(even),
     .constructor-finishing-chart .recharts-xAxis .recharts-cartesian-axis-tick:nth-child(even) {
       display: none;
     }
