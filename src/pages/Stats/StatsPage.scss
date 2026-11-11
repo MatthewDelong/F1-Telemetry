@@ -1267,6 +1267,83 @@
     line-height: 1;
   }
 
+  /* Power unit card: full width, current supplier + season-by-season history */
+  .constructor-pu-metric {
+    position: relative;
+    overflow: hidden;
+    grid-column: 1 / -1;
+    background:
+      radial-gradient(
+        circle at top right,
+        color-mix(in srgb, var(--accent) 22%, transparent),
+        transparent 75%
+      ),
+      linear-gradient(135deg, #1a1a1f 0%, #0f0f13 100%);
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent);
+      opacity: 0.75;
+    }
+
+    .big {
+      font-size: clamp(2.6rem, 3.4vw, 3.8rem);
+      line-height: 1.1;
+    }
+  }
+
+  .constructor-pu-history {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+    gap: 8px;
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .constructor-pu-history li {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    padding: 9px 11px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    background: rgba(12, 13, 20, 0.7);
+
+    &.active {
+      border-color: color-mix(in srgb, var(--accent) 70%, rgba(255, 255, 255, 0.2));
+      background: color-mix(in srgb, var(--accent) 18%, rgba(12, 13, 20, 0.85));
+      box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 30%, transparent);
+    }
+  }
+
+  .constructor-pu-year {
+    color: var(--muted);
+    font-family: "Formula1", sans-serif;
+    font-size: 1.12rem;
+    letter-spacing: 0.12em;
+  }
+
+  .constructor-pu-supplier {
+    color: #f1f1f1;
+    font-family: "Formula1", sans-serif;
+    font-size: 1.36rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .constructor-pu-team {
+    color: var(--muted-dim);
+    font-family: "Lato", sans-serif;
+    font-size: 1.12rem;
+  }
+
   .constructor-details {
     margin-top: 14px;
   }
@@ -1522,6 +1599,16 @@
     .constructor-title-years li {
       padding: 4px 7px;
       font-size: 1.152rem;
+    }
+    .constructor-pu-history {
+      grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+      gap: 6px;
+    }
+    .constructor-pu-history li {
+      padding: 7px 9px;
+    }
+    .constructor-pu-supplier {
+      font-size: 1.24rem;
     }
     .constructor-driver-points-labels strong {
       font-size: 1.472rem;

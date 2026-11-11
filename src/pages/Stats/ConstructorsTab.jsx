@@ -13,6 +13,7 @@ import {
 import { getConstructorSeason, getConstructorStandings } from "./api";
 import { teamColor, teamLogoBase } from "./stats";
 import { getTeamChampionships } from "./teamChampionships";
+import { powerUnitFor, powerUnitHistory, FORMER_TEAM_NAMES } from "./powerUnits";
 import { darkenColor } from "../../utils/colorUtils";
 import { ChampionBadge } from "../../components/ChampionBadge";
 
@@ -88,6 +89,38 @@ function Metric({ label, value, note, years }) {
             <li key={year}>{year}</li>
           ))}
         </ul>
+      )}
+    </section>
+  );
+}
+
+function PowerUnitCard({ season, constructorId }) {
+  const current = powerUnitFor(season, constructorId);
+  const history = powerUnitHistory(constructorId);
+  if (!current && !history.length) return null;
+  return (
+    <section className="panel stat constructor-metric constructor-pu-metric">
+      <h3>Power unit</h3>
+      <p className="big">{current ?? "–"}</p>
+      <p className="note">
+        {current ? `Engine supplier for ${season}` : `No power unit data for ${season}`}
+      </p>
+      {history.length > 0 && (
+        <ol className="constructor-pu-history" aria-label="Power unit suppliers by season">
+          {history.map(({ season: year, teamId, supplier }) => (
+            <li
+              key={year}
+              className={year === season ? "active" : undefined}
+              title={teamId !== constructorId ? `As ${FORMER_TEAM_NAMES[teamId] ?? teamId}` : undefined}
+            >
+              <span className="constructor-pu-year">{year}</span>
+              <span className="constructor-pu-supplier">{supplier}</span>
+              {teamId !== constructorId && (
+                <span className="constructor-pu-team">{FORMER_TEAM_NAMES[teamId] ?? teamId}</span>
+              )}
+            </li>
+          ))}
+        </ol>
       )}
     </section>
   );
@@ -580,6 +613,7 @@ export default function ConstructorsTab({ season, setSeason, tabSwitcher }) {
               value={championships.driversChampionships.length}
               years={championships.driversChampionships}
             />
+            <PowerUnitCard season={season} constructorId={constructorId} />
           </div>
 
           <section className="panel constructor-details">
