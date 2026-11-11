@@ -43,6 +43,13 @@ export const F1Links = ({ accordion = false, onClick }) => {
       >
         Teammate Comparisons
       </Link>
+      <Link
+        to="/stats"
+        className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
+        onClick={onClick}
+      >
+        Driver & Constructor Stats
+      </Link>
     </>
   );
   return accordion ? (

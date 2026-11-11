@@ -1,0 +1,214 @@
+{
+  "season": 2021,
+  "round": 21,
+  "name": "Saudi Arabian Grand Prix",
+  "date": "2021-12-05",
+  "built": "2026-11-09T17:23:24.606Z",
+  "drivers": {
+    "hamilton": {
+      "laps": 50,
+      "lapsLed": 18,
+      "bestLap": 90.734,
+      "medianLap": 92.532,
+      "stops": [
+        { "lap": 10, "seconds": 20.58 },
+        { "lap": 13, "seconds": 995.856 },
+        { "lap": 15, "seconds": 1086.674 }
+      ]
+    },
+    "bottas": {
+      "laps": 50,
+      "lapsLed": 0,
+      "bestLap": 91.408,
+      "medianLap": 93.477,
+      "stops": [
+        { "lap": 10, "seconds": 21.668 },
+        { "lap": 13, "seconds": 995.942 },
+        { "lap": 15, "seconds": 1089.473 }
+      ]
+    },
+    "max_verstappen": {
+      "laps": 50,
+      "lapsLed": 31,
+      "bestLap": 91.488,
+      "medianLap": 92.798,
+      "stops": [
+        { "lap": 13, "seconds": 996.375 },
+        { "lap": 15, "seconds": 1087.591 }
+      ]
+    },
+    "leclerc": {
+      "laps": 50,
+      "lapsLed": 0,
+      "bestLap": 91.601,
+      "medianLap": 93.209,
+      "stops": [
+        { "lap": 10, "seconds": 20.531 },
+        { "lap": 13, "seconds": 999.485 },
+        { "lap": 15, "seconds": 1095.192 }
+      ]
+    },
+    "perez": {
+      "laps": 14,
+      "lapsLed": 0,
+      "bestLap": 94.138,
+      "medianLap": 94.441,
+      "stops": [
+        { "lap": 10, "seconds": 20.71 },
+        { "lap": 13, "seconds": 1002.619 }
+      ]
+    },
+    "norris": {
+      "laps": 50,
+      "lapsLed": 0,
+      "bestLap": 91.914,
+      "medianLap": 93.149,
+      "stops": [
+        { "lap": 10, "seconds": 20.973 },
+        { "lap": 13, "seconds": 1017.303 },
+        { "lap": 15, "seconds": 1116.576 }
+      ]
+    },
+    "ocon": {
+      "laps": 50,
+      "lapsLed": 1,
+      "bestLap": 91.797,
+      "medianLap": 93.649,
+      "stops": [
+        { "lap": 13, "seconds": 997.126 },
+        { "lap": 15, "seconds": 1088.29 }
+      ]
+    },
+    "gasly": {
+      "laps": 50,
+      "lapsLed": 0,
+      "bestLap": 92.297,
+      "medianLap": 94.11,
+      "stops": [
+        { "lap": 13, "seconds": 1001.775 },
+        { "lap": 15, "seconds": 1092.287 }
+      ]
+    },
+    "ricciardo": {
+      "laps": 50,
+      "lapsLed": 0,
+      "bestLap": 92.716,
+      "medianLap": 93.987,
+      "stops": [
+        { "lap": 13, "seconds": 997.029 },
+        { "lap": 15, "seconds": 1087.296 }
+      ]
+    },
+    "giovinazzi": {
+      "laps": 50,
+      "lapsLed": 0,
+      "bestLap": 92.865,
+      "medianLap": 94.26,
+      "stops": [
+        { "lap": 13, "seconds": 1004.917 },
+        { "lap": 15, "seconds": 1094.749 }
+      ]
+    },
+    "alonso": {
+      "laps": 49,
+      "lapsLed": 0,
+      "bestLap": 91.633,
+      "medianLap": 94.417,
+      "stops": [
+        { "lap": 10, "seconds": 20.405 },
+        { "lap": 13, "seconds": 1019.85 },
+        { "lap": 15, "seconds": 1101.826 },
+        { "lap": 44, "seconds": 21.097 }
+      ]
+    },
+    "tsunoda": {
+      "laps": 49,
+      "lapsLed": 0,
+      "bestLap": 92.506,
+      "medianLap": 93.775,
+      "stops": [
+        { "lap": 13, "seconds": 1006.407 },
+        { "lap": 15, "seconds": 1100.644 },
+        { "lap": 23, "seconds": 27.874 }
+      ]
+    },
+    "sainz": {
+      "laps": 50,
+      "lapsLed": 0,
+      "bestLap": 91.851,
+      "medianLap": 93.043,
+      "stops": [
+        { "lap": 13, "seconds": 1004.618 },
+        { "lap": 15, "seconds": 1097.194 }
+      ]
+    },
+    "raikkonen": {
+      "laps": 49,
+      "lapsLed": 0,
+      "bestLap": 92.778,
+      "medianLap": 94.981,
+      "stops": [
+        { "lap": 13, "seconds": 1008.569 },
+        { "lap": 15, "seconds": 1099.282 },
+        { "lap": 26, "seconds": 34.489 }
+      ]
+    },
+    "vettel": {
+      "laps": 44,
+      "lapsLed": 0,
+      "bestLap": 94.03,
+      "medianLap": 95.166,
+      "stops": [
+        { "lap": 13, "seconds": 1012.304 },
+        { "lap": 15, "seconds": 1098.749 }
+      ]
+    },
+    "stroll": {
+      "laps": 50,
+      "lapsLed": 0,
+      "bestLap": 92.804,
+      "medianLap": 94.37,
+      "stops": [
+        { "lap": 9, "seconds": 27.165 },
+        { "lap": 13, "seconds": 1020.939 },
+        { "lap": 15, "seconds": 1102.979 }
+      ]
+    },
+    "russell": {
+      "laps": 14,
+      "lapsLed": 0,
+      "bestLap": 96.13,
+      "medianLap": 96.668,
+      "stops": [
+        { "lap": 9, "seconds": 20.519 },
+        { "lap": 13, "seconds": 1021.615 }
+      ]
+    },
+    "mick_schumacher": {
+      "laps": 8,
+      "lapsLed": 0,
+      "bestLap": 96.043,
+      "medianLap": 96.922,
+      "stops": []
+    },
+    "latifi": {
+      "laps": 50,
+      "lapsLed": 0,
+      "bestLap": 92.751,
+      "medianLap": 94.107,
+      "stops": [
+        { "lap": 10, "seconds": 24.22 },
+        { "lap": 13, "seconds": 1017.257 },
+        { "lap": 15, "seconds": 1107.052 }
+      ]
+    },
+    "mazepin": {
+      "laps": 14,
+      "lapsLed": 0,
+      "bestLap": 97.043,
+      "medianLap": 97.631,
+      "stops": [{ "lap": 13, "seconds": 1019.226 }]
+    }
+  },
+  "winner": "hamilton"
+}

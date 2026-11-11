@@ -39,6 +39,7 @@ import {
   LiveDashboard,
   BehindTheCode,
   TeamCards,
+  StatsPage,
 } from "./pages";
 import { ScrollToTop } from "./utils/ScrollToTop";
 import { getCurrentYear } from "./utils/currentYear";
@@ -176,7 +177,7 @@ function MainContent({
           <ResultsSelector
             className={classNames(
               "mt-32 relative z-[100]",
-              location === "/driver-standings" ? "mb-14" : "mb-24"
+              location === "/driver-standings" ? "mb-14" : "mb-24",
             )}
             setSelectedYear={setSelectedYear}
             selectedYear={selectedYear}
@@ -226,7 +227,11 @@ function MainContent({
             element={<DriverComparison selectedYear={selectedYear} />}
           />
           <Route path="/race/:raceId" element={<RacePage />} />
-          <Route path="/team-garages" element={<TeamCards selectedYear={selectedYear} />} />
+          <Route
+            path="/team-garages"
+            element={<TeamCards selectedYear={selectedYear} />}
+          />
+          <Route path="/stats" element={<StatsPage />} />
           {/* F1A Routes */}
           <Route
             path="/f1a/race-results"

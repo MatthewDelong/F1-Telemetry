@@ -45,7 +45,8 @@
     "update:f1": "node scripts/run-python.mjs f1 api_update.py",
     "update:f2": "node scripts/run-python.mjs f2 api_update.py format.py scrape_standings.py",
     "update:f1a": "node scripts/run-python.mjs f1a api_update.py format.py",
-    "update:all": "npm run update:f1 && npm run update:f2 && npm run update:f1a",
+    "update:cache": "node scripts/build-cache.mjs",
+    "update:all": "npm run update:f1 && npm run update:f2 && npm run update:f1a && npm run update:cache",
     "postinstall": "npm install --prefix backend && node scripts/setup-python.mjs"
   },
   "eslintConfig": {

@@ -1,0 +1,245 @@
+{
+  "season": 2019,
+  "round": 11,
+  "name": "German Grand Prix",
+  "date": "2019-07-28",
+  "built": "2026-11-09T18:27:47.711Z",
+  "drivers": {
+    "hamilton": {
+      "laps": 64,
+      "lapsLed": 30,
+      "bestLap": 77.485,
+      "medianLap": 89.654,
+      "stops": [
+        { "lap": 3, "seconds": 20.203 },
+        { "lap": 28, "seconds": 22.947 },
+        { "lap": 29, "seconds": 69.022 },
+        { "lap": 47, "seconds": 27.069 },
+        { "lap": 53, "seconds": 20.015 },
+        { "lap": 56, "seconds": 19.61 }
+      ]
+    },
+    "bottas": {
+      "laps": 56,
+      "lapsLed": 0,
+      "bestLap": 78.272,
+      "medianLap": 90.237,
+      "stops": [
+        { "lap": 3, "seconds": 22.243 },
+        { "lap": 26, "seconds": 20.498 },
+        { "lap": 30, "seconds": 21.142 },
+        { "lap": 46, "seconds": 21.009 }
+      ]
+    },
+    "raikkonen": {
+      "laps": 64,
+      "lapsLed": 0,
+      "bestLap": 77.746,
+      "medianLap": 91.115,
+      "stops": [
+        { "lap": 3, "seconds": 27.256 },
+        { "lap": 26, "seconds": 22.307 },
+        { "lap": 28, "seconds": 21.142 },
+        { "lap": 47, "seconds": 20.93 }
+      ]
+    },
+    "max_verstappen": {
+      "laps": 64,
+      "lapsLed": 34,
+      "bestLap": 76.645,
+      "medianLap": 88.686,
+      "stops": [
+        { "lap": 3, "seconds": 22.358 },
+        { "lap": 25, "seconds": 19.64 },
+        { "lap": 29, "seconds": 21.472 },
+        { "lap": 41, "seconds": 19.327 },
+        { "lap": 46, "seconds": 19.062 }
+      ]
+    },
+    "hulkenberg": {
+      "laps": 39,
+      "lapsLed": 0,
+      "bestLap": 89.576,
+      "medianLap": 91.444,
+      "stops": [
+        { "lap": 3, "seconds": 22.132 },
+        { "lap": 15, "seconds": 20.118 },
+        { "lap": 29, "seconds": 20.624 }
+      ]
+    },
+    "leclerc": {
+      "laps": 27,
+      "lapsLed": 0,
+      "bestLap": 87.697,
+      "medianLap": 91.005,
+      "stops": [
+        { "lap": 3, "seconds": 20.361 },
+        { "lap": 15, "seconds": 22.102 },
+        { "lap": 27, "seconds": 20.317 }
+      ]
+    },
+    "grosjean": {
+      "laps": 64,
+      "lapsLed": 0,
+      "bestLap": 77.746,
+      "medianLap": 92.689,
+      "stops": [
+        { "lap": 3, "seconds": 27.232 },
+        { "lap": 26, "seconds": 21.625 },
+        { "lap": 28, "seconds": 22.421 },
+        { "lap": 41, "seconds": 20.622 },
+        { "lap": 46, "seconds": 21.423 }
+      ]
+    },
+    "gasly": {
+      "laps": 61,
+      "lapsLed": 0,
+      "bestLap": 77.495,
+      "medianLap": 91.207,
+      "stops": [
+        { "lap": 3, "seconds": 29.667 },
+        { "lap": 26, "seconds": 19.875 },
+        { "lap": 28, "seconds": 20.552 },
+        { "lap": 46, "seconds": 20.012 }
+      ]
+    },
+    "sainz": {
+      "laps": 64,
+      "lapsLed": 0,
+      "bestLap": 77.841,
+      "medianLap": 91.247,
+      "stops": [
+        { "lap": 3, "seconds": 23.363 },
+        { "lap": 27, "seconds": 19.964 },
+        { "lap": 46, "seconds": 20.711 }
+      ]
+    },
+    "kevin_magnussen": {
+      "laps": 64,
+      "lapsLed": 0,
+      "bestLap": 77.507,
+      "medianLap": 91.529,
+      "stops": [
+        { "lap": 8, "seconds": 21.106 },
+        { "lap": 21, "seconds": 21.179 },
+        { "lap": 29, "seconds": 21.359 },
+        { "lap": 42, "seconds": 20.38 },
+        { "lap": 45, "seconds": 20.285 },
+        { "lap": 57, "seconds": 20.7 }
+      ]
+    },
+    "perez": {
+      "laps": 1,
+      "lapsLed": 0,
+      "bestLap": 112.843,
+      "medianLap": null,
+      "stops": []
+    },
+    "giovinazzi": {
+      "laps": 64,
+      "lapsLed": 0,
+      "bestLap": 77.507,
+      "medianLap": 92.378,
+      "stops": [
+        { "lap": 3, "seconds": 22.509 },
+        { "lap": 26, "seconds": 20.879 },
+        { "lap": 28, "seconds": 20.096 },
+        { "lap": 47, "seconds": 28.093 }
+      ]
+    },
+    "ricciardo": {
+      "laps": 13,
+      "lapsLed": 0,
+      "bestLap": 92.654,
+      "medianLap": 93.802,
+      "stops": [{ "lap": 3, "seconds": 21.224 }]
+    },
+    "vettel": {
+      "laps": 64,
+      "lapsLed": 0,
+      "bestLap": 76.794,
+      "medianLap": 91.03,
+      "stops": [
+        { "lap": 2, "seconds": 20.094 },
+        { "lap": 23, "seconds": 20.768 },
+        { "lap": 28, "seconds": 22.058 },
+        { "lap": 41, "seconds": 21.256 },
+        { "lap": 47, "seconds": 19.586 }
+      ]
+    },
+    "stroll": {
+      "laps": 64,
+      "lapsLed": 0,
+      "bestLap": 77.831,
+      "medianLap": 91.712,
+      "stops": [
+        { "lap": 7, "seconds": 22.696 },
+        { "lap": 25, "seconds": 21.26 },
+        { "lap": 28, "seconds": 21.962 },
+        { "lap": 41, "seconds": 20.472 },
+        { "lap": 44, "seconds": 20.152 }
+      ]
+    },
+    "albon": {
+      "laps": 64,
+      "lapsLed": 0,
+      "bestLap": 77.85,
+      "medianLap": 91.426,
+      "stops": [
+        { "lap": 2, "seconds": 20.576 },
+        { "lap": 27, "seconds": 21.501 },
+        { "lap": 28, "seconds": 21.732 },
+        { "lap": 46, "seconds": 19.931 }
+      ]
+    },
+    "kvyat": {
+      "laps": 64,
+      "lapsLed": 0,
+      "bestLap": 77.708,
+      "medianLap": 92.04,
+      "stops": [
+        { "lap": 3, "seconds": 23.09 },
+        { "lap": 25, "seconds": 21.488 },
+        { "lap": 28, "seconds": 24.31 },
+        { "lap": 45, "seconds": 20.671 }
+      ]
+    },
+    "russell": {
+      "laps": 64,
+      "lapsLed": 0,
+      "bestLap": 77.485,
+      "medianLap": 93.076,
+      "stops": [
+        { "lap": 7, "seconds": 20.718 },
+        { "lap": 24, "seconds": 19.287 },
+        { "lap": 41, "seconds": 19.345 },
+        { "lap": 47, "seconds": 21.634 },
+        { "lap": 57, "seconds": 23.445 }
+      ]
+    },
+    "norris": {
+      "laps": 25,
+      "lapsLed": 0,
+      "bestLap": 91.081,
+      "medianLap": 92.713,
+      "stops": [
+        { "lap": 6, "seconds": 21.402 },
+        { "lap": 25, "seconds": 20.242 }
+      ]
+    },
+    "kubica": {
+      "laps": 64,
+      "lapsLed": 0,
+      "bestLap": 79.062,
+      "medianLap": 93.685,
+      "stops": [
+        { "lap": 7, "seconds": 23.801 },
+        { "lap": 23, "seconds": 20.436 },
+        { "lap": 31, "seconds": 19.626 },
+        { "lap": 46, "seconds": 20.37 },
+        { "lap": 57, "seconds": 19.825 }
+      ]
+    }
+  },
+  "winner": "max_verstappen"
+}

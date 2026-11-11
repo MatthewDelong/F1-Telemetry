@@ -1,0 +1,175 @@
+{
+  "season": 2019,
+  "round": 14,
+  "name": "Italian Grand Prix",
+  "date": "2019-09-08",
+  "built": "2026-11-09T18:28:31.175Z",
+  "drivers": {
+    "leclerc": {
+      "laps": 53,
+      "lapsLed": 45,
+      "bestLap": 83.009,
+      "medianLap": 84.035,
+      "stops": [{ "lap": 20, "seconds": 23.833 }]
+    },
+    "hamilton": {
+      "laps": 53,
+      "lapsLed": 0,
+      "bestLap": 81.779,
+      "medianLap": 84.239,
+      "stops": [
+        { "lap": 19, "seconds": 23.912 },
+        { "lap": 49, "seconds": 23.731 }
+      ]
+    },
+    "bottas": {
+      "laps": 53,
+      "lapsLed": 8,
+      "bestLap": 82.859,
+      "medianLap": 84.658,
+      "stops": [{ "lap": 27, "seconds": 23.7 }]
+    },
+    "hulkenberg": {
+      "laps": 53,
+      "lapsLed": 0,
+      "bestLap": 83.641,
+      "medianLap": 85.565,
+      "stops": [{ "lap": 29, "seconds": 24.092 }]
+    },
+    "vettel": {
+      "laps": 52,
+      "lapsLed": 0,
+      "bestLap": 82.799,
+      "medianLap": 84.93,
+      "stops": [
+        { "lap": 6, "seconds": 32.443 },
+        { "lap": 12, "seconds": 31.851 },
+        { "lap": 41, "seconds": 24.376 }
+      ]
+    },
+    "ricciardo": {
+      "laps": 53,
+      "lapsLed": 0,
+      "bestLap": 83.466,
+      "medianLap": 85.381,
+      "stops": [{ "lap": 30, "seconds": 24.32 }]
+    },
+    "stroll": {
+      "laps": 52,
+      "lapsLed": 0,
+      "bestLap": 84.165,
+      "medianLap": 84.807,
+      "stops": [
+        { "lap": 15, "seconds": 18.838 },
+        { "lap": 22, "seconds": 24.419 }
+      ]
+    },
+    "sainz": {
+      "laps": 27,
+      "lapsLed": 0,
+      "bestLap": 85.637,
+      "medianLap": 86.043,
+      "stops": [{ "lap": 27, "seconds": 27.01 }]
+    },
+    "albon": {
+      "laps": 53,
+      "lapsLed": 0,
+      "bestLap": 83.364,
+      "medianLap": 85.376,
+      "stops": [{ "lap": 26, "seconds": 29.83 }]
+    },
+    "giovinazzi": {
+      "laps": 52,
+      "lapsLed": 0,
+      "bestLap": 84.503,
+      "medianLap": 85.903,
+      "stops": [{ "lap": 21, "seconds": 25.698 }]
+    },
+    "kevin_magnussen": {
+      "laps": 43,
+      "lapsLed": 0,
+      "bestLap": 84.443,
+      "medianLap": 86.242,
+      "stops": [
+        { "lap": 20, "seconds": 24.4 },
+        { "lap": 34, "seconds": 24.978 }
+      ]
+    },
+    "kvyat": {
+      "laps": 29,
+      "lapsLed": 0,
+      "bestLap": 85.772,
+      "medianLap": 86.042,
+      "stops": [{ "lap": 28, "seconds": 24.479 }]
+    },
+    "kubica": {
+      "laps": 51,
+      "lapsLed": 0,
+      "bestLap": 84.989,
+      "medianLap": 87.552,
+      "stops": [
+        { "lap": 29, "seconds": 31.842 },
+        { "lap": 44, "seconds": 23.86 }
+      ]
+    },
+    "gasly": {
+      "laps": 52,
+      "lapsLed": 0,
+      "bestLap": 83.885,
+      "medianLap": 86.042,
+      "stops": [{ "lap": 28, "seconds": 24.363 }]
+    },
+    "russell": {
+      "laps": 52,
+      "lapsLed": 0,
+      "bestLap": 84.842,
+      "medianLap": 86.58,
+      "stops": [{ "lap": 23, "seconds": 24.198 }]
+    },
+    "grosjean": {
+      "laps": 52,
+      "lapsLed": 0,
+      "bestLap": 84.985,
+      "medianLap": 86.552,
+      "stops": [
+        { "lap": 7, "seconds": 26.481 },
+        { "lap": 29, "seconds": 25.121 }
+      ]
+    },
+    "perez": {
+      "laps": 53,
+      "lapsLed": 0,
+      "bestLap": 83.77,
+      "medianLap": 85.708,
+      "stops": [{ "lap": 28, "seconds": 25.34 }]
+    },
+    "norris": {
+      "laps": 52,
+      "lapsLed": 0,
+      "bestLap": 84.044,
+      "medianLap": 85.595,
+      "stops": [{ "lap": 23, "seconds": 24.311 }]
+    },
+    "raikkonen": {
+      "laps": 52,
+      "lapsLed": 0,
+      "bestLap": 84.419,
+      "medianLap": 86.406,
+      "stops": [
+        { "lap": 19, "seconds": 32.393 },
+        { "lap": 26, "seconds": 24.568 }
+      ]
+    },
+    "max_verstappen": {
+      "laps": 53,
+      "lapsLed": 0,
+      "bestLap": 83.143,
+      "medianLap": 84.825,
+      "stops": [
+        { "lap": 1, "seconds": 31.211 },
+        { "lap": 27, "seconds": 24.303 }
+      ]
+    }
+  },
+  "winner": "leclerc"
+}

@@ -1,0 +1,522 @@
+{
+  "season": 2025,
+  "round": 12,
+  "name": "British Grand Prix",
+  "date": "2025-07-06",
+  "built": "2026-11-09T14:20:39.126Z",
+  "drivers": {
+    "max_verstappen": {
+      "laps": 52,
+      "lapsLed": 7,
+      "bestLap": 90.179,
+      "medianLap": 103.923,
+      "stops": [
+        { "lap": 11, "seconds": 28.182 },
+        { "lap": 41, "seconds": 29.689 }
+      ],
+      "stints": [
+        {
+          "stint_number": 1,
+          "lap_start": 1,
+          "lap_end": 11,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 2,
+          "lap_start": 12,
+          "lap_end": 41,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 3,
+          "lap_start": 42,
+          "lap_end": 52,
+          "compound": "MEDIUM"
+        }
+      ]
+    },
+    "piastri": {
+      "laps": 52,
+      "lapsLed": 36,
+      "bestLap": 89.337,
+      "medianLap": 101.581,
+      "stops": [
+        { "lap": 11, "seconds": 29.491 },
+        { "lap": 43, "seconds": 40.28 }
+      ],
+      "stints": [
+        {
+          "stint_number": 1,
+          "lap_start": 1,
+          "lap_end": 11,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 2,
+          "lap_start": 12,
+          "lap_end": 43,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 3,
+          "lap_start": 44,
+          "lap_end": 52,
+          "compound": "MEDIUM"
+        }
+      ]
+    },
+    "norris": {
+      "laps": 52,
+      "lapsLed": 9,
+      "bestLap": 89.734,
+      "medianLap": 101.274,
+      "stops": [
+        { "lap": 11, "seconds": 30.63 },
+        { "lap": 44, "seconds": 28.214 }
+      ],
+      "stints": [
+        {
+          "stint_number": 1,
+          "lap_start": 1,
+          "lap_end": 11,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 2,
+          "lap_start": 12,
+          "lap_end": 44,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 3,
+          "lap_start": 45,
+          "lap_end": 52,
+          "compound": "MEDIUM"
+        }
+      ]
+    },
+    "hamilton": {
+      "laps": 52,
+      "lapsLed": 0,
+      "bestLap": 90.016,
+      "medianLap": 102.745,
+      "stops": [
+        { "lap": 11, "seconds": 28.917 },
+        { "lap": 41, "seconds": 29.127 }
+      ],
+      "stints": [
+        {
+          "stint_number": 1,
+          "lap_start": 1,
+          "lap_end": 11,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 2,
+          "lap_start": 12,
+          "lap_end": 41,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 3,
+          "lap_start": 42,
+          "lap_end": 52,
+          "compound": "SOFT"
+        }
+      ]
+    },
+    "gasly": {
+      "laps": 52,
+      "lapsLed": 0,
+      "bestLap": 90.751,
+      "medianLap": 103.39,
+      "stops": [
+        { "lap": 11, "seconds": 28.912 },
+        { "lap": 41, "seconds": 28.469 }
+      ],
+      "stints": [
+        {
+          "stint_number": 1,
+          "lap_start": 1,
+          "lap_end": 11,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 2,
+          "lap_start": 12,
+          "lap_end": 41,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 3,
+          "lap_start": 42,
+          "lap_end": 52,
+          "compound": "MEDIUM"
+        }
+      ]
+    },
+    "alonso": {
+      "laps": 52,
+      "lapsLed": 0,
+      "bestLap": 90.353,
+      "medianLap": 103.771,
+      "stops": [
+        { "lap": 11, "seconds": 28.707 },
+        { "lap": 37, "seconds": 28.534 }
+      ],
+      "stints": [
+        {
+          "stint_number": 1,
+          "lap_start": 1,
+          "lap_end": 11,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 2,
+          "lap_start": 12,
+          "lap_end": 37,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 3,
+          "lap_start": 38,
+          "lap_end": 52,
+          "compound": "MEDIUM"
+        }
+      ]
+    },
+    "sainz": {
+      "laps": 52,
+      "lapsLed": 0,
+      "bestLap": 90.645,
+      "medianLap": 104.276,
+      "stops": [
+        { "lap": 11, "seconds": 29.554 },
+        { "lap": 41, "seconds": 28.655 }
+      ],
+      "stints": [
+        {
+          "stint_number": 1,
+          "lap_start": 1,
+          "lap_end": 11,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 2,
+          "lap_start": 12,
+          "lap_end": 41,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 3,
+          "lap_start": 42,
+          "lap_end": 52,
+          "compound": "MEDIUM"
+        }
+      ]
+    },
+    "antonelli": {
+      "laps": 23,
+      "lapsLed": 0,
+      "bestLap": 99.336,
+      "medianLap": 115.501,
+      "stops": [
+        { "lap": 2, "seconds": 28.721 },
+        { "lap": 9, "seconds": 28.707 },
+        { "lap": 20, "seconds": 29.728 }
+      ],
+      "stints": [
+        {
+          "stint_number": 1,
+          "lap_start": 1,
+          "lap_end": 2,
+          "compound": "INTERMEDIATE"
+        },
+        { "stint_number": 2, "lap_start": 3, "lap_end": 9, "compound": "HARD" },
+        {
+          "stint_number": 3,
+          "lap_start": 10,
+          "lap_end": 20,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 4,
+          "lap_start": 21,
+          "lap_end": 23,
+          "compound": "INTERMEDIATE"
+        }
+      ]
+    },
+    "albon": {
+      "laps": 52,
+      "lapsLed": 0,
+      "bestLap": 90.047,
+      "medianLap": 104.082,
+      "stops": [
+        { "lap": 12, "seconds": 29.251 },
+        { "lap": 42, "seconds": 29.292 }
+      ],
+      "stints": [
+        {
+          "stint_number": 1,
+          "lap_start": 1,
+          "lap_end": 12,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 2,
+          "lap_start": 13,
+          "lap_end": 42,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 3,
+          "lap_start": 43,
+          "lap_end": 52,
+          "compound": "MEDIUM"
+        }
+      ]
+    },
+    "tsunoda": {
+      "laps": 51,
+      "lapsLed": 0,
+      "bestLap": 90.873,
+      "medianLap": 104.728,
+      "stops": [
+        { "lap": 11, "seconds": 28.544 },
+        { "lap": 41, "seconds": 40.145 }
+      ],
+      "stints": [
+        {
+          "stint_number": 1,
+          "lap_start": 1,
+          "lap_end": 11,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 2,
+          "lap_start": 12,
+          "lap_end": 41,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 3,
+          "lap_start": 42,
+          "lap_end": 51,
+          "compound": "MEDIUM"
+        }
+      ]
+    },
+    "hulkenberg": {
+      "laps": 52,
+      "lapsLed": 0,
+      "bestLap": 90.933,
+      "medianLap": 103.089,
+      "stops": [
+        { "lap": 9, "seconds": 29.736 },
+        { "lap": 42, "seconds": 29.952 }
+      ],
+      "stints": [
+        {
+          "stint_number": 1,
+          "lap_start": 1,
+          "lap_end": 9,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 2,
+          "lap_start": 10,
+          "lap_end": 42,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 3,
+          "lap_start": 43,
+          "lap_end": 52,
+          "compound": "MEDIUM"
+        }
+      ]
+    },
+    "stroll": {
+      "laps": 52,
+      "lapsLed": 0,
+      "bestLap": 92.088,
+      "medianLap": 103.353,
+      "stops": [
+        { "lap": 6, "seconds": 29.125 },
+        { "lap": 10, "seconds": 28.853 },
+        { "lap": 41, "seconds": 28.553 }
+      ],
+      "stints": [
+        {
+          "stint_number": 1,
+          "lap_start": 1,
+          "lap_end": 6,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 2,
+          "lap_start": 7,
+          "lap_end": 10,
+          "compound": "SOFT"
+        },
+        {
+          "stint_number": 3,
+          "lap_start": 11,
+          "lap_end": 41,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 4,
+          "lap_start": 42,
+          "lap_end": 52,
+          "compound": "SOFT"
+        }
+      ]
+    },
+    "ocon": {
+      "laps": 52,
+      "lapsLed": 0,
+      "bestLap": 90.818,
+      "medianLap": 103.918,
+      "stops": [
+        { "lap": 18, "seconds": 29.562 },
+        { "lap": 42, "seconds": 28.646 }
+      ],
+      "stints": [
+        {
+          "stint_number": 1,
+          "lap_start": 1,
+          "lap_end": 18,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 2,
+          "lap_start": 19,
+          "lap_end": 42,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 3,
+          "lap_start": 43,
+          "lap_end": 52,
+          "compound": "MEDIUM"
+        }
+      ]
+    },
+    "russell": {
+      "laps": 52,
+      "lapsLed": 0,
+      "bestLap": 90.869,
+      "medianLap": 102.795,
+      "stops": [
+        { "lap": 10, "seconds": 28.647 },
+        { "lap": 38, "seconds": 28.205 }
+      ],
+      "stints": [
+        {
+          "stint_number": 1,
+          "lap_start": 1,
+          "lap_end": 10,
+          "compound": "HARD"
+        },
+        {
+          "stint_number": 2,
+          "lap_start": 11,
+          "lap_end": 38,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 3,
+          "lap_start": 39,
+          "lap_end": 52,
+          "compound": "HARD"
+        }
+      ]
+    },
+    "leclerc": {
+      "laps": 52,
+      "lapsLed": 0,
+      "bestLap": 90.819,
+      "medianLap": 103.205,
+      "stops": [
+        { "lap": 10, "seconds": 29.089 },
+        { "lap": 42, "seconds": 28.84 }
+      ]
+    },
+    "hadjar": {
+      "laps": 17,
+      "lapsLed": 0,
+      "bestLap": 101.705,
+      "medianLap": 113.542,
+      "stops": [{ "lap": 10, "seconds": 28.523 }],
+      "stints": [
+        {
+          "stint_number": 1,
+          "lap_start": 1,
+          "lap_end": 10,
+          "compound": "MEDIUM"
+        },
+        {
+          "stint_number": 2,
+          "lap_start": 11,
+          "lap_end": 17,
+          "compound": "INTERMEDIATE"
+        }
+      ]
+    },
+    "bortoleto": {
+      "laps": 3,
+      "lapsLed": 0,
+      "bestLap": 135.202,
+      "medianLap": 136.951,
+      "stops": [],
+      "stints": [
+        {
+          "stint_number": 1,
+          "lap_start": 1,
+          "lap_end": 3,
+          "compound": "MEDIUM"
+        }
+      ]
+    },
+    "bearman": {
+      "laps": 52,
+      "lapsLed": 0,
+      "bestLap": 90.921,
+      "medianLap": 103.047,
+      "stops": [
+        { "lap": 10, "seconds": 29.201 },
+        { "lap": 41, "seconds": 29.09 }
+      ],
+      "stints": [
+        {
+          "stint_number": 1,
+          "lap_start": 1,
+          "lap_end": 10,
+          "compound": "HARD"
+        },
+        {
+          "stint_number": 2,
+          "lap_start": 11,
+          "lap_end": 41,
+          "compound": "INTERMEDIATE"
+        },
+        {
+          "stint_number": 3,
+          "lap_start": 42,
+          "lap_end": 52,
+          "compound": "MEDIUM"
+        }
+      ]
+    }
+  },
+  "winner": "norris",
+  "weather": {
+    "airMin": 16,
+    "airMax": 20,
+    "trackMin": 20,
+    "trackMax": 30,
+    "rain": true
+  }
+}

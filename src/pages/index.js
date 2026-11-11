@@ -20,3 +20,4 @@ export * from "./Admin";
 export { default as LiveDashboard } from "./LiveDashboard/LiveDashboard";
 export * from "./BehindTheCode";
 export * from "./TeamCards";
+export * from "./Stats/StatsPage";

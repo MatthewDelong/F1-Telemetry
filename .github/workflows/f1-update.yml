@@ -65,12 +65,16 @@ jobs:
         working-directory: ./src/config
         run: python3 update_race_names.py
 
+      - name: Build Driver & Constructor Stats Cache
+        run: node scripts/build-cache.mjs
+
       - name: Commit and Push database changes
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add -f backend/database.sqlite
           git add src/config/
+          git add public/stats_cache/
           git commit -m "Automated F1 data update (Database + JSON files)" || echo "No changes to commit"
           git pull --rebase origin main
           git push origin main

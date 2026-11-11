@@ -22,6 +22,7 @@ export default defineConfig({
         "/teammates-comparison",
         "/driver-comparison",
         "/team-garages",
+        "/stats",
         "/f1a/race-results",
         "/f1a/driver-standings",
         "/f1a/constructor-standings",
@@ -202,9 +203,11 @@ export default defineConfig({
   },
   base: "/",
   server: {
+    host: true,
     port: 3006,
     strictPort: true,
     open: true,
+    allowedHosts: true,
     watch: {
       ignored: [/backend/, /config/],
     },
