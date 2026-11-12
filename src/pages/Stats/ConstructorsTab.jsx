@@ -13,7 +13,12 @@ import {
 import { getConstructorSeason, getConstructorStandings } from "./api";
 import { teamColor, teamLogoBase } from "./stats";
 import { getTeamChampionships } from "./teamChampionships";
-import { powerUnitFor, powerUnitHistory, FORMER_TEAM_NAMES } from "./powerUnits";
+import {
+  powerUnitFor,
+  powerUnitHistory,
+  FORMER_TEAM_NAMES,
+} from "./powerUnits";
+import { teamPrincipalFor, teamPrincipalHistory } from "./teamPrincipals";
 import { darkenColor } from "../../utils/colorUtils";
 import { ChampionBadge } from "../../components/ChampionBadge";
 
@@ -93,6 +98,42 @@ function Metric({ label, value, note, years }) {
     </section>
   );
 }
+function TeamPrincipalCard({ season, constructorId }) {
+  const current = teamPrincipalFor(season, constructorId);
+  const history = teamPrincipalHistory(constructorId);
+  if (!current && !history.length) return null;
+  return (
+    <section className="panel stat constructor-metric constructor-pu-metric constructor-tp-metric">
+      <h3>Team Principal / CEO</h3>
+      <p className="big">{current?.name ?? "–"}</p>
+      <p className="note">
+        {current
+          ? `${current.role} (${season})`
+          : `No team principal data for ${season}`}
+      </p>
+      {history.length > 0 && (
+        <ol
+          className="constructor-pu-history constructor-tp-history"
+          aria-label="Team principals and CEOs by season"
+        >
+          {history.map(({ season: year, name, role, formerName }) => (
+            <li
+              key={year}
+              className={year === season ? "active" : undefined}
+              title={formerName ? `As ${formerName} · ${role}` : role}
+            >
+              <span className="constructor-pu-year">{year}</span>
+              <span className="constructor-pu-supplier">{name}</span>
+              <span className="constructor-pu-team">
+                {formerName ? `${role} · ${formerName}` : role}
+              </span>
+            </li>
+          ))}
+        </ol>
+      )}
+    </section>
+  );
+}
 
 function PowerUnitCard({ season, constructorId }) {
   const current = powerUnitFor(season, constructorId);
@@ -103,20 +144,31 @@ function PowerUnitCard({ season, constructorId }) {
       <h3>Power unit</h3>
       <p className="big">{current ?? "–"}</p>
       <p className="note">
-        {current ? `Engine supplier for ${season}` : `No power unit data for ${season}`}
+        {current
+          ? `Engine supplier for ${season}`
+          : `No power unit data for ${season}`}
       </p>
       {history.length > 0 && (
-        <ol className="constructor-pu-history" aria-label="Power unit suppliers by season">
+        <ol
+          className="constructor-pu-history"
+          aria-label="Power unit suppliers by season"
+        >
           {history.map(({ season: year, teamId, supplier }) => (
             <li
               key={year}
               className={year === season ? "active" : undefined}
-              title={teamId !== constructorId ? `As ${FORMER_TEAM_NAMES[teamId] ?? teamId}` : undefined}
+              title={
+                teamId !== constructorId
+                  ? `As ${FORMER_TEAM_NAMES[teamId] ?? teamId}`
+                  : undefined
+              }
             >
               <span className="constructor-pu-year">{year}</span>
               <span className="constructor-pu-supplier">{supplier}</span>
               {teamId !== constructorId && (
-                <span className="constructor-pu-team">{FORMER_TEAM_NAMES[teamId] ?? teamId}</span>
+                <span className="constructor-pu-team">
+                  {FORMER_TEAM_NAMES[teamId] ?? teamId}
+                </span>
               )}
             </li>
           ))}
@@ -505,7 +557,10 @@ export default function ConstructorsTab({ season, setSeason, tabSwitcher }) {
             <div className="garage-hero-card__livery" aria-hidden="true" />
             <div className="garage-hero-card__grid" aria-hidden="true" />
             {selectedStanding.position && (
-              <span className="garage-hero-card__number garage-hero-card__number--mobile" aria-hidden="true">
+              <span
+                className="garage-hero-card__number garage-hero-card__number--mobile"
+                aria-hidden="true"
+              >
                 P{selectedStanding.position}
               </span>
             )}
@@ -547,7 +602,10 @@ export default function ConstructorsTab({ season, setSeason, tabSwitcher }) {
                         : `P${selectedStanding.position} in constructors’ championship`}
                     </p>
                     {selectedStanding.position && (
-                      <span className="garage-hero-card__number garage-hero-card__number--desktop" aria-hidden="true">
+                      <span
+                        className="garage-hero-card__number garage-hero-card__number--desktop"
+                        aria-hidden="true"
+                      >
                         P{selectedStanding.position}
                       </span>
                     )}
@@ -613,6 +671,7 @@ export default function ConstructorsTab({ season, setSeason, tabSwitcher }) {
               value={championships.driversChampionships.length}
               years={championships.driversChampionships}
             />
+            <TeamPrincipalCard season={season} constructorId={constructorId} />
             <PowerUnitCard season={season} constructorId={constructorId} />
           </div>
 

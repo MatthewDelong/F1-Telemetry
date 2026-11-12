@@ -1344,6 +1344,10 @@
     font-size: 1.12rem;
   }
 
+  .constructor-tp-history {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
   .constructor-details {
     margin-top: 14px;
   }
@@ -1603,6 +1607,9 @@
     .constructor-pu-history {
       grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
       gap: 6px;
+    }
+    .constructor-tp-history {
+      grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
     }
     .constructor-pu-history li {
       padding: 7px 9px;
