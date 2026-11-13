@@ -73,10 +73,25 @@ function Flag({ driver }) {
 const Kv = ({ k, v, sub }) => <div className="kv"><dt>{k}</dt><dd>{v}</dd>{sub && <small>{sub}</small>}</div>;
 
 function StatCard({ title, value, note, tiles }) {
+  const [selectedKey, setSelectedKey] = useState(null);
+  const selected = tiles.find((t) => t.key === selectedKey);
   return (
     <section className="panel stat">
       <h3>{title}</h3><p className="big">{value}</p><p className="note">{note}</p>
-      <div className="tiles">{tiles.map((t) => <span key={t.key} className={`tile ${t.state}`} title={t.label} />)}</div>
+      <div className="tiles">
+        {tiles.map((t) => (
+          <button
+            key={t.key}
+            type="button"
+            className={`tile ${t.state}${selectedKey === t.key ? ' active' : ''}`}
+            title={t.label}
+            aria-label={t.label}
+            aria-pressed={selectedKey === t.key}
+            onClick={() => setSelectedKey((prev) => (prev === t.key ? null : t.key))}
+          />
+        ))}
+      </div>
+      {selected && <p className="tile-tip">{selected.label}</p>}
     </section>
   );
 }
@@ -341,7 +356,7 @@ export default function DriversTab({ season, setSeason, tabSwitcher }) {
             <span><span className="tile dnf" /> Did not finish</span>
             <span><span className="tile miss" /> Finished</span>
             {rounds.some((r) => !r.raced) && <span><span className="tile soon" /> Upcoming</span>}
-            <span className="legend-hint">1 square per round (hover for race)</span>
+            <span className="legend-hint">1 square per round (hover or tap for race)</span>
           </div>
           <div className="cards">
             <StatCard title="Grand Prix wins" value={t.wins} note={`${t.sprintWins} sprint ${t.sprintWins === 1 ? 'win' : 'wins'}`} tiles={tiles((r) => r.pos === 1)} />

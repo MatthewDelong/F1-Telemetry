@@ -142,6 +142,8 @@ export const ThreeCanvas = ({
       logarithmicDepthBuffer: true,
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
     renderer.setSize(
       currentMount.clientWidth,
       currentMount.clientHeight || 700,

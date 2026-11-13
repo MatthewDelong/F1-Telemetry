@@ -10,6 +10,90 @@
 
 @use "./styles/typography.scss";
 
-.video-container {
-    background-color: red; /* Temporary check */
+:root {
+  --glass-surface: rgba(16, 20, 30, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+::selection {
+  background: rgba(225, 6, 0, 0.35);
+  color: #ffffff;
+}
+
+/* Crisp tabular alignment for telemetry times, points, and standings across all pages */
+table,
+.driver-card,
+.driver-card-glass {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Subtle dark broadcast-style scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #080a0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.26);
+}
+
+@keyframes f1Shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 25%,
+    rgba(255, 255, 255, 0.09) 50%,
+    rgba(255, 255, 255, 0.04) 75%
+  );
+  background-size: 200% 100%;
+  animation: f1Shimmer 1.5s infinite linear;
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+}
+
+.page-loader {
+  width: min(1240px, 100%);
+  margin: 48px auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__header {
+    height: 44px;
+    width: min(340px, 75%);
+    border-radius: 10px;
+  }
+
+  &__hero {
+    height: 220px;
+    width: 100%;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+
+  &__card {
+    height: 150px;
+  }
 }

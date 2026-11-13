@@ -42,6 +42,7 @@ import {
 import Drawer from "../components/Drawer";
 import { locationMaps } from "../utils/locationMaps";
 import { organizeQualifyingResults } from "../utils/organizeQualifyingResults";
+import teamColors from "../utils/teamColors.json";
 
 const generateFallbackResults = (driverData) => {
   if (!driverData || driverData.length === 0) return [];
@@ -202,12 +203,6 @@ export function RacePage() {
     // Cleanup event listener on unmount
     return () => window.removeEventListener("resize", handleResize);
   }, [raceId, raceName]);
-
-  useEffect(() => {
-    if (raceName && meetingKey) {
-      fetchData();
-    }
-  }, [raceName, meetingKey, selectedSession]);
 
   const animatedLocations = [
     "albert_park",
@@ -380,6 +375,10 @@ export function RacePage() {
       setIsLoading(true);
       setTrackReferenceData([]); // CLEAR OLD TRACK
       setTrackLoadError(false);
+      setLaps([]);
+      setPos([]);
+      setDrivers([]);
+      setRaceControlMessages([]);
 
       const circuitId = location && locationMaps[location.toLowerCase()];
       if (circuitId) {
@@ -387,9 +386,74 @@ export function RacePage() {
         setMapPath(mapUrl);
       }
 
-      const sessionsData = await fetchWithPersistentCache(
-        `${buildOpenF1Url("/sessions")}?meeting_key=${meetingKey}`,
-      );
+      // Start local static track shape & local results immediately in parallel with OpenF1 /sessions
+      const localTrackPromise = circuitId
+        ? fetchTrackReferenceData(null, circuitId)
+            .then((refData) => {
+              if (refData && refData.length > 0) {
+                setTrackReferenceData(refData);
+                setTrackLoadError(false);
+              }
+              return refData;
+            })
+            .catch(() => [])
+        : Promise.resolve([]);
+
+      const localResultsPromise = circuitId
+        ? (selectedSession === "Qualifying"
+            ? fetchQualifyingResultsByCircuit(year, circuitId, raceName)
+            : selectedSession === "Sprint"
+              ? fetchSprintResultsByCircuit(year, circuitId, raceName)
+              : fetchRaceResultsByCircuit(year, circuitId, raceName)
+          )
+            .then((res) => {
+              if (res && res.length > 0) {
+                setRaceResults(res);
+
+                const localDetailsMap = {};
+                const localColorMap = {};
+                const yearColors = teamColors[String(year)] || {};
+                res.forEach((r) => {
+                  const num = parseInt(r.number || r.Driver?.number, 10);
+                  const code = r.Driver?.code || r.Driver?.driverId;
+                  if (num && code) localDetailsMap[num] = code;
+                  const cId = r.Constructor?.constructorId;
+                  if (code && cId && yearColors[cId]) {
+                    localColorMap[code] = yearColors[cId];
+                  }
+                });
+                setDriversDetails(localDetailsMap);
+                if (Object.keys(localColorMap).length > 0) {
+                  setDriversColor(localColorMap);
+                }
+
+                const localGrid = res
+                  .map((r) => ({
+                    driver_number: parseInt(r.number || r.Driver?.number, 10),
+                    driver_acronym: r.Driver?.code || r.Driver?.driverId,
+                    position:
+                      r.grid === "PL"
+                        ? "PL"
+                        : parseInt(r.grid || r.position, 10),
+                    date: "",
+                  }))
+                  .filter((r) => r.position === "PL" || r.position > 0);
+                setStartingGrid(localGrid);
+                setIsLoading(false);
+              }
+              return res || [];
+            })
+            .catch(() => [])
+        : Promise.resolve([]);
+
+      const [sessionsData, localSessionResults] = await Promise.all([
+        meetingKey
+          ? fetchWithPersistentCache(
+              `${buildOpenF1Url("/sessions")}?meeting_key=${meetingKey}`,
+            )
+          : Promise.resolve([]),
+        localResultsPromise,
+      ]);
 
       // Safety check: sessionsData might be an error object if rate limited (429)
       if (!Array.isArray(sessionsData)) {
@@ -419,19 +483,11 @@ export function RacePage() {
       if (selectedSession === "Race") {
         setIsLoading(true);
 
-        let sessionResults = [];
-        if (circuitId) {
-          sessionResults = await fetchRaceResultsByCircuit(
-            year,
-            circuitId,
-            raceName,
+        let sessionResults = localSessionResults;
+        if (sessionResults && sessionResults.length > 0) {
+          console.log(
+            `[RacePage] Results for ${sessionResults[0]?.raceName || raceName} Round ${sessionResults[0]?.round || "?"}`,
           );
-          setRaceResults(sessionResults);
-          if (sessionResults && sessionResults.length > 0) {
-            console.log(
-              `[RacePage] Results for ${sessionResults[0]?.raceName || raceName} Round ${sessionResults[0]?.round || "?"}`,
-            );
-          }
         }
 
         const raceSession = Array.isArray(sessionsData)
@@ -445,39 +501,28 @@ export function RacePage() {
           sessionKey = raceSession.session_key;
           setSelectedSessionKey(sessionKey);
 
-          // Fetch data sequentially with small stagger to avoid 429 rate limiting
-          const driverDetailsData = await fetchWithPersistentCache(
-            `${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`,
-          ).catch(() => []);
-
-          await new Promise((r) => setTimeout(r, 250));
-          const raceControlData = await fetchRaceControl(sessionKey).catch(
-            () => [],
-          );
+          const [
+            driverDetailsData,
+            raceControlData,
+            startingGridData,
+            driversData,
+          ] = await Promise.all([
+            fetchWithPersistentCache(
+              `${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`,
+            ).catch(() => []),
+            fetchRaceControl(sessionKey).catch(() => []),
+            fetchWithPersistentCache(
+              `${buildOpenF1Url("/position")}?session_key=${sessionKey}`,
+            ).catch(() => []),
+            fetchDriversAndTires(sessionKey).catch(() => []),
+          ]);
           setRaceControlMessages(raceControlData);
-
-          await new Promise((r) => setTimeout(r, 250));
-          const startingGridData = await fetchWithPersistentCache(
-            `${buildOpenF1Url("/position")}?session_key=${sessionKey}`,
-          ).catch(() => []);
           setPos(startingGridData);
-
-          await new Promise((r) => setTimeout(r, 250));
-          const driversData = await fetchDriversAndTires(sessionKey).catch(
-            () => [],
-          );
-
-          await new Promise((r) => setTimeout(r, 250));
-          const lapsData = await fetchOpenF1FullSessionData(
-            "/laps",
-            sessionKey,
-          );
 
           console.log(`[RacePage] Session Key: ${sessionKey}`);
           console.log(
             `[RacePage] Drivers fetched: ${driverDetailsData?.length || 0}`,
           );
-          console.log(`[RacePage] Laps fetched: ${lapsData?.length || 0}`);
           console.log(
             `[RacePage] Pos data fetched: ${startingGridData?.length || 0}`,
           );
@@ -583,12 +628,18 @@ export function RacePage() {
 
           setStartingGrid(filteredStartingGrid);
           setDrivers(driversData);
-          setLaps(
-            lapsData.map((lap) => ({
-              ...lap,
-              driver_acronym: driverDetailsMap[lap.driver_number],
-            })),
-          );
+
+          // Load paginated OpenF1 laps non-blockingly so leaderboard/track render immediately
+          fetchOpenF1FullSessionData("/laps", sessionKey)
+            .then((lapsData) => {
+              setLaps(
+                (lapsData || []).map((lap) => ({
+                  ...lap,
+                  driver_acronym: driverDetailsMap[lap.driver_number],
+                })),
+              );
+            })
+            .catch(() => {});
 
           setIsSessionLive(
             !raceSession.date_end ||
@@ -596,34 +647,30 @@ export function RacePage() {
           );
         }
 
-        // Fetch track reference GPS data non-blockingly at the end (always!)
-        fetchTrackReferenceData(sessionKey, circuitId)
-          .then((refData) => {
-            if (refData && refData.length > 0) {
-              setTrackReferenceData(refData);
-              setTrackLoadError(false);
-            } else {
-              setTrackLoadError(true);
-            }
-          })
-          .catch(() => {
-            setTrackLoadError(true);
-          });
+        // Only fall back to OpenF1 GPS track fetch if local static trackdata was missing
+        localTrackPromise.then((localTrack) => {
+          if (!localTrack || localTrack.length === 0) {
+            fetchTrackReferenceData(sessionKey, circuitId)
+              .then((refData) => {
+                if (refData && refData.length > 0) {
+                  setTrackReferenceData(refData);
+                  setTrackLoadError(false);
+                } else {
+                  setTrackLoadError(true);
+                }
+              })
+              .catch(() => {
+                setTrackLoadError(true);
+              });
+          }
+        });
       } else if (selectedSession === "Qualifying") {
         setIsLoading(true);
         if (circuitId) {
           // Legacy map loading removed
         }
 
-        let sessionResults = [];
-        if (circuitId) {
-          sessionResults = await fetchQualifyingResultsByCircuit(
-            year,
-            circuitId,
-            raceName,
-          );
-          setRaceResults(sessionResults);
-        }
+        let sessionResults = localSessionResults;
 
         const raceSession = sessionsData.find(
           (session) => session.session_name === "Qualifying",
@@ -632,19 +679,19 @@ export function RacePage() {
         const sessionKey = raceSession.session_key;
         setSelectedSessionKey(sessionKey);
 
-        const driverDetailsData = await fetchWithPersistentCache(
-          `${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`,
-        ).catch(() => []);
-        await new Promise((r) => setTimeout(r, 250));
-        const startingGridData = await fetchWithPersistentCache(
-          `${buildOpenF1Url("/position")}?session_key=${sessionKey}`,
-        ).catch(() => []);
-        await new Promise((r) => setTimeout(r, 250));
-        const driversData = await fetchDriversAndTires(sessionKey).catch(
-          () => [],
-        );
-        await new Promise((r) => setTimeout(r, 250));
-        const lapsData = await fetchOpenF1FullSessionData("/laps", sessionKey);
+        const [
+          driverDetailsData,
+          startingGridData,
+          driversData,
+        ] = await Promise.all([
+          fetchWithPersistentCache(
+            `${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`,
+          ).catch(() => []),
+          fetchWithPersistentCache(
+            `${buildOpenF1Url("/position")}?session_key=${sessionKey}`,
+          ).catch(() => []),
+          fetchDriversAndTires(sessionKey).catch(() => []),
+        ]);
 
         const driverDetailsMap = driverDetailsData.reduce(
           (acc, driver) => ({
@@ -712,24 +759,32 @@ export function RacePage() {
         setStartingGrid(filteredStartingGrid);
         setPos(startingGridData);
         setDrivers(driversData);
-        setLaps(
-          lapsData.map((lap) => ({
-            ...lap,
-            driver_acronym: driverDetailsMap[lap.driver_number],
-          })),
-        );
 
-        // Fetch track reference GPS data non-blockingly at the end
-        fetchTrackReferenceData(sessionKey, circuitId)
-          .then((refData) => {
-            if (refData && refData.length > 0) setTrackReferenceData(refData);
-          })
-          .catch((err) => {
-            console.warn(
-              "[RacePage] Failed to fetch track reference data:",
-              err,
+        fetchOpenF1FullSessionData("/laps", sessionKey)
+          .then((lapsData) => {
+            setLaps(
+              (lapsData || []).map((lap) => ({
+                ...lap,
+                driver_acronym: driverDetailsMap[lap.driver_number],
+              })),
             );
-          });
+          })
+          .catch(() => {});
+
+        localTrackPromise.then((localTrack) => {
+          if (!localTrack || localTrack.length === 0) {
+            fetchTrackReferenceData(sessionKey, circuitId)
+              .then((refData) => {
+                if (refData && refData.length > 0) setTrackReferenceData(refData);
+              })
+              .catch((err) => {
+                console.warn(
+                  "[RacePage] Failed to fetch track reference data:",
+                  err,
+                );
+              });
+          }
+        });
       } else if (selectedSession === "Sprint") {
         setIsLoading(true);
         if (circuitId) {
@@ -750,36 +805,26 @@ export function RacePage() {
           return;
         }
 
-        let sessionResults = [];
-        if (circuitId) {
-          sessionResults = await fetchSprintResultsByCircuit(
-            year,
-            circuitId,
-            raceName,
-          );
-          setRaceResults(sessionResults);
-        }
+        let sessionResults = localSessionResults;
 
         const sessionKey = sprintSession.session_key;
         setSelectedSessionKey(sessionKey);
 
-        const driverDetailsData = await fetchWithPersistentCache(
-          `${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`,
-        ).catch(() => []);
-        await new Promise((r) => setTimeout(r, 250));
-        const driversData = await fetchDriversAndTires(sessionKey).catch(
-          () => [],
-        );
-        await new Promise((r) => setTimeout(r, 250));
-        const lapsData = await fetchOpenF1FullSessionData("/laps", sessionKey);
-        await new Promise((r) => setTimeout(r, 250));
-        const positionData = await fetchWithPersistentCache(
-          `${buildOpenF1Url("/position")}?session_key=${sessionKey}`,
-        ).catch(() => []);
-
-        const raceControlData = await fetchRaceControl(sessionKey).catch(
-          () => [],
-        );
+        const [
+          driverDetailsData,
+          driversData,
+          positionData,
+          raceControlData,
+        ] = await Promise.all([
+          fetchWithPersistentCache(
+            `${buildOpenF1Url("/drivers")}?session_key=${sessionKey}`,
+          ).catch(() => []),
+          fetchDriversAndTires(sessionKey).catch(() => []),
+          fetchWithPersistentCache(
+            `${buildOpenF1Url("/position")}?session_key=${sessionKey}`,
+          ).catch(() => []),
+          fetchRaceControl(sessionKey).catch(() => []),
+        ]);
         setRaceControlMessages(raceControlData);
 
         const driverDetailsMap = (driverDetailsData || []).reduce(
@@ -849,28 +894,35 @@ export function RacePage() {
         setStartingGrid(filteredStartingGrid);
         setPos(positionData);
         setDrivers(driversData);
-        setLaps(
-          lapsData.map((lap) => ({
-            ...lap,
-            driver_acronym: driverDetailsMap[lap.driver_number],
-          })),
-        );
+        fetchOpenF1FullSessionData("/laps", sessionKey)
+          .then((lapsData) => {
+            setLaps(
+              (lapsData || []).map((lap) => ({
+                ...lap,
+                driver_acronym: driverDetailsMap[lap.driver_number],
+              })),
+            );
+          })
+          .catch(() => {});
         setIsSessionLive(
           !sprintSession.date_end ||
             new Date() < new Date(sprintSession.date_end),
         );
 
-        // Fetch track reference GPS data non-blockingly at the end
-        fetchTrackReferenceData(sessionKey, circuitId)
-          .then((refData) => {
-            if (refData && refData.length > 0) setTrackReferenceData(refData);
-          })
-          .catch((err) => {
-            console.warn(
-              "[RacePage] Failed to fetch track reference data:",
-              err,
-            );
-          });
+        localTrackPromise.then((localTrack) => {
+          if (!localTrack || localTrack.length === 0) {
+            fetchTrackReferenceData(sessionKey, circuitId)
+              .then((refData) => {
+                if (refData && refData.length > 0) setTrackReferenceData(refData);
+              })
+              .catch((err) => {
+                console.warn(
+                  "[RacePage] Failed to fetch track reference data:",
+                  err,
+                );
+              });
+          }
+        });
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -985,7 +1037,7 @@ export function RacePage() {
             index={index}
             driver={result.Driver}
             stint={drivers}
-            driverColor={driversColor[driverCode]}
+            driverColor={driversColor[result.Driver?.code] || driversColor[driverCode]}
             startPosition={parseInt(result.grid, 10) || 0}
             endPosition={parseInt(result.position, 10) || 0}
             year={parseInt(year)}
@@ -1115,9 +1167,7 @@ export function RacePage() {
     ],
   );
 
-  return isLoading ? (
-    <Loading message={`Loading ${raceName} ${year} ${selectedSession}`} />
-  ) : (
+  return (
     <div className="race-page">
       <div
         className={classNames(

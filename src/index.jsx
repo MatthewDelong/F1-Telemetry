@@ -22,16 +22,17 @@ root.render(
   </React.StrictMode>
 );
 
-// Fade out and remove the splash screen once React starts rendering
+// Fade out and remove the splash screen as soon as React paints its first frame
 const splash = document.getElementById('initial-splash');
 if (splash) {
-  // Use a small delay to ensure the browser has a chance to paint the first frame of the app
-  setTimeout(() => {
-    splash.style.opacity = '0';
-    setTimeout(() => {
-      splash.remove();
-    }, 600); // Match the 0.6s transition duration in index.html
-  }, 500);
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      splash.style.opacity = '0';
+      setTimeout(() => {
+        splash.remove();
+      }, 450); // Match the 0.45s transition duration in index.html
+    });
+  });
 }
 
 // If you want to start measuring performance in your app, pass a function

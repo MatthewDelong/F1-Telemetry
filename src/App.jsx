@@ -1,10 +1,30 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import React, { Suspense, lazy, useEffect, useMemo, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import classNames from "classnames";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { fas } from "@fortawesome/free-solid-svg-icons";
-import { fab } from "@fortawesome/free-brands-svg-icons";
+import {
+  faBars,
+  faBell,
+  faCarSide,
+  faChartLine,
+  faChevronDown,
+  faChevronRight,
+  faCircle,
+  faCircleDown,
+  faCircleInfo,
+  faCircleUp,
+  faClock,
+  faCode,
+  faFileContract,
+  faFlag,
+  faFlagCheckered,
+  faRobot,
+  faTowerBroadcast,
+  faTriangleExclamation,
+  faUser,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 
 import {
   Header,
@@ -14,40 +34,65 @@ import {
   CookieBanner,
   NewsTicker,
 } from "./components";
+import { PageLoader } from "./components/PageLoader";
 import { F1ALogo } from "./components/F1ALogo";
 import { F2Logo } from "./components/F2Logo";
-import {
-  DriverComparison,
-  TeammatesComparison,
-  LandingPage,
-  FeaturesPage,
-  RaceResultsPage,
-  RacePage,
-  DriverStandings,
-  ConstructorStandings,
-  RaceResultsPageF1a,
-  RacePageF1a,
-  DriverStandingsF1a,
-  ConstructorStandingsF1a,
-  RaceResultsPageF2,
-  RacePageF2,
-  DriverStandingsF2,
-  ConstructorStandingsF2,
-  PrivacyPolicy,
-  Trademarks,
-  AdminPage,
-  LiveDashboard,
-  BehindTheCode,
-  TeamCards,
-  StatsPage,
-} from "./pages";
+import { LandingPage } from "./pages/LandingPage";
 import { ScrollToTop } from "./utils/ScrollToTop";
 import { getCurrentYear } from "./utils/currentYear";
 
 import "./App.scss";
-import SocialMedia from "./pages/Socialmedia/SocialMedia";
 
-library.add(fas, fab);
+const lazyNamed = (loader, name) =>
+  lazy(() => loader().then((m) => ({ default: m[name] })));
+
+const RaceResultsPage = lazyNamed(() => import("./pages/RaceResultsPage"), "RaceResultsPage");
+const DriverStandings = lazyNamed(() => import("./pages/DriverStandings"), "DriverStandings");
+const ConstructorStandings = lazyNamed(() => import("./pages/ConstructorStandings"), "ConstructorStandings");
+const RaceResultsPageF1a = lazyNamed(() => import("./pages/f1a/RaceResultsPageF1a"), "RaceResultsPageF1a");
+const DriverStandingsF1a = lazyNamed(() => import("./pages/f1a/DriverStandingsF1a"), "DriverStandingsF1a");
+const ConstructorStandingsF1a = lazyNamed(() => import("./pages/f1a/ConstructorStandingsF1a"), "ConstructorStandingsF1a");
+const RaceResultsPageF2 = lazyNamed(() => import("./pages/f2/RaceResultsPageF2"), "RaceResultsPageF2");
+const DriverStandingsF2 = lazyNamed(() => import("./pages/f2/DriverStandingsF2"), "DriverStandingsF2");
+const ConstructorStandingsF2 = lazyNamed(() => import("./pages/f2/ConstructorStandingsF2"), "ConstructorStandingsF2");
+
+const FeaturesPage = lazyNamed(() => import("./pages/FeaturesPage"), "FeaturesPage");
+const DriverComparison = lazyNamed(() => import("./pages/DriverComparison"), "DriverComparison");
+const TeammatesComparison = lazyNamed(() => import("./pages/TeammatesComparison"), "TeammatesComparison");
+const RacePage = lazyNamed(() => import("./pages/RacePage"), "RacePage");
+const RacePageF1a = lazyNamed(() => import("./pages/f1a/RacePageF1a"), "RacePageF1a");
+const RacePageF2 = lazyNamed(() => import("./pages/f2/RacePageF2"), "RacePageF2");
+const TeamCards = lazyNamed(() => import("./pages/TeamCards"), "TeamCards");
+const StatsPage = lazyNamed(() => import("./pages/Stats/StatsPage"), "StatsPage");
+const LiveDashboard = lazy(() => import("./pages/LiveDashboard/LiveDashboard"));
+const SocialMedia = lazy(() => import("./pages/Socialmedia/SocialMedia"));
+const PrivacyPolicy = lazyNamed(() => import("./pages/PrivacyPolicy"), "PrivacyPolicy");
+const Trademarks = lazyNamed(() => import("./pages/Trademarks"), "Trademarks");
+const BehindTheCode = lazyNamed(() => import("./pages/BehindTheCode"), "BehindTheCode");
+const AdminPage = lazyNamed(() => import("./pages/Admin"), "AdminPage");
+
+library.add(
+  faBars,
+  faBell,
+  faCarSide,
+  faChartLine,
+  faChevronDown,
+  faChevronRight,
+  faCircle,
+  faCircleDown,
+  faCircleInfo,
+  faCircleUp,
+  faClock,
+  faCode,
+  faFileContract,
+  faFlag,
+  faFlagCheckered,
+  faRobot,
+  faTowerBroadcast,
+  faTriangleExclamation,
+  faUser,
+  faXmark,
+);
 
 const currentYear = getCurrentYear();
 
@@ -91,7 +136,8 @@ function App() {
 
 /** Render the news ticker only on the landing page, as a fixed overlay. */
 function TickerWrapper() {
-  const location = useLocation().pathname;
+  const routerLocation = useLocation();
+  const location = routerLocation.pathname;
   if (location !== "/") return null;
   return <NewsTicker />;
 }
@@ -103,7 +149,8 @@ function MainContent({
   resultPagePath,
   setResultPagePath,
 }) {
-  const location = useLocation().pathname;
+  const routerLocation = useLocation();
+  const location = routerLocation.pathname;
   const validPaths = [
     "/race-results",
     "/constructor-standings",
@@ -200,11 +247,20 @@ function MainContent({
           </div>
         )}
 
-        <Routes>
-          <Route
-            path="/"
-            element={<LandingPage setResultPagePath={setResultPagePath} />}
-          />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.16, ease: "easeOut" }}
+          >
+            <Suspense fallback={<PageLoader />}>
+              <Routes location={routerLocation}>
+                <Route
+                  path="/"
+                  element={<LandingPage setResultPagePath={setResultPagePath} />}
+                />
           <Route path="/features" element={<FeaturesPage />} />
           <Route
             path="/race-results"
@@ -302,9 +358,12 @@ function MainContent({
           <Route path="/social-media" element={<SocialMedia />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/trademarks" element={<Trademarks />} />
-          <Route path="/behind-the-code" element={<BehindTheCode />} />
-          <Route path="/admin" element={<AdminPage />} />
-        </Routes>
+                <Route path="/behind-the-code" element={<BehindTheCode />} />
+                <Route path="/admin" element={<AdminPage />} />
+              </Routes>
+            </Suspense>
+          </motion.div>
+        </AnimatePresence>
       </div>
       {location !== "/" && location !== "/features" && <Footer />}
     </>

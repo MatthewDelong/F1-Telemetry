@@ -189,7 +189,18 @@ export const TeamCards = ({ selectedYear }) => {
       </div>
 
       <div className="flex flex-col gap-48 w-full px-16">
-        {teamsData.map((team, idx) => {
+        {teamsData.length === 0
+          ? Array.from({ length: 3 }, (_, sIdx) => (
+              <div key={sIdx} className="flex flex-col gap-20">
+                <div className="h-[52px] w-[260px] shimmer-skeleton" />
+                <div className="flex flex-row flex-wrap justify-center sm:justify-start gap-16 w-full">
+                  <div className="w-full md:w-[calc(33%-12px)] max-w-[400px] h-[420px] shimmer-skeleton" />
+                  <div className="w-full md:w-[calc(33%-12px)] max-w-[400px] h-[420px] shimmer-skeleton" />
+                  <div className="w-full md:w-[calc(33%-12px)] max-w-[400px] h-[420px] shimmer-skeleton" />
+                </div>
+              </div>
+            ))
+          : teamsData.map((team, idx) => {
           const principal = teamPrincipals[team.name];
           const activeThemeColor = team.color;
           const constructorTitlesCount = team?.constructorTitles?.length || 0;
@@ -401,6 +412,7 @@ export const TeamCards = ({ selectedYear }) => {
       </div>
 
       {/* 2026 Pirelli Tyre Compounds Section */}
+      {teamsData.length > 0 && (
       <div className="w-full px-16 mt-64 flex flex-col items-center">
         <article
           className="team-driver-card w-full max-w-[900px] px-24 py-24 flex flex-col items-center gap-16"
@@ -466,6 +478,7 @@ export const TeamCards = ({ selectedYear }) => {
           <div className="team-driver-card__sheen" aria-hidden="true" />
         </article>
       </div>
+      )}
     </div>
   );
 };

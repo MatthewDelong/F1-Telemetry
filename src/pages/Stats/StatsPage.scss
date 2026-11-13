@@ -876,12 +876,36 @@
     display: inline-block;
     width: 14px;
     height: 14px;
+    padding: 0;
+    border: 0;
     border-radius: 4px;
-    transition: transform 0.15s ease;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
 
-  .tile:hover {
-    transform: scale(1.2);
+  .tiles button.tile {
+    cursor: pointer;
+    appearance: none;
+  }
+
+  .tile:hover,
+  .tile.active {
+    transform: scale(1.25);
+  }
+
+  .tile.active {
+    outline: 1.5px solid #ffffff;
+    outline-offset: 1px;
+  }
+
+  .tile-tip {
+    margin: 10px 0 0;
+    padding: 5px 10px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 1.18rem;
+    color: #e8ecf4;
+    line-height: 1.3;
   }
 
   .tile.hit {
@@ -1464,7 +1488,8 @@
     .hero .constructor-identity {
       width: 100%;
     }
-    .garage-hero-card__number--desktop {
+    .garage-hero-card__number--desktop,
+    .garage-hero-card__number--driver.garage-hero-card__number--desktop {
       display: none;
     }
     .garage-hero-card__number--mobile {
