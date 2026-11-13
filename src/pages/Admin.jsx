@@ -6,6 +6,10 @@ export const AdminPage = () => {
   const [status, setStatus] = useState({});
   const [f2Url, setF2Url] = useState('');
   const [f1aUrl, setF1aUrl] = useState('');
+  const [statsSeason, setStatsSeason] = useState('');
+  const [statsForce, setStatsForce] = useState(false);
+  const [statsNoOpenf1, setStatsNoOpenf1] = useState(false);
+  const [statsNoCareer, setStatsNoCareer] = useState(false);
   const [loading, setLoading] = useState(false);
   const [logs, setLogs] = useState(() => {
     try {
@@ -37,12 +41,13 @@ export const AdminPage = () => {
     fetchStatus();
   }, []);
 
-  const handleUpdate = async (type, url = '') => {
+  const handleUpdate = async (type, payload = {}) => {
+    const body = typeof payload === 'string' ? { url: payload } : payload;
     setLoading(true);
     addLog(`Starting update for ${type}...`);
     try {
-      const res = await axios.post(`/api/admin/update/${type}`, { url }, { timeout: 300000 });
-      addLog(`Success (${type}):\n${res.data.output}`);
+      const res = await axios.post(`/api/admin/update/${type}`, body, { timeout: 600000 });
+      addLog(`Success (${type}):\n${res.data.output || res.data.message}`);
       await fetchStatus();
     } catch (e) {
       addLog(`Error (${type}):\n${e.response?.data?.error || e.message}`);
@@ -138,28 +143,28 @@ export const AdminPage = () => {
   };
 
   return (
-    <div className="container mx-auto p-8 text-white mt-12 mb-12">
-      <div className="flex justify-between items-center mb-8">
+    <div className="max-w-6xl mx-auto px-6 py-8 text-white mt-12 mb-12">
+      <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
         <h1 className="text-4xl font-bold">Admin Dashboard</h1>
-        <div className="flex gap-4">
+        <div className="flex flex-wrap gap-4">
           <Button 
             onClick={clearCache}
             disabled={loading}
-            className="w-full text-yellow-500"
+            className="text-yellow-500 whitespace-nowrap"
           >
             Clear Local Cache
           </Button>
           <Button 
             onClick={clearLiveCache}
             disabled={loading}
-            className="w-full text-purple-400"
+            className="text-purple-400 whitespace-nowrap"
           >
             Clear LIVE Cache
           </Button>
         </div>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         {/* F1 Section */}
         <div className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700">
           <h2 className="text-2xl font-bold mb-4 text-red-500">F1 Data</h2>
@@ -216,6 +221,66 @@ export const AdminPage = () => {
             className="w-full text-pink-400"
           >
             Run api_update.py
+          </Button>
+        </div>
+
+        {/* Stats Cache Section */}
+        <div className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 flex flex-col justify-between">
+          <div>
+            <h2 className="text-2xl font-bold mb-4 text-emerald-400">Stats Cache</h2>
+            <p className="text-gray-400 mb-4">
+              Last Updated: <span className="text-white">{formatDate(status?.statsCache?.lastUpdated)}</span>
+            </p>
+            <input
+              type="text"
+              placeholder="Season year (optional, default: current)"
+              className="w-full p-2 mb-3 bg-gray-700 text-white border border-gray-600 rounded focus:border-emerald-500 focus:outline-none"
+              value={statsSeason}
+              onChange={(e) => setStatsSeason(e.target.value)}
+            />
+            <div className="flex flex-col gap-1.5 mb-4 text-sm text-gray-300">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={statsForce}
+                  onChange={(e) => setStatsForce(e.target.checked)}
+                  className="accent-emerald-500"
+                />
+                <span>Force rebuild existing races (<code className="text-xs text-emerald-300">--force</code>)</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={statsNoOpenf1}
+                  onChange={(e) => setStatsNoOpenf1(e.target.checked)}
+                  className="accent-emerald-500"
+                />
+                <span>Skip OpenF1 tyres/weather (<code className="text-xs text-emerald-300">--no-openf1</code>)</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={statsNoCareer}
+                  onChange={(e) => setStatsNoCareer(e.target.checked)}
+                  className="accent-emerald-500"
+                />
+                <span>Skip career totals (<code className="text-xs text-emerald-300">--no-career</code>)</span>
+              </label>
+            </div>
+          </div>
+          <Button
+            onClick={() =>
+              handleUpdate('stats-cache', {
+                season: statsSeason,
+                force: statsForce,
+                noOpenf1: statsNoOpenf1,
+                noCareer: statsNoCareer,
+              })
+            }
+            disabled={loading}
+            className="w-full text-emerald-400"
+          >
+            Run build-cache.mjs
           </Button>
         </div>
       </div>

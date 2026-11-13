@@ -740,6 +740,11 @@ app.get("/api/admin/update/status", requireAdmin, (req, res) => {
         pathMod.join(rootDir, "src", "config", "f1a"),
       ),
     },
+    statsCache: {
+      lastUpdated: getLatestMtime(
+        pathMod.join(rootDir, "public", "stats_cache"),
+      ),
+    },
   };
 
   res.json(statuses);
@@ -882,6 +887,40 @@ app.post("/api/admin/update/f1a", requireAdmin, (req, res) => {
           });
         },
       );
+    },
+  );
+});
+
+app.post("/api/admin/update/stats-cache", requireAdmin, (req, res) => {
+  const rootDir = pathMod.join(__dirname, "..");
+  const scriptPath = pathMod.join(rootDir, "scripts", "build-cache.mjs");
+  const { season, force, noOpenf1, noCareer } = req.body || {};
+
+  const args = [scriptPath];
+  if (season !== undefined && season !== null && String(season).trim() !== "") {
+    const trimmed = String(season).trim();
+    if (!/^\d{4}$/.test(trimmed)) {
+      return res.status(400).json({ error: "Invalid season year (expected 4 digits)" });
+    }
+    args.push(trimmed);
+  }
+  if (force) args.push("--force");
+  if (noOpenf1) args.push("--no-openf1");
+  if (noCareer) args.push("--no-career");
+
+  execFile(
+    process.execPath,
+    args,
+    { cwd: rootDir, maxBuffer: 10 * 1024 * 1024 },
+    (error, stdout, stderr) => {
+      if (error) {
+        console.error(`[Admin Update Stats Cache] Error: ${error.message}`);
+        return res.status(500).json({ error: error.message, stderr });
+      }
+      res.json({
+        message: "Stats cache updated successfully",
+        output: [stdout, stderr].filter(Boolean).join("\n"),
+      });
     },
   );
 });

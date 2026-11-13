@@ -36,29 +36,33 @@
 
 ## About
 
-F1-Telemetry is an interactive web application built for motorsport fans who want to go deeper than the broadcast — providing detailed race analytics, real-time telemetry visualisation, driver comparisons, and a 3D race viewer across **Formula 1**, **Formula 2**, and **F1 Academy**. It now also fully integrates the **Formula1-Live** dashboard for real-time live timing, track limits, and race control monitoring.
+F1-Telemetry is an interactive web application built for motorsport fans who want to go deeper than the broadcast — providing detailed race analytics, real-time telemetry visualisation, multi-season driver & constructor statistics (`/stats`), driver comparisons, and a 3D race viewer across **Formula 1**, **Formula 2**, and **F1 Academy**. It also fully integrates the **Formula1-Live** dashboard for real-time live timing, track limits, and race control monitoring.
 
 > **Attribution** — Data is powered by the official **[OpenF1 API](https://openf1.org)** and **[Jolpica API](https://jolpi.ca/)**.
 
-**New Feature**: The 3D Telemetry Viewer now includes **Procedural 3D Tracks**, which automatically generate accurate, rotating 3D track geometries from real GPS telemetry data, complete with dynamic racing lines, kerbs, and surrounding environments using React Three Fiber.
+**New Features**:
+
+- **Driver & Constructor Stats (`/stats`)**: Deep multi-season (2018–2026) F1 statistical hub featuring livery-styled hero cards, career & sprint breakdowns, teammate head-to-head comparisons, lap-by-lap tyre/pit/weather analytics, constructor title histories, Team Principal / CEO timelines, and Power Unit supplier lineages.
+- **Procedural 3D Tracks**: The 3D Telemetry Viewer automatically generates accurate, rotating 3D track geometries from real GPS telemetry data, complete with dynamic racing lines, kerbs, and surrounding environments using React Three Fiber.
 
 ---
 
 ## Features
 
-| Feature                   | Description                                                                                              |
-| ------------------------- | -------------------------------------------------------------------------------------------------------- |
-| **Race Leaderboards**     | Comprehensive race results with position changes, intervals and gap analysis                             |
-| **Lap-Time Analysis**     | Lap-by-lap performance metrics for studying consistency and strategy                                     |
-| **Tire Strategies**       | Visual breakdown of compound choices and stint lengths across the grid                                   |
-| **Fastest Laps**          | Highlights of the quickest laps set during each session                                                  |
-| **Pit Stop Analytics**    | Scatter-chart visualisation of pit-stop durations per driver                                             |
-| **Driver Comparisons**    | Head-to-head telemetry overlays for any two drivers in a session                                         |
-| **3D Telemetry Viewer**   | Follow drivers around the circuit in a synchronised 3D scene with multiple broadcast-style camera angles |
-| **Procedural Tracks**     | Automatically generated, accurate 3D track geometries from GPS data with dynamic kerbs and environment   |
-| **Interactive Calendars** | Up-to-date 2026 schedule and 2027 preview schedule, linking seamlessly to circuit telemetry              |
-| **Future Preview Mode**   | Graceful fallback rendering 3D circuits and metadata for future races when telemetry is unavailable      |
-| **Live Dashboard**        | A fully integrated, real-time live telemetry dashboard (formerly Formula1-Live) with race control feeds  |
+| Feature                        | Description                                                                                                           |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
+| **Driver & Constructor Stats** | Multi-season (2018–2026) F1 stats (`/stats`) with career & sprint totals, teammate head-to-heads, PU & TP/CEO history |
+| **Race Leaderboards**          | Comprehensive race results with position changes, intervals and gap analysis                                          |
+| **Lap-Time Analysis**          | Lap-by-lap performance metrics for studying consistency and strategy                                                  |
+| **Tire Strategies**            | Visual breakdown of compound choices and stint lengths across the grid                                                |
+| **Fastest Laps**               | Highlights of the quickest laps set during each session                                                               |
+| **Pit Stop Analytics**         | Scatter-chart visualisation of pit-stop durations per driver                                                          |
+| **Driver Comparisons**         | Head-to-head telemetry overlays for any two drivers in a session                                                      |
+| **3D Telemetry Viewer**        | Follow drivers around the circuit in a synchronised 3D scene with multiple broadcast-style camera angles              |
+| **Procedural Tracks**          | Automatically generated, accurate 3D track geometries from GPS data with dynamic kerbs and environment                |
+| **Interactive Calendars**      | Up-to-date 2026 schedule and 2027 preview schedule, linking seamlessly to circuit telemetry                           |
+| **Future Preview Mode**        | Graceful fallback rendering 3D circuits and metadata for future races when telemetry is unavailable                   |
+| **Live Dashboard**             | A fully integrated, real-time live telemetry dashboard (formerly Formula1-Live) with race control feeds               |
 
 ---
 
@@ -73,7 +77,7 @@ F1-Telemetry is an interactive web application built for motorsport fans who wan
 | Layer             | Technologies                                      |
 | ----------------- | ------------------------------------------------- |
 | **Framework**     | React 19 · Vite 8 · React Router 7                |
-| **Styling**       | Tailwind CSS 4 · Flowbite React                   |
+| **Styling**       | Tailwind CSS 4 · Sass (SCSS) · Flowbite React     |
 | **3D / Graphics** | Three.js · `@google/model-viewer` · Tween.js      |
 | **Data Viz**      | Recharts · D3.js                                  |
 | **Animation**     | Framer Motion · Lottie                            |
@@ -252,10 +256,11 @@ The project includes Python scripts that fetch the latest season data and format
 - **F2:** `src/config/f2/api_update.py` — Scrapes F2 results directly from the official FIA Formula 2 website.
 - **F1 Academy:** `src/config/f1a/api_update.py` — Scrapes F1 Academy results directly from the official F1 Academy website.
 - **Manually Updating**
-  - `npm run update:f1` runs f1 api_update.py
-  - `npm run update:f2` runs api_update.py, then python format.py, then python scrape_standings.py
-  - `npm run update:f1a` runs api_update.py, then python format.py then python scrape_standings.py
-  - `npm run update:all` runs all three in order
+  - `npm run update:f1` runs F1 `api_update.py`
+  - `npm run update:f2` runs `api_update.py`, `format.py`, and `scrape_standings.py`
+  - `npm run update:f1a` runs `api_update.py` and `format.py`
+  - `npm run update:cache` runs `scripts/build-cache.mjs` to rebuild `public/stats_cache/` for `/stats`
+  - `npm run update:all` runs all four in order (`update:f1`, `update:f2`, `update:f1a`, `update:cache`)
 
 **Prerequisites**
 
@@ -274,7 +279,7 @@ All Python data-fetching scripts can now be executed seamlessly through the loca
 
 1. Ensure your local dev server is running (`npm run dev`).
 2. Navigate to the `/admin` route in your browser (e.g., `http://localhost:3006/admin`).
-3. From the dashboard, you can easily execute the F1 updates with a single click.
+3. From the dashboard, you can execute the **F1 Data** update and **Stats Cache** (`build-cache.mjs`) rebuild with a single click.
 4. For F2 and F1 Academy, simply paste the official race URL into the input field and click update. The dashboard handles the argument passing and working directories for you!
 
 **Data Formatting**
@@ -297,6 +302,30 @@ All `results.json` files are strictly formatted to maintain a highly compact, re
 | `constructors/`                          | Constructor and driver rosters                    |
 
 > **Note:** The script includes automatic retry logic with exponential back-off for rate-limited (429) API responses. A full update run may take a few minutes depending on how many rounds have been completed.
+
+</details>
+
+<details>
+<summary><strong>Driver &amp; Constructor Stats Hub (<code>/stats</code> &amp; <code>public/stats_cache/</code>)</strong></summary>
+
+The `/stats` page (`src/pages/Stats/`) provides multi-season (2018–2026) F1 Driver and Constructor analytics (`DriversTab.jsx`, `ConstructorsTab.jsx`, `StatsPage.jsx`) backed by prebuilt static JSON files in `public/stats_cache/` so the live site loads with minimal live API calls.
+
+- **Static Cache Architecture**:
+  - `public/stats_cache/{season}/season.json` — Season standings, race results, qualifying, and sprint results (2018–2026).
+  - `public/stats_cache/{season}/{round}.json` — Per-race lap-by-lap stats, tyre stints, pit stops, and weather summaries.
+  - `public/stats_cache/career.json` — Aggregated driver career totals (starts, wins, podiums, poles, sprints, points, championships).
+
+- **Rebuilding the Stats Cache**:
+  - Via UI: Click **Run build-cache.mjs** in `/admin` (supports optional season year and `--force`, `--no-openf1`, `--no-career` flags).
+  - Via CLI:
+    ```bash
+    npm run update:cache                     # current season
+    node scripts/build-cache.mjs 2025        # specific season
+    node scripts/build-cache.mjs --force     # rebuild already-cached races
+    node scripts/build-cache.mjs --no-openf1 # Jolpica data only (skip tyres/weather)
+    node scripts/build-cache.mjs --no-career # skip updating career.json
+    ```
+  - Powered by [`scripts/build-cache.mjs`](scripts/build-cache.mjs) and [`scripts/cache-lib.mjs`](scripts/cache-lib.mjs), and run automatically every Monday by [`.github/workflows/f1-update.yml`](.github/workflows/f1-update.yml).
 
 </details>
 
