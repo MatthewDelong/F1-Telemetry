@@ -338,7 +338,8 @@ function createEdgeLines(
   }
 
   const createLine = (pts, cols) => {
-    const geom = new THREE.BufferGeometry().setFromPoints(pts);
+    const geom = new THREE.BufferGeometry();
+    geom.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
     geom.setAttribute("color", new THREE.Float32BufferAttribute(cols, 3));
     return new THREE.Line(
       geom,
