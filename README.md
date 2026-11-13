@@ -8,7 +8,12 @@
   <a href="https://github.com/MatthewDelong/F1-Telemetry/actions/workflows/f1-update.yml">
     <img src="https://github.com/MatthewDelong/F1-Telemetry/actions/workflows/f1-update.yml/badge.svg" alt="F1 Data Auto-Update" />
   </a>
-  <a href="https://deepwiki.com/MatthewDelong/F1-Telemetry"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki" /></a>
+</p>
+
+<p align="center">
+  <a href="https://deepwiki.com/MatthewDelong/F1-Telemetry">
+    <img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki" />
+  </a>
   <img src="https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB" alt="React" />
   <img src="https://img.shields.io/badge/Vite-B73BFE?style=flat&logo=vite&logoColor=FFD62E" alt="Vite" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
