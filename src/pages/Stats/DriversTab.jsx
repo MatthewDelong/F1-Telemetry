@@ -182,7 +182,14 @@ export default function DriversTab({ season, setSeason, tabSwitcher }) {
   const teamPts = team ? standings.filter((s) => s.Constructors.some((c) => c.constructorId === teamId)).reduce((a, s) => a + +s.points, 0) : 0;
   const isLeader = entry?.position === '1';
   const gap = isLeader ? pts - +(standings[1]?.points ?? 0) : pts - +(standings[0]?.points ?? 0);
-  const tiles = (hit) => rounds.map((r) => ({ key: r.round, label: r.name, state: hit(r) ? 'hit' : !r.raced ? 'soon' : r.dnf ? 'dnf' : 'miss' }));
+  const tiles = (hit) => rounds.map((r) => {
+    const posLabel = !r.raced ? 'Upcoming' : r.dnf ? 'DNF' : r.pos != null ? `P${r.pos}` : null;
+    return {
+      key: r.round,
+      label: posLabel ? `${r.name} — ${posLabel}` : r.name,
+      state: hit(r) ? 'hit' : !r.raced ? 'soon' : r.dnf ? 'dnf' : 'miss',
+    };
+  });
   const cum = cumulative(raced);
   const line = Array.from({ length: Math.max(cum.length, prev.length) }, (_, i) => ({ round: i + 1, points: cum[i], last: prev[i] }));
   const roundName = (r) => rounds.find((q) => q.round === r)?.name;
@@ -269,7 +276,8 @@ export default function DriversTab({ season, setSeason, tabSwitcher }) {
             <div className="garage-hero-card__livery" aria-hidden="true" />
             <div className="garage-hero-card__grid" aria-hidden="true" />
             {entry.Driver.permanentNumber && (
-              <span className="garage-hero-card__number garage-hero-card__number--mobile" aria-hidden="true">
+              <span className="garage-hero-card__number garage-hero-card__number--driver garage-hero-card__number--mobile" aria-hidden="true">
+                <span className="garage-hero-card__number-label">No.</span>
                 {entry.Driver.permanentNumber}
               </span>
             )}
@@ -279,9 +287,6 @@ export default function DriversTab({ season, setSeason, tabSwitcher }) {
               </div>
               <div>
                 <div className="garage-hero-card__badges">
-                  {entry.Driver.permanentNumber && (
-                    <span className="garage-hero-card__car-number">#{entry.Driver.permanentNumber}</span>
-                  )}
                   <span className="garage-hero-card__code">{driverCode(entry.Driver)}</span>
                   <ChampionBadge
                     code={driverCode(entry.Driver)}
@@ -303,7 +308,8 @@ export default function DriversTab({ season, setSeason, tabSwitcher }) {
                       {team?.name ?? 'No team listed'}
                     </p>
                     {entry.Driver.permanentNumber && (
-                      <span className="garage-hero-card__number garage-hero-card__number--desktop" aria-hidden="true">
+                      <span className="garage-hero-card__number garage-hero-card__number--driver garage-hero-card__number--desktop" aria-hidden="true">
+                        <span className="garage-hero-card__number-label">No.</span>
                         {entry.Driver.permanentNumber}
                       </span>
                     )}
@@ -330,7 +336,13 @@ export default function DriversTab({ season, setSeason, tabSwitcher }) {
             </dl>
           )}
 
-          <div className="legend"><span className="tile hit" /> Counted <span className="tile dnf" /> Did not finish <span className="tile miss" /> Other <span className="tile soon" /> Upcoming. Each square is one race.</div>
+          <div className="legend">
+            <span><span className="tile hit" /> Achieved</span>
+            <span><span className="tile dnf" /> Did not finish</span>
+            <span><span className="tile miss" /> Finished</span>
+            {rounds.some((r) => !r.raced) && <span><span className="tile soon" /> Upcoming</span>}
+            <span className="legend-hint">1 square per round (hover for race)</span>
+          </div>
           <div className="cards">
             <StatCard title="Grand Prix wins" value={t.wins} note={`${t.sprintWins} sprint ${t.sprintWins === 1 ? 'win' : 'wins'}`} tiles={tiles((r) => r.pos === 1)} />
             <StatCard title="Grand Prix podiums" value={t.podiums} note={`${t.sprintPodiums} sprint ${t.sprintPodiums === 1 ? 'podium' : 'podiums'}`} tiles={tiles((r) => r.pos != null && r.pos <= 3)} />

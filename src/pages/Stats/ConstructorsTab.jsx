@@ -10,7 +10,11 @@ import {
   YAxis,
   ResponsiveContainer,
 } from "recharts";
-import { getConstructorSeason, getConstructorStandings } from "./api";
+import {
+  getConstructorSeason,
+  getConstructorStandings,
+  getCrashDamage,
+} from "./api";
 import { teamColor, teamLogoBase } from "./stats";
 import { getTeamChampionships } from "./teamChampionships";
 import {
@@ -178,6 +182,41 @@ function PowerUnitCard({ season, constructorId }) {
   );
 }
 
+function formatUsdCompact(amount) {
+  if (amount == null) return "–";
+  if (amount >= 1_000_000) return `$${(amount / 1_000_000).toFixed(2)}M`;
+  if (amount >= 1_000) return `$${Math.round(amount / 1_000)}K`;
+  return `$${amount.toLocaleString()}`;
+}
+
+function CrashDamageCard({ season, constructorId, crashDamage }) {
+  const seasonData = crashDamage?.seasons?.[String(season)];
+  const entry = seasonData?.[constructorId];
+  if (!entry) return null;
+  return (
+    <section className="panel stat constructor-metric constructor-pu-metric">
+      <h3>Crash damage</h3>
+      <p className="big">{formatUsdCompact(entry.total)}</p>
+      <p className="note">Est. {season} repair bill</p>
+      {entry.drivers?.length > 0 && (
+        <ol
+          className="constructor-pu-history"
+          aria-label="Crash damage breakdown by driver"
+        >
+          {entry.drivers.map((d) => (
+            <li key={d.name}>
+              <span className="constructor-pu-year">{d.name}</span>
+              <span className="constructor-pu-supplier">
+                ${d.cost.toLocaleString()}
+              </span>
+            </li>
+          ))}
+        </ol>
+      )}
+    </section>
+  );
+}
+
 function ChartPanel({ title, children, className = "" }) {
   return (
     <section className={`panel chart ${className}`.trim()}>
@@ -279,6 +318,11 @@ function DriverPoints({ drivers, totalPoints }) {
 export default function ConstructorsTab({ season, setSeason, tabSwitcher }) {
   const [standings, setStandings] = useState([]);
   const [constructorId, setConstructorId] = useState("");
+  const [crashDamage, setCrashDamage] = useState(null);
+
+  useEffect(() => {
+    getCrashDamage().then(setCrashDamage);
+  }, []);
   const [seasonData, setSeasonData] = useState(null);
   const [loadingStandings, setLoadingStandings] = useState(true);
   const [loadingDetails, setLoadingDetails] = useState(false);
@@ -558,10 +602,11 @@ export default function ConstructorsTab({ season, setSeason, tabSwitcher }) {
             <div className="garage-hero-card__grid" aria-hidden="true" />
             {selectedStanding.position && (
               <span
-                className="garage-hero-card__number garage-hero-card__number--mobile"
+                className="garage-hero-card__number garage-hero-card__number--driver garage-hero-card__number--mobile"
                 aria-hidden="true"
               >
-                P{selectedStanding.position}
+                <span className="garage-hero-card__number-label">Pos.</span>
+                {selectedStanding.position}
               </span>
             )}
             <div className="constructor-identity">
@@ -572,11 +617,6 @@ export default function ConstructorsTab({ season, setSeason, tabSwitcher }) {
               />
               <div>
                 <div className="garage-hero-card__badges">
-                  <span className="garage-hero-card__car-number">
-                    {selectedStanding.position === "1"
-                      ? "P1"
-                      : `P${selectedStanding.position}`}
-                  </span>
                   <span className="garage-hero-card__code">
                     {season} SEASON
                   </span>
@@ -603,10 +643,11 @@ export default function ConstructorsTab({ season, setSeason, tabSwitcher }) {
                     </p>
                     {selectedStanding.position && (
                       <span
-                        className="garage-hero-card__number garage-hero-card__number--desktop"
+                        className="garage-hero-card__number garage-hero-card__number--driver garage-hero-card__number--desktop"
                         aria-hidden="true"
                       >
-                        P{selectedStanding.position}
+                        <span className="garage-hero-card__number-label">Pos.</span>
+                        {selectedStanding.position}
                       </span>
                     )}
                   </div>
@@ -673,6 +714,11 @@ export default function ConstructorsTab({ season, setSeason, tabSwitcher }) {
             />
             <TeamPrincipalCard season={season} constructorId={constructorId} />
             <PowerUnitCard season={season} constructorId={constructorId} />
+            <CrashDamageCard
+              season={season}
+              constructorId={constructorId}
+              crashDamage={crashDamage}
+            />
           </div>
 
           <section className="panel constructor-details">

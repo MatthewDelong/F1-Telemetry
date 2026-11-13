@@ -242,3 +242,13 @@ export async function getStints(season, rounds, driver) {
   }));
   return out;
 }
+
+let crashDamagePromise;
+export function getCrashDamage() {
+  if (!crashDamagePromise) {
+    crashDamagePromise = fetch(`${import.meta.env.BASE_URL}stats_cache/crash-damage.json`)
+      .then((res) => (res.ok ? res.json() : null))
+      .catch(() => null);
+  }
+  return crashDamagePromise;
+}

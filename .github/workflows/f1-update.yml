@@ -68,6 +68,9 @@ jobs:
       - name: Build Driver & Constructor Stats Cache
         run: node scripts/build-cache.mjs
 
+      - name: Scrape Team Crash Damage Costs
+        run: node scripts/scrape-crash-damage.mjs
+
       - name: Commit and Push database changes
         run: |
           git config --global user.name 'github-actions[bot]'

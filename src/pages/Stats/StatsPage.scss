@@ -480,6 +480,29 @@
     font-size: clamp(6.8rem, 21vw, 8.8rem);
   }
 
+  .garage-hero-card__number--driver {
+    color: rgba(255, 255, 255, 0.14);
+    -webkit-text-stroke: 2px rgba(255, 255, 255, 0.55);
+    text-shadow: 0 0 24px color-mix(in srgb, var(--team) 45%, transparent);
+
+    &.garage-hero-card__number--desktop {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+  }
+
+  .garage-hero-card__number-label {
+    font-family: "Formula1", sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+    -webkit-text-stroke: 0;
+    text-shadow: none;
+  }
+
   /* Cursor-tracked light sheen */
   .garage-hero-card__sheen {
     position: absolute;
@@ -757,6 +780,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
+    white-space: nowrap;
   }
 
   .legend-hint {
@@ -1448,6 +1472,12 @@
       top: 22px;
       right: 24px;
       font-size: clamp(6.8rem, 14vw, 9.2rem);
+
+      &.garage-hero-card__number--driver {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 4px;
+      }
     }
   }
 
