@@ -2,7 +2,7 @@
     "driverId": "lawson",
     "driverCode": "LAW",
     "driverNumber": "30",
-    "lastUpdate": "2026-11-16T19:37:17.853277",
+    "lastUpdate": "2026-11-23T21:26:54.992007",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -11,7 +11,7 @@
     "winRate": 0.0,
     "podiumRate": 0.0,
     "poleRate": 0.0,
-    "dnfRate": 0.23636363636363636,
+    "dnfRate": 0.23214285714285715,
     "seasonWins": {
         "2023": 0,
         "2024": 0,
@@ -132,7 +132,8 @@
             "Singapore Grand Prix": "1:37.193",
             "United States Grand Prix": "1:39.652",
             "Mexico Grand Prix": "1:20.713",
-            "Brazil Grand Prix": "1:13.495"
+            "Brazil Grand Prix": "1:13.495",
+            "Las Vegas Grand Prix": "1:35.591"
         }
     },
     "finalStandings": {
@@ -340,6 +341,9 @@
                 },
                 "Brazil Grand Prix": {
                     "points": 89
+                },
+                "Las Vegas Grand Prix": {
+                    "points": 89
                 }
             }
         }
@@ -414,7 +418,8 @@
                 "Singapore Grand Prix": "7",
                 "United States Grand Prix": "9",
                 "Mexico Grand Prix": "7",
-                "Brazil Grand Prix": "7"
+                "Brazil Grand Prix": "7",
+                "Las Vegas Grand Prix": "14"
             }
         }
     },
@@ -488,7 +493,8 @@
                 "Singapore Grand Prix": "8",
                 "United States Grand Prix": "9",
                 "Mexico Grand Prix": "22",
-                "Brazil Grand Prix": "3"
+                "Brazil Grand Prix": "3",
+                "Las Vegas Grand Prix": "7"
             }
         }
     },
@@ -554,7 +560,8 @@
             "Singapore Grand Prix": 1,
             "United States Grand Prix": 0,
             "Mexico Grand Prix": 15,
-            "Brazil Grand Prix": -4
+            "Brazil Grand Prix": -4,
+            "Las Vegas Grand Prix": -7
         }
     },
     "driverQualifyingTimes": {
@@ -847,6 +854,11 @@
                     "1:32.085",
                     "1:27.049",
                     "1:28.321"
+                ],
+                "Las Vegas Grand Prix": [
+                    "1:35.489",
+                    "1:35.048",
+                    "1:35.090"
                 ]
             }
         }
@@ -855,13 +867,13 @@
         "2023": 12.2,
         "2024": 13.5,
         "2025": 12.791666666666666,
-        "2026": 9.0
+        "2026": 9.238095238095237
     },
     "avgQualiPositions": {
         "2023": 14.2,
         "2024": 12.666666666666666,
         "2025": 12.541666666666666,
-        "2026": 10.9
+        "2026": 10.714285714285714
     },
     "rates": {
         "wins": {

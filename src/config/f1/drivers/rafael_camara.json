@@ -2,7 +2,7 @@
     "driverId": "rafael_camara",
     "driverCode": "CAM",
     "driverNumber": "51",
-    "lastUpdate": "2026-11-16T19:37:17.853616",
+    "lastUpdate": "2026-11-23T21:26:54.992033",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -30,7 +30,8 @@
     },
     "fastLaps": {
         "2026": {
-            "Brazil Grand Prix": "1:14.369"
+            "Brazil Grand Prix": "1:14.369",
+            "Las Vegas Grand Prix": "1:37.900"
         }
     },
     "finalStandings": {
@@ -46,6 +47,9 @@
             "pos": {
                 "Brazil Grand Prix": {
                     "points": 0
+                },
+                "Las Vegas Grand Prix": {
+                    "points": 0
                 }
             }
         }
@@ -54,7 +58,8 @@
         "2026": {
             "year": "2026",
             "positions": {
-                "Brazil Grand Prix": "20"
+                "Brazil Grand Prix": "20",
+                "Las Vegas Grand Prix": "16"
             }
         }
     },
@@ -62,7 +67,8 @@
         "2026": {
             "year": "2026",
             "positions": {
-                "Brazil Grand Prix": "11"
+                "Brazil Grand Prix": "11",
+                "Las Vegas Grand Prix": "15"
             }
         }
     },
@@ -73,6 +79,11 @@
                 "Brazil Grand Prix": [
                     "1:32.809",
                     "1:31.515",
+                    "N/A"
+                ],
+                "Las Vegas Grand Prix": [
+                    "1:36.220",
+                    "N/A",
                     "N/A"
                 ]
             }
@@ -113,10 +124,10 @@
         }
     },
     "avgRacePositions": {
-        "2026": 20.0
+        "2026": 18.0
     },
     "avgQualiPositions": {
-        "2026": 11.0
+        "2026": 13.0
     },
     "rates": {
         "wins": {
@@ -141,7 +152,8 @@
     },
     "positionsGainLost": {
         "2026": {
-            "Brazil Grand Prix": -9
+            "Brazil Grand Prix": -9,
+            "Las Vegas Grand Prix": -1
         }
     }
 }

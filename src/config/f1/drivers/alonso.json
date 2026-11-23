@@ -2,16 +2,16 @@
     "driverId": "alonso",
     "driverCode": "ALO",
     "driverNumber": "14",
-    "lastUpdate": "2026-11-16T19:37:17.853364",
+    "lastUpdate": "2026-11-23T21:26:54.992100",
     "totalWins": 32,
     "totalPodiums": 106,
     "totalPoles": 23,
     "totalDNFs": 93,
     "totalRaces": 444,
-    "winRate": 0.07142857142857142,
-    "podiumRate": 0.23660714285714285,
-    "poleRate": 0.05133928571428571,
-    "dnfRate": 0.20758928571428573,
+    "winRate": 0.07126948775055679,
+    "podiumRate": 0.23608017817371937,
+    "poleRate": 0.051224944320712694,
+    "dnfRate": 0.2071269487750557,
     "seasonWins": {
         "2001": 0,
         "2003": 1,
@@ -946,7 +946,8 @@
             "Singapore Grand Prix": "1:38.032",
             "United States Grand Prix": "1:39.841",
             "Mexico Grand Prix": "1:23.544",
-            "Brazil Grand Prix": "1:14.706"
+            "Brazil Grand Prix": "1:14.706",
+            "Las Vegas Grand Prix": "1:38.560"
         }
     },
     "finalStandings": {
@@ -1061,7 +1062,7 @@
         },
         "2026": {
             "year": "2026",
-            "position": "17",
+            "position": "18",
             "points": "7"
         }
     },
@@ -2522,6 +2523,9 @@
                 },
                 "Brazil Grand Prix": {
                     "points": 7
+                },
+                "Las Vegas Grand Prix": {
+                    "points": 7
                 }
             }
         }
@@ -3065,7 +3069,8 @@
                 "Singapore Grand Prix": "16",
                 "United States Grand Prix": "16",
                 "Mexico Grand Prix": "22",
-                "Brazil Grand Prix": "12"
+                "Brazil Grand Prix": "12",
+                "Las Vegas Grand Prix": "19"
             }
         }
     },
@@ -3591,7 +3596,8 @@
                 "Singapore Grand Prix": "20",
                 "United States Grand Prix": "12",
                 "Mexico Grand Prix": "17",
-                "Brazil Grand Prix": "8"
+                "Brazil Grand Prix": "8",
+                "Las Vegas Grand Prix": "18"
             }
         }
     },
@@ -4071,7 +4077,8 @@
             "Singapore Grand Prix": 4,
             "United States Grand Prix": -4,
             "Mexico Grand Prix": -5,
-            "Brazil Grand Prix": -4
+            "Brazil Grand Prix": -4,
+            "Las Vegas Grand Prix": -1
         }
     },
     "driverQualifyingTimes": {
@@ -6320,6 +6327,11 @@
                     "1:32.092",
                     "1:29.072",
                     "1:30.311"
+                ],
+                "Las Vegas Grand Prix": [
+                    "1:37.400",
+                    "N/A",
+                    "N/A"
                 ]
             }
         }
@@ -6347,7 +6359,7 @@
         "2023": 6.636363636363637,
         "2024": 10.166666666666666,
         "2025": 11.875,
-        "2026": 16.4
+        "2026": 16.523809523809526
     },
     "avgQualiPositions": {
         "2001": 17.0,
@@ -6372,7 +6384,7 @@
         "2023": 7.0,
         "2024": 9.583333333333334,
         "2025": 10.375,
-        "2026": 18.05
+        "2026": 18.047619047619047
     },
     "rates": {
         "wins": {

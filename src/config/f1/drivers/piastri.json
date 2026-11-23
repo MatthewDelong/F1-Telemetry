@@ -2,16 +2,16 @@
     "driverId": "piastri",
     "driverCode": "PIA",
     "driverNumber": "81",
-    "lastUpdate": "2026-11-16T19:37:17.853254",
+    "lastUpdate": "2026-11-23T21:26:54.991833",
     "totalWins": 9,
-    "totalPodiums": 28,
+    "totalPodiums": 29,
     "totalPoles": 6,
     "totalDNFs": 9,
     "totalRaces": 86,
-    "winRate": 0.1,
-    "podiumRate": 0.3111111111111111,
-    "poleRate": 0.06666666666666667,
-    "dnfRate": 0.1,
+    "winRate": 0.0989010989010989,
+    "podiumRate": 0.31868131868131866,
+    "poleRate": 0.06593406593406594,
+    "dnfRate": 0.0989010989010989,
     "seasonWins": {
         "2023": 0,
         "2024": 2,
@@ -22,7 +22,7 @@
         "2023": 2,
         "2024": 8,
         "2025": 16,
-        "2026": 2
+        "2026": 3
     },
     "seasonPoles": {
         "2023": 0,
@@ -84,7 +84,8 @@
         },
         "2026": {
             "Japan Grand Prix": "2",
-            "Miami Grand Prix": "3"
+            "Miami Grand Prix": "3",
+            "Las Vegas Grand Prix": "3"
         }
     },
     "DNFs": {
@@ -201,7 +202,8 @@
             "Singapore Grand Prix": "1:35.665",
             "United States Grand Prix": "1:40.328",
             "Mexico Grand Prix": "1:20.690",
-            "Brazil Grand Prix": "1:13.018"
+            "Brazil Grand Prix": "1:13.018",
+            "Las Vegas Grand Prix": "1:36.334"
         }
     },
     "finalStandings": {
@@ -223,7 +225,7 @@
         "2026": {
             "year": "2026",
             "position": "7",
-            "points": "152"
+            "points": "167"
         }
     },
     "posAfterRace": {
@@ -514,6 +516,9 @@
                 },
                 "Brazil Grand Prix": {
                     "points": 152
+                },
+                "Las Vegas Grand Prix": {
+                    "points": 167
                 }
             }
         }
@@ -623,7 +628,8 @@
                 "Singapore Grand Prix": "5",
                 "United States Grand Prix": "7",
                 "Mexico Grand Prix": "13",
-                "Brazil Grand Prix": "6"
+                "Brazil Grand Prix": "6",
+                "Las Vegas Grand Prix": "3"
             }
         }
     },
@@ -732,7 +738,8 @@
                 "Singapore Grand Prix": "6",
                 "United States Grand Prix": "7",
                 "Mexico Grand Prix": "12",
-                "Brazil Grand Prix": "10"
+                "Brazil Grand Prix": "10",
+                "Las Vegas Grand Prix": "17"
             }
         }
     },
@@ -833,7 +840,8 @@
             "Singapore Grand Prix": 1,
             "United States Grand Prix": 0,
             "Mexico Grand Prix": -1,
-            "Brazil Grand Prix": 4
+            "Brazil Grand Prix": 4,
+            "Las Vegas Grand Prix": 14
         }
     },
     "driverQualifyingTimes": {
@@ -1301,6 +1309,11 @@
                     "1:32.251",
                     "1:30.369",
                     "N/A"
+                ],
+                "Las Vegas Grand Prix": [
+                    "1:35.491",
+                    "1:34.763",
+                    "1:34.899"
                 ]
             }
         }
@@ -1309,13 +1322,13 @@
         "2023": 10.909090909090908,
         "2024": 5.125,
         "2025": 4.208333333333333,
-        "2026": 8.7
+        "2026": 8.428571428571429
     },
     "avgQualiPositions": {
         "2023": 9.863636363636363,
         "2024": 5.416666666666667,
         "2025": 3.0416666666666665,
-        "2026": 6.15
+        "2026": 6.666666666666667
     },
     "rates": {
         "wins": {
@@ -1328,7 +1341,7 @@
             "2023": 0.09090909090909091,
             "2024": 0.3333333333333333,
             "2025": 0.6666666666666666,
-            "2026": 0.1
+            "2026": 0.14285714285714285
         },
         "poles": {
             "2023": 0.0,
@@ -1346,21 +1359,21 @@
     "consistency": {
         "mean": {
             "wins": 2.25,
-            "podiums": 7.0,
+            "podiums": 7.25,
             "poles": 1.5,
-            "points": 237.75
+            "points": 241.5
         },
         "std": {
             "wins": 2.8613807855648994,
-            "podiums": 5.744562646538029,
+            "podiums": 5.539629951540085,
             "poles": 2.598076211353316,
-            "points": 122.24642121551044
+            "points": 119.76330823753993
         },
         "cv": {
             "wins": 1.2717247935843998,
-            "podiums": 0.8206518066482898,
+            "podiums": 0.7640868898675979,
             "poles": 1.7320508075688774,
-            "points": 0.5141805308749124
+            "points": 0.49591431982418194
         }
     },
     "peakSeason": {

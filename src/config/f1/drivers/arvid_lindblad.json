@@ -2,7 +2,7 @@
     "driverId": "arvid_lindblad",
     "driverCode": "LIN",
     "driverNumber": "",
-    "lastUpdate": "2026-11-16T19:37:17.853345",
+    "lastUpdate": "2026-11-23T21:26:54.992121",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -62,7 +62,8 @@
             "Singapore Grand Prix": "1:38.154",
             "United States Grand Prix": "1:39.422",
             "Mexico Grand Prix": "1:20.555",
-            "Brazil Grand Prix": "1:14.004"
+            "Brazil Grand Prix": "1:14.004",
+            "Las Vegas Grand Prix": "1:37.883"
         }
     },
     "finalStandings": {
@@ -144,6 +145,9 @@
                 },
                 "Brazil Grand Prix": {
                     "points": 38
+                },
+                "Las Vegas Grand Prix": {
+                    "points": 38
                 }
             }
         }
@@ -174,7 +178,8 @@
                 "Singapore Grand Prix": "15",
                 "United States Grand Prix": "12",
                 "Mexico Grand Prix": "18",
-                "Brazil Grand Prix": "11"
+                "Brazil Grand Prix": "11",
+                "Las Vegas Grand Prix": "20"
             }
         }
     },
@@ -204,7 +209,8 @@
                 "Singapore Grand Prix": "9",
                 "United States Grand Prix": "14",
                 "Mexico Grand Prix": "8",
-                "Brazil Grand Prix": "18"
+                "Brazil Grand Prix": "18",
+                "Las Vegas Grand Prix": "5"
             }
         }
     },
@@ -230,7 +236,8 @@
             "Singapore Grand Prix": -6,
             "United States Grand Prix": 2,
             "Mexico Grand Prix": -10,
-            "Brazil Grand Prix": 7
+            "Brazil Grand Prix": 7,
+            "Las Vegas Grand Prix": -15
         }
     },
     "driverQualifyingTimes": {
@@ -339,17 +346,22 @@
                     "1:32.306",
                     "1:31.687",
                     "N/A"
+                ],
+                "Las Vegas Grand Prix": [
+                    "1:35.456",
+                    "1:34.963",
+                    "1:34.668"
                 ]
             }
         }
     },
     "avgRacePositions": {
         "2025": 0.0,
-        "2026": 11.15
+        "2026": 11.571428571428571
     },
     "avgQualiPositions": {
         "2025": 0.0,
-        "2026": 11.75
+        "2026": 11.428571428571429
     },
     "rates": {
         "wins": {

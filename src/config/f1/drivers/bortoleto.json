@@ -2,7 +2,7 @@
     "driverId": "bortoleto",
     "driverCode": "BOR",
     "driverNumber": "5",
-    "lastUpdate": "2026-11-16T19:37:17.853448",
+    "lastUpdate": "2026-11-23T21:26:54.991968",
     "totalWins": 0,
     "totalPodiums": 0,
     "totalPoles": 0,
@@ -11,7 +11,7 @@
     "winRate": 0.0,
     "podiumRate": 0.0,
     "poleRate": 0.0,
-    "dnfRate": 0.2727272727272727,
+    "dnfRate": 0.26666666666666666,
     "seasonWins": {
         "2025": 0,
         "2026": 0
@@ -100,7 +100,8 @@
             "Singapore Grand Prix": "1:40.486",
             "United States Grand Prix": "1:38.393",
             "Mexico Grand Prix": "1:20.872",
-            "Brazil Grand Prix": "1:14.940"
+            "Brazil Grand Prix": "1:14.940",
+            "Las Vegas Grand Prix": "1:37.087"
         }
     },
     "finalStandings": {
@@ -255,6 +256,9 @@
                 },
                 "Brazil Grand Prix": {
                     "points": 14
+                },
+                "Las Vegas Grand Prix": {
+                    "points": 14
                 }
             }
         }
@@ -310,7 +314,8 @@
                 "Singapore Grand Prix": "22",
                 "United States Grand Prix": "13",
                 "Mexico Grand Prix": "8",
-                "Brazil Grand Prix": "16"
+                "Brazil Grand Prix": "16",
+                "Las Vegas Grand Prix": "12"
             }
         }
     },
@@ -364,7 +369,8 @@
                 "Singapore Grand Prix": "14",
                 "United States Grand Prix": "21",
                 "Mexico Grand Prix": "13",
-                "Brazil Grand Prix": "19"
+                "Brazil Grand Prix": "19",
+                "Las Vegas Grand Prix": "13"
             }
         }
     },
@@ -414,7 +420,8 @@
             "Singapore Grand Prix": -8,
             "United States Grand Prix": 8,
             "Mexico Grand Prix": 5,
-            "Brazil Grand Prix": 3
+            "Brazil Grand Prix": 3,
+            "Las Vegas Grand Prix": 1
         }
     },
     "driverQualifyingTimes": {
@@ -639,17 +646,22 @@
                     "1:41.564",
                     "N/A",
                     "N/A"
+                ],
+                "Las Vegas Grand Prix": [
+                    "1:36.149",
+                    "1:35.993",
+                    "N/A"
                 ]
             }
         }
     },
     "avgRacePositions": {
         "2025": 14.25,
-        "2026": 12.85
+        "2026": 12.80952380952381
     },
     "avgQualiPositions": {
         "2025": 13.956521739130435,
-        "2026": 13.35
+        "2026": 13.333333333333334
     },
     "rates": {
         "wins": {

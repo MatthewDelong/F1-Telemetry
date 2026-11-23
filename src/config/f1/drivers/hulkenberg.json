@@ -2,16 +2,16 @@
     "driverId": "hulkenberg",
     "driverCode": "HUL",
     "driverNumber": "27",
-    "lastUpdate": "2026-11-16T19:37:17.853324",
+    "lastUpdate": "2026-11-23T21:26:54.991949",
     "totalWins": 0,
     "totalPodiums": 1,
     "totalPoles": 1,
     "totalDNFs": 73,
     "totalRaces": 270,
     "winRate": 0.0,
-    "podiumRate": 0.0036496350364963502,
-    "poleRate": 0.0036496350364963502,
-    "dnfRate": 0.2664233576642336,
+    "podiumRate": 0.0036363636363636364,
+    "poleRate": 0.0036363636363636364,
+    "dnfRate": 0.26545454545454544,
     "seasonWins": {
         "2010": 0,
         "2012": 0,
@@ -524,7 +524,8 @@
             "Singapore Grand Prix": "1:37.055",
             "United States Grand Prix": "1:40.323",
             "Mexico Grand Prix": "1:20.732",
-            "Brazil Grand Prix": "1:14.000"
+            "Brazil Grand Prix": "1:14.000",
+            "Las Vegas Grand Prix": "1:37.038"
         }
     },
     "finalStandings": {
@@ -1499,6 +1500,9 @@
                 },
                 "Brazil Grand Prix": {
                     "points": 14
+                },
+                "Las Vegas Grand Prix": {
+                    "points": 14
                 }
             }
         }
@@ -1836,7 +1840,8 @@
                 "Singapore Grand Prix": "8",
                 "United States Grand Prix": "11",
                 "Mexico Grand Prix": "14",
-                "Brazil Grand Prix": "10"
+                "Brazil Grand Prix": "10",
+                "Las Vegas Grand Prix": "11"
             }
         }
     },
@@ -2172,7 +2177,8 @@
                 "Singapore Grand Prix": "10",
                 "United States Grand Prix": "11",
                 "Mexico Grand Prix": "10",
-                "Brazil Grand Prix": "4"
+                "Brazil Grand Prix": "4",
+                "Las Vegas Grand Prix": "12"
             }
         }
     },
@@ -2478,7 +2484,8 @@
             "Singapore Grand Prix": 2,
             "United States Grand Prix": 0,
             "Mexico Grand Prix": -4,
-            "Brazil Grand Prix": -6
+            "Brazil Grand Prix": -6,
+            "Las Vegas Grand Prix": 1
         }
     },
     "driverQualifyingTimes": {
@@ -3905,6 +3912,11 @@
                     "1:31.693",
                     "1:28.361",
                     "1:28.668"
+                ],
+                "Las Vegas Grand Prix": [
+                    "1:35.710",
+                    "1:35.460",
+                    "N/A"
                 ]
             }
         }
@@ -3924,7 +3936,7 @@
         "2023": 14.545454545454545,
         "2024": 11.625,
         "2025": 12.791666666666666,
-        "2026": 12.95
+        "2026": 12.857142857142858
     },
     "avgQualiPositions": {
         "2010": 10.947368421052632,
@@ -3941,7 +3953,7 @@
         "2023": 12.136363636363637,
         "2024": 11.791666666666666,
         "2025": 14.875,
-        "2026": 11.5
+        "2026": 11.523809523809524
     },
     "rates": {
         "wins": {
