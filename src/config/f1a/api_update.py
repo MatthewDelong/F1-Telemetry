@@ -359,5 +359,15 @@ def main():
             print(f"READ-BACK round {round_number}: " + ", ".join(f"{k}={len(v)}" for k, v in r['Results'].items()))
     print(f"Successfully updated results.json with {race_name} (Round {round_number})")
 
+    # Also refresh official_driver_standings.json and official_team_standings.json
+    try:
+        import subprocess
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        scraper_path = os.path.join(script_dir, 'scrape_standings.py')
+        if os.path.exists(scraper_path):
+            subprocess.run([sys.executable, scraper_path], cwd=script_dir, check=True)
+    except Exception as e:
+        print(f"Warning: failed to update official standings via scrape_standings.py: {e}")
+
 if __name__ == '__main__':
     main()
