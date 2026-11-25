@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ReactSelectComponent } from './Select';
 import classNames from 'classnames';
 import { getCurrentYear } from '../utils/currentYear';
 
 export const ResultsSelector = ({ className, setSelectedYear, selectedYear, resultPage, resultPagePath, championshipLevel }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [selectValue, setSelectValue] = useState(resultPage);
   const [internal, setInternal] = useState(false);
@@ -40,16 +41,13 @@ export const ResultsSelector = ({ className, setSelectedYear, selectedYear, resu
 
   const resultsOptions = championshipLevel === "F1A" ? [
     { value: '/f1a/race-results', label: 'Race results' },
-    { value: '/f1a/constructor-standings', label: 'Constructor standings' },
-    { value: '/f1a/driver-standings', label: 'Driver standings' }
+    { value: '/f1a/standings', label: 'Standings' }
   ] : championshipLevel === "F2" ? [
     { value: '/f2/race-results', label: 'Race results' },
-    { value: '/f2/constructor-standings', label: 'Constructor standings' },
-    { value: '/f2/driver-standings', label: 'Driver standings' }
+    { value: '/f2/standings', label: 'Standings' }
   ] : [
     { value: '/race-results', label: 'Race results' },
-    { value: '/constructor-standings', label: 'Constructor standings' },
-    { value: '/driver-standings', label: 'Driver standings' }
+    { value: '/standings', label: 'Standings' }
   ];
 
   // console.log('resultPagePath', resultPagePath);
@@ -71,7 +69,7 @@ export const ResultsSelector = ({ className, setSelectedYear, selectedYear, resu
         options={resultsOptions}
         onChange={handleResultChange}
         isSearchable={false}
-        value={internal ? resultsOptions.find(option => option.value === selectValue) : resultsOptions.find(option => option.value === resultPagePath)}
+        value={internal ? resultsOptions.find(option => option.value === selectValue) : resultsOptions.find(option => option.value === (resultPagePath || location.pathname))}
         className="w-[24rem]"
       />
     </div>

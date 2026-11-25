@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useEffect, useMemo, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import classNames from "classnames";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -55,6 +55,7 @@ const ConstructorStandingsF1a = lazyNamed(() => import("./pages/f1a/ConstructorS
 const RaceResultsPageF2 = lazyNamed(() => import("./pages/f2/RaceResultsPageF2"), "RaceResultsPageF2");
 const DriverStandingsF2 = lazyNamed(() => import("./pages/f2/DriverStandingsF2"), "DriverStandingsF2");
 const ConstructorStandingsF2 = lazyNamed(() => import("./pages/f2/ConstructorStandingsF2"), "ConstructorStandingsF2");
+const StandingsPage = lazyNamed(() => import("./pages/StandingsPage"), "StandingsPage");
 
 const FeaturesPage = lazyNamed(() => import("./pages/FeaturesPage"), "FeaturesPage");
 const DriverComparison = lazyNamed(() => import("./pages/DriverComparison"), "DriverComparison");
@@ -151,14 +152,11 @@ function MainContent({
 }) {
   const routerLocation = useLocation();
   const location = routerLocation.pathname;
-  const validPaths = [
-    "/race-results",
-    "/constructor-standings",
-    "/driver-standings",
-  ];
+  const validPaths = ["/race-results"];
   const validF1APaths = useMemo(
     () => [
       "/f1a/race-results",
+      "/f1a/standings",
       "/f1a/constructor-standings",
       "/f1a/driver-standings",
       "/race-f1a/",
@@ -168,12 +166,14 @@ function MainContent({
   const validF2Paths = useMemo(
     () => [
       "/f2/race-results",
+      "/f2/standings",
       "/f2/constructor-standings",
       "/f2/driver-standings",
       "/race-f2/",
     ],
     [],
   );
+  const isStandings = location.endsWith("/standings");
 
   const isF1a =
     validF1APaths.includes(location) || location.startsWith("/race-f1a/");
@@ -222,10 +222,7 @@ function MainContent({
       >
         {validPaths.includes(location) && (
           <ResultsSelector
-            className={classNames(
-              "mt-32 relative z-[100]",
-              location === "/driver-standings" ? "mb-14" : "mb-24",
-            )}
+            className="mt-32 mb-24 relative z-[100]"
             setSelectedYear={setSelectedYear}
             selectedYear={selectedYear}
             resultPage={resultPage}
@@ -237,13 +234,15 @@ function MainContent({
           <div className="mt-32 mb-16 relative z-[100]">
             {isF1a && <F1ALogo height={48} className="mx-auto mb-16" />}
             {isF2 && <F2Logo height={48} className="mx-auto mb-16" />}
-            <ResultsSelector
-              setSelectedYear={setSelectedYear}
-              selectedYear={selectedYear}
-              resultPage={resultPage}
-              resultPagePath={resultPagePath}
-              championshipLevel={isF1a ? "F1A" : "F2"}
-            />
+            {!isStandings && (
+              <ResultsSelector
+                setSelectedYear={setSelectedYear}
+                selectedYear={selectedYear}
+                resultPage={resultPage}
+                resultPagePath={resultPagePath}
+                championshipLevel={isF1a ? "F1A" : "F2"}
+              />
+            )}
           </div>
         )}
 
@@ -267,12 +266,24 @@ function MainContent({
             element={<RaceResultsPage selectedYear={selectedYear} />}
           />
           <Route
+            path="/standings"
+            element={
+              <StandingsPage
+                series="F1"
+                selectedYear={selectedYear}
+                setSelectedYear={setSelectedYear}
+                DriversComponent={DriverStandings}
+                ConstructorsComponent={ConstructorStandings}
+              />
+            }
+          />
+          <Route
             path="/constructor-standings"
-            element={<ConstructorStandings selectedYear={selectedYear} />}
+            element={<Navigate to="/standings?view=constructors" replace />}
           />
           <Route
             path="/driver-standings"
-            element={<DriverStandings selectedYear={selectedYear} />}
+            element={<Navigate to="/standings" replace />}
           />
           <Route
             path="/teammates-comparison/:urlYear?/:urlTeam?"
@@ -303,22 +314,24 @@ function MainContent({
             element={<RacePageF1a championshipLevel="F1A" />}
           />
           <Route
-            path="/f1a/driver-standings"
+            path="/f1a/standings"
             element={
-              <DriverStandingsF1a
+              <StandingsPage
+                series="F1A"
                 selectedYear={selectedYear}
-                championshipLevel="F1A"
+                setSelectedYear={setSelectedYear}
+                DriversComponent={DriverStandingsF1a}
+                ConstructorsComponent={ConstructorStandingsF1a}
               />
             }
           />
           <Route
+            path="/f1a/driver-standings"
+            element={<Navigate to="/f1a/standings" replace />}
+          />
+          <Route
             path="/f1a/constructor-standings"
-            element={
-              <ConstructorStandingsF1a
-                selectedYear={selectedYear}
-                championshipLevel="F1A"
-              />
-            }
+            element={<Navigate to="/f1a/standings?view=constructors" replace />}
           />
           {/* F2 Routes */}
           <Route
@@ -335,22 +348,24 @@ function MainContent({
             element={<RacePageF2 championshipLevel="F2" />}
           />
           <Route
-            path="/f2/driver-standings"
+            path="/f2/standings"
             element={
-              <DriverStandingsF2
+              <StandingsPage
+                series="F2"
                 selectedYear={selectedYear}
-                championshipLevel="F2"
+                setSelectedYear={setSelectedYear}
+                DriversComponent={DriverStandingsF2}
+                ConstructorsComponent={ConstructorStandingsF2}
               />
             }
           />
           <Route
+            path="/f2/driver-standings"
+            element={<Navigate to="/f2/standings" replace />}
+          />
+          <Route
             path="/f2/constructor-standings"
-            element={
-              <ConstructorStandingsF2
-                selectedYear={selectedYear}
-                championshipLevel="F2"
-              />
-            }
+            element={<Navigate to="/f2/standings?view=constructors" replace />}
           />
           {/* Live Timings Route */}
           <Route path="/live" element={<LiveDashboard />} />

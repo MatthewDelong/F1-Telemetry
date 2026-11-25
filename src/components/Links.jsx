@@ -16,18 +16,11 @@ export const F1Links = ({ accordion = false, onClick }) => {
         {currentYear} Race Results
       </Link>
       <Link
-        to="/constructor-standings"
+        to="/standings"
         className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
         onClick={onClick}
       >
-        Constructor Standings
-      </Link>
-      <Link
-        to="/driver-standings"
-        className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
-        onClick={onClick}
-      >
-        Driver Standings
+        Standings
       </Link>
       <Link
         to="/driver-comparison"
@@ -85,18 +78,11 @@ export const F1ALinks = ({ accordion = false, onClick }) => {
         {currentYear} Race Results
       </Link>
       <Link
-        to="/f1a/constructor-standings"
+        to="/f1a/standings"
         className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
         onClick={onClick}
       >
-        Constructor Standings
-      </Link>
-      <Link
-        to="/f1a/driver-standings"
-        className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
-        onClick={onClick}
-      >
-        Driver Standings
+        Standings
       </Link>
     </>
   );
@@ -133,18 +119,11 @@ export const F2Links = ({ accordion = false, onClick }) => {
         {currentYear} Race Results
       </Link>
       <Link
-        to="/f2/constructor-standings"
+        to="/f2/standings"
         className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
         onClick={onClick}
       >
-        Constructor Standings
-      </Link>
-      <Link
-        to="/f2/driver-standings"
-        className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
-        onClick={onClick}
-      >
-        Driver Standings
+        Standings
       </Link>
     </>
   );
