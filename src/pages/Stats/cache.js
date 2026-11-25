@@ -5,10 +5,14 @@ const memo = new Map();
 export function getRaceCache(season, round) {
   const key = `${season}/${round}`;
   if (!memo.has(key)) {
-    memo.set(key, fetch(`${import.meta.env.BASE_URL}stats_cache/${key}.json`)
+    memo.set(key, fetch(`${import.meta.env.BASE_URL}stats_cache/${key}.json`, { cache: 'no-cache' })
       .then((r) => (r.ok && (r.headers.get('content-type') || '').includes('json') ? r.json() : null))
       .catch(() => null));
   }
   return memo.get(key);
+}
+
+export function clearRaceCache() {
+  memo.clear();
 }
 

@@ -10,11 +10,9 @@ error_reporting(0);
 
 $source = $_GET['source'] ?? '';
 $path = $_GET['path'] ?? '';
-if ($source === 'openf1') {
-    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-    header('Pragma: no-cache');
-    header('Expires: 0');
-}
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('Expires: 0');
 
 // Validate source against allowed values
 if (!in_array($source, ['f1', 'f2', 'f1a', 'openf1', 'gpfans', 'jolpica'], true)) {

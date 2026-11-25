@@ -37,9 +37,9 @@ export function ConstructorStandingsF2({ selectedYear, championshipLevel }) {
             ? "official_team_standings.json" 
             : `official_team_standings_${selectedYear}.json`;
 
-          let offRes = await fetch(`${getSeriesBaseUrl(championshipLevel)}${fileName}`);
+          let offRes = await fetch(`${getSeriesBaseUrl(championshipLevel)}${fileName}`, { cache: "no-cache" });
           if (!offRes.ok) {
-            offRes = await fetch(`https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/${fileName}`);
+            offRes = await fetch(`https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/${fileName}`, { cache: "no-cache" });
           }
           if (offRes.ok) {
             const officialStandings = await offRes.json();

@@ -14,6 +14,7 @@ import {
   getConstructorSeason,
   getConstructorStandings,
   getCrashDamage,
+  clearStatsCache,
 } from "./api";
 import { teamColor, teamLogoBase } from "./stats";
 import { getTeamChampionships } from "./teamChampionships";
@@ -327,6 +328,20 @@ export default function ConstructorsTab({ season, setSeason, tabSwitcher }) {
   const [loadingStandings, setLoadingStandings] = useState(true);
   const [loadingDetails, setLoadingDetails] = useState(false);
   const [error, setError] = useState("");
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    let hiddenAt = 0;
+    const onVis = () => {
+      if (document.hidden) hiddenAt = Date.now();
+      else if (hiddenAt && Date.now() - hiddenAt > 5 * 60 * 1000) {
+        clearStatsCache();
+        setTick((n) => n + 1);
+      }
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -355,7 +370,7 @@ export default function ConstructorsTab({ season, setSeason, tabSwitcher }) {
     return () => {
       active = false;
     };
-  }, [season]);
+  }, [season, tick]);
 
   useEffect(() => {
     if (!constructorId) {
@@ -380,7 +395,7 @@ export default function ConstructorsTab({ season, setSeason, tabSwitcher }) {
     return () => {
       active = false;
     };
-  }, [season, constructorId]);
+  }, [season, constructorId, tick]);
 
   const selectedStanding = standings.find(
     (row) => row.Constructor.constructorId === constructorId,

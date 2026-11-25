@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
-import { getStandings, getDrivers, getDriverSeason, getCareer, getTeamSeason, getRaceDetail, getStints } from './api';
+import { getStandings, getDrivers, getDriverSeason, getCareer, getTeamSeason, getRaceDetail, getStints, clearStatsCache } from './api';
 import { HEADSHOT_OVERRIDES } from './headshotOverrides';
-import { getRaceCache } from './cache';
+import { getRaceCache, clearRaceCache } from './cache';
 import { buildRounds, totals, detail, cumulative, distribution, headToHead, lapsLed, stopTimes, median, teamColor, teamLogoBase, flagCode } from './stats';
 import { darkenColor } from '../../utils/colorUtils';
 import { ChampionBadge } from '../../components/ChampionBadge';
@@ -169,12 +169,16 @@ export default function DriversTab({ season, setSeason, tabSwitcher }) {
     return () => { live = false; };
   }, [season, driverId, teamId, mateId, tick]);
 
-  // Coming back to a tab left open for 30+ minutes reloads the data (no background polling).
+  // Coming back to a tab/PWA left open for 5+ minutes clears in-memory caches and reloads the data.
   useEffect(() => {
     let hiddenAt = 0;
     const onVis = () => {
       if (document.hidden) hiddenAt = Date.now();
-      else if (hiddenAt && Date.now() - hiddenAt > 30 * 60 * 1000) setTick((n) => n + 1);
+      else if (hiddenAt && Date.now() - hiddenAt > 5 * 60 * 1000) {
+        clearStatsCache();
+        clearRaceCache();
+        setTick((n) => n + 1);
+      }
     };
     document.addEventListener('visibilitychange', onVis);
     return () => document.removeEventListener('visibilitychange', onVis);

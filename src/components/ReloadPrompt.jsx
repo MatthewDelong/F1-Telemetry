@@ -21,6 +21,13 @@ function ReloadPrompt() {
       if (!registration) return;
       console.log("[SW] Registered:", swUrl);
 
+      // Purge legacy runtime API caches so installed PWAs never serve stale standings/points
+      if (typeof window !== "undefined" && "caches" in window) {
+        ["api-data-cache", "external-api-cache"].forEach((legacyCache) => {
+          window.caches.delete(legacyCache).catch(() => {});
+        });
+      }
+
       // Periodic update check — every 60 seconds
       const intervalId = setInterval(() => {
         console.log("[SW] Checking for updates…");

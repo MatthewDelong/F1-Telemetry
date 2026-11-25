@@ -49,7 +49,7 @@ export default defineConfig({
         id: "/",
         name: "F1 TELEMETRY",
         short_name: "F1 TELEMETRY",
-        version: "2.0.1",
+        version: "2.0.2",
         description: "In-depth Formula One Telemetry and Analysis",
         theme_color: "#000000",
         background_color: "#000000",
@@ -107,15 +107,18 @@ export default defineConfig({
             handler: "NetworkOnly",
           },
           {
-            // API proxy and PHP data endpoints — always hit network first
+            // API proxy and PHP data endpoints — always hit network first and bypass browser HTTP cache
             urlPattern: /\/api\.php\?|\/api\/|\.json(\?|$)/i,
             handler: "NetworkFirst",
             options: {
-              cacheName: "api-data-cache",
+              cacheName: "api-data-cache-v2",
               networkTimeoutSeconds: 60,
+              fetchOptions: {
+                cache: "no-store",
+              },
               expiration: {
                 maxEntries: 200,
-                maxAgeSeconds: 60 * 60, // 1 hour fallback
+                maxAgeSeconds: 60 * 60, // 1 hour offline fallback
               },
               cacheableResponse: {
                 statuses: [0, 200],
@@ -128,11 +131,14 @@ export default defineConfig({
               /^https:\/\/(api\.openf1\.org|api\.jolpi\.ca|raw\.githubusercontent\.com)\/.*/i,
             handler: "NetworkFirst",
             options: {
-              cacheName: "external-api-cache",
+              cacheName: "external-api-cache-v2",
               networkTimeoutSeconds: 60,
+              fetchOptions: {
+                cache: "no-store",
+              },
               expiration: {
                 maxEntries: 100,
-                maxAgeSeconds: 60 * 60, // 1 hour fallback
+                maxAgeSeconds: 60 * 60, // 1 hour offline fallback
               },
               cacheableResponse: {
                 statuses: [0, 200],

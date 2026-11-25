@@ -31,12 +31,12 @@ export function normalizeOpenF1Date(date) {
   return d.toISOString();
 }
 
-const CACHE_PREFIX = "f1_cache_v20_";
-const CACHE_TTL = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+const CACHE_PREFIX = "f1_cache_v21_";
+const CACHE_TTL = 30 * 60 * 1000; // 30 minutes in milliseconds
 
 // Clean up stale cache entries from previous versions on load
 try {
-  const OLD_PREFIXES = ["f1_cache_v19_", "f1_cache_v18_", "f1_cache_v17_", "f1_cache_v16_", "f1_cache_v15_", "f1_cache_v14_", "f1_cache_v13_", "f1_cache_v12_", "f1_cache_v11_", "f1_cache_v10_"];
+  const OLD_PREFIXES = ["f1_cache_v20_", "f1_cache_v19_", "f1_cache_v18_", "f1_cache_v17_", "f1_cache_v16_", "f1_cache_v15_", "f1_cache_v14_", "f1_cache_v13_", "f1_cache_v12_", "f1_cache_v11_", "f1_cache_v10_"];
   Object.keys(localStorage).forEach((key) => {
     if (OLD_PREFIXES.some((p) => key.startsWith(p))) {
       localStorage.removeItem(key);
@@ -919,7 +919,7 @@ export const getConstructorStandings = async (selectedYear) => {
   const constructorUrl = `${baseURL}/constructorStandings.json`;
 
   try {
-    const constructorResponse = await fetch(constructorUrl);
+    const constructorResponse = await fetch(constructorUrl, { cache: "no-cache" });
     if (!constructorResponse.ok) {
       throw new Error("Failed to fetch constructor standings data");
     }
@@ -946,7 +946,7 @@ export const getConstructorStandings = async (selectedYear) => {
         const constructorId = constructorStanding.constructorId;
         const driverUrl = `${BASE_F1_URL}constructors/${selectedYear}/${constructorId}.json`;
 
-        const driverResponse = await fetch(driverUrl);
+        const driverResponse = await fetch(driverUrl, { cache: "no-cache" });
         if (driverResponse.ok) {
           const drivers = await driverResponse.json();
           constructorStanding.driverCodes = drivers.map(
@@ -974,7 +974,7 @@ export const getConstructorStandings = async (selectedYear) => {
 export const getDriverStandings = async (selectedYear) => {
   const url = `${BASE_F1_URL}races/${selectedYear}/driverStandings.json`;
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, { cache: "no-cache" });
     if (response.ok) {
       const data = await response.json();
       const lastRaceKey = getLatestRoundKey(data);
@@ -1014,7 +1014,7 @@ export const getTeamDriversForYear = async (selectedYear, constructorId) => {
   if (!selectedYear || !constructorId) return [];
   const url = `${BASE_F1_URL}races/${selectedYear}/driverStandings.json`;
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, { cache: "no-cache" });
     if (!response.ok) return [];
     const data = await response.json();
     const roundKeys = Object.keys(data || {}).filter((k) => /^\d+$/.test(k));
@@ -1054,7 +1054,7 @@ export const getTeamDriversForYear = async (selectedYear, constructorId) => {
 export const getPartialDriverStandings = async (selectedYear, start, end) => {
   const url = `${BASE_F1_URL}races/${selectedYear}/driverStandings.json`;
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, { cache: "no-cache" });
     if (response.ok) {
       const data = await response.json();
       let endStandings = data[end];

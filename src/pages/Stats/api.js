@@ -48,15 +48,26 @@ const jget = (path) => cached(BASE + path, (j) => j.MRData);
 // A missing file falls back to the live API. "no-cache" makes the browser check for a newer copy each visit.
 const files = new Map();
 function staticJson(path) {
-  if (!files.has(path)) {
-    files.set(path, fetch(`${import.meta.env.BASE_URL}stats_cache/${path}`, { cache: 'no-cache' })
-      .then((r) => (r.ok && (r.headers.get('content-type') || '').includes('json') ? r.json() : null))
-      .catch(() => null));
+  const hit = files.get(path);
+  const yearMatch = path.match(/^(\d{4})\//)?.[1];
+  const isPast = yearMatch && +yearMatch < new Date().getFullYear();
+  if (hit && (isPast || Date.now() - hit.at < MAX_AGE)) {
+    return hit.value;
   }
-  return files.get(path);
+  const value = fetch(`${import.meta.env.BASE_URL}stats_cache/${path}`, { cache: 'no-cache' })
+    .then((r) => (r.ok && (r.headers.get('content-type') || '').includes('json') ? r.json() : null))
+    .catch(() => null);
+  files.set(path, { at: Date.now(), value });
+  return value;
 }
 const loadSeason = (season) => staticJson(`${season}/season.json`);
 const of1 = (path) => cached(OPENF1 + path, (j) => j);
+
+export function clearStatsCache() {
+  files.clear();
+  cache.clear();
+  crashDamagePromise = null;
+}
 
 export async function getStandings(season) {
   const c = await loadSeason(season);
@@ -246,7 +257,7 @@ export async function getStints(season, rounds, driver) {
 let crashDamagePromise;
 export function getCrashDamage() {
   if (!crashDamagePromise) {
-    crashDamagePromise = fetch(`${import.meta.env.BASE_URL}stats_cache/crash-damage.json`)
+    crashDamagePromise = fetch(`${import.meta.env.BASE_URL}stats_cache/crash-damage.json`, { cache: 'no-cache' })
       .then((res) => (res.ok ? res.json() : null))
       .catch(() => null);
   }

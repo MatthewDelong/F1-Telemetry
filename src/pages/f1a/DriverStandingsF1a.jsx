@@ -94,9 +94,9 @@ export function DriverStandingsF1a({ selectedYear, championshipLevel }) {
       if (["2024", "2025", "2026"].includes(selectedYear.toString())) {
         try {
           const suffix = selectedYear.toString() === "2026" ? "" : `_${selectedYear}`;
-          let offRes = await fetch(`${getSeriesBaseUrl(championshipLevel)}official_driver_standings${suffix}.json`);
+          let offRes = await fetch(`${getSeriesBaseUrl(championshipLevel)}official_driver_standings${suffix}.json`, { cache: "no-cache" });
           if (!offRes.ok) {
-            offRes = await fetch(`https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/official_driver_standings${suffix}.json`);
+            offRes = await fetch(`https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/official_driver_standings${suffix}.json`, { cache: "no-cache" });
           }
           if (offRes.ok) {
             const officialStandings = await offRes.json();

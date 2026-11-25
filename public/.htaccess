@@ -60,8 +60,8 @@
         Header set Access-Control-Allow-Origin "*"
     </FilesMatch>
 
-    # Prevent Service Worker, Manifest, and HTML from being cached by CDN/Browsers
-    <FilesMatch "^(sw\.js|index\.html|manifest\.json)$">
+    # Prevent Service Worker, Manifest, HTML, API proxy, and JSON data from being stale-cached by PWAs/CDNs/Browsers
+    <FilesMatch "^(sw\.js|index\.html|manifest\.json|api\.php)$|\.json$">
         Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
         Header set Pragma "no-cache"
         Header set Expires "0"
