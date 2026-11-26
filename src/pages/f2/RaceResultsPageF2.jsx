@@ -3,7 +3,7 @@ import {
   fetchCircuitData,
   fetchAllRaceResults
 } from "../../utils/apiF1a";
-import { fetchRaceDetails } from "../../utils/api";
+import { fetchRaceSchedule } from "../../utils/api";
 import { getFastestDriverCode } from "../../utils/raceUtils";
 import teamColors from "../../utils/teamColors.json";
 
@@ -197,7 +197,7 @@ export function RaceResultsPageF2({ selectedYear, championshipLevel }) {
       hasScrolled.current = false;
       const [data, f1Details, allRaceRes] = await Promise.all([
         fetchCircuitData(championshipLevel),
-        fetchRaceDetails(selectedYear),
+        fetchRaceSchedule(selectedYear),
         fetchAllRaceResults(selectedYear, championshipLevel)
       ]);
       

@@ -225,6 +225,10 @@ export const fetchOpenF1FullSessionData = async (
  * otherwise fetches from network and updates cache.
  * Robustified to return stale data if network fetch fails (e.g. 429).
  */
+// In-flight deduplication for fetchWithPersistentCache so parallel callers
+// (e.g. fetchRaceDetails mapping over every round) share a single network fetch.
+const inFlightPersistentFetches = new Map();
+
 export const fetchWithPersistentCache = async (url) => {
   const cacheKey = CACHE_PREFIX + btoa(url);
   let cachedData = null;
@@ -249,6 +253,11 @@ export const fetchWithPersistentCache = async (url) => {
     console.warn("[Cache] Error reading from localStorage", e);
   }
 
+  if (inFlightPersistentFetches.has(url)) {
+    return inFlightPersistentFetches.get(url);
+  }
+
+  const fetchPromise = (async () => {
   // 2. Fetch from network
   try {
     const data = await fetchOpenF1Data(url);
@@ -317,7 +326,13 @@ export const fetchWithPersistentCache = async (url) => {
       return cachedData;
     }
     throw error;
+  } finally {
+    inFlightPersistentFetches.delete(url);
   }
+  })();
+
+  inFlightPersistentFetches.set(url, fetchPromise);
+  return fetchPromise;
 };
 
 export const fetchDriversList = async () => {
@@ -559,12 +574,10 @@ export const fetchRacesAndSessions = async (selectedYear) => {
 
 // race results page
 /**
- * Lightweight list of completed races (round + name) for a season.
- * Unlike fetchRaceDetails it does NOT fetch each race's results, so it is a
- * single request — use it where only race names/rounds are needed
- * (e.g. the Race Range Filter on the standings pages).
+ * Lightweight F1 race schedule for a season (single request, no per-race results).
+ * Used where only dates/times/round/circuitId are needed (e.g. F2/F1A pages).
  */
-export const fetchCompletedRaceList = async (selectedYear) => {
+export const fetchRaceSchedule = async (selectedYear) => {
   const url = `${BASE_F1_URL}races/${selectedYear}/raceDetails.json?t=${Date.now()}`;
   try {
     const response = await fetch(url);
@@ -579,35 +592,34 @@ export const fetchCompletedRaceList = async (selectedYear) => {
         );
       });
     }
-    const now = new Date();
-    return races.filter((race) => race.url && new Date(race.date) < now);
+    return races;
   } catch (error) {
-    console.error("Error fetching race list:", error);
+    console.error("Error fetching race schedule:", error);
     return [];
   }
 };
 
+/**
+ * Lightweight list of completed races (round + name) for a season.
+ * Unlike fetchRaceDetails it does NOT fetch each race's results, so it is a
+ * single request — use it where only race names/rounds are needed
+ * (e.g. the Race Range Filter on the standings pages).
+ */
+export const fetchCompletedRaceList = async (selectedYear) => {
+  const races = await fetchRaceSchedule(selectedYear);
+  const now = new Date();
+  return races.filter((race) => race.url && new Date(race.date) < now);
+};
+
 export const fetchRaceDetails = async (selectedYear) => {
-  const url = `${BASE_F1_URL}races/${selectedYear}/raceDetails.json?t=${Date.now()}`;
   try {
-    const response = await fetch(url);
-    if (response.ok) {
-      let races = await response.json();
+    const races = await fetchRaceSchedule(selectedYear);
+    if (!races.length) return [];
 
-      // Filter out cancelled races for 2026
-      if (Number(selectedYear) === 2026) {
-        races = races.filter((race) => {
-          const name = race.raceName.toLowerCase();
-          return !CANCELLED_RACES_2026.some((c) =>
-            name.includes(c.toLowerCase().replace(" grand prix", "")),
-          );
-        });
-      }
-
-      const results = [];
-      for (let i = 0; i < races.length; i++) {
-        const race = races[i];
-        if (new Date(race.date) < new Date()) {
+    const now = new Date();
+    const results = await Promise.all(
+      races.map(async (race) => {
+        if (new Date(race.date) < now) {
           const raceResults = await fetchRaceResults(
             selectedYear,
             race.round,
@@ -615,27 +627,21 @@ export const fetchRaceDetails = async (selectedYear) => {
             race.Circuit?.circuitId,
             race.date,
           );
-          results.push({ ...race, results: raceResults });
-          // Add a small delay between requests to avoid rate limiting
-          if (i < races.length - 1)
-            await new Promise((r) => setTimeout(r, 100));
-        } else {
-          results.push({
-            raceName: race.raceName,
-            date: race.date,
-            season: race.season,
-            round: race.round,
-            time: race.time,
-            Circuit: race.Circuit,
-            circuitId: race.circuitId || race.Circuit?.circuitId,
-          });
+          return { ...race, results: raceResults };
         }
-      }
+        return {
+          raceName: race.raceName,
+          date: race.date,
+          season: race.season,
+          round: race.round,
+          time: race.time,
+          Circuit: race.Circuit,
+          circuitId: race.circuitId || race.Circuit?.circuitId,
+        };
+      }),
+    );
 
-      return results;
-    } else {
-      console.error("Failed to fetch data");
-    }
+    return results;
   } catch (error) {
     console.error("Error fetching data:", error);
   }

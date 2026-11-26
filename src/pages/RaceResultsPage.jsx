@@ -18,8 +18,10 @@ export function RaceResultsPage({ selectedYear }) {
     const fetchData = async () => {
       setIsLoading(true);
       hasScrolled.current = false;
-      const details = await fetchRaceDetails(selectedYear);
-      const racesMK = await fetchRaceMeetingKeys(selectedYear);
+      const [details, racesMK] = await Promise.all([
+        fetchRaceDetails(selectedYear),
+        fetchRaceMeetingKeys(selectedYear),
+      ]);
       // The details array from fetchRaceDetails already contains .results for past races
       const enrichedDetails = await Promise.all(details.map(async race => {
         let resultsForRace = [];
