@@ -15,61 +15,81 @@ export function ConstructorStandingsF2({ selectedYear, championshipLevel }) {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const allRaceResults = await fetchAllRaceResults(
-        selectedYear,
+      const hasOfficial =
+        selectedYear.toString() === "2026" ||
+        selectedYear.toString() === "2025";
+      const fileName =
+        selectedYear.toString() === "2026"
+          ? "official_team_standings.json"
+          : `official_team_standings_${selectedYear}.json`;
+
+      const fetchOfficial = async () => {
+        if (!hasOfficial) return null;
+        try {
+          let offRes = await fetch(
+            `${getSeriesBaseUrl(championshipLevel)}${fileName}`,
+            { cache: "no-cache" },
+          );
+          if (!offRes.ok) {
+            offRes = await fetch(
+              `https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/${fileName}`,
+              { cache: "no-cache" },
+            );
+          }
+          return offRes.ok ? await offRes.json() : null;
+        } catch (e) {
+          console.warn("Could not load official team standings", e);
+          return null;
+        }
+      };
+
+      const [allRaceResults, officialStandings] = await Promise.all([
+        fetchAllRaceResults(selectedYear, championshipLevel),
+        fetchOfficial(),
+      ]);
+      const { racesMeta, constructorPointsByRace } = buildRacePointsMaps(
+        allRaceResults,
         championshipLevel,
+        selectedYear,
       );
-      const { racesMeta, constructorPointsByRace } =
-        buildRacePointsMaps(allRaceResults, championshipLevel, selectedYear);
       setConstructorRacePoints(constructorPointsByRace);
       setRacesMeta(racesMeta);
-      // console.log({allRaceResults});
 
       const { formattedConstructors } = calculateSeriesPoints2025(
         allRaceResults,
         championshipLevel,
       );
       let constructorStandings = formattedConstructors;
-      
-      if (selectedYear.toString() === "2026" || selectedYear.toString() === "2025") {
-        try {
-          const fileName = selectedYear.toString() === "2026" 
-            ? "official_team_standings.json" 
-            : `official_team_standings_${selectedYear}.json`;
 
-          let offRes = await fetch(`${getSeriesBaseUrl(championshipLevel)}${fileName}`, { cache: "no-cache" });
-          if (!offRes.ok) {
-            offRes = await fetch(`https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/${fileName}`, { cache: "no-cache" });
-          }
-          if (offRes.ok) {
-            const officialStandings = await offRes.json();
-            if (officialStandings && officialStandings.length > 0) {
-              constructorStandings = constructorStandings.map(c => {
-                const norm = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
-                const cn = norm(c.name || c.constructorId);
-                const match = officialStandings.find(x => norm(x.name).startsWith(cn) || cn.startsWith(norm(x.name).substring(0, 5)));
-                if (match) {
-                  const racePoints = constructorPointsByRace.get(c.constructorId);
-                  if (racePoints) {
-                    const currentSum = racePoints.reduce((acc, curr) => acc + curr.total, 0);
-                    if (currentSum !== match.points) {
-                      racePoints.push({
-                        raceName: "Points Adjustment",
-                        pointsByKey: { adjustment: match.points - currentSum },
-                        total: match.points - currentSum
-                      });
-                    }
-                  }
-                  return { ...c, points: match.points };
-                }
-                return c;
-              });
-              constructorStandings.sort((a, b) => b.points - a.points);
+      if (officialStandings && officialStandings.length > 0) {
+        constructorStandings = constructorStandings.map((c) => {
+          const norm = (s) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+          const cn = norm(c.name || c.constructorId);
+          const match = officialStandings.find(
+            (x) =>
+              norm(x.name).startsWith(cn) ||
+              cn.startsWith(norm(x.name).substring(0, 5)),
+          );
+          if (match) {
+            const racePoints = constructorPointsByRace.get(c.constructorId);
+            if (racePoints) {
+              const currentSum = racePoints.reduce(
+                (acc, curr) => acc + curr.total,
+                0,
+              );
+              if (currentSum !== match.points) {
+                racePoints.push({
+                  raceName: "Points Adjustment",
+                  pointsByKey: { adjustment: match.points - currentSum },
+                  total: match.points - currentSum,
+                });
+              }
             }
+            return { ...c, points: match.points };
           }
-        } catch (e) {
-          console.warn("Could not load official team standings", e);
-        }
+          return c;
+        });
+        constructorStandings.sort((a, b) => b.points - a.points);
       }
 
       setStandings(constructorStandings);

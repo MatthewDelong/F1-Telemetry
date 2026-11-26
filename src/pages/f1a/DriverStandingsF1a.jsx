@@ -22,13 +22,43 @@ export function DriverStandingsF1a({ selectedYear, championshipLevel }) {
     let isCancelled = false;
     const fetchData = async () => {
       setIsLoading(true);
-      const allRaceResults = await fetchAllRaceResults(
+      const hasOfficial = ["2024", "2025", "2026"].includes(
         selectedYear.toString(),
-        championshipLevel,
       );
-      const driverInfoMap = await fetchDriverInfo(selectedYear, championshipLevel);
-      const { racesMeta, driverPointsByRace } =
-        buildRacePointsMaps(allRaceResults, championshipLevel, selectedYear);
+      const suffix =
+        selectedYear.toString() === "2026" ? "" : `_${selectedYear}`;
+
+      const fetchOfficial = async () => {
+        if (!hasOfficial) return null;
+        try {
+          let offRes = await fetch(
+            `${getSeriesBaseUrl(championshipLevel)}official_driver_standings${suffix}.json`,
+            { cache: "no-cache" },
+          );
+          if (!offRes.ok) {
+            offRes = await fetch(
+              `https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/official_driver_standings${suffix}.json`,
+              { cache: "no-cache" },
+            );
+          }
+          return offRes.ok ? await offRes.json() : null;
+        } catch (e) {
+          console.warn("Could not load official driver standings", e);
+          return null;
+        }
+      };
+
+      const [allRaceResults, driverInfoMap, officialStandings] =
+        await Promise.all([
+          fetchAllRaceResults(selectedYear.toString(), championshipLevel),
+          fetchDriverInfo(selectedYear, championshipLevel),
+          fetchOfficial(),
+        ]);
+      const { racesMeta, driverPointsByRace } = buildRacePointsMaps(
+        allRaceResults,
+        championshipLevel,
+        selectedYear,
+      );
 
       // Convert driverInfo to map by driverId, code, or familyName
       const driverIdToConstructor = {};
@@ -91,91 +121,77 @@ export function DriverStandingsF1a({ selectedYear, championshipLevel }) {
         };
       });
 
-      if (["2024", "2025", "2026"].includes(selectedYear.toString())) {
-        try {
-          const suffix = selectedYear.toString() === "2026" ? "" : `_${selectedYear}`;
-          let offRes = await fetch(`${getSeriesBaseUrl(championshipLevel)}official_driver_standings${suffix}.json`, { cache: "no-cache" });
-          if (!offRes.ok) {
-            offRes = await fetch(`https://raw.githubusercontent.com/MatthewDelong/F1-Telemetry/main/src/config/${championshipLevel.toLowerCase()}/official_driver_standings${suffix}.json`, { cache: "no-cache" });
-          }
-          if (offRes.ok) {
-            const officialStandings = await offRes.json();
-            if (officialStandings && officialStandings.length > 0) {
-              const officialDrivers = [];
-              const norm = s => (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(" jr.", "").replace("ue", "u");
-              
-              officialStandings.forEach(match => {
-                const lnMatch = norm(match.name).split(". ").pop();
-                
-                let existing = driverStandings.find(d => {
-                  const ln = norm(d.familyName || d.driverId);
-                  const fiMatch = norm(match.name).charAt(0);
-                  const dFi = norm(d.givenName || d.driverId).charAt(0);
-                  return (norm(match.name).includes(ln) || ln.includes(lnMatch)) && (!dFi || fiMatch === dFi);
+      if (officialStandings && officialStandings.length > 0) {
+        const officialDrivers = [];
+        const norm = s => (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(" jr.", "").replace("ue", "u");
+        
+        officialStandings.forEach(match => {
+          const lnMatch = norm(match.name).split(". ").pop();
+          
+          let existing = driverStandings.find(d => {
+            const ln = norm(d.familyName || d.driverId);
+            const fiMatch = norm(match.name).charAt(0);
+            const dFi = norm(d.givenName || d.driverId).charAt(0);
+            return (norm(match.name).includes(ln) || ln.includes(lnMatch)) && (!dFi || fiMatch === dFi);
+          });
+          
+          if (existing) {
+            const racePoints = driverPointsByRace.get(existing.driverId);
+            if (racePoints) {
+              const currentSum = racePoints.reduce((acc, curr) => acc + curr.total, 0);
+              if (currentSum !== match.points) {
+                racePoints.push({
+                  raceName: "Points Adjustment",
+                  pointsByKey: { adjustment: match.points - currentSum },
+                  total: match.points - currentSum
                 });
-                
-                if (existing) {
-                  const racePoints = driverPointsByRace.get(existing.driverId);
-                  if (racePoints) {
-                    const currentSum = racePoints.reduce((acc, curr) => acc + curr.total, 0);
-                    if (currentSum !== match.points) {
-                      racePoints.push({
-                        raceName: "Points Adjustment",
-                        pointsByKey: { adjustment: match.points - currentSum },
-                        total: match.points - currentSum
-                      });
-                    }
-                  }
-                  const constructorId = existing.constructorId || getConstructorForDriver(existing);
-                  officialDrivers.push({
-                    ...existing,
-                    constructorId,
-                    constructorColor: getTeamColor(constructorId, selectedYear),
-                    points: match.points
-                  });
-                } else {
-                  const driverEntry = Object.values(driverInfoMap).find(entry => {
-                    const d1 = entry.Driver;
-                    const d2 = entry.Driver2;
-                    return [d1, d2].some(d => {
-                      if (!d) return false;
-                      const ln = norm(d.familyName || d.driverId || "");
-                      const fiMatch = norm(match.name).charAt(0);
-                      const dFi = norm(d.givenName || d.driverId || "").charAt(0);
-                      return (norm(match.name).includes(ln) || ln.includes(lnMatch)) && (!dFi || fiMatch === dFi);
-                    });
-                  });
-                  if (driverEntry) {
-                    const matchedDriver = [driverEntry.Driver, driverEntry.Driver2].find(d => {
-                      if (!d) return false;
-                      const ln = norm(d.familyName || d.driverId || "");
-                      return norm(match.name).includes(ln) || ln.includes(lnMatch);
-                    }) || driverEntry.Driver;
-                    const constructorId = driverEntry.Constructor?.constructorId;
-                    officialDrivers.push({
-                      ...matchedDriver,
-                      constructorId,
-                      constructorColor: getTeamColor(constructorId, selectedYear),
-                      points: match.points
-                    });
-                  } else {
-                    officialDrivers.push({
-                      driverId: match.name,
-                      familyName: match.name,
-                      code: "UNK",
-                      points: match.points
-                    });
-                  }
-                }
+              }
+            }
+            const constructorId = existing.constructorId || getConstructorForDriver(existing);
+            officialDrivers.push({
+              ...existing,
+              constructorId,
+              constructorColor: getTeamColor(constructorId, selectedYear),
+              points: match.points
+            });
+          } else {
+            const driverEntry = Object.values(driverInfoMap).find(entry => {
+              const d1 = entry.Driver;
+              const d2 = entry.Driver2;
+              return [d1, d2].some(d => {
+                if (!d) return false;
+                const ln = norm(d.familyName || d.driverId || "");
+                const fiMatch = norm(match.name).charAt(0);
+                const dFi = norm(d.givenName || d.driverId || "").charAt(0);
+                return (norm(match.name).includes(ln) || ln.includes(lnMatch)) && (!dFi || fiMatch === dFi);
               });
-              
-              officialDrivers.sort((a, b) => b.points - a.points);
-              driverStandings = officialDrivers;
+            });
+            if (driverEntry) {
+              const matchedDriver = [driverEntry.Driver, driverEntry.Driver2].find(d => {
+                if (!d) return false;
+                const ln = norm(d.familyName || d.driverId || "");
+                return norm(match.name).includes(ln) || ln.includes(lnMatch);
+              }) || driverEntry.Driver;
+              const constructorId = driverEntry.Constructor?.constructorId;
+              officialDrivers.push({
+                ...matchedDriver,
+                constructorId,
+                constructorColor: getTeamColor(constructorId, selectedYear),
+                points: match.points
+              });
+            } else {
+              officialDrivers.push({
+                driverId: match.name,
+                familyName: match.name,
+                code: "UNK",
+                points: match.points
+              });
             }
           }
-        } catch (e) {
-          console.warn("Could not load official driver standings", e);
-        }
+        });
+        
+        officialDrivers.sort((a, b) => b.points - a.points);
+        driverStandings = officialDrivers;
       }
 
       setStandings(driverStandings);

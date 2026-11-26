@@ -14,6 +14,36 @@ export const BASE_F2_URL = isProd
 export const getSeriesBaseUrl = (championshipLevel) =>
   championshipLevel === "F1A" ? BASE_F1A_URL : BASE_F2_URL;
 
+// Short-lived in-memory cache + in-flight deduplication so parallel calls
+// (e.g. fetchAllRaceResults + DriverStandings) and tab switches between
+// Drivers and Constructors don't re-fetch the same JSON over the network.
+const MEMORY_CACHE_TTL_MS = 60 * 1000;
+const memoryCache = new Map();
+
+const fetchJsonCached = (url) => {
+  const now = Date.now();
+  const entry = memoryCache.get(url);
+  if (entry) {
+    if (entry.promise) return entry.promise;
+    if (now - entry.ts < MEMORY_CACHE_TTL_MS) {
+      return Promise.resolve(entry.data);
+    }
+  }
+  const promise = fetch(url, { cache: "no-cache" })
+    .then(async (res) => {
+      if (!res.ok) throw new Error(`API returned status ${res.status}`);
+      const data = await res.json();
+      memoryCache.set(url, { data, ts: Date.now() });
+      return data;
+    })
+    .catch((err) => {
+      memoryCache.delete(url);
+      throw err;
+    });
+  memoryCache.set(url, { promise });
+  return promise;
+};
+
 export const fetchRaceMeetingKeysF1a = async (
   selectedYear,
   championshipLevel,
@@ -53,13 +83,7 @@ export const fetchDriverInfo = async (year, championshipLevel) => {
       championshipLevel === "F1A"
         ? `${base}constructors/${year}/drivers.json`
         : `${base}drivers/${year}/drivers.json`;
-    const response = await fetch(url, { cache: "no-cache" });
-    if (!response.ok) {
-      throw new Error(`API returned status ${response.status}`);
-    }
-    const data = await response.json();
-    // console.log('fetchDriverInfo', {data});
-    return data;
+    return await fetchJsonCached(url);
   } catch (error) {
     console.error("Error fetching driver information:", error);
     return {};
@@ -120,11 +144,10 @@ export const fetchRaceResultsByCircuit = async (
 ) => {
   try {
     const url = `${getSeriesBaseUrl(championshipLevel)}${year}/results.json`;
-    const response = await fetch(url, { cache: "no-cache" });
-    if (!response.ok) {
-      throw new Error(`API returned status ${response.status}`);
-    }
-    const data = await response.json();
+    const [data, driverInfo] = await Promise.all([
+      fetchJsonCached(url),
+      fetchDriverInfo(year, championshipLevel),
+    ]);
 
     if (!Array.isArray(data)) {
       console.error(`[API] Data is not an array for circuitId: ${circuitId}`);
@@ -140,8 +163,6 @@ export const fetchRaceResultsByCircuit = async (
       console.error(`No race found for circuitId: ${circuitId}`);
       return { raceName: "", race0: [], race1: [], race2: [], race3: [] };
     }
-
-    const driverInfo = await fetchDriverInfo(year, championshipLevel);
 
     let race0Results = results.Results.race0
       ? enrichDriverData(results.Results.race0, driverInfo)
@@ -179,19 +200,15 @@ export const fetchRaceResultsByCircuit = async (
 export const fetchAllRaceResults = async (year, championshipLevel) => {
   try {
     const url = `${getSeriesBaseUrl(championshipLevel)}races/${year}/results.json`;
-    const response = await fetch(url, { cache: "no-cache" });
-    if (!response.ok) {
-      throw new Error(`API returned status ${response.status}`);
-    }
-    const data = await response.json();
+    const [data, driverInfo] = await Promise.all([
+      fetchJsonCached(url),
+      fetchDriverInfo(year, championshipLevel),
+    ]);
 
     if (!Array.isArray(data)) {
       console.warn(`[API] Data is not an array for all races:`, data);
       return [];
     }
-
-    // Fetch driver information for enrichment
-    const driverInfo = await fetchDriverInfo(year, championshipLevel);
 
     // Map over each race to enrich and structure the results
     const races = data.map((race) => {
@@ -234,12 +251,10 @@ export const fetchMostRecentRaceWeekend = async (
 ) => {
   try {
     const raceUrl = `${getSeriesBaseUrl(championshipLevel)}races/${selectedYear}/results.json`;
-    const response = await fetch(raceUrl, { cache: "no-cache" });
-    if (!response.ok) {
-      throw new Error("Failed to fetch race details");
-    }
-
-    const races = await response.json();
+    const [races, driverInfo] = await Promise.all([
+      fetchJsonCached(raceUrl),
+      fetchDriverInfo(selectedYear, championshipLevel),
+    ]);
 
     if (!Array.isArray(races)) {
       console.warn(`[API] Data is not an array for most recent race:`, races);
@@ -251,8 +266,6 @@ export const fetchMostRecentRaceWeekend = async (
       (a, b) => parseInt(b.round) - parseInt(a.round),
     ); // Sort in descending order by `round`
     // console.log('fetchMostRecentRaceWeekend sortedRaces', championshipLevel, {sortedRaces})
-
-    const driverInfo = await fetchDriverInfo(selectedYear, championshipLevel);
     // console.log('fetchMostRecentRaceWeekend driverInfo', championshipLevel, {driverInfo})
 
     // Step 3: Extract top 3 results for each race (race1, race2, race3, etc.)
