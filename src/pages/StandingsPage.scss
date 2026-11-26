@@ -142,3 +142,25 @@
   line-height: 1;
   user-select: none;
 }
+
+/* F2 / F1A: strip the top offsets the standings pages add, so the only gap
+   below the season selector is the controls' 18px bottom margin
+   (same as the gap between the switch and the season selector). */
+.standings-body--tight {
+  .standard-scroll-container {
+    padding-top: 0;
+
+    > div {
+      margin-top: 0;
+    }
+  }
+
+  /* Constructors: first card's own top margin + its name/points header margin */
+  ul > li:first-child .constructor-card {
+    margin-top: 0;
+
+    > div > div:first-child {
+      margin-top: 0;
+    }
+  }
+}

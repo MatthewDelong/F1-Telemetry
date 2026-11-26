@@ -50,7 +50,7 @@ export const StandingsPage = ({
           // F1: 6px + RangeSelector's 12px top padding = 18px, matching the
           // gap between the switch and the season selector.
           series === "F1"
-            ? "mt-32 mb-[0px]"
+            ? "mt-32 mb-[-25px]"
             : view === "drivers"
               ? "mb-14"
               : "mb-24",
@@ -86,10 +86,19 @@ export const StandingsPage = ({
           </select>
         </label>
       </div>
-      <Component
-        selectedYear={selectedYear}
-        championshipLevel={championshipLevel}
-      />
+      {series === "F1" ? (
+        <Component
+          selectedYear={selectedYear}
+          championshipLevel={championshipLevel}
+        />
+      ) : (
+        <div className="standings-body--tight">
+          <Component
+            selectedYear={selectedYear}
+            championshipLevel={championshipLevel}
+          />
+        </div>
+      )}
     </>
   );
 };

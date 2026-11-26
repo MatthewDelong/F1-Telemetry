@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchRaceDetails, getConstructorStandings, getPartialConstructorStandings } from '../utils/api';
+import { fetchCompletedRaceList, getConstructorStandings, getPartialConstructorStandings } from '../utils/api';
 
 import { Button, ConstructorCar, Loading, RangeSelector } from '../components';
 import { useNavigate } from 'react-router-dom';
@@ -17,15 +17,13 @@ export function ConstructorStandings({ selectedYear }) {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      const data = await getConstructorStandings(selectedYear);
-      const data2 = await fetchRaceDetails(selectedYear);
-      const data3 = data2.filter(race => (race.url))
-      setRaceDetails(data3);
-      // console.log(data3);
+      // Load standings and the (lightweight) race list in parallel.
+      const [data, races] = await Promise.all([
+        getConstructorStandings(selectedYear),
+        fetchCompletedRaceList(selectedYear),
+      ]);
+      setRaceDetails(races);
       setStandings(data);
-      // console.log(data);
-      // setEnd(data3.length);
-      // setFilteredStandings(data);
       setIsLoading(false);
     };
 

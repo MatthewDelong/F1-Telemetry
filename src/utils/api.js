@@ -558,6 +558,35 @@ export const fetchRacesAndSessions = async (selectedYear) => {
 };
 
 // race results page
+/**
+ * Lightweight list of completed races (round + name) for a season.
+ * Unlike fetchRaceDetails it does NOT fetch each race's results, so it is a
+ * single request — use it where only race names/rounds are needed
+ * (e.g. the Race Range Filter on the standings pages).
+ */
+export const fetchCompletedRaceList = async (selectedYear) => {
+  const url = `${BASE_F1_URL}races/${selectedYear}/raceDetails.json?t=${Date.now()}`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) return [];
+    let races = await response.json();
+    if (!Array.isArray(races)) return [];
+    if (Number(selectedYear) === 2026) {
+      races = races.filter((race) => {
+        const name = race.raceName.toLowerCase();
+        return !CANCELLED_RACES_2026.some((c) =>
+          name.includes(c.toLowerCase().replace(" grand prix", "")),
+        );
+      });
+    }
+    const now = new Date();
+    return races.filter((race) => race.url && new Date(race.date) < now);
+  } catch (error) {
+    console.error("Error fetching race list:", error);
+    return [];
+  }
+};
+
 export const fetchRaceDetails = async (selectedYear) => {
   const url = `${BASE_F1_URL}races/${selectedYear}/raceDetails.json?t=${Date.now()}`;
   try {
@@ -919,7 +948,15 @@ export const getConstructorStandings = async (selectedYear) => {
   const constructorUrl = `${baseURL}/constructorStandings.json`;
 
   try {
-    const constructorResponse = await fetch(constructorUrl, { cache: "no-cache" });
+    // Fetch constructor + driver standings in parallel. Driver standings list
+    // the team(s) each driver raced for, so they give us each team's race
+    // drivers without fetching a file per constructor.
+    const [constructorResponse, driverResponse] = await Promise.all([
+      fetch(constructorUrl, { cache: "no-cache" }),
+      fetch(`${baseURL}/driverStandings.json`, { cache: "no-cache" }).catch(
+        () => null,
+      ),
+    ]);
     if (!constructorResponse.ok) {
       throw new Error("Failed to fetch constructor standings data");
     }
@@ -940,28 +977,58 @@ export const getConstructorStandings = async (selectedYear) => {
         : "#000000", // Default color if not found
     }));
 
-    // For each constructor, fetch the associated drivers from the new endpoint
-    const driverFetchPromises = constructorStandings.map(
-      async (constructorStanding) => {
-        const constructorId = constructorStanding.constructorId;
-        const driverUrl = `${BASE_F1_URL}constructors/${selectedYear}/${constructorId}.json`;
+    // Team -> race driver codes, from the latest driver standings. This also
+    // excludes FP1 / reserve drivers (no headshot) that the per-constructor
+    // driver files include.
+    const raceDriversByTeam = new Map();
+    try {
+      if (driverResponse?.ok) {
+        const driverData = await driverResponse.json();
+        const driverKey = getLatestRoundKey(driverData);
+        const driverRows = (driverKey && driverData[driverKey]) || [];
+        driverRows.forEach((row) => {
+          const code = row.Driver?.code;
+          if (!code) return;
+          (row.Constructors || []).forEach(({ constructorId }) => {
+            if (!raceDriversByTeam.has(constructorId)) {
+              raceDriversByTeam.set(constructorId, new Set());
+            }
+            raceDriversByTeam.get(constructorId).add(code);
+          });
+        });
+      }
+    } catch (e) {
+      console.warn("Could not parse driver standings for team drivers:", e);
+    }
 
-        const driverResponse = await fetch(driverUrl, { cache: "no-cache" });
-        if (driverResponse.ok) {
-          const drivers = await driverResponse.json();
-          constructorStanding.driverCodes = drivers.map(
-            (driver) => driver.code,
-          );
-        } else {
+    // Only fall back to the per-constructor driver file for teams that have
+    // no drivers in the standings (e.g. data not yet available).
+    await Promise.all(
+      constructorStandings.map(async (constructorStanding) => {
+        const raceDrivers = raceDriversByTeam.get(
+          constructorStanding.constructorId,
+        );
+        if (raceDrivers?.size) {
+          constructorStanding.driverCodes = [...raceDrivers];
+          return;
+        }
+        try {
+          const driverUrl = `${BASE_F1_URL}constructors/${selectedYear}/${constructorStanding.constructorId}.json`;
+          const res = await fetch(driverUrl, { cache: "no-cache" });
+          if (res.ok) {
+            const drivers = await res.json();
+            constructorStanding.driverCodes = drivers.map((d) => d.code);
+          }
+        } catch {
           constructorStanding.driverCodes = [];
         }
-      },
+      }),
     );
 
-    await Promise.all(driverFetchPromises);
-
     constructorStandings.forEach((standing) => {
-      standing.driverCodes = [...new Set(standing.driverCodes)].sort();
+      standing.driverCodes = [
+        ...new Set(standing.driverCodes.filter(Boolean)),
+      ].sort();
     });
 
     return constructorStandings;

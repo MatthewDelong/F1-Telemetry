@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchRaceDetails, getDriverStandings, getPartialDriverStandings } from '../utils/api';
+import { fetchCompletedRaceList, getDriverStandings, getPartialDriverStandings } from '../utils/api';
 
 import { ConstructorDriver, Loading, RangeSelector, TeamLegendFilter } from '../components';
 
@@ -23,10 +23,12 @@ export function DriverStandings({ selectedYear }) {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const data = await getDriverStandings(selectedYear);
-        const data2 = await fetchRaceDetails(selectedYear);
+        const [data, races] = await Promise.all([
+          getDriverStandings(selectedYear),
+          fetchCompletedRaceList(selectedYear),
+        ]);
         if (!isCancelled) {
-          setRaceDetails(data2?.filter(race => (race.url)) || []);
+          setRaceDetails(races || []);
           setStandings(data || []);
         }
       } catch (err) {
