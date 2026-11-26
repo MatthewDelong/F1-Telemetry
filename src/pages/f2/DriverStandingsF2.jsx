@@ -281,7 +281,6 @@ export function DriverStandingsF2({ selectedYear, championshipLevel }) {
                     className="w-full"
                   >
                     <ConstructorDriver
-                      className="mt-32"
                       image={standing.code}
                       car={standing.constructorId}
                       color={standing.constructorColor}

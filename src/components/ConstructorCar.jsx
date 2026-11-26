@@ -7,6 +7,7 @@ import "./ConstructorCar.scss";
 import { Button } from "./Button";
 import { darkenColor } from "../utils/colorUtils";
 import { ChampionBadge } from "./ChampionBadge";
+import teamColors from "../utils/teamColors.json";
 import "./team-garages/TeamDriverCard.scss";
 
 export const ConstructorCar = (props) => {
@@ -18,21 +19,26 @@ export const ConstructorCar = (props) => {
     image,
     name,
     year,
-    drivers,
+    drivers = [],
     index,
   } = props;
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const level = championshipLevel?.toLowerCase();
+  const isF1a = level === "f1a";
+  const isF2 = level === "f2";
+  const isF1 = !isF1a && !isF2;
 
-  const driverUrl = (index) =>
-    championshipLevel === "f2"
-      ? `${"/images/" + year + "/F2/" + drivers[index] + ".png"}`
-      : `${"/images/" + year + "/drivers/" + drivers[index] + ".png"}`;
+  const driverUrl = (idx) =>
+    isF2
+      ? `${"/images/" + year + "/F2/" + drivers[idx] + ".png"}`
+      : isF1a
+        ? `${"/images/" + year + "/F1A/" + drivers[idx] + ".png"}`
+        : `${"/images/" + year + "/drivers/" + drivers[idx] + ".png"}`;
 
-  const carUrl =
-    championshipLevel === "f2"
-      ? `${"/images/" + year + "/F2/carSideView/" + image + ".png"}`
-      : `${"/images/" + year + "/cars/" + image + ".png"}`;
+  const carUrl = isF2
+    ? `${"/images/" + year + "/F2/carSideView/" + image + ".png"}`
+    : `${"/images/" + year + "/cars/" + image + ".png"}`;
 
   const groupHoverClasses =
     "group-hover:scale-[1.05] duration-150 transition-transform ease-in-out";
@@ -62,7 +68,28 @@ export const ConstructorCar = (props) => {
     card.style.setProperty("--my", "50%");
   };
 
-  const teamColor = color || "#7500AD";
+  const resolveTeamColor = () => {
+    if (color) {
+      return color.startsWith("#") ? color : `#${color}`;
+    }
+    if (image) {
+      const cid = image.toLowerCase();
+      const yStr = String(year);
+      const hex =
+        teamColors[yStr]?.[cid] ||
+        (cid === "var" ? teamColors[yStr]?.["van_amersfoort"] : undefined) ||
+        (cid === "van_amersfoort" ? teamColors[yStr]?.["var"] : undefined) ||
+        teamColors["2026"]?.[cid] ||
+        teamColors["2025"]?.[cid] ||
+        teamColors["2024"]?.[cid];
+      if (hex) {
+        return hex.startsWith("#") ? hex : `#${hex}`;
+      }
+    }
+    return "#7500AD";
+  };
+
+  const teamColor = resolveTeamColor();
 
   return (
     <div
@@ -99,7 +126,7 @@ export const ConstructorCar = (props) => {
           }}
         />
 
-        <div className="flex flex-col items-center pb-40 relative z-10">
+        <div className={classNames("flex flex-col items-center relative z-10", isF1 ? "pb-40" : "pb-24")}>
           <div className="flex items-end mb-4">
             <div className="h-1 w-32 border-b-[1px] border-solid border-neutral-500" />
             <div className="font-display text-24 leading-none -mb-4 mx-8 text-neutral-400">
@@ -108,79 +135,120 @@ export const ConstructorCar = (props) => {
             <div className="h-1 w-32 border-b-[1px] border-solid border-neutral-500" />
           </div>
           <p className="uppercase tracking-sm text-xl">
-            {image === "rb" ? "RACING BULLS" : name.replace("F1 Team", "")}
+            {image === "rb" ? "RACING BULLS" : (name || "").replace("F1 Team", "")}
           </p>
           <div className="h-1 w-[9.6rem] border-b-[1px] border-solid border-neutral-500 mb-4 mt-4" />
           <span className="heading-1 gradient-text-light ">{points}</span>
-          <div
-            className={classNames(
-              groupHoverClasses,
-              "flex items-end relative -mt-24 z-10",
-            )}
-          >
-            {drivers[3] && (
+          {isF1a ? (
+            <div
+              className={classNames(
+                groupHoverClasses,
+                "flex justify-center items-end gap-24 sm:gap-32 relative mt-12 pr-16 z-10",
+              )}
+            >
+              {drivers.slice(0, 3).map((driver, idx) => (
+                <div key={driver} className="relative flex items-end">
+                  <img
+                    alt=""
+                    className="rounded-t-lg"
+                    src={driverUrl(idx)}
+                    width={90}
+                    style={{
+                      opacity: isInView ? 1 : 0,
+                      transition: "all 2s cubic-bezier(0.17, 0.55, 0.55, 1) .3s",
+                    }}
+                  />
+                  <img
+                    alt=""
+                    className="z-10 absolute drop-shadow-[0_0_14px_rgba(0,0,0,0.75)]"
+                    src={`${"/images/" + year + "/F1A/carSideView2/" + driver + "-side2.png"}`}
+                    width={90}
+                    style={{
+                      transform: isInView ? "none" : "translateX(25px) translateY(-15px)",
+                      opacity: isInView ? 1 : 0,
+                      transition: "all 1s cubic-bezier(0.17, 0.55, 0.55, 1) .2s",
+                      bottom: "-0.8rem",
+                      right: "-2.8rem",
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div
+              className={classNames(
+                groupHoverClasses,
+                "flex items-end relative -mt-24 z-10",
+              )}
+            >
+              {drivers[3] && (
+                <img
+                  alt=""
+                  className="absolute left-[-4rem] z-[1] rounded-t-lg"
+                  src={driverUrl(3)}
+                  width={90}
+                  style={{
+                    opacity: isInView ? 1 : 0,
+                    transition: "all 2s cubic-bezier(0.17, 0.55, 0.55, 1) .4s",
+                  }}
+                />
+              )}
+              {drivers[0] && (
+                <img
+                  alt=""
+                  className="-mt-40 -mr-80 sm:-mr-60 z-[1] rounded-t-lg"
+                  src={driverUrl(0)}
+                  width={100}
+                  style={{
+                    opacity: isInView ? 1 : 0,
+                    transition: "all 2s cubic-bezier(0.17, 0.55, 0.55, 1) .3s",
+                  }}
+                />
+              )}
+
               <img
                 alt=""
-                className="absolute left-[-4rem] z-[1] rounded-t-lg"
-                src={driverUrl(3)}
-                width={90}
+                className="-mt-16 -mb-[2.2rem] z-10"
+                src={carUrl}
+                width={264}
                 style={{
+                  transform: isInView
+                    ? "none"
+                    : isF2
+                      ? "translateX(300px)"
+                      : "translateX(-300px)",
                   opacity: isInView ? 1 : 0,
-                  transition: "all 2s cubic-bezier(0.17, 0.55, 0.55, 1) .4s",
+                  transition: "all 1s cubic-bezier(0.17, 0.55, 0.55, 1) .2s",
                 }}
               />
-            )}
-            <img
-              alt=""
-              className="-mt-40 -mr-80 sm:-mr-60 z-[1] rounded-t-lg"
-              src={driverUrl(0)}
-              width={100}
-              style={{
-                opacity: isInView ? 1 : 0,
-                transition: "all 2s cubic-bezier(0.17, 0.55, 0.55, 1) .3s",
-              }}
-            />
 
-            <img
-              alt=""
-              className="-mt-16 -mb-[2.2rem] z-10"
-              src={carUrl}
-              width={264}
-              style={{
-                transform: isInView
-                  ? "none"
-                  : championshipLevel === "f2"
-                    ? "translateX(300px)"
-                    : "translateX(-300px)",
-                opacity: isInView ? 1 : 0,
-                transition: "all 1s cubic-bezier(0.17, 0.55, 0.55, 1) .2s",
-              }}
-            />
-
-            <img
-              alt=""
-              className="-mt-40 -ml-80 sm:-ml-60 z-[1] rounded-t-lg"
-              src={driverUrl(1)}
-              width={100}
-              style={{
-                opacity: isInView ? 1 : 0,
-                transition: "all 2s cubic-bezier(0.17, 0.55, 0.55, 1) .3s",
-              }}
-            />
-            {drivers[2] && (
-              <img
-                alt=""
-                className="absolute right-[-4rem] z-[1] rounded-t-lg"
-                src={driverUrl(2)}
-                width={90}
-                style={{
-                  opacity: isInView ? 1 : 0,
-                  transition: "all 2s cubic-bezier(0.17, 0.55, 0.55, 1) .4s",
-                }}
-              />
-            )}
-          </div>
-          {championshipLevel !== "f2" && (
+              {drivers[1] && (
+                <img
+                  alt=""
+                  className="-mt-40 -ml-80 sm:-ml-60 z-[1] rounded-t-lg"
+                  src={driverUrl(1)}
+                  width={100}
+                  style={{
+                    opacity: isInView ? 1 : 0,
+                    transition: "all 2s cubic-bezier(0.17, 0.55, 0.55, 1) .3s",
+                  }}
+                />
+              )}
+              {drivers[2] && (
+                <img
+                  alt=""
+                  className="absolute right-[-4rem] z-[1] rounded-t-lg"
+                  src={driverUrl(2)}
+                  width={90}
+                  style={{
+                    opacity: isInView ? 1 : 0,
+                    transition: "all 2s cubic-bezier(0.17, 0.55, 0.55, 1) .4s",
+                  }}
+                />
+              )}
+            </div>
+          )}
+          {isF1 && (
             <ChampionBadge
               teamId={image}
               year={year}
@@ -195,7 +263,7 @@ export const ConstructorCar = (props) => {
           )}
         </div>
       </div>
-      {championshipLevel !== "f2" && (
+      {isF1 && (
         <Button
           size="sm"
           className="opacity-0 group-hover:opacity-100 absolute -bottom-[1.2rem] left-1/2 -translate-x-1/2 rounded-[2rem] px-16 tracking-widest uppercase shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all duration-300"
@@ -208,10 +276,13 @@ export const ConstructorCar = (props) => {
 };
 
 ConstructorCar.propTypes = {
+  championshipLevel: PropTypes.string,
+  color: PropTypes.string,
   className: PropTypes.string,
   drivers: PropTypes.array,
-  year: PropTypes.number,
-  points: PropTypes.string,
+  year: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  points: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   image: PropTypes.string,
   name: PropTypes.string,
+  index: PropTypes.number,
 };

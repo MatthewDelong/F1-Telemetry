@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { fetchAllRaceResults, getSeriesBaseUrl } from "../../utils/apiF1a";
-import { ConstructorCarF2, Loading } from "../../components";
+import { ConstructorCar, Loading } from "../../components";
 import { calculateSeriesPoints2025 } from "../../utils/calculateSeriesPoints2025";
 import { PointsByRaceDropdown } from "../../components/PointsByRaceDropdown";
 import { buildRacePointsMaps } from "../../utils/pointsByRace";
@@ -91,8 +91,8 @@ export function ConstructorStandingsF2({ selectedYear, championshipLevel }) {
         ) : (
           <ul>
             {standings.map((standing, index) => (
-              <li key={index} className="-mb-32">
-                <ConstructorCarF2
+              <li key={standing.constructorId || index} className="w-full relative">
+                <ConstructorCar
                   image={standing.constructorId}
                   points={standing.points}
                   name={standing.name}

@@ -51,9 +51,9 @@ export const StandingsPage = ({
           // gap between the switch and the season selector.
           series === "F1"
             ? "mt-32 mb-[-25px]"
-            : view === "drivers"
-              ? "mb-14"
-              : "mb-24",
+            : // F2 / F1A: page offsets are zeroed (see .standings-body--tight)
+              // so this 18px matches the gap between the switch and season.
+              "mb-[18px]",
         )}
       >
         <nav className="standings-tab-nav" aria-label="Standings view selector">

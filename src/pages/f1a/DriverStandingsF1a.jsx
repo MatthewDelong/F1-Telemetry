@@ -234,7 +234,6 @@ export function DriverStandingsF1a({ selectedYear, championshipLevel }) {
                 {filteredStandings.map((standing, index) => (
                   <li key={`${standing.code || standing.driverId}-${standing.position || index}`} className="w-full">
                     <ConstructorDriver
-                      className="mt-32"
                       image={standing.code}
                       car={standing.constructorId}
                       color={standing.constructorColor}
