@@ -272,10 +272,18 @@ def main():
         
     round_number = str(page_data.get('RoundNumber', ''))
     country_name = page_data.get('CountryName', '')
-    race_name = country_name + " Grand Prix"
     
     circuit_info = page_data.get('CircuitInformation', '')
     circuit_name = circuit_info.get('CircuitName', '') if isinstance(circuit_info, dict) else str(circuit_info)
+    circuit_short = circuit_info.get('CircuitShortName', '') if isinstance(circuit_info, dict) else ''
+    circuit_label = (circuit_short + ' ' + circuit_name).lower()
+
+    if country_name == "United States" and "las vegas" in circuit_label:
+        race_name = "Las Vegas Grand Prix"
+    elif country_name == "United States" and "miami" in circuit_label:
+        race_name = "Miami Grand Prix"
+    else:
+        race_name = country_name + " Grand Prix"
     
     c_map = {
         "China": "shanghai",
@@ -290,7 +298,12 @@ def main():
         "Malaysia": "sepang",
         "Bahrain": "sepang"
     }
-    circuit_id = c_map.get(country_name, country_name.lower().replace(' ', '_'))
+    if "las vegas" in circuit_label:
+        circuit_id = "las_vegas"
+    elif "miami" in circuit_label:
+        circuit_id = "miami"
+    else:
+        circuit_id = c_map.get(country_name, country_name.lower().replace(' ', '_'))
     
     new_round = {
         "season": season,
