@@ -12,6 +12,7 @@ import { fetchRacesAndSessions } from "../utils/api";
 import { Modal } from "./Modal";
 import { getCurrentYear } from "../utils/currentYear";
 import { F1ALinks, F1Links, F2Links } from "./Links";
+import Accordion from "./Accordion";
 
 export const Header = () => {
   const [races, setRaces] = useState([]);
@@ -413,6 +414,29 @@ export const Header = () => {
               </span>
               <FontAwesomeIcon icon="chevron-right" className="text-neutral-600 group-hover:text-brand-blue-400 group-hover:translate-x-2 transition-all" />
             </Link>
+
+            <div className="glass-dark border border-white/10 rounded-2xl p-16 flex flex-col relative overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
+              <Accordion
+                title="F1 Comparisons"
+                contentClasses="flex flex-col gap-2 items-start"
+                titleClassName="text-lg font-bold"
+              >
+                <Link
+                  to="/teammates-comparison"
+                  className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
+                  onClick={toggleOpen}
+                >
+                  Teammate Comparisons
+                </Link>
+                <Link
+                  to="/driver-comparison"
+                  className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
+                  onClick={toggleOpen}
+                >
+                  Driver Comparisons
+                </Link>
+              </Accordion>
+            </div>
 
             <div className="glass-dark border border-white/10 rounded-2xl p-16 mt-8 flex flex-col relative overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
