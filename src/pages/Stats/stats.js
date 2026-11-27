@@ -1,5 +1,5 @@
 const num = (v) => { const n = parseInt(v, 10); return Number.isNaN(n) ? null : n; };
-const isDnf = (s) => s && s !== 'Finished' && !/^\+\d+ Lap/.test(s);
+const isDnf = (s) => s && s !== 'Finished' && s !== 'Lapped' && !/^\+\d+ Lap/.test(s);
 const sum = (a) => a.reduce((x, y) => x + y, 0);
 
 export function buildRounds({ results, quali, sprints }) {
@@ -11,11 +11,12 @@ export function buildRounds({ results, quali, sprints }) {
   };
   results.forEach((race) => {
     const x = race.Results[0]; const o = row(race);
-    Object.assign(o, { raced: true, grid: num(x.grid) || null, pos: num(x.position), points: +x.points, status: x.status, dnf: !!isDnf(x.status), fastest: x.FastestLap?.rank === '1' });
+    const grid = num(x.grid) || null;
+    Object.assign(o, { raced: true, grid, pole: grid === 1, pos: num(x.position), points: +x.points, status: x.status, dnf: !!isDnf(x.status), fastest: x.FastestLap?.rank === '1' });
   });
   quali.forEach((race) => {
     const x = race.QualifyingResults[0]; const o = row(race);
-    o.qPos = num(x.position); o.pole = o.qPos === 1; o.q3 = !!x.Q3;
+    o.qPos = num(x.position); if (!o.raced) o.pole = o.qPos === 1; o.q3 = !!x.Q3;
   });
   sprints.forEach((race) => { const x = race.SprintResults[0]; const o = row(race); o.sprintPos = num(x.position); o.sprintPoints = +x.points; });
   return [...rows.values()].sort((a, b) => a.round - b.round);

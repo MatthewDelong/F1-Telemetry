@@ -22,27 +22,6 @@ export const F1Links = ({ accordion = false, onClick }) => {
       >
         Standings
       </Link>
-      <Link
-        to="/driver-comparison"
-        className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
-        onClick={onClick}
-      >
-        Driver Comparisons
-      </Link>
-      <Link
-        to="/teammates-comparison"
-        className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
-        onClick={onClick}
-      >
-        Teammate Comparisons
-      </Link>
-      <Link
-        to="/stats"
-        className="text-m leading-relaxed text-neutral-400 hover:text-brand-blue-400 hover:translate-x-2 transition-all duration-300 block"
-        onClick={onClick}
-      >
-        Driver & Constructor Stats
-      </Link>
     </>
   );
   return accordion ? (

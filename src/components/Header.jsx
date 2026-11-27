@@ -181,7 +181,7 @@ export const Header = () => {
                 to="/stats"
                 className="global-header__main-nav__button py-12 px-24 rounded-[.8rem] uppercase tracking-xs"
               >
-                Stats
+                F1 Stats
               </Link>
             </div>
             <div className="relative w-max uppercase text-lg ">
@@ -253,7 +253,7 @@ export const Header = () => {
                   setRaceViewerDropdownOpen(false);
                 }}
               >
-                Comparisons
+                F1 Comparisons
                 <FontAwesomeIcon
                   icon="chevron-down"
                   className={classNames(
@@ -397,7 +397,7 @@ export const Header = () => {
             >
               <div className="absolute inset-0 bg-gradient-to-r from-brand-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <span className="tracking-sm uppercase text-lg font-bold text-neutral-200 group-hover:text-brand-blue-400 transition-colors relative z-10 ml-4">
-                Driver & Constructor Stats
+                F1 Stats
               </span>
               <FontAwesomeIcon icon="chevron-right" className="text-neutral-600 group-hover:text-brand-blue-400 group-hover:translate-x-2 transition-all" />
             </Link>

@@ -51,7 +51,7 @@ const position = (value) => {
   return Number.isFinite(parsed) ? parsed : null;
 };
 const isClassified = (status) =>
-  status === "Finished" || /^\+\d+ Lap/.test(status ?? "");
+  status === "Finished" || status === "Lapped" || /^\+\d+ Lap/.test(status ?? "");
 
 function ConstructorLogo({ season, constructor }) {
   const [extensionIndex, setExtensionIndex] = useState(0);
@@ -474,7 +474,9 @@ export default function ConstructorsTab({ season, setSeason, tabSwitcher }) {
       return isClassified(result.status) && finish != null && finish <= 3;
     }).length;
     const poles = rounds.filter((race) =>
-      race.quali.some((result) => position(result.position) === 1),
+      race.results.length
+        ? race.results.some((result) => position(result.grid) === 1)
+        : race.quali.some((result) => position(result.position) === 1),
     ).length;
     const fastest = results.filter(
       (result) => result.FastestLap?.rank === "1",
