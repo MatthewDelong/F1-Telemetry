@@ -29,7 +29,6 @@ export const F1Links = ({ accordion = false, onClick }) => {
       title="Formula 1"
       contentClasses="flex flex-col gap-2 items-start"
       titleClassName="text-lg font-bold"
-      defaultOpen={true}
     >
       {links}
     </Accordion>
@@ -70,7 +69,6 @@ export const F1ALinks = ({ accordion = false, onClick }) => {
       title="F1 Academy"
       contentClasses="flex flex-col gap-2 items-start"
       titleClassName="text-lg font-bold"
-      defaultOpen={true}
     >
       {links}
     </Accordion>
@@ -111,7 +109,6 @@ export const F2Links = ({ accordion = false, onClick }) => {
       title="Formula 2"
       contentClasses="flex flex-col gap-2 items-start"
       titleClassName="text-lg font-bold"
-      defaultOpen={true}
     >
       {links}
     </Accordion>

@@ -11,8 +11,8 @@ const Accordion = ({ title, children, className, contentClasses, titleClassName,
     <div className={classNames(className, "")}>
       {/* Header */}
       <button
-        className={classNames("w-full flex justify-between items-center py-4 px-8 tracking-sm uppercase hover:text-brand-blue-300 transition-colors duration-300", titleClassName)}
-        style={{ letterSpacing: '0.2rem', color: 'rgba(255, 255, 255, 0.7)' }}
+        className={classNames("w-full flex justify-between items-center py-4 px-8 tracking-sm uppercase text-neutral-200 hover:text-brand-blue-300 transition-colors duration-300", titleClassName)}
+        style={{ letterSpacing: '0.2rem' }}
         onClick={() => setIsOpen(!isOpen)}
       >
         {title}

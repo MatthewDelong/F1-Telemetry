@@ -356,7 +356,11 @@ export const Header = () => {
         <div className="flex flex-col pb-8 px-4">
           <div className="pt-2 pb-6 flex justify-center mb-4 relative">
             <Link to="/" onClick={toggleOpen}>
-              <Logo height={48} textImageSrc="/logos/header2.png" className="drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]" />
+              <Logo
+                height={48}
+                textImageSrc="/logos/header2.png"
+                className="drop-shadow-[0_0_15px_rgba(255,255,255,0.15)]"
+              />
             </Link>
             <div className="absolute bottom-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-brand-blue-500/50 to-transparent"></div>
           </div>
@@ -376,7 +380,10 @@ export const Header = () => {
                   Live Timings
                 </span>
               </div>
-              <FontAwesomeIcon icon="chevron-right" className="text-red-500/50 group-hover:text-red-400 group-hover:translate-x-2 transition-all" />
+              <FontAwesomeIcon
+                icon="chevron-right"
+                className="text-red-500/50 group-hover:text-red-400 group-hover:translate-x-2 transition-all"
+              />
             </Link>
 
             <Link
@@ -388,7 +395,10 @@ export const Header = () => {
               <span className="tracking-sm uppercase text-lg font-bold text-neutral-200 group-hover:text-brand-blue-400 transition-colors relative z-10 ml-4">
                 Team Garages
               </span>
-              <FontAwesomeIcon icon="chevron-right" className="text-neutral-600 group-hover:text-brand-blue-400 group-hover:translate-x-2 transition-all" />
+              <FontAwesomeIcon
+                icon="chevron-right"
+                className="text-neutral-600 group-hover:text-brand-blue-400 group-hover:translate-x-2 transition-all"
+              />
             </Link>
 
             <Link
@@ -400,7 +410,10 @@ export const Header = () => {
               <span className="tracking-sm uppercase text-lg font-bold text-neutral-200 group-hover:text-brand-blue-400 transition-colors relative z-10 ml-4">
                 F1 Stats
               </span>
-              <FontAwesomeIcon icon="chevron-right" className="text-neutral-600 group-hover:text-brand-blue-400 group-hover:translate-x-2 transition-all" />
+              <FontAwesomeIcon
+                icon="chevron-right"
+                className="text-neutral-600 group-hover:text-brand-blue-400 group-hover:translate-x-2 transition-all"
+              />
             </Link>
 
             <Link
@@ -412,7 +425,10 @@ export const Header = () => {
               <span className="tracking-sm uppercase text-lg font-bold text-neutral-200 group-hover:text-brand-blue-400 transition-colors relative z-10 ml-4">
                 Features
               </span>
-              <FontAwesomeIcon icon="chevron-right" className="text-neutral-600 group-hover:text-brand-blue-400 group-hover:translate-x-2 transition-all" />
+              <FontAwesomeIcon
+                icon="chevron-right"
+                className="text-neutral-600 group-hover:text-brand-blue-400 group-hover:translate-x-2 transition-all"
+              />
             </Link>
 
             <div className="glass-dark border border-white/10 rounded-2xl p-16 flex flex-col relative overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
@@ -441,14 +457,17 @@ export const Header = () => {
             <div className="glass-dark border border-white/10 rounded-2xl p-16 mt-8 flex flex-col relative overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-pink-500/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
-              
+
               <div className="pb-8 pl-4">
-                <h3 className="text-xs uppercase tracking-[0.2em] text-neutral-500 font-bold flex items-center gap-4">
-                  <FontAwesomeIcon icon="flag-checkered" className="text-brand-blue-500/50" />
+                <h3 className="text-base uppercase tracking-[0.2em] text-neutral-200 font-bold flex items-center gap-4">
+                  <FontAwesomeIcon
+                    icon="flag-checkered"
+                    className="text-brand-blue-400"
+                  />
                   Series
                 </h3>
               </div>
-              
+
               <div className="flex flex-col relative z-10 mt-4 gap-2">
                 <F1Links accordion onClick={toggleOpen} />
                 <F2Links accordion onClick={toggleOpen} />
